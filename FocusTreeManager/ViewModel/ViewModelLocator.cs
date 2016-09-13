@@ -35,6 +35,9 @@ namespace FocusTreeManager.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<FocusGridViewModel>();
+            SimpleIoc.Default.Register<AddFocusViewModel>();
+            SimpleIoc.Default.Register<EditFocusViewModel>();
+            SimpleIoc.Default.Register<ChangeImageViewModel>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
         }
 
@@ -56,6 +59,30 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<FocusGridViewModel>();
+            }
+        }
+
+        public AddFocusViewModel AddFocus_Flyout
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AddFocusViewModel>();
+            }
+        }
+
+        public EditFocusViewModel EditFocus_Flyout
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<EditFocusViewModel>();
+            }
+        }
+
+        public ChangeImageViewModel ChangeImage
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ChangeImageViewModel>();
             }
         }
 

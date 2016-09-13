@@ -45,7 +45,7 @@ namespace FocusTreeManager
 
             for (int i = 0; i < (int)e.NewValue; i++)
                 grid.RowDefinitions.Add(
-                    new RowDefinition() { Height = new GridLength(75) });
+                    new RowDefinition() { Height = new GridLength(140) });
         }
 
         #endregion
@@ -85,7 +85,7 @@ namespace FocusTreeManager
 
             for (int i = 0; i < (int)e.NewValue; i++)
                 grid.ColumnDefinitions.Add(
-                    new ColumnDefinition() { Width = new GridLength(75) });
+                    new ColumnDefinition() { Width = new GridLength(89) });
         }
 
         #endregion

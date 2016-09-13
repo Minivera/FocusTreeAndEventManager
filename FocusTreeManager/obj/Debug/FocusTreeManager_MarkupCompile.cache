@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\Travail\FocusTreeManager\FocusTreeManager\obj\Debug\
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\
 FocusTreeManager
 none
 false
 DEBUG;TRACE
-D:\Travail\FocusTreeManager\FocusTreeManager\App.xaml
-5267678731
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\App.xaml
+91724442471
 
-121236757103
-70516784157
-Views\Focus.xaml;Views\FocusGrid.xaml;MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;
+23-1262468345
+72-967310373
+Languages\En_en.xaml;Languages\Fr_fr.xaml;Views\ChangeImage.xaml;Views\Focus.xaml;Views\FocusGrid.xaml;MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;Views\LineAdornerView.xaml;
 
 False
 

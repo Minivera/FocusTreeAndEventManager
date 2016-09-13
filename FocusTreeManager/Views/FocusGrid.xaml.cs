@@ -23,6 +23,10 @@ namespace FocusTreeManager.Views
         public FocusGrid()
         {
             InitializeComponent();
+            Localization locale = new Localization();
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

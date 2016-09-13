@@ -5,7 +5,62 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views"
              mc:Ignorable="d" >
-    <Grid>
-        <Rectangle Width="75px" Height="75px" Fill="White" />
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem x:Name="MenuEditFocus" Header="{DynamicResource Edit_Focus}" 
+                                          Command="{Binding EditFocusCommand}"/>
+            <MenuItem x:Name="MenuDeleteFocus" Header="{DynamicResource Delete_Focus}" 
+                                          Command="{Binding DeleteFocusCommand}"/>
+            <MenuItem x:Name="MenuMutuallyFocus" Header="{DynamicResource Add_Mutually_Focus}" 
+                                          Command="{Binding MutuallyFocusCommand}"/>
+            <MenuItem x:Name="MenuPrerequisitesFocus" Header="{DynamicResource Add_Prerequisite_Focus}" 
+                                          Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
+            <MenuItem x:Name="MenuRequiredPrerequisitesFocus" Header="{DynamicResource Add_Required_Prerequisite_Focus}" 
+                                          Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
+    <Grid Width="89" Height="80">
+        <Image Source="/FocusTreeManager;component/GFX/Interface/Focus_under.png" Margin="-38,42,-35,-42" Stretch="None" />
+        <Image Source="{Binding Image}" x:Name="FocusIcon" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="20"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                            <!-- Remove the BlurEffect -->
+                            <Setter Property="Effect" Value="{x:Null}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+            <Image.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditFocusCommand}" />
+                <MouseBinding Gesture="LeftClick" Command="{Binding TestFinishCommand}" />
+            </Image.InputBindings>
+        </Image>
+        <Label x:Name="label" Content="{Binding VisibleName}" 
+               HorizontalAlignment="Left" Height="26" Margin="-28,72,-28,-18" 
+               VerticalAlignment="Top" Width="145" FontFamily="Calibri"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
     </Grid>
 </UserControl>

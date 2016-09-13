@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FocusTreeManager.Resources"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="Main_Title">Focus Tree And Event Manager</system:String>
+    <system:String x:Key="Chose_Image_Title">Chose the focus Icon</system:String>
+    <system:String x:Key="Add_Focus">Add a new Focus</system:String>
+    <system:String x:Key="Edit_Focus">Edit Focus</system:String>
+    <system:String x:Key="Delete_Focus">Delete Focus</system:String>
+    <system:String x:Key="Add_Mutually_Focus">Make Focus mutually exclusive with...</system:String>
+    <system:String x:Key="Add_Prerequisite_Focus">Add an optional prerequisites to Focus</system:String>
+    <system:String x:Key="Add_Required_Prerequisite_Focus">Add a required prerequisites to Focus</system:String>
+    <system:String x:Key="Focus_Unique_Name">Unique name</system:String>
+    <system:String x:Key="Focus_Visible_Name">Visible name</system:String>
+    <system:String x:Key="Focus_X">Horizontal position (X)</system:String>
+    <system:String x:Key="Focus_Y">Vertical position (Y)</system:String>
+    <system:String x:Key="Focus_Image">Image</system:String>
+    <system:String x:Key="Command_Change">Change</system:String>
+    <system:String x:Key="Command_Select">Select</system:String>
+</ResourceDictionary>
