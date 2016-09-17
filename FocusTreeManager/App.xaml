@@ -6,9 +6,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:FocusTreeManager.ViewModel">
+             xmlns:vm="clr-namespace:FocusTreeManager.ViewModel"
+             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz">
     <Application.Resources>
         <ResourceDictionary>
+            <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MahAppsTabablzControlStyle}" />
             <vm:ViewModelLocator x:Key="Locator" />
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
@@ -18,7 +20,9 @@
                 <!-- Accent and AppTheme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <!-- Dragablez Theme -->
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/themes/mahapps.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-  </Application.Resources>
+    </Application.Resources>
 </Application>

@@ -4,17 +4,36 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="Main_Title">Gestionnaire de Focus Tree et Event</system:String>
     <system:String x:Key="Chose_Image_Title">Choisir l'icône du Focus</system:String>
+    <system:String x:Key="Localize_Title">Créer la localisation</system:String>
     <system:String x:Key="Add_Focus">Ajouter un nouveau Focus</system:String>
     <system:String x:Key="Edit_Focus">Modifier un Focus</system:String>
     <system:String x:Key="Delete_Focus">Supprimer un Focus</system:String>
     <system:String x:Key="Add_Mutually_Focus">Rendre le focus mutuellement éxcusif avec...</system:String>
     <system:String x:Key="Add_Prerequisite_Focus">Ajouter des prérequis optionel au Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Ajouter un prérequis obligatoire au Focus</system:String>
+    <system:String x:Key="Add_Game_File">Ajouter un Fichier du jeu</system:String>
+    <system:String x:Key="Add_Game_Element">Nouveau fichier</system:String>
     <system:String x:Key="Focus_Unique_Name">Nom unique</system:String>
     <system:String x:Key="Focus_Visible_Name">Nom d'affichage</system:String>
+    <system:String x:Key="Focus_Description">Description</system:String>
     <system:String x:Key="Focus_X">Position horizontale (X)</system:String>
     <system:String x:Key="Focus_Y">Position vérticale (Y)</system:String>
     <system:String x:Key="Focus_Image">Image</system:String>
+    <system:String x:Key="Localisation_Language">Langage</system:String>
+    <system:String x:Key="Localisation_Key">Clef</system:String>
+    <system:String x:Key="Localisation_Value">Valeur associée</system:String>
+    <system:String x:Key="Localisation_Reminder">Si vous ajoutez une nouvelle langue non-supportée, 
+    rapellez-vous d'aller l'ajouter au fichier language.yaml manuellement.</system:String>
+    <system:String x:Key="Command_Accept">Accepter</system:String>
     <system:String x:Key="Command_Change">Changer</system:String>
     <system:String x:Key="Command_Select">Choisir</system:String>
+    <system:String x:Key="Command_Save">Sauvegarder</system:String>
+    <system:String x:Key="Command_Cancel">Annuler</system:String>
+    <system:String x:Key="Command_Quit">Quitter sans sauvegarder</system:String>
+    <system:String x:Key="Menu_Settings">Paramètres</system:String>
+    <system:String x:Key="Manage_Focus">Fichiers FocusTrees</system:String>
+    <system:String x:Key="Manage_Localisation">Fichiers Localisation</system:String>
+    <system:String x:Key="Manage_Event">Fichiers Évènement</system:String>
+    <system:String x:Key="Exit_Confirm">Voulez-vous enregistrer avant de quitter?</system:String>
+    <system:String x:Key="Exit_Confirm_Title">Confirmation</system:String>
 </ResourceDictionary>

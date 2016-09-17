@@ -2,6 +2,7 @@
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,26 +39,72 @@ namespace FocusTreeManager
         {
             if (msg.Notification == "ShowAddFocus")
             {
-                AddFocusFlyout.IsOpen = true;
+                Localization locale = new Localization();
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
+                FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
+                FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout();
+                FocusFlyout.IsOpen = true;
             }
             if (msg.Notification == "HideAddFocus")
             {
-                AddFocusFlyout.IsOpen = false;
+                FocusFlyout.IsOpen = false;
             }
             if (msg.Notification == "ShowEditFocus")
             {
-                EditFocusFlyout.IsOpen = true;
-                //((EditFocusViewModel)EditFocusFlyout.DataContext).Focus = (Model.Focus)msg.Sender;
+                Localization locale = new Localization();
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
+                FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
+                FocusFlyout.DataContext = (new ViewModelLocator()).EditFocus_Flyout;
+                ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.Focus)msg.Sender;
+                FocusFlyout.IsOpen = true;
             }
             if (msg.Notification == "HideEditFocus")
             {
-                EditFocusFlyout.IsOpen = false;
+                FocusFlyout.IsOpen = false;
             }
             if (msg.Notification == "ShowChangeImage")
             {
                 ChangeImage view = new ChangeImage();
-                view.Show();
+                view.ShowDialog();
             }
+        }
+
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            MessageDialogResult Result = await ShowSaveDialog();
+            if (Result == MessageDialogResult.Affirmative)
+            {
+                //Show Save dialog and quit
+                Application.Current.Shutdown();
+            }
+            else if (Result == MessageDialogResult.FirstAuxiliary)
+            {
+                //Quit without saving
+                Application.Current.Shutdown();
+            }
+        }
+
+        async private Task<MessageDialogResult> ShowSaveDialog()
+        {
+            Localization locale = new Localization();
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
+            string Title = resourceLocalization["Exit_Confirm_Title"] as string;
+            string Message = resourceLocalization["Exit_Confirm"] as string;
+            MetroDialogSettings settings = new MetroDialogSettings();
+            settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
+            settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
+            settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Quit"] as string;
+            return await this.ShowMessageAsync(Title, Message, 
+                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
         }
     }
 }

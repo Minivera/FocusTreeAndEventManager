@@ -10,6 +10,8 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Shapes;
+using System.Windows.Controls;
 
 namespace FocusTreeManager
 {
@@ -17,69 +19,82 @@ namespace FocusTreeManager
     {
         private FrameworkElement element;
 
-        private new FocusGridViewModel DataContext;
+        private Canvas Children;
 
-        public LineAdorner(UIElement el, FocusGridViewModel DataContext) : base(el)
+        public Canvas Child
+        {
+            get { return Children; }
+            set
+            {
+                if (Children != null)
+                {
+                    RemoveVisualChild(Children);
+                }
+                Children = value;
+                if (Children != null)
+                {
+                    AddVisualChild(Children);
+                }
+            }
+        }
+
+        public LineAdorner(UIElement el, FocusGridModel DataContext) : base(el)
         {
             element = el as FrameworkElement;
             this.DataContext = DataContext;
+            Children = new Canvas();
+        }
+
+        protected override int VisualChildrenCount
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        protected override Visual GetVisualChild(int index)
+        {
+            if (index != 0) throw new ArgumentOutOfRangeException();
+            return Children;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            Child.Children.Clear();
+            FocusGridModel DataContext = this.DataContext as FocusGridModel;
             base.OnRender(drawingContext);
             foreach (CanvasLine line in DataContext.CanvasLines)
             {
-                Pen LinePen = new Pen(line.Color, 2);
+                //Pen LinePen = new Pen(line.Color, 2);
+                Line newLine = new Line()
+                {
+                    X1 = line.X1,
+                    X2 = line.X2,
+                    Y1 = line.Y1,
+                    Y2 = line.Y2,
+                    Visibility = System.Windows.Visibility.Visible,
+                    StrokeThickness = 2,
+                    Stroke = line.Color
+                };
                 if (line.Dashes)
                 {
-                    LinePen.DashStyle = DashStyles.Dash;
+                    newLine.StrokeDashArray = new DoubleCollection(new double[] { 2, 2});
+                    //LinePen.DashStyle = DashStyles.Dash;
                 }
-                drawingContext.DrawLine(LinePen, 
-                    new Point(line.X1, line.Y1), 
-                    new Point(line.X2, line.Y2));
+                //drawingContext.DrawLine(LinePen, 
+                //    new Point(line.X1, line.Y1), 
+                //    new Point(line.X2, line.Y2));
+                Child.Children.Add(newLine);
             }
         }
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        protected override Size ArrangeOverride(Size finalSize)
         {
-            IInputElement element = e.Source as IInputElement;
-            base.OnMouseRightButtonDown(e);
-            Point Position = e.GetPosition(element);
-            List<CanvasLine> clickedElements = DataContext.CanvasLines.Where((line) => 
-                                            inRange(line.X1, line.X2, (int)Position.X) &&
-                                            inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
-            foreach (CanvasLine line in clickedElements)
-            {
-                line.InternalSet.DeleteSetRelations();
-                //Make sur to add all lines linked to that set
-                clickedElements.AddRange(DataContext.CanvasLines.Where((l) => l.InternalSet == line.InternalSet));
-            }
-            DataContext.CanvasLines = new ObservableCollection<CanvasLine>(
-                                      DataContext.CanvasLines.Except(clickedElements).ToList());
-            DataContext.DrawOnCanvas();
-        }
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            base.OnMouseEnter(e);
-            //TODO: Draw something over a line
-            
-        }
-
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            base.OnMouseLeave(e);
-            //TODO: Remove the drawed something
-        }
-
-        private bool inRange(int Range1, int Range2, int Value)
-        {
-            int smallest = Math.Min(Range1, Range2);
-            int highest = Math.Max(Range1, Range2);
-            return ((smallest - 1 <= Value && Value <= highest - 1) ||
-                    (smallest <= Value && Value <= highest) ||
-                    (smallest + 1 <= Value && Value <= highest + 1));
+            double desiredWidth = element.ActualWidth;
+            double desiredHeight = element.ActualHeight;
+            Child.Arrange(new Rect(0, 0, desiredWidth, desiredHeight));
+            return finalSize;
         }
     }
 }

@@ -5,7 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FocusTreeManager"
              xmlns:v="clr-namespace:FocusTreeManager.Views"
-             mc:Ignorable="d" >
+             xmlns:m="clr-namespace:FocusTreeManager.Model"
+             mc:Ignorable="d" Loaded="UserControl_Loaded" LayoutUpdated="UserControl_LayoutUpdated" 
+             x:Name="FociGrid">
+    <UserControl.InputBindings>
+        <MouseBinding Gesture="RightClick" Command="{Binding RightClickCommand}" CommandParameter="{Binding ElementName=ListGrid}"/>
+    </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,43 +18,43 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" DataContext="{Binding FocusGrid, Source={StaticResource Locator}}">
+    <DockPanel LastChildFill="True">
         <DockPanel.ContextMenu>
             <ContextMenu>
                 <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}" 
                                           Command="{Binding AddFocusCommand}"/>
             </ContextMenu>
         </DockPanel.ContextMenu>
-        <Grid>
-            <v:LineAdornerView DataContext="{Binding}">
-            </v:LineAdornerView>
-            <ItemsControl ItemsSource="{Binding FociList}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid local:GridHelpers.RowCount="{Binding RowCount}"
+        <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True">
+            <Grid Margin="45,0,0,0" x:Name="ListGrid">
+                <ItemsControl ItemsSource="{Binding FociList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid local:GridHelpers.RowCount="{Binding RowCount}"
                               local:GridHelpers.ColumnCount="{Binding ColumnCount}" 
                                   Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="75" />
-                            </Grid.RowDefinitions>
-                        </Grid>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <v:Focus DataContext="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Grid.Column" Value="{Binding X}"/>
-                        <Setter Property="Grid.Row" Value="{Binding Y}"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-        </Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="75" />
+                                </Grid.RowDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <v:Focus/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Grid.Column" Value="{Binding X}"/>
+                            <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Grid>
+        </AdornerDecorator>
     </DockPanel>
 </UserControl>

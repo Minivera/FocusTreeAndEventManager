@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views"
+             xmlns:m="clr-namespace:FocusTreeManager.Model"
              mc:Ignorable="d" >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -28,7 +29,7 @@
     </UserControl.ContextMenu>
     <Grid Width="89" Height="80">
         <Image Source="/FocusTreeManager;component/GFX/Interface/Focus_under.png" Margin="-38,42,-35,-42" Stretch="None" />
-        <Image Source="{Binding Image}" x:Name="FocusIcon" >
+        <Image Source="{Binding Image}" x:Name="FocusIcon" ToolTip="{Binding Description}">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
                     <Style.Triggers>

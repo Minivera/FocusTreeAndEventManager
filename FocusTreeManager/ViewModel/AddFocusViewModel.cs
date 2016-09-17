@@ -13,22 +13,22 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class AddFocusViewModel : ViewModelBase
     {
-        private Focus addedFocus;
+        private Focus focus;
 
-        public Focus AddedFocus
+        public Focus Focus
         {
             get
             {
-                return addedFocus;
+                return focus;
             }
             set
             {
-                addedFocus = value;
-                RaisePropertyChanged("AddedFocus");
+                focus = value;
+                RaisePropertyChanged("Focus");
             }
         }
 
-        public RelayCommand AddFocusCommand { get; private set; }
+        public RelayCommand FocusCommand { get; private set; }
 
         public RelayCommand ChangeImageCommand { get; private set; }
 
@@ -37,9 +37,17 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public AddFocusViewModel()
         {
-            AddFocusCommand = new RelayCommand(AddFocus);
+            FocusCommand = new RelayCommand(AddFocus);
             ChangeImageCommand = new RelayCommand(ChangeImage);
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        public AddFocusViewModel SetupFlyout()
+        {
+            Focus = new Focus();
+            Focus.setDefaults();
+            RaisePropertyChanged("Focus");
+            return this;
         }
 
         public void AddFocus()
@@ -54,18 +62,12 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Notification == "ShowAddFocus")
-            {
-                AddedFocus = new Focus();
-                AddedFocus.setDefaults();
-                RaisePropertyChanged("AddedFocus");
-            }
             if (msg.Notification == "HideChangeImage")
             {
                 if ((string)System.Windows.Application.Current.Properties["Mode"] == "Add")
                 { 
                     ChangeImageViewModel viewModel = (ChangeImageViewModel)msg.Sender;
-                    addedFocus.Image = viewModel.FocusImage;
+                    Focus.Image = viewModel.FocusImage;
                 }
             }
         }

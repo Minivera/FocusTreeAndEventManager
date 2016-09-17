@@ -5,36 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusTreeManager"
         xmlns:v="clr-namespace:FocusTreeManager.Views"
+        xmlns:m="clr-namespace:FocusTreeManager.Model"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="{DynamicResource Main_Title}" Height="350" Width="525"
-        WindowState="Maximized" Icon="GFX/Focus/unknown.png">
+        WindowState="Maximized" Icon="GFX/Focus/unknown.png" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Window.Resources>
         <ResourceDictionary>
-            <Style x:Key="ControlStyle" TargetType="Control">
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
-                <Setter Property="Margin" Value="-4,0,5,0"/>
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
-                <Setter Property="Width" Value="200"/>
-                <Setter Property="Height" Value="25"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Controls:NumericUpDown">
-                <Setter Property="Width" Value="200"/>
-                <Setter Property="Height" Value="25"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Button">
-                <Setter Property="MinWidth" Value="150"/>
-                <Setter Property="Height" Value="25"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -51,107 +36,48 @@
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
                    VerticalAlignment="Center"
-                   Text="Settings" />
+                   Text="{DynamicResource Menu_Settings}" />
                 </StackPanel>
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="AddFocusFlyout" Header="{DynamicResource Add_Focus}" 
-                      DataContext="{Binding AddFocus_Flyout, Source={StaticResource Locator}}"
+            <Controls:Flyout x:Name="FocusFlyout" 
                       Width="400" IsModal="True" Position="Right">
-                <Grid HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"/>
-                        <ColumnDefinition Width="50*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="90"/>
-                        <RowDefinition Height="35"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="{DynamicResource Focus_Unique_Name}" 
-                           Grid.Column="0" Grid.Row="0"/>
-                    <TextBox Text="{Binding AddedFocus.UniqueName}" Grid.Row="0" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
-                    <Label Content="{DynamicResource Focus_Visible_Name}" 
-                           Grid.Column="0" Grid.Row="1"/>
-                    <TextBox Text="{Binding AddedFocus.VisibleName}" Grid.Row="1" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"/>
-                    <Label Content="{DynamicResource Focus_X}" 
-                           Grid.Column="0" Grid.Row="2"/>
-                    <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="2" Grid.Column="1" Value="{Binding Path=AddedFocus.X}" />
-                    <Label Content="{DynamicResource Focus_Y}" 
-                           Grid.Column="0" Grid.Row="3"/>
-                    <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="3" Grid.Column="1" Value="{Binding Path=AddedFocus.Y}"/>
-                    <Label Content="{DynamicResource Focus_Image}" 
-                           Grid.Column="0" Grid.Row="4"/>
-                    <Image Grid.Column="1" Grid.Row="4" Source="{Binding AddedFocus.Image}"/>
-                    <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
-                            Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" />
-                    <Button Style="{DynamicResource SquareButtonStyle}" 
-                            Content="{DynamicResource Add_Focus}" Command="{Binding AddFocusCommand}" 
-                            Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
-                </Grid>
-            </Controls:Flyout>
-            <Controls:Flyout x:Name="EditFocusFlyout" Header="{DynamicResource Edit_Focus}" 
-                      DataContext="{Binding EditFocus_Flyout, Source={StaticResource Locator}}"
-                      Width="400" IsModal="True" Position="Right">
-                <Grid HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"/>
-                        <ColumnDefinition Width="50*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="90"/>
-                        <RowDefinition Height="35"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="{DynamicResource Focus_Unique_Name}" 
-                           Grid.Column="0" Grid.Row="0"/>
-                    <TextBox Text="{Binding Focus.UniqueName}" Grid.Row="0" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
-                    <Label Content="{DynamicResource Focus_Visible_Name}" 
-                           Grid.Column="0" Grid.Row="1"/>
-                    <TextBox Text="{Binding Focus.VisibleName}" Grid.Row="1" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"/>
-                    <Label Content="{DynamicResource Focus_X}" 
-                           Grid.Column="0" Grid.Row="2"/>
-                    <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="2" Grid.Column="1" Value="{Binding Path=Focus.X}" />
-                    <Label Content="{DynamicResource Focus_Y}" 
-                           Grid.Column="0" Grid.Row="3"/>
-                    <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="3" Grid.Column="1" Value="{Binding Path=Focus.Y}"/>
-                    <Label Content="{DynamicResource Focus_Image}" 
-                           Grid.Column="0" Grid.Row="4"/>
-                    <Image Grid.Column="1" Grid.Row="4" Source="{Binding Focus.Image}"/>
-                    <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
-                            Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" />
-                    <Button Style="{DynamicResource SquareButtonStyle}" 
-                            Content="{DynamicResource Edit_Focus}" Command="{Binding EditFocusCommand}" 
-                            Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
-                </Grid>
+                <v:FocusEditor></v:FocusEditor>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
-    <Grid>
-        <DockPanel >
+    <DockPanel>
+        <v:ProjectView DockPanel.Dock="Left"/>
+        <DockPanel DockPanel.Dock="Right" >
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem>
-                    <TextBlock Name="StatusText"/>
+                    <TextBlock Name="StatusText" Text="{Binding StatusText}"/>
                 </StatusBarItem>
             </StatusBar>
-            <v:FocusGrid Margin="45,0,0,0"></v:FocusGrid>
+            <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
+                     FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
+                <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
+                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" >
+                    <TabControl.ContentTemplate>
+                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
+                            <v:FocusGrid />
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                    <dragablz:TabablzControl.HeaderItemTemplate>
+                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
+                            <TextBlock Text="{Binding TreeId}" />
+                        </DataTemplate>
+                    </dragablz:TabablzControl.HeaderItemTemplate>
+                    <TabControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
+                            <DockPanel></DockPanel>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                </dragablz:TabablzControl>
+            </dockablz:Layout>
         </DockPanel>
-    </Grid>
+    </DockPanel>
 </Controls:MetroWindow>

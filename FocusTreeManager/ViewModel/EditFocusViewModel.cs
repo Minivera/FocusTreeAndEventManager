@@ -28,7 +28,7 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public RelayCommand EditFocusCommand { get; private set; }
+        public RelayCommand FocusCommand { get; private set; }
 
         public RelayCommand ChangeImageCommand { get; private set; }
 
@@ -37,7 +37,7 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public EditFocusViewModel()
         {
-            EditFocusCommand = new RelayCommand(EditFocus);
+            FocusCommand = new RelayCommand(EditFocus);
             ChangeImageCommand = new RelayCommand(ChangeImage);
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -61,10 +61,6 @@ namespace FocusTreeManager.ViewModel
                     ChangeImageViewModel viewModel = (ChangeImageViewModel)msg.Sender;
                     Focus.Image = viewModel.FocusImage;
                 }
-            }
-            if (msg.Notification == "ShowEditFocus")
-            {
-                Focus = (Focus)msg.Sender;
             }
         }
     }

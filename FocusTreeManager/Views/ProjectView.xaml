@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.ProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views" 
+             mc:Ignorable="d" MinWidth="150"
+             DataContext="{Binding ProjectView, Source={StaticResource Locator}}"
+             x:Name="ProjectViewControl">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical">
+            <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}">
+                <Expander.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="FocusTree"/>
+                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                                          Command="{Binding AddElementCommand}" CommandParameter="FocusTree"/>
+                    </ContextMenu>
+                </Expander.ContextMenu>
+                <ItemsControl ItemsSource="{Binding fociContainerList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.InputBindings>
+                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
+                                        Path=DataContext.OpenFileTreeCommand}"
+                                        CommandParameter="{Binding ContainerID}" 
+                                        MouseAction="LeftDoubleClick" />
+                                </Label.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="20"
+                                   Height="20"
+                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tree}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBox Margin="4 0 0 0" Width="110"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0" 
+                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
+                                             KeyDown="TextBox_KeyDown" />
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+            <Expander x:Name="LocalisationExpander" Header="{DynamicResource Manage_Localisation}">
+                <Expander.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="Localisation"/>
+                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                                          Command="{Binding AddElementCommand}" CommandParameter="Localisation"/>
+                    </ContextMenu>
+                </Expander.ContextMenu>
+                <ItemsControl ItemsSource="{Binding localisationList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.InputBindings>
+                                    <MouseBinding Command="{Binding OpenFileLocaleCommand}" 
+                                                  CommandParameter="{Binding Filename}" 
+                                                  MouseAction="LeftDoubleClick" />
+                                </Label.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="20"
+                                   Height="20"
+                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBox Margin="4 0 0 0" Width="110"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0" 
+                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
+                                             KeyDown="TextBox_KeyDown" />
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}">
+
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

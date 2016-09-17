@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dragablz, Version=0.0.3.171, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.171\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -82,10 +86,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Containers\FociGridContainer.cs" />
+    <Compile Include="Model\FocusGridModel.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="Model\LineAdorner.cs" />
-    <Compile Include="Views\LineAdornerView.xaml.cs">
-      <DependentUpon>LineAdornerView.xaml</DependentUpon>
+    <Compile Include="Model\Localisation.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="ViewModel\Old\LocalisationViewModel.cs" />
+    <Compile Include="ViewModel\ProjectViewViewModel.cs" />
+    <Compile Include="Views\FocusEditor.xaml.cs">
+      <DependentUpon>FocusEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectView.xaml.cs">
+      <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
     <Page Include="Languages\En_en.xaml">
       <SubType>Designer</SubType>
@@ -100,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Focus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FocusEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,7 +141,7 @@
     <Compile Include="ViewModel\EditFocusViewModel.cs" />
     <Compile Include="ViewModel\AddFocusViewModel.cs" />
     <Compile Include="ViewModel\ChangeImageViewModel.cs" />
-    <Compile Include="ViewModel\FocusGridViewModel.cs" />
+    <None Include="ViewModel\Old\FocusGridViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\ChangeImage.xaml.cs">
@@ -148,7 +165,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LineAdornerView.xaml">
+    <Page Include="Views\ProjectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,7 +34,7 @@ namespace FocusTreeManager.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<FocusGridViewModel>();
+            SimpleIoc.Default.Register<ProjectViewViewModel>();
             SimpleIoc.Default.Register<AddFocusViewModel>();
             SimpleIoc.Default.Register<EditFocusViewModel>();
             SimpleIoc.Default.Register<ChangeImageViewModel>();
@@ -51,14 +51,6 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-
-        public FocusGridViewModel FocusGrid
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<FocusGridViewModel>();
             }
         }
 
@@ -83,6 +75,14 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ChangeImageViewModel>();
+            }
+        }
+
+        public ProjectViewViewModel ProjectView
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ProjectViewViewModel>();
             }
         }
 

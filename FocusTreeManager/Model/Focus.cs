@@ -1,10 +1,14 @@
-﻿using GalaSoft.MvvmLight;
+﻿using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FocusTreeManager.Model
 {
+    [Serializable]
     public class Focus : ObservableObject
     {
         const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
@@ -37,17 +41,23 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string visiblename;
-
         public string VisibleName
         {
             get
             {
-                return visiblename;
+                var locales = (new ViewModelLocator()).Main.Project.localisationList.FirstOrDefault(); ;
+                string translation = locales != null ? locales.translateKey(uniquename) : null;
+                return translation != null ? translation : uniquename;
             }
-            set
+        }
+
+        public string Description
+        {
+            get
             {
-                Set<string>(() => this.VisibleName, ref this.visiblename, value);
+                var locales = (new ViewModelLocator()).Main.Project.localisationList.FirstOrDefault();
+                string translation = locales != null ? locales.translateKey(uniquename + "_desc") : null;
+                return translation != null ? translation : uniquename + "_desc";
             }
         }
 
@@ -123,7 +133,6 @@ namespace FocusTreeManager.Model
         {
             Image = "unknown";
             UniqueName = "Unkown";
-            VisibleName = "Unkown";
             X = 0;
             Y = 0;
         }

@@ -77,6 +77,10 @@ D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.csproj.GenerateResource.Cache
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.exe
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.pdb
-D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.csprojResolveAssemblyReference.cache
-D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\LineAdornerView.g.cs
-D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\LineAdornerView.baml
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\FocusEditor.g.cs
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\FocusEditor.baml
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\ProjectView.g.cs
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\Views\ProjectView.baml
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\bin\Debug\Dragablz.dll
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\bin\Debug\Dragablz.pdb
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\bin\Debug\Dragablz.xml
