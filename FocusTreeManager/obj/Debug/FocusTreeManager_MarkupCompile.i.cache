@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\App.xaml
-10-1399589118
+12-636062366
 
-33787370281
-73-433913599
-Languages\En_en.xaml;Languages\Fr_fr.xaml;Views\ChangeImage.xaml;Views\Focus.xaml;Views\FocusEditor.xaml;Views\FocusGrid.xaml;MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;Views\ProjectView.xaml;
+372137773605
+75-130244898
+Languages\En_en.xaml;Languages\Fr_fr.xaml;Views\ChangeImage.xaml;Views\Focus.xaml;Views\FocusEditor.xaml;Views\FocusGrid.xaml;MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;Views\Localisation.xaml;Views\ProjectView.xaml;Views\Settings.xaml;
 
 True
 

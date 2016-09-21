@@ -3,6 +3,7 @@ using FocusTreeManager.Model;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -60,12 +62,28 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "LoadProject")
             {
                 try
-                { 
-                    //TODO: Getfilename
-                    IFormatter formatter = new BinaryFormatter();
-                    Stream stream = new FileStream("MyFile.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
-                    project = (Project)formatter.Deserialize(stream);
-                    stream.Close();
+                {
+                    var dialog = new CommonOpenFileDialog();
+                    ResourceDictionary resourceLocalization = new ResourceDictionary();
+                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                    dialog.Title = resourceLocalization["Game_Path_Title"] as string;
+                    dialog.IsFolderPicker = true;
+                    dialog.InitialDirectory = "C:";
+                    dialog.AddToMostRecentlyUsedList = false;
+                    dialog.AllowNonFileSystemItems = false;
+                    dialog.DefaultDirectory = "C:";
+                    dialog.EnsureFileExists = true;
+                    dialog.EnsurePathExists = true;
+                    dialog.EnsureReadOnly = false;
+                    dialog.EnsureValidNames = true;
+                    dialog.Multiselect = false;
+                    if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    {
+                        IFormatter formatter = new BinaryFormatter();
+                        Stream stream = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        project = (Project)formatter.Deserialize(stream);
+                        stream.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -75,13 +93,14 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenFocusTree")
             {
                 ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-                if (null != TabsModelList.SingleOrDefault((t) => ((FocusGridModel)t).TreeId == model.SelectedFile))
+                if (null != TabsModelList.SingleOrDefault((t) => t is FocusGridModel && 
+                                         ((FocusGridModel)t).Filename == model.SelectedFile))
                 {
                     return;
                 }
                 FocusGridModel newModel = new FocusGridModel()
                 {
-                    TreeId = model.SelectedFile
+                    Filename = model.SelectedFile
                 };
                 TabsModelList.Add(newModel);
                 RaisePropertyChanged("TabsModelList");
@@ -89,7 +108,14 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenLocalisation")
             {
                 ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-
+                if (null != TabsModelList.SingleOrDefault((t) => t is LocalisationModel && 
+                                         ((LocalisationModel)t).Filename == model.SelectedFile))
+                {
+                    return;
+                }
+                LocalisationModel newModel = new LocalisationModel(model.SelectedFile);
+                TabsModelList.Add(newModel);
+                RaisePropertyChanged("TabsModelList");
             }
         }
     }

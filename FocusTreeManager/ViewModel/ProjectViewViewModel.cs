@@ -28,7 +28,7 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public ObservableCollection<Localisation> localisationList
+        public ObservableCollection<LocalisationContainer> localisationList
         {
             get
             {
@@ -62,12 +62,12 @@ namespace FocusTreeManager.ViewModel
             {
                 case "FocusTree" :
                 {
-                    fociContainerList.Add(new FociGridContainer("New file" + fociContainerList.Count().ToString()));
+                    fociContainerList.Add(new FociGridContainer("FocusTree" + fociContainerList.Count().ToString()));
                     break;
                 }
                 case "Localisation":
                 {
-                    localisationList.Add(new Localisation("New file" + localisationList.Count().ToString()));
+                    localisationList.Add(new LocalisationContainer("Localisation" + localisationList.Count().ToString()));
                     break;
                 }
             }

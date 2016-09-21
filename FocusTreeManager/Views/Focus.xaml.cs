@@ -25,9 +25,22 @@ namespace FocusTreeManager.Views
         public Focus()
         {
             InitializeComponent();
-            Localization locale = new Localization();
+            loadLocales();
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        private void NotificationMessageReceived(NotificationMessage msg)
+        {
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
+        }
+
+        private void loadLocales()
+        {
             ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }

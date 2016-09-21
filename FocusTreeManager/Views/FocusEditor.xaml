@@ -59,7 +59,7 @@
         <TextBox Text="{Binding Focus.VisibleName, Mode=OneWay}" Grid.Row="1" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"
                              IsReadOnly="True"/>
-        <Label Content="{DynamicResource Focus_Visible_Name}" 
+        <Label Content="{DynamicResource Focus_Description}" 
                            Grid.Column="0" Grid.Row="2"/>
         <TextBlock Text="{Binding Focus.Description, Mode=OneWay}" Grid.Row="2" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Description}"

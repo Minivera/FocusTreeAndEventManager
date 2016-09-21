@@ -46,7 +46,7 @@
                                    Height="20"
                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tree}" />
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tree_leaf_three}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
@@ -80,8 +80,9 @@
                         <DataTemplate>
                             <Label>
                                 <Label.InputBindings>
-                                    <MouseBinding Command="{Binding OpenFileLocaleCommand}" 
-                                                  CommandParameter="{Binding Filename}" 
+                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
+                                                  Path=DataContext.OpenFileLocaleCommand}"
+                                                  CommandParameter="{Binding ContainerID}" 
                                                   MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -89,12 +90,12 @@
                                    Height="20"
                                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book_list}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
                                     VerticalAlignment="Center"
-                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0" 
                                              MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
                                              KeyDown="TextBox_KeyDown" />

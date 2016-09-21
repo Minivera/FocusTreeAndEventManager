@@ -25,10 +25,7 @@ namespace FocusTreeManager.Views
         public FocusGrid()
         {
             InitializeComponent();
-            Localization locale = new Localization();
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            loadLocales();
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -38,6 +35,10 @@ namespace FocusTreeManager.Views
             if (msg.Notification == "DrawOnCanvas")
             {
                 AdornerLayer.GetAdornerLayer(ListGrid).Update();
+            }
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
             }
         }
 
@@ -53,6 +54,13 @@ namespace FocusTreeManager.Views
         {
             Messenger.Default.Send(new NotificationMessage("RedrawGrid"));
             LayoutUpdated -= UserControl_LayoutUpdated;
+        }
+
+        private void loadLocales()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

@@ -18,14 +18,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type m:FocusGridModel}">
+                <v:FocusGrid></v:FocusGrid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type m:LocalisationModel}">
+                <v:Localisation></v:Localisation>
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button>
+            <Button Click="SettingsButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -61,14 +66,9 @@
                      FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
                 <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
                     ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" >
-                    <TabControl.ContentTemplate>
-                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
-                            <v:FocusGrid />
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
                     <dragablz:TabablzControl.HeaderItemTemplate>
-                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
-                            <TextBlock Text="{Binding TreeId}" />
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Filename}" />
                         </DataTemplate>
                     </dragablz:TabablzControl.HeaderItemTemplate>
                     <TabControl.ItemTemplate>

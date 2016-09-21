@@ -16,10 +16,7 @@ namespace FocusTreeManager.Views
         public ChangeImage()
         {
             InitializeComponent();
-            Localization locale = new Localization();
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
@@ -29,6 +26,17 @@ namespace FocusTreeManager.Views
             {
                 this.Hide();
             }
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
+        }
+
+        private void loadLocales()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

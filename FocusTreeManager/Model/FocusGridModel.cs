@@ -59,7 +59,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public string TreeId
+        public string Filename
         {
             get
             {
@@ -68,7 +68,7 @@ namespace FocusTreeManager.Model
             set
             {
                 treeId = value;
-                RaisePropertyChanged("TreeId");
+                RaisePropertyChanged("Filename");
             }
         }
 
@@ -169,7 +169,7 @@ namespace FocusTreeManager.Model
             if (msg.Notification == "RenamedContainer")
             {
                 FociGridContainer Model = msg.Sender as FociGridContainer;
-                TreeId = Model.ContainerID;
+                Filename = Model.ContainerID;
                 DrawOnCanvas();
             }
             if (msg.Notification == "RedrawGrid")

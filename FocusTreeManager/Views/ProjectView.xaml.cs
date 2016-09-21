@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +24,17 @@ namespace FocusTreeManager.Views
         public ProjectView()
         {
             InitializeComponent();
-            Localization locale = new Localization();
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(locale.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            loadLocales();
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        private void NotificationMessageReceived(NotificationMessage msg)
+        {
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
         }
 
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
@@ -46,6 +54,13 @@ namespace FocusTreeManager.Views
                 Keyboard.ClearFocus();
                 ((TextBox)sender).BorderThickness = new Thickness(0);
             }
+        }
+
+        private void loadLocales()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

@@ -33,6 +33,10 @@ namespace FocusTreeManager.Model
         { 
             get
             {
+                if (uniquename == null)
+                {
+                    return "unknown";
+                }
                 return uniquename;
             }
             set
@@ -45,7 +49,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.localisationList.FirstOrDefault(); ;
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(uniquename);
                 string translation = locales != null ? locales.translateKey(uniquename) : null;
                 return translation != null ? translation : uniquename;
             }
@@ -55,7 +59,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.localisationList.FirstOrDefault();
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(uniquename + "_desc");
                 string translation = locales != null ? locales.translateKey(uniquename + "_desc") : null;
                 return translation != null ? translation : uniquename + "_desc";
             }
@@ -132,7 +136,7 @@ namespace FocusTreeManager.Model
         public void setDefaults()
         {
             Image = "unknown";
-            UniqueName = "Unkown";
+            UniqueName = "unknown";
             X = 0;
             Y = 0;
         }

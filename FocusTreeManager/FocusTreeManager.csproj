@@ -60,6 +60,14 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Windows7APICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Windows7APICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -87,18 +95,26 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Containers\FociGridContainer.cs" />
+    <Compile Include="Containers\LocalisationContainer.cs" />
     <Compile Include="Model\FocusGridModel.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="Model\LineAdorner.cs" />
-    <Compile Include="Model\Localisation.cs" />
+    <Compile Include="Model\LocaleContent.cs" />
+    <Compile Include="Model\LocalisationModel.cs" />
     <Compile Include="Model\Project.cs" />
-    <Compile Include="ViewModel\Old\LocalisationViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Views\FocusEditor.xaml.cs">
       <DependentUpon>FocusEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Localisation.xaml.cs">
+      <DependentUpon>Localisation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Page Include="Languages\En_en.xaml">
       <SubType>Designer</SubType>
@@ -133,7 +149,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GridHelpers.cs" />
-    <Compile Include="Localization.cs" />
+    <Compile Include="Configurator.cs" />
     <Compile Include="Model\CanvasLine.cs" />
     <Compile Include="Model\Focus.cs" />
     <Compile Include="Model\MutuallyExclusiveSet.cs" />
@@ -141,7 +157,6 @@
     <Compile Include="ViewModel\EditFocusViewModel.cs" />
     <Compile Include="ViewModel\AddFocusViewModel.cs" />
     <Compile Include="ViewModel\ChangeImageViewModel.cs" />
-    <None Include="ViewModel\Old\FocusGridViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\ChangeImage.xaml.cs">
@@ -165,7 +180,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Localisation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

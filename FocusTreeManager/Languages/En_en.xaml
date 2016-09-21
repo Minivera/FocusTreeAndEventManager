@@ -5,6 +5,8 @@
     <system:String x:Key="Main_Title">Focus Tree And Event Manager</system:String>
     <system:String x:Key="Chose_Image_Title">Choose the focus Icon</system:String>
     <system:String x:Key="Localize_Title">Create localisation</system:String>
+    <system:String x:Key="Game_Path_Title">Select game installation folder</system:String>
+    <system:String x:Key="Load_Title">Select a project</system:String>
     <system:String x:Key="Add_Focus">Add a new Focus</system:String>
     <system:String x:Key="Edit_Focus">Edit Focus</system:String>
     <system:String x:Key="Delete_Focus">Delete Focus</system:String>
@@ -19,7 +21,7 @@
     <system:String x:Key="Focus_X">Horizontal position (X)</system:String>
     <system:String x:Key="Focus_Y">Vertical position (Y)</system:String>
     <system:String x:Key="Focus_Image">Image</system:String>
-    <system:String x:Key="Localisation_Language">Language</system:String>
+    <system:String x:Key="Localisation_Language">Language set in the defines</system:String>
     <system:String x:Key="Localisation_Key">Localisation key</system:String>
     <system:String x:Key="Localisation_Value">Localisation value</system:String>
     <system:String x:Key="Localisation_Reminder">If you add a new language, 
@@ -29,6 +31,7 @@
     <system:String x:Key="Command_Select">Select</system:String>
     <system:String x:Key="Command_Save">Save</system:String>
     <system:String x:Key="Command_Cancel">Cancel</system:String>
+    <system:String x:Key="Command_Find">Find</system:String>
     <system:String x:Key="Command_Quit">Quit without saving</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Manage_Focus">Focus Trees</system:String>
@@ -36,4 +39,6 @@
     <system:String x:Key="Manage_Event">Events</system:String>
     <system:String x:Key="Exit_Confirm">Do you want to save before quitting?</system:String>
     <system:String x:Key="Exit_Confirm_Title">Confirmation</system:String>
+    <system:String x:Key="Application_Language">Application language</system:String>
+    <system:String x:Key="Application_Game_Path">Path to the game files</system:String>
 </ResourceDictionary>

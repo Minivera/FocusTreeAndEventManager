@@ -38,6 +38,7 @@ namespace FocusTreeManager.ViewModel
             SimpleIoc.Default.Register<AddFocusViewModel>();
             SimpleIoc.Default.Register<EditFocusViewModel>();
             SimpleIoc.Default.Register<ChangeImageViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
         }
 
@@ -83,6 +84,14 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ProjectViewViewModel>();
+            }
+        }
+
+        public SettingsViewModel Settings
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SettingsViewModel>();
             }
         }
 
