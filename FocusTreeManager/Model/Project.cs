@@ -1,5 +1,6 @@
 ﻿using FocusTreeManager.Containers;
 using GalaSoft.MvvmLight;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,14 +14,20 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
-    [Serializable]
+    [ProtoContract]
     public class Project : ObservableObject
     {
-        public ObservableCollection<FociGridContainer> fociContainerList { get; private set; }
+        [ProtoMember(1)]
+        public string filename { get; private set; }
 
-        public ObservableCollection<LocalisationContainer> localisationList { get; private set; }
+        [ProtoMember(2)]
+        public ObservableCollection<FociGridContainer> fociContainerList { get; set; }
 
-        //public ObservableCollection<Event> eventList { get; private set; }
+        [ProtoMember(3)]
+        public ObservableCollection<LocalisationContainer> localisationList { get; set; }
+
+        //[ProtoMember(4)]
+        //public ObservableCollection<Event> eventList { get; set; }
 
         public Project()
         {
@@ -43,10 +50,11 @@ namespace FocusTreeManager.Model
 
         public void SaveToFile(string filename)
         {
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, this);
-            stream.Close();
+            this.filename = filename;
+            using (var fs = File.Create(filename))
+            {
+                Serializer.Serialize(fs, this);
+            }
         }
 
         public LocalisationContainer getLocalisationWithKey(string key)

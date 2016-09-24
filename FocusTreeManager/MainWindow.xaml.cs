@@ -60,6 +60,15 @@ namespace FocusTreeManager
             {
                 FocusFlyout.IsOpen = false;
             }
+            if (msg.Notification == "ShowProjectControl")
+            {
+                ProjectFlyout.IsOpen = true;
+            }
+            if (msg.Notification == "HideProjectControl")
+            {
+                ProjectFlyout.IsOpen = false;
+                ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Hidden;
+            }
             if (msg.Notification == "ShowChangeImage")
             {
                 ChangeImage view = new ChangeImage();
@@ -69,11 +78,37 @@ namespace FocusTreeManager
             {
                 loadLocales();
             }
+            if (msg.Notification == "ErrorSavingProject")
+            {
+                //ShowLoadingErrorDialog();
+            }
+            if (msg.Notification == "ErrorLoadingProject")
+            {
+                //ShowSavingErrorDialog();
+            }
+            if (msg.Notification == "ConfirmBeforeContinue")
+            {
+                ConfirmBeforeContinue();
+            }
         }
 
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        async private void ConfirmBeforeContinue()
+        {
+            MessageDialogResult Result = await ShowContinueDialog();
+            if (Result == MessageDialogResult.Affirmative)
+            {
+                Messenger.Default.Send(new NotificationMessage(this, "SaveProject"));
+                Messenger.Default.Send(new NotificationMessage(this, "ContinueCommand"));
+            }
+            else if (Result == MessageDialogResult.FirstAuxiliary)
+            {
+                Messenger.Default.Send(new NotificationMessage(this, "ContinueCommand"));
+            }
         }
 
         async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -82,6 +117,7 @@ namespace FocusTreeManager
             MessageDialogResult Result = await ShowSaveDialog();
             if (Result == MessageDialogResult.Affirmative)
             {
+                Messenger.Default.Send(new NotificationMessage(this, "SaveProject"));
                 //Show Save dialog and quit
                 Application.Current.Shutdown();
             }
@@ -90,6 +126,20 @@ namespace FocusTreeManager
                 //Quit without saving
                 Application.Current.Shutdown();
             }
+        }
+
+        async private Task<MessageDialogResult> ShowContinueDialog()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            string Title = resourceLocalization["Exit_Confirm_Title"] as string;
+            string Message = resourceLocalization["Delete_Confirm"] as string;
+            MetroDialogSettings settings = new MetroDialogSettings();
+            settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
+            settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
+            settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Continue"] as string;
+            return await this.ShowMessageAsync(Title, Message,
+                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
         }
 
         async private Task<MessageDialogResult> ShowSaveDialog()
@@ -117,6 +167,12 @@ namespace FocusTreeManager
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             this.Resources.MergedDictionaries.Add(resourceLocalization);
+        }
+
+        private void ProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectFlyout.IsOpen = true;
+            ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Visible;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FocusTreeManager.ViewModel;
+﻿using FocusTreeManager.Containers;
+using FocusTreeManager.ViewModel;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -14,7 +15,6 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
-    [Serializable]
     public class LocalisationModel : ObservableObject
     {
         private string filename;
@@ -45,7 +45,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public ObservableCollection<FocusTreeManager.Model.LocaleContent> LocalisationMap
+        public ObservableCollection<LocaleContent> LocalisationMap
         {
             get
             {
@@ -56,6 +56,26 @@ namespace FocusTreeManager.Model
         public LocalisationModel(string filename)
         {
             this.Filename = filename;
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        private void NotificationMessageReceived(NotificationMessage msg)
+        {
+            if (this.LocalisationMap == null)
+            {
+                //meant to be dead, return
+                return;
+            }
+            if (msg.Notification == "RenamedContainer")
+            {
+                LocalisationContainer Model = msg.Sender as LocalisationContainer;
+                if (Model == null)
+                {
+                    return;
+                }
+                Filename = Model.ContainerID;
+            }
         }
     }
 }

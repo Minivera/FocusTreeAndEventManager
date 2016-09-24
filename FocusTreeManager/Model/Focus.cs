@@ -2,17 +2,19 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FocusTreeManager.Model
 {
-    [Serializable]
+    [ProtoContract]
     public class Focus : ObservableObject
     {
         const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
+        [ProtoMember(1)]
         private string image;
 
         public string Image
@@ -27,6 +29,7 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(2)]
         private string uniquename;
 
         public string UniqueName
@@ -65,6 +68,7 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(3)]
         private int x;
 
         public int X
@@ -79,6 +83,7 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(4)]
         private int y;
 
         public int Y
@@ -107,8 +112,10 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(5, AsReference = true)]
         public List<PrerequisitesSet> Prerequisite { get; set; }
 
+        [ProtoMember(6, AsReference = true)]
         public List<MutuallyExclusiveSet> MutualyExclusive { get; set; }
 
         public RelayCommand EditFocusCommand { get; private set; }
@@ -120,7 +127,6 @@ namespace FocusTreeManager.Model
         public RelayCommand<string> PrerequisiteFocusCommand { get; private set; }
         
         public RelayCommand TestFinishCommand { get; private set; }
-        
 
         public Focus()
         {

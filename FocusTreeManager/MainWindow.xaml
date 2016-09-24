@@ -30,6 +30,35 @@
     </Window.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+
+            <Button x:Name="ExportButton">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_xml}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource Menu_Export}" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="ProjectButton" Click="ProjectButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource Menu_Project}" />
+                </StackPanel>
+            </Button>
             <Button Click="SettingsButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
@@ -51,6 +80,27 @@
             <Controls:Flyout x:Name="FocusFlyout" 
                       Width="400" IsModal="True" Position="Right">
                 <v:FocusEditor></v:FocusEditor>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="ProjectFlyout" VerticalAlignment="Center"
+                      Width="400" IsModal="True" Position="Left" IsOpen="True" CloseButtonVisibility="Hidden">
+                <StackPanel Orientation="Vertical" CanVerticallyScroll="True" >
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="NewButton"
+                            Content="{DynamicResource appbar_page_new}" Width="100" Height="100"
+                            Command="{Binding NewProjectCommand}"/>
+                    <Label Content="{DynamicResource Project_New}" FontSize="20" HorizontalAlignment="Center"/>
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"  x:Name="LoadButton"
+                            Content="{DynamicResource appbar_page_upload}" Width="100" Height="100"
+                            Command="{Binding LoadProjectCommand}"/>
+                    <Label Content="{DynamicResource Project_Load}" FontSize="20" HorizontalAlignment="Center"/>
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="SaveButton"
+                            Content="{DynamicResource appbar_page_download}" Width="100" Height="100"
+                            Command="{Binding SaveProjectCommand}" IsEnabled="{Binding isProjectExist}"/>
+                    <Label Content="{DynamicResource Project_Save}" FontSize="20" HorizontalAlignment="Center"/>
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="SaveAsButton"
+                            Content="{DynamicResource appbar_page_duplicate}" Width="100" Height="100"
+                            Command="{Binding SaveProjectAsCommand}" IsEnabled="{Binding isProjectExist}"/>
+                    <Label Content="{DynamicResource Project_Save_As}" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>

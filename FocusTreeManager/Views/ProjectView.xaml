@@ -26,7 +26,7 @@
                                           Command="{Binding AddElementCommand}" CommandParameter="FocusTree"/>
                     </ContextMenu>
                 </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding fociContainerList}">
+                <ItemsControl ItemsSource="{Binding fociContainerList, Mode=OneWay}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical" />
@@ -34,7 +34,14 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Label>
+                            <Label DataContext="{Binding}">
+                                <Label.ContextMenu>
+                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+		                                         RelativeSource={RelativeSource Self}}">
+                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
+                                                  Command="{Binding DeleteElementCommand}"/>
+                                    </ContextMenu>
+                                </Label.ContextMenu>
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                         Path=DataContext.OpenFileTreeCommand}"
@@ -70,7 +77,7 @@
                                           Command="{Binding AddElementCommand}" CommandParameter="Localisation"/>
                     </ContextMenu>
                 </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding localisationList}">
+                <ItemsControl ItemsSource="{Binding localisationList, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical" />

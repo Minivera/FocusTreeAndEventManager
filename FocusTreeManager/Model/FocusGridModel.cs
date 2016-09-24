@@ -166,9 +166,18 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (this.FociList == null)
+            {
+                //meant to be dead, return
+                return;
+            }
             if (msg.Notification == "RenamedContainer")
             {
                 FociGridContainer Model = msg.Sender as FociGridContainer;
+                if (Model == null)
+                {
+                    return;
+                }
                 Filename = Model.ContainerID;
                 DrawOnCanvas();
             }

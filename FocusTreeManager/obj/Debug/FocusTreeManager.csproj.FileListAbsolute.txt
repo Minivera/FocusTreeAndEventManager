@@ -93,3 +93,4 @@ D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.exe
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.pdb
 D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\obj\Debug\FocusTreeManager.csprojResolveAssemblyReference.cache
+D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\bin\Debug\protobuf-net.dll

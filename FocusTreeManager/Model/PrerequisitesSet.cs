@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
+    [ProtoContract]
+    [ProtoInclude(500, typeof(ISet))]
     public class PrerequisitesSet : ObservableObject, ISet
-    { 
+    {
+        [ProtoMember(1)]
         private Focus focus;
 
         public Focus Focus
@@ -23,6 +27,7 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(2)]
         private List<Focus> fociList;
 
         public List<Focus> FociList
@@ -36,6 +41,8 @@ namespace FocusTreeManager.Model
                 Set<List<Focus>>(() => this.FociList, ref this.fociList, value);
             }
         }
+
+        public PrerequisitesSet() { }
 
         public PrerequisitesSet(Focus focus)
         {

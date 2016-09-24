@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
-    [Serializable]
+    [ProtoContract]
     public class LocaleContent : ObservableObject
     {
+        [ProtoMember(1)]
         private string key;
 
         public string Key
@@ -24,6 +26,7 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(2)]
         private string value;
 
         public string Value

@@ -24,7 +24,11 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.fociContainerList;
+                if ((new ViewModelLocator()).Main.isProjectExist)
+                { 
+                    return (new ViewModelLocator()).Main.Project.fociContainerList;
+                }
+                return null;
             }
         }
 
@@ -32,7 +36,11 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.localisationList;
+                if ((new ViewModelLocator()).Main.isProjectExist)
+                {
+                    return (new ViewModelLocator()).Main.Project.localisationList;
+                }
+                return null;
             }
         }
 
@@ -54,6 +62,8 @@ namespace FocusTreeManager.ViewModel
             AddElementCommand = new RelayCommand<string>(AddElement);
             OpenFileTreeCommand = new RelayCommand<string>(OpenFocusTree);
             OpenFileLocaleCommand = new RelayCommand<string>(OpenLocalisation);
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         private void AddElement(string param)
@@ -63,13 +73,27 @@ namespace FocusTreeManager.ViewModel
                 case "FocusTree" :
                 {
                     fociContainerList.Add(new FociGridContainer("FocusTree" + fociContainerList.Count().ToString()));
+                    RaisePropertyChanged("fociContainerList");
                     break;
                 }
                 case "Localisation":
                 {
                     localisationList.Add(new LocalisationContainer("Localisation" + localisationList.Count().ToString()));
+                    RaisePropertyChanged("localisationList");
                     break;
                 }
+            }
+        }
+
+        private void DeleteElement(object item)
+        {
+            if (item is FociGridContainer)
+            {
+                fociContainerList.Remove((FociGridContainer)item);
+            }
+            else if (item is LocalisationContainer)
+            {
+                localisationList.Remove((LocalisationContainer)item);
             }
         }
 
@@ -88,6 +112,19 @@ namespace FocusTreeManager.ViewModel
         {
             SelectedFile = param;
             Messenger.Default.Send(new NotificationMessage(this, "OpenLocalisation"));
+        }
+
+        private void NotificationMessageReceived(NotificationMessage msg)
+        {
+            if (msg.Notification == "SendDeleteItemSignal")
+            {
+                DeleteElement(msg.Sender);
+            }
+            if (msg.Notification == "RefreshProjectViewer")
+            {
+                RaisePropertyChanged("fociContainerList");
+                RaisePropertyChanged("localisationList");
+            }
         }
     }
 }
