@@ -31,7 +31,7 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
-            <Button x:Name="ExportButton">
+            <Button x:Name="ExportButton" Click="ExportButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
