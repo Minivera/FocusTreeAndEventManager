@@ -12,12 +12,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FocusTreeManager.Model;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Application = System.Windows.Application;
 
 namespace FocusTreeManager
 {
@@ -173,6 +176,24 @@ namespace FocusTreeManager
         {
             ProjectFlyout.IsOpen = true;
             ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Visible;
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel mainViewModel = (new ViewModelLocator()).Main;
+            ConverterToReal converter = new ConverterToReal(mainViewModel.Project);
+            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+            string path;
+            if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                path = folderBrowserDialog1.SelectedPath;
+            }
+            else
+            {
+                return;
+            }
+            converter.SetPath(path);
+            converter.WriteToFiles();
         }
     }
 }
