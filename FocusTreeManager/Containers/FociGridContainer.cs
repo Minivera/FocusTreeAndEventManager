@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.Model;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -15,6 +16,8 @@ namespace FocusTreeManager.Containers
     [ProtoContract]
     public class FociGridContainer : ObservableObject
     {
+        public Guid IdentifierID { get; private set; }
+
         [ProtoMember(1)]
         private string containerID;
 
@@ -27,7 +30,6 @@ namespace FocusTreeManager.Containers
             set
             {
                 Set<string>(() => this.ContainerID, ref this.containerID, value);
-                Messenger.Default.Send(new NotificationMessage(this, "RenamedContainer"));
             }
         }
 
@@ -39,6 +41,7 @@ namespace FocusTreeManager.Containers
         public FociGridContainer()
         {
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = Guid.NewGuid();
         }
 
         public FociGridContainer(string filename)
@@ -46,11 +49,12 @@ namespace FocusTreeManager.Containers
             ContainerID = filename;
             FociList = new ObservableCollection<Focus>();
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = Guid.NewGuid();
         }
 
         private void SendDeleteSignal()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "SendDeleteItemSignal"));
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
         }
     }
 }

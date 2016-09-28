@@ -27,11 +27,13 @@ namespace FocusTreeManager.Model
 
         private int columnCount;
 
-        private string treeId;
+        private Guid ID;
 
         public RelayCommand AddFocusCommand { get; private set; }
 
         public RelayCommand<object> RightClickCommand { get; private set; }
+
+        public bool isShown { get; set; }
 
         public int RowCount
         {
@@ -63,12 +65,8 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return treeId;
-            }
-            set
-            {
-                treeId = value;
-                RaisePropertyChanged("Filename");
+                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                return element != null ? element.ContainerID : null;
             }
         }
 
@@ -76,7 +74,8 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificFociList(treeId);
+                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                return element != null ? element.FociList : null;
             }
         }
 
@@ -93,8 +92,9 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public FocusGridModel()
+        public FocusGridModel(Guid ID)
         {
+            this.ID = ID;
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
             AddFocusCommand = new RelayCommand(AddFocus);
@@ -131,26 +131,21 @@ namespace FocusTreeManager.Model
 
         public void RightClick(object sender)
         {
-            System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
+            System.Windows.Point Position = Mouse.GetPosition((UserControl)sender);
+            Position.X -= 45;
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
                                             inRange(line.X1, line.X2, (int)Position.X) &&
                                             inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
-            List<CanvasLine> NewClickedElements = new List<CanvasLine>();
-            foreach (CanvasLine line in clickedElements)
-            {
-                line.InternalSet.DeleteSetRelations();
-                //Make sur to add all lines linked to that set
-                NewClickedElements.AddRange(CanvasLines.Where((l) => l.InternalSet == line.InternalSet));
-                //But remove our from it
-                NewClickedElements.Remove(line);
+            if (clickedElements.Any())
+            { 
+                foreach (CanvasLine line in clickedElements)
+                {
+                    line.InternalSet.DeleteSetRelations();
+                }
+                RaisePropertyChanged("FociList");
+                CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
+                DrawOnCanvas();
             }
-            //Delete added relations
-            foreach (CanvasLine line in NewClickedElements)
-            {
-                line.InternalSet.DeleteSetRelations();
-            }
-            CanvasLines = new ObservableCollection<CanvasLine>( CanvasLines.Except(clickedElements).ToList());
-            DrawOnCanvas();
         }
 
         private bool inRange(int Range1, int Range2, int Value)
@@ -164,27 +159,23 @@ namespace FocusTreeManager.Model
                     (smallest + 2 <= Value && Value <= highest + 2));
         }
 
+        public void RedrawGrid()
+        {
+            EditGridDefinition();
+            DrawOnCanvas();
+        }
+
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.FociList == null)
+            if (!this.isShown || this.Filename == null)
             {
-                //meant to be dead, return
+                //is not shown, do not manage
                 return;
             }
-            if (msg.Notification == "RenamedContainer")
+            if (msg.Target != null && msg.Target != this)
             {
-                FociGridContainer Model = msg.Sender as FociGridContainer;
-                if (Model == null)
-                {
-                    return;
-                }
-                Filename = Model.ContainerID;
-                DrawOnCanvas();
-            }
-            if (msg.Notification == "RedrawGrid")
-            {
-                EditGridDefinition();
-                DrawOnCanvas();
+                //Message not itended for here
+                return;
             }
             if (msg.Notification == "HideAddFocus")
             {
@@ -218,7 +209,8 @@ namespace FocusTreeManager.Model
             if (msg.Notification == "FinishAddFocusMutually")
             {
                 Focus Model = (Focus)msg.Sender;
-                if (selectedFocus != null && selectedFocus != Model)
+                if (selectedFocus != null && selectedFocus != Model && 
+                    FociList.Where((f) => f == Model).Any())
                 {
                     System.Windows.Application.Current.Properties["Mode"] = null;
                     selectedFocus.IsSelected = false;
@@ -238,7 +230,8 @@ namespace FocusTreeManager.Model
             if (msg.Notification == "FinishAddFocusPrerequisite")
             {
                 Focus Model = (Focus)msg.Sender;
-                if (selectedFocus != null && selectedFocus != Model)
+                if (selectedFocus != null && selectedFocus != Model &&
+                    FociList.Where((f) => f == Model).Any())
                 {
                     System.Windows.Application.Current.Properties["Mode"] = null;
                     string Type = (string)System.Windows.Application.Current.Properties["ModeParam"];
@@ -278,12 +271,17 @@ namespace FocusTreeManager.Model
 
         public void DrawOnCanvas()
         {
+            if (FociList == null)
+            {
+                return;
+            }
             CanvasLines.Clear();
             foreach (Focus focus in FociList)
             {
                 //Draw Prerequisites
                 foreach (PrerequisitesSet set in focus.Prerequisite)
                 {
+                    set.assertInternalFocus(focus);
                     //Draw line from top of fist Focus 
                     CanvasLine newline = new CanvasLine(
                         ((set.Focus.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
@@ -315,6 +313,7 @@ namespace FocusTreeManager.Model
                 //Draw Mutually exclusives
                 foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
                 {
+                    set.assertInternalFocus(focus);
                     CanvasLine newline = new CanvasLine(
                         (set.Focus1.X + 1) * FOCUS_WIDTH,
                         ((set.Focus1.Y + 1) * FOCUS_HEIGHT) - (FOCUS_HEIGHT / 2),

@@ -1,4 +1,5 @@
 using Dragablz;
+using FocusTreeManager.Containers;
 using FocusTreeManager.Model;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
@@ -132,9 +133,13 @@ namespace FocusTreeManager.ViewModel
                     {
                         Project = Serializer.Deserialize<Project>(fs);
                     }
-                    Messenger.Default.Send(new NotificationMessage(this, "RefreshProjectViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, 
+                        "RefreshProjectViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
                     RaisePropertyChanged("isProjectExist");
+                    TabsModelList = new ObservableCollection<ObservableObject>();
+                    RaisePropertyChanged("TabsModelList");
                 }
             }
             catch (Exception)
@@ -195,30 +200,34 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Target != null && msg.Target != this)
+            {
+                //Message not itended for here
+                return;
+            }
             if (msg.Notification == "OpenFocusTree")
             {
                 ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-                if (null != TabsModelList.SingleOrDefault((t) => t is FocusGridModel && 
-                                         ((FocusGridModel)t).Filename == model.SelectedFile))
+                FociGridContainer container = model.SelectedFile as FociGridContainer;
+                if (TabsModelList.Where((t) => t is FocusGridModel && 
+                        ((FocusGridModel)t).Filename == container.ContainerID).Any())
                 {
                     return;
                 }
-                FocusGridModel newModel = new FocusGridModel()
-                {
-                    Filename = model.SelectedFile
-                };
+                FocusGridModel newModel = new FocusGridModel(container.IdentifierID);
                 TabsModelList.Add(newModel);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenLocalisation")
             {
                 ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-                if (null != TabsModelList.SingleOrDefault((t) => t is LocalisationModel && 
-                                         ((LocalisationModel)t).Filename == model.SelectedFile))
+                LocalisationContainer container = model.SelectedFile as LocalisationContainer;
+                if (TabsModelList.Where((t) => t is LocalisationModel && 
+                            ((LocalisationModel)t).Filename == container.ContainerID).Any())
                 {
                     return;
                 }
-                LocalisationModel newModel = new LocalisationModel(model.SelectedFile);
+                LocalisationModel newModel = new LocalisationModel(container.IdentifierID);
                 TabsModelList.Add(newModel);
                 RaisePropertyChanged("TabsModelList");
             }

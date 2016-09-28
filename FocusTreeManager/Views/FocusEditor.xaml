@@ -52,7 +52,7 @@
         </Grid.RowDefinitions>
         <Label Content="{DynamicResource Focus_Unique_Name}" 
                            Grid.Column="0" Grid.Row="0"/>
-        <TextBox Text="{Binding Focus.UniqueName}" Grid.Row="0" Grid.Column="1" 
+        <TextBox Text="{Binding Focus.UniqueName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
         <Label Content="{DynamicResource Focus_Visible_Name}" 
                            Grid.Column="0" Grid.Row="1"/>

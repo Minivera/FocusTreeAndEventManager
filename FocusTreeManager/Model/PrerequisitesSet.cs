@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
-    [ProtoContract]
+    [ProtoContract(SkipConstructor = true)]
     [ProtoInclude(500, typeof(ISet))]
     public class PrerequisitesSet : ObservableObject, ISet
     {
-        [ProtoMember(1)]
+        [ProtoMember(1, AsReference = true)]
         private Focus focus;
 
         public Focus Focus
@@ -42,8 +42,6 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public PrerequisitesSet() { }
-
         public PrerequisitesSet(Focus focus)
         {
             this.Focus = focus;
@@ -58,7 +56,24 @@ namespace FocusTreeManager.Model
         public void DeleteSetRelations()
         {
             Focus.Prerequisite.Remove(this);
+            Focus = null;
             FociList.Clear();
+        }
+
+        public bool assertInternalFocus(Focus focus, bool set = true)
+        {
+            if (this.Focus == focus)
+            {
+                return true;
+            }
+            else
+            {
+                if (set)
+                {
+                    this.Focus = focus;
+                }
+                return false;
+            }
         }
     }
 }

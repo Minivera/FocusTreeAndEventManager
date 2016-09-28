@@ -36,16 +36,16 @@ namespace FocusTreeManager.Model
             //eventList = new ObservableCollection<Event>();
         }
 
-        public ObservableCollection<Focus> getSpecificFociList(string containerID)
+        public FociGridContainer getSpecificFociList(Guid containerID)
         {
-            FociGridContainer container = fociContainerList.SingleOrDefault((c) => c.ContainerID == containerID);
-            return container != null ? container.FociList : null;
+            FociGridContainer container = fociContainerList.SingleOrDefault((c) => c.IdentifierID == containerID);
+            return container;
         }
 
-        public ObservableCollection<LocaleContent> getSpecificLocalisationMap(string containerID)
+        public LocalisationContainer getSpecificLocalisationMap(Guid containerID)
         {
-            LocalisationContainer container = localisationList.SingleOrDefault((c) => c.ContainerID == containerID);
-            return container != null ? container.LocalisationMap : null;
+            LocalisationContainer container = localisationList.SingleOrDefault((c) => c.IdentifierID == containerID);
+            return container;
         }
 
         public void SaveToFile(string filename)

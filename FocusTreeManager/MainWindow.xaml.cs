@@ -18,6 +18,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using FocusTreeManager.Model;
+using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 
 namespace FocusTreeManager
 {
@@ -69,6 +72,10 @@ namespace FocusTreeManager
                 ProjectFlyout.IsOpen = false;
                 ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Hidden;
             }
+            if (msg.Notification == "RefreshTabViewer")
+            {
+                ((ObservableCollection<ObservableObject>)CentralTabControl.ItemsSource).Clear();
+            }
             if (msg.Notification == "ShowChangeImage")
             {
                 ChangeImage view = new ChangeImage();
@@ -102,12 +109,12 @@ namespace FocusTreeManager
             MessageDialogResult Result = await ShowContinueDialog();
             if (Result == MessageDialogResult.Affirmative)
             {
-                Messenger.Default.Send(new NotificationMessage(this, "SaveProject"));
-                Messenger.Default.Send(new NotificationMessage(this, "ContinueCommand"));
+                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
+                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "ContinueCommand"));
             }
             else if (Result == MessageDialogResult.FirstAuxiliary)
             {
-                Messenger.Default.Send(new NotificationMessage(this, "ContinueCommand"));
+                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "ContinueCommand"));
             }
         }
 
@@ -117,7 +124,7 @@ namespace FocusTreeManager
             MessageDialogResult Result = await ShowSaveDialog();
             if (Result == MessageDialogResult.Affirmative)
             {
-                Messenger.Default.Send(new NotificationMessage(this, "SaveProject"));
+                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
                 //Show Save dialog and quit
                 Application.Current.Shutdown();
             }
@@ -173,6 +180,67 @@ namespace FocusTreeManager
         {
             ProjectFlyout.IsOpen = true;
             ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Visible;
+        }
+
+        //Drag with the mouse effect
+
+        private Point scrollMousePoint = new Point();
+
+        private double hOff = 1;
+
+        private double vOff = 1;
+
+        private bool isMouseHold = false;
+
+        private void scrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                return;
+            }
+            ScrollViewer element = sender as ScrollViewer;
+            isMouseHold = true;
+            scrollMousePoint = e.GetPosition(element);
+            hOff = element.HorizontalOffset;
+            vOff = element.VerticalOffset;
+        }
+
+        private void scrollViewer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ScrollViewer element = sender as ScrollViewer;
+            isMouseHold = false;
+            element.ReleaseMouseCapture();
+        }
+
+        private void ContentScroll_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            ScrollViewer element = sender as ScrollViewer;
+            if (isMouseHold)
+            {
+                element.CaptureMouse();
+                element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - e.GetPosition(element).X));
+                element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - e.GetPosition(element).Y));
+            }
+        }
+
+        private void CentralTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var item in ((TabControl)e.Source).Items)
+            {
+                if (item is FocusGridModel)
+                {
+                    ((FocusGridModel)item).isShown = false;
+                }
+            }
+            if (e.AddedItems.Count > 0)
+            {
+                var selectedTab = e.AddedItems[0];
+                if (selectedTab is FocusGridModel)
+                {
+                    ((FocusGridModel)selectedTab).RedrawGrid();
+                    ((FocusGridModel)selectedTab).isShown = true;
+                }
+            }
         }
     }
 }

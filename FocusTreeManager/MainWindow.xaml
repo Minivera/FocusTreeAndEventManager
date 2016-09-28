@@ -21,16 +21,29 @@
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate DataType="{x:Type m:FocusGridModel}">
-                <v:FocusGrid></v:FocusGrid>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto"
+                              PreviewMouseMove="ContentScroll_PreviewMouseMove" 
+                              PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
+                              PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
+                              Background="Transparent">
+                    <v:FocusGrid></v:FocusGrid>
+                </ScrollViewer>
             </DataTemplate>
             <DataTemplate DataType="{x:Type m:LocalisationModel}">
-                <v:Localisation></v:Localisation>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto" 
+                              PreviewMouseMove="ContentScroll_PreviewMouseMove" 
+                              PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
+                              PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp"
+                              Background="Transparent">
+                    <v:Localisation></v:Localisation>
+                </ScrollViewer>
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-
             <Button x:Name="ExportButton">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
@@ -115,14 +128,14 @@
             <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
                      FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
                 <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
-                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" >
+                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" SelectionChanged="CentralTabControl_SelectionChanged" >
                     <dragablz:TabablzControl.HeaderItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Filename}" />
+                            <TextBlock Text="{Binding Filename}"  />
                         </DataTemplate>
                     </dragablz:TabablzControl.HeaderItemTemplate>
                     <TabControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type m:FocusGridModel}">
+                        <DataTemplate >
                             <DockPanel></DockPanel>
                         </DataTemplate>
                     </TabControl.ItemTemplate>

@@ -22,6 +22,11 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Target != null && msg.Target != this)
+            {
+                //Message not itended for here
+                return;
+            }
             if (msg.Notification == "HideChangeImage")
             {
                 this.Hide();
