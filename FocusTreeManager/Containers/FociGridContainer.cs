@@ -34,6 +34,21 @@ namespace FocusTreeManager.Containers
         }
 
         [ProtoMember(2)]
+        private string containerTag;
+
+        public string TAG
+        {
+            get
+            {
+                return containerTag;
+            }
+            set
+            {
+                Set<string>(() => this.TAG, ref this.containerTag, value);
+            }
+        }
+
+        [ProtoMember(3)]
         public ObservableCollection<Focus> FociList { get; set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
@@ -55,6 +70,22 @@ namespace FocusTreeManager.Containers
         private void SendDeleteSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
+        public void RepairInternalReferences()
+        {
+            //Loop in each focus and repair all their sets.
+            foreach (Focus focus in FociList)
+            {
+                foreach (PrerequisitesSet set in focus.Prerequisite)
+                {
+                    set.assertInternalFocus(FociList);
+                }
+                foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
+                {
+                    set.assertInternalFocus(FociList);
+                }
+            }
         }
     }
 }

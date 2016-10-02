@@ -17,6 +17,18 @@
     </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
+            <Style x:Key="ControlStyle" TargetType="Control">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
+                <Setter Property="Margin" Value="-4,0,5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -29,7 +41,11 @@
                                           Command="{Binding AddFocusCommand}"/>
             </ContextMenu>
         </DockPanel.ContextMenu>
-        <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Label Content="{DynamicResource Focus_TAG}"/>
+            <TextBox Text="{Binding Path=TAG}"/>
+        </StackPanel>
+        <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
             <Grid Margin="45,0,45,0" x:Name="ListGrid">
                 <ItemsControl ItemsSource="{Binding FociList}">
                     <ItemsControl.ItemsPanel>

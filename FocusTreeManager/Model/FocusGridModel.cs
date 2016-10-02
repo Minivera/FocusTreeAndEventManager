@@ -70,6 +70,23 @@ namespace FocusTreeManager.Model
             }
         }
 
+        public string TAG
+        {
+            get
+            {
+                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                return element != null ? element.TAG : null;
+            }
+            set
+            {
+                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                if (element != null)
+                {
+                    element.TAG = value;
+                }
+            }
+        }
+
         public ObservableCollection<Focus> FociList
         {
             get
@@ -281,7 +298,6 @@ namespace FocusTreeManager.Model
                 //Draw Prerequisites
                 foreach (PrerequisitesSet set in focus.Prerequisite)
                 {
-                    set.assertInternalFocus(focus);
                     //Draw line from top of fist Focus 
                     CanvasLine newline = new CanvasLine(
                         ((set.Focus.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
@@ -313,7 +329,6 @@ namespace FocusTreeManager.Model
                 //Draw Mutually exclusives
                 foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
                 {
-                    set.assertInternalFocus(focus);
                     CanvasLine newline = new CanvasLine(
                         (set.Focus1.X + 1) * FOCUS_WIDTH,
                         ((set.Focus1.Y + 1) * FOCUS_HEIGHT) - (FOCUS_HEIGHT / 2),

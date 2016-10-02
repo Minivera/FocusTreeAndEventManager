@@ -19,7 +19,9 @@
     <system:String x:Key="Project_New">Créer un nouveau projet</system:String>
     <system:String x:Key="Project_Load">Charger un projet</system:String>
     <system:String x:Key="Project_Save">Sauvegarder le projet</system:String>
+    <system:String x:Key="Project_Export">Export project</system:String>
     <system:String x:Key="Project_Save_As">Sauvegarder le projet sous</system:String>
+    <system:String x:Key="Focus_TAG">Tag du pays (Voir le wiki)</system:String>
     <system:String x:Key="Focus_Unique_Name">Nom unique</system:String>
     <system:String x:Key="Focus_Visible_Name">Nom d'affichage</system:String>
     <system:String x:Key="Focus_Description">Description</system:String>
@@ -46,8 +48,16 @@
     <system:String x:Key="Manage_Localisation">Fichiers Localisation</system:String>
     <system:String x:Key="Manage_Event">Fichiers Évènement</system:String>
     <system:String x:Key="Exit_Confirm">Voulez-vous enregistrer avant de quitter?</system:String>
-    <system:String x:Key="Delete_Confirm">Les modifications non-sauvegardées seront perdues, souhaitez-vous vraiment continuer?</system:String>
+    <system:String x:Key="Delete_Confirm">Les modifications non-sauvegardées seront perdues, 
+        souhaitez-vous vraiment continuer?</system:String>
     <system:String x:Key="Exit_Confirm_Title">Confirmation</system:String>
     <system:String x:Key="Application_Language">Langue de l'application</system:String>
     <system:String x:Key="Application_Game_Path">Chemin vers les fichiers du jeu</system:String>
+    <system:String x:Key="Application_Loading">Veuillez patienter</system:String>
+    <system:String x:Key="Application_Loading_Parsing">Les fichiers du projets sont en cours d'exportation</system:String>
+    <system:String x:Key="Application_Error">Une erreur s'est produite</system:String>
+    <system:String x:Key="Application_Error_Saving">La sauvegarde du projet n'a pas fonctionné correctement, 
+        veuillez réessayer.</system:String>
+    <system:String x:Key="Application_Error_Loading">Le chargement du projet n'a pas fonctionné correctement, 
+        veuillez réessayer.</system:String>
 </ResourceDictionary>

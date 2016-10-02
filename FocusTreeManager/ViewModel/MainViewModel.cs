@@ -1,10 +1,12 @@
 using Dragablz;
 using FocusTreeManager.Containers;
 using FocusTreeManager.Model;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ProtoBuf;
 using System;
@@ -20,6 +22,8 @@ namespace FocusTreeManager.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private DialogCoordinator coordinator;
+
         private string commandToContinue;
 
         private Project project;
@@ -70,24 +74,59 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand SaveProjectAsCommand { get; private set; }
 
+        public RelayCommand ExportProjectCommand { get; private set; }
+
         public MainViewModel()
         {
+            coordinator = DialogCoordinator.Instance;
             TabsModelList = new ObservableCollection<ObservableObject>();
             //Commands
             NewProjectCommand = new RelayCommand(() => checkBeforeContinuing("New"));
             LoadProjectCommand = new RelayCommand(() => checkBeforeContinuing("Load"));
             SaveProjectCommand = new RelayCommand(saveProject);
             SaveProjectAsCommand = new RelayCommand(saveProjectAs);
+            ExportProjectCommand = new RelayCommand(ExportProject);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        private void checkBeforeContinuing(string command)
+        async private void checkBeforeContinuing(string command)
         {
             if (project != null)
             {
-                commandToContinue = command;
-                Messenger.Default.Send(new NotificationMessage(this, "ConfirmBeforeContinue"));
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                string Title = resourceLocalization["Exit_Confirm_Title"] as string;
+                string Message = resourceLocalization["Delete_Confirm"] as string;
+                MetroDialogSettings settings = new MetroDialogSettings();
+                settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
+                settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
+                settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Continue"] as string;
+                MessageDialogResult Result = await coordinator.ShowMessageAsync(this, Title, Message,
+                                MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
+                if (Result == MessageDialogResult.Affirmative)
+                {
+                    saveProject();
+                    if (command == "New")
+                    {
+                        newProject();
+                    }
+                    if (command == "Load")
+                    {
+                        loadProject();
+                    }
+                }
+                else if (Result == MessageDialogResult.FirstAuxiliary)
+                {
+                    if (command == "New")
+                    {
+                        newProject();
+                    }
+                    if (command == "Load")
+                    {
+                        loadProject();
+                    }
+                }
             }
             else
             {
@@ -105,8 +144,13 @@ namespace FocusTreeManager.ViewModel
         private void newProject()
         {
             Project = new Project();
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                        "RefreshProjectViewer"));
+            Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
             Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
             RaisePropertyChanged("isProjectExist");
+            TabsModelList = new ObservableCollection<ObservableObject>();
+            RaisePropertyChanged("TabsModelList");
         }
 
         private void loadProject()
@@ -133,6 +177,11 @@ namespace FocusTreeManager.ViewModel
                     {
                         Project = Serializer.Deserialize<Project>(fs);
                     }
+                    //Repair references
+                    foreach (FociGridContainer container in Project.fociContainerList)
+                    {
+                        container.RepairInternalReferences();
+                    }
                     Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, 
                         "RefreshProjectViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
@@ -144,7 +193,11 @@ namespace FocusTreeManager.ViewModel
             }
             catch (Exception)
             {
-                Messenger.Default.Send(new NotificationMessage(this, "ErrorLoadingProject"));
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                string Title = resourceLocalization["Application_Error"] as string;
+                string Message = resourceLocalization["Application_Error_Loading"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
             }
         }
 
@@ -158,7 +211,11 @@ namespace FocusTreeManager.ViewModel
                 }
                 catch (Exception)
                 {
-                    Messenger.Default.Send(new NotificationMessage(this, "ErrorSavingProject"));
+                    ResourceDictionary resourceLocalization = new ResourceDictionary();
+                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                    string Title = resourceLocalization["Application_Error"] as string;
+                    string Message = resourceLocalization["Application_Error_Saving"] as string;
+                    coordinator.ShowMessageAsync(this, Title, Message);
                 }
             }
             else if (project != null)
@@ -194,7 +251,11 @@ namespace FocusTreeManager.ViewModel
             }
             catch (Exception)
             {
-                Messenger.Default.Send(new NotificationMessage(this, "ErrorSavingProject"));
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                string Title = resourceLocalization["Application_Error"] as string;
+                string Message = resourceLocalization["Application_Error_Saving"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
             }
         }
 
@@ -250,6 +311,47 @@ namespace FocusTreeManager.ViewModel
             {
                 TabsModelList.Clear();
                 RaisePropertyChanged("TabsModelList");
+            }
+        }
+
+        async public void ExportProject()
+        {
+            var dialog = new CommonOpenFileDialog();
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            dialog.Title = resourceLocalization["Project_Export"] as string;
+            dialog.IsFolderPicker = true;
+            dialog.InitialDirectory = "C:";
+            dialog.AddToMostRecentlyUsedList = false;
+            dialog.AllowNonFileSystemItems = false;
+            dialog.DefaultDirectory = "C:";
+            dialog.EnsureFileExists = true;
+            dialog.EnsurePathExists = true;
+            dialog.EnsureReadOnly = false;
+            dialog.EnsureValidNames = true;
+            dialog.Multiselect = false;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                string Title = resourceLocalization["Application_Loading"] as string;
+                string Message = resourceLocalization["Application_Loading_Parsing"] as string;
+                ProgressDialogController controller = await coordinator.ShowProgressAsync(this, Title, Message);
+                int i = 0;
+                controller.Minimum = 0;
+                controller.Maximum = project.fociContainerList.Count;// + project.localisationList.Count;
+                controller.SetProgress(i);
+                //For each parsed focus trees
+                foreach (KeyValuePair<string, string> item in 
+                    FocusTreeParser.ParseAllTrees(project.fociContainerList))
+                {
+                    using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".txt"))
+                    {
+                        tw.Write(item.Value);
+                        controller.SetProgress(++i);
+                    }
+                }
+                //TODO: For each parsed localisation files
+                //TODO: For each parsed event
+                await controller.CloseAsync();
             }
         }
     }

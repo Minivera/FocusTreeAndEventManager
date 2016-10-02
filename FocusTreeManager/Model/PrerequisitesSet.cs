@@ -60,20 +60,17 @@ namespace FocusTreeManager.Model
             FociList.Clear();
         }
 
-        public bool assertInternalFocus(Focus focus, bool set = true)
+        public void assertInternalFocus(IEnumerable<Focus> fociList)
         {
-            if (this.Focus == focus)
+            //Repair the main focus
+            Focus = fociList.FirstOrDefault((f) => f.X == Focus.X && f.Y == Focus.Y);
+            //Repair its parents
+            List<Focus> realList = new List<Focus>();
+            foreach (Focus item in this.FociList)
             {
-                return true;
+                realList.Add(fociList.FirstOrDefault((f) => f.X == item.X && f.Y == item.Y));
             }
-            else
-            {
-                if (set)
-                {
-                    this.Focus = focus;
-                }
-                return false;
-            }
+            this.FociList = realList;
         }
     }
 }

@@ -56,27 +56,12 @@ namespace FocusTreeManager.Model
             Focus2 = null;
         }
 
-        public bool assertInternalFocus(Focus focus, bool set = true)
+        public void assertInternalFocus(IEnumerable<Focus> fociList)
         {
-            //If it is not the same as focus 1, but the same coordinates
-            if (this.Focus1 != focus && (this.Focus1.X == focus.X && this.Focus1.Y == focus.Y))
-            {
-                if (set)
-                {
-                    this.Focus1 = focus;
-                }
-                return false;
-            }
-            //If it is not the same as focus 2, but the same coordinates
-            else if (this.Focus2 != focus && (this.Focus2.X == focus.X && this.Focus2.Y == focus.Y))
-            {
-                if (set)
-                {
-                    this.Focus2 = focus;
-                }
-                return false;
-            }
-            return true;
+            //Repair Focus 1, get the reference in the list
+            Focus1 = fociList.FirstOrDefault((f) => f.X == Focus1.X && f.Y == Focus1.Y);
+            //Repair Focus 2, get the reference in the list
+            Focus2 = fociList.FirstOrDefault((f) => f.X == Focus2.X && f.Y == Focus2.Y);
         }
     }
 }

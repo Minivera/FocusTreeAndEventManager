@@ -38,84 +38,70 @@ namespace FocusTreeManager
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Notification == "ShowAddFocus")
+            switch (msg.Notification)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
-                FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout();
-                FocusFlyout.IsOpen = true;
-            }
-            if (msg.Notification == "HideAddFocus")
-            {
-                FocusFlyout.IsOpen = false;
-            }
-            if (msg.Notification == "ShowEditFocus")
-            {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
-                FocusFlyout.DataContext = (new ViewModelLocator()).EditFocus_Flyout;
-                ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.Focus)msg.Sender;
-                FocusFlyout.IsOpen = true;
-            }
-            if (msg.Notification == "HideEditFocus")
-            {
-                FocusFlyout.IsOpen = false;
-            }
-            if (msg.Notification == "ShowProjectControl")
-            {
-                ProjectFlyout.IsOpen = true;
-            }
-            if (msg.Notification == "HideProjectControl")
-            {
-                ProjectFlyout.IsOpen = false;
-                ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Hidden;
-            }
-            if (msg.Notification == "RefreshTabViewer")
-            {
-                ((ObservableCollection<ObservableObject>)CentralTabControl.ItemsSource).Clear();
-            }
-            if (msg.Notification == "ShowChangeImage")
-            {
-                ChangeImage view = new ChangeImage();
-                view.ShowDialog();
-            }
-            if (msg.Notification == "ChangeLanguage")
-            {
-                loadLocales();
-            }
-            if (msg.Notification == "ErrorSavingProject")
-            {
-                //ShowLoadingErrorDialog();
-            }
-            if (msg.Notification == "ErrorLoadingProject")
-            {
-                //ShowSavingErrorDialog();
-            }
-            if (msg.Notification == "ConfirmBeforeContinue")
-            {
-                ConfirmBeforeContinue();
+                case "ShowAddFocus":
+                    {
+                        ResourceDictionary resourceLocalization = new ResourceDictionary();
+                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
+                        FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout();
+                        FocusFlyout.IsOpen = true;
+                        break;
+                    }
+                case "HideAddFocus":
+                    {
+                        FocusFlyout.IsOpen = false;
+                        break;
+                    }
+                case "ShowEditFocus":
+                    {
+                        ResourceDictionary resourceLocalization = new ResourceDictionary();
+                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
+                        FocusFlyout.DataContext = (new ViewModelLocator()).EditFocus_Flyout;
+                        ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.Focus)msg.Sender;
+                        FocusFlyout.IsOpen = true;
+                        break;
+                    }
+                case "HideEditFocus":
+                    {
+                        FocusFlyout.IsOpen = false;
+                        break;
+                    }
+                case "ShowProjectControl":
+                    {
+                        ProjectFlyout.IsOpen = true;
+                        break;
+                    }
+                case "HideProjectControl":
+                    {
+                        ProjectFlyout.IsOpen = false;
+                        ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Hidden;
+                        break;
+                    }
+                case "RefreshTabViewer":
+                    {
+                        ((ObservableCollection<ObservableObject>)CentralTabControl.ItemsSource).Clear();
+                        break;
+                    }
+                case "ShowChangeImage":
+                    {
+                        ChangeImage view = new ChangeImage();
+                        view.ShowDialog();
+                        break;
+                    }
+                case "ChangeLanguage":
+                    {
+                        loadLocales();
+                        break;
+                    }
             }
         }
 
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        async private void ConfirmBeforeContinue()
-        {
-            MessageDialogResult Result = await ShowContinueDialog();
-            if (Result == MessageDialogResult.Affirmative)
-            {
-                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
-                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "ContinueCommand"));
-            }
-            else if (Result == MessageDialogResult.FirstAuxiliary)
-            {
-                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "ContinueCommand"));
-            }
         }
 
         async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -133,20 +119,6 @@ namespace FocusTreeManager
                 //Quit without saving
                 Application.Current.Shutdown();
             }
-        }
-
-        async private Task<MessageDialogResult> ShowContinueDialog()
-        {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            string Title = resourceLocalization["Exit_Confirm_Title"] as string;
-            string Message = resourceLocalization["Delete_Confirm"] as string;
-            MetroDialogSettings settings = new MetroDialogSettings();
-            settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
-            settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
-            settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Continue"] as string;
-            return await this.ShowMessageAsync(Title, Message,
-                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
         }
 
         async private Task<MessageDialogResult> ShowSaveDialog()

@@ -29,6 +29,14 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
             }
         }
 
+        public string Icon
+        {
+            get
+            {
+                return image;
+            }
+        }
+
         [ProtoMember(2)]
         private string uniquename;
 

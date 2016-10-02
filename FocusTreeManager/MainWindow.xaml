@@ -9,10 +9,12 @@
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="{DynamicResource Main_Title}" Height="350" Width="525"
         WindowState="Maximized" Icon="GFX/Focus/unknown.png" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Dialog:DialogParticipation.Register="{Binding}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -42,9 +44,23 @@
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control"
+                    Key="S"
+                    Command="{Binding SaveProjectCommand}" />
+        <KeyBinding Modifiers="Control"
+                    Key="L"
+                    Command="{Binding LoadProjectCommand}" />
+        <KeyBinding Modifiers="Control"
+                    Key="E"
+                    Command="{Binding ExportProjectCommand}" />
+        <KeyBinding Modifiers="Control"
+                    Key="N"
+                    Command="{Binding NewProjectCommand}" />
+    </Window.InputBindings>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="ExportButton">
+            <Button x:Name="ExportButton" Command="{Binding ExportProjectCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
