@@ -66,7 +66,6 @@ namespace FocusTreeManager
             base.OnRender(drawingContext);
             foreach (CanvasLine line in DataContext.CanvasLines)
             {
-                //Pen LinePen = new Pen(line.Color, 2);
                 Line newLine = new Line()
                 {
                     X1 = line.X1,
@@ -80,11 +79,7 @@ namespace FocusTreeManager
                 if (line.Dashes)
                 {
                     newLine.StrokeDashArray = new DoubleCollection(new double[] { 2, 2});
-                    //LinePen.DashStyle = DashStyles.Dash;
                 }
-                //drawingContext.DrawLine(LinePen, 
-                //    new Point(line.X1, line.Y1), 
-                //    new Point(line.X2, line.Y2));
                 Child.Children.Add(newLine);
             }
         }

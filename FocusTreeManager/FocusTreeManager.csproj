@@ -107,6 +107,7 @@
     <Compile Include="Model\LocaleContent.cs" />
     <Compile Include="Model\LocalisationModel.cs" />
     <Compile Include="Model\Project.cs" />
+    <Compile Include="Parsers\FocusTreeParser.cs" />
     <Compile Include="ViewModel\ProjectViewViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Views\FocusEditor.xaml.cs">

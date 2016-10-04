@@ -20,10 +20,10 @@
             <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}">
                 <Expander.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="FocusTree"/>
                         <MenuItem Header="{DynamicResource Add_Game_Element}" 
                                           Command="{Binding AddElementCommand}" CommandParameter="FocusTree"/>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="FocusTree"/>
                     </ContextMenu>
                 </Expander.ContextMenu>
                 <ItemsControl ItemsSource="{Binding fociContainerList, Mode=OneWay}" >
@@ -71,10 +71,10 @@
             <Expander x:Name="LocalisationExpander" Header="{DynamicResource Manage_Localisation}">
                 <Expander.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="Localisation"/>
                         <MenuItem Header="{DynamicResource Add_Game_Element}" 
                                           Command="{Binding AddElementCommand}" CommandParameter="Localisation"/>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="Localisation"/>
                     </ContextMenu>
                 </Expander.ContextMenu>
                 <ItemsControl ItemsSource="{Binding localisationList, Mode=OneWay}">

@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.Model;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -15,6 +16,8 @@ namespace FocusTreeManager.Containers
     [ProtoContract]
     public class LocalisationContainer : ObservableObject
     {
+        public Guid IdentifierID { get; private set; }
+
         [ProtoMember(1)]
         private string containerID;
 
@@ -27,11 +30,25 @@ namespace FocusTreeManager.Containers
             set
             {
                 Set<string>(() => this.ContainerID, ref this.containerID, value);
-                Messenger.Default.Send(new NotificationMessage(this, "RenamedContainer"));
             }
         }
 
         [ProtoMember(2)]
+        private string shortname;
+
+        public string ShortName
+        {
+            get
+            {
+                return shortname;
+            }
+            set
+            {
+                Set<string>(() => this.ShortName, ref this.shortname, value);
+            }
+        }
+
+        [ProtoMember(3)]
         public ObservableCollection<LocaleContent> LocalisationMap { get; set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
@@ -39,6 +56,7 @@ namespace FocusTreeManager.Containers
         public LocalisationContainer()
         {
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = Guid.NewGuid();
         }
 
         public LocalisationContainer(string filename)
@@ -46,6 +64,7 @@ namespace FocusTreeManager.Containers
             ContainerID = filename;
             LocalisationMap = new ObservableCollection<LocaleContent>();
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = Guid.NewGuid();
         }
         
         public string translateKey(string key)
@@ -56,7 +75,7 @@ namespace FocusTreeManager.Containers
         
         private void SendDeleteSignal()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "SendDeleteItemSignal"));
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,"SendDeleteItemSignal"));
         }
     }
 }

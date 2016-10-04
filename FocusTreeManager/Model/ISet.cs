@@ -11,5 +11,6 @@ namespace FocusTreeManager.Model
     public interface ISet
     {
         void DeleteSetRelations();
+        void assertInternalFocus(IEnumerable<Focus> fociList);
     }
 }

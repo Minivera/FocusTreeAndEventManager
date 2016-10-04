@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using FocusTreeManager.Model;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
