@@ -55,6 +55,11 @@ namespace FocusTreeManager.Model
 
         public void DeleteSetRelations()
         {
+            if (Focus == null)
+            {
+                //Already deleted, click on more than one line
+                return;
+            }
             Focus.Prerequisite.Remove(this);
             Focus = null;
             FociList.Clear();

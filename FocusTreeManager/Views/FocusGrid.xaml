@@ -3,18 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:FocusTreeManager"
              xmlns:v="clr-namespace:FocusTreeManager.Views"
              xmlns:m="clr-namespace:FocusTreeManager.Model"
              mc:Ignorable="d" Loaded="UserControl_Loaded" 
              x:Name="FociGrid">
-    <UserControl.InputBindings>
-        <MouseBinding Gesture="RightClick" Command="{Binding RightClickCommand}" 
-                      CommandParameter="{Binding RelativeSource=
-                                        {RelativeSource
-                                         Mode=FindAncestor,
-                                         AncestorType={x:Type UserControl}}}"/>
-    </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
             <Style x:Key="ControlStyle" TargetType="Control">
@@ -47,6 +41,22 @@
         </StackPanel>
         <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
             <Grid Margin="45,0,45,0" x:Name="ListGrid">
+                <Grid.InputBindings>
+                    <MouseBinding Gesture="LeftClick" Command="{Binding RightClickCommand}" 
+                      CommandParameter="{Binding RelativeSource=
+                                        {RelativeSource
+                                         Mode=FindAncestor,
+                                         AncestorType={x:Type Grid}}}"/>
+                </Grid.InputBindings>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding HoverCommand}" 
+                                CommandParameter="{Binding RelativeSource=
+                                        {RelativeSource
+                                         Mode=FindAncestor,
+                                         AncestorType={x:Type Grid}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ItemsControl ItemsSource="{Binding FociList}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
