@@ -82,6 +82,24 @@ namespace FocusTreeManager
                 }
                 Child.Children.Add(newLine);
             }
+            if (DataContext.selectedLine != null)
+            {
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri("/FocusTreeManager;component/Resources/Icons.xaml", UriKind.Relative);
+                Rectangle visualBoard = new Rectangle();
+                visualBoard.Width = 25;
+                visualBoard.Height = 25;
+                Canvas.SetLeft(visualBoard, Math.Min(DataContext.selectedLine.X1,
+                    DataContext.selectedLine.X2) + (Math.Abs(DataContext.selectedLine.X2 - 
+                    DataContext.selectedLine.X1) / 2) - 12.5);
+                Canvas.SetTop(visualBoard, Math.Min(DataContext.selectedLine.Y1,
+                    DataContext.selectedLine.Y2) + (Math.Abs(DataContext.selectedLine.Y2 -
+                    DataContext.selectedLine.Y1) / 2) - 12.5);
+                VisualBrush vBrush = new VisualBrush();
+                vBrush.Visual = (Visual)resourceLocalization["appbar_scissor"];
+                visualBoard.Fill = vBrush;
+                Child.Children.Add(visualBoard);
+            }
         }
 
         protected override Size ArrangeOverride(Size finalSize)

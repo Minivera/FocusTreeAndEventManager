@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace FocusTreeManager.Model
@@ -23,6 +24,8 @@ namespace FocusTreeManager.Model
 
         private Focus selectedFocus;
 
+        public CanvasLine selectedLine { get; set; }
+
         private int rowCount;
 
         private int columnCount;
@@ -32,6 +35,8 @@ namespace FocusTreeManager.Model
         public RelayCommand AddFocusCommand { get; private set; }
 
         public RelayCommand<object> RightClickCommand { get; private set; }
+
+        public RelayCommand<object> HoverCommand { get; private set; }
 
         public bool isShown { get; set; }
 
@@ -116,6 +121,7 @@ namespace FocusTreeManager.Model
             //Commands
             AddFocusCommand = new RelayCommand(AddFocus);
             RightClickCommand = new RelayCommand<object>(RightClick);
+            HoverCommand = new RelayCommand<object>(Hover);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -148,8 +154,7 @@ namespace FocusTreeManager.Model
 
         public void RightClick(object sender)
         {
-            System.Windows.Point Position = Mouse.GetPosition((UserControl)sender);
-            Position.X -= 45;
+            System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
                                             inRange(line.X1, line.X2, (int)Position.X) &&
                                             inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
@@ -165,7 +170,28 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private bool inRange(int Range1, int Range2, int Value)
+        public void Hover(object sender)
+        {
+            System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
+            List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
+                                            inRange(line.X1, line.X2, (int)Position.X) &&
+                                            inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
+            if (clickedElements.Any())
+            {
+                selectedLine = clickedElements.FirstOrDefault();
+                Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
+            }
+            else
+            {
+                if (selectedLine != null)
+                {
+                    selectedLine = null;
+                    Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
+                }
+            }
+        }
+
+        public bool inRange(int Range1, int Range2, int Value)
         {
             int smallest = Math.Min(Range1, Range2);
             int highest = Math.Max(Range1, Range2);
