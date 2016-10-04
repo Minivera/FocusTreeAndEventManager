@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Visual Studio Temporary Files
+*.suo
+
 # =========================
 # Operating System Files
 # =========================
