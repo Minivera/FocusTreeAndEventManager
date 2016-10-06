@@ -1,25 +1,22 @@
-﻿using Dragablz;
-using FocusTreeManager.Containers;
-using FocusTreeManager.ViewModel;
-using FocusTreeManager.Views;
+﻿using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace FocusTreeManager.Model
 {
     public class FocusGridModel : ObservableObject
     {
+        const int MIN_ROW_COUNT = 10;
+        const int MIN_COLUMN_COUNT = 20;
+
         private ObservableCollection<CanvasLine> canvasLines;
 
         private Focus selectedFocus;
@@ -116,6 +113,9 @@ namespace FocusTreeManager.Model
 
         public FocusGridModel(Guid ID)
         {
+            //Min Row & column Count
+            RowCount = MIN_ROW_COUNT;
+            ColumnCount = MIN_COLUMN_COUNT;
             this.ID = ID;
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
@@ -124,6 +124,24 @@ namespace FocusTreeManager.Model
             HoverCommand = new RelayCommand<object>(Hover);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        internal void ChangePosition(object draggedElement, Point currentPoint)
+        {
+            if (!(draggedElement is Focus))
+            {
+                return;
+            }
+            else
+            {
+                int X = (int)Math.Floor(currentPoint.X / 89);
+                int Y = (int)Math.Floor(currentPoint.Y / 140);
+                ((Focus)draggedElement).X = X;
+                ((Focus)draggedElement).Y = Y;
+                RaisePropertyChanged(() => FociList);
+                EditGridDefinition();
+                DrawOnCanvas();
+            }
         }
 
         public void addFocusToList(Focus FocusToAdd)
@@ -237,6 +255,7 @@ namespace FocusTreeManager.Model
             if (msg.Notification == "DeleteFocus")
             {
                 Focus Model = (Focus)msg.Sender;
+                //TODO : Kill the sets
                 FociList.Remove(Model);
                 RaisePropertyChanged(() => FociList);
                 EditGridDefinition();

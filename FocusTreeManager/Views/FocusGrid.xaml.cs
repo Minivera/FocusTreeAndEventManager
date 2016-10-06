@@ -56,5 +56,51 @@ namespace FocusTreeManager.Views
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
+
+        private Point anchorPoint;
+        private Point currentPoint;
+        private Focus DraggedElement;
+
+        private void Focus_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Focus element = sender as Focus;
+            anchorPoint = e.GetPosition(ListGrid);
+            if (element != null)
+            {
+                DraggedElement = element;
+                DraggedElement.CaptureMouse();
+            }
+            e.Handled = true;
+        }
+
+        private readonly TranslateTransform transform = new TranslateTransform();
+
+        private void Focus_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (DraggedElement == null)
+            {
+                return;
+            }
+            currentPoint = e.GetPosition(ListGrid);
+            transform.X += currentPoint.X - anchorPoint.X;
+            transform.Y += (currentPoint.Y - anchorPoint.Y);
+            DraggedElement.RenderTransform = transform;
+            anchorPoint = currentPoint;
+        }
+
+        private void Focus_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (DraggedElement == null)
+            {
+                return;
+            }
+            DraggedElement.ReleaseMouseCapture();
+            ((FocusGridModel)this.DataContext).ChangePosition(DraggedElement.DataContext, currentPoint);
+            transform.X = 0;
+            transform.Y = 0;
+            DraggedElement.RenderTransform = new TranslateTransform();
+            DraggedElement = null;
+            e.Handled = true;
+        }
     }
 }

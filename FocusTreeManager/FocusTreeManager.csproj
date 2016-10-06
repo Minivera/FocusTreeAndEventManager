@@ -99,6 +99,7 @@
     </ApplicationDefinition>
     <Compile Include="Containers\FociGridContainer.cs" />
     <Compile Include="Containers\LocalisationContainer.cs" />
+    <Compile Include="GriddedGrid.cs" />
     <Compile Include="Model\FocusGridModel.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="Model\LineAdorner.cs" />
