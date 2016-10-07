@@ -23,7 +23,8 @@ namespace FocusTreeManager
 
         static public string getLanguageFile()
         {
-            return LOCALE_FILE_STRING + ConfigurationManager.AppSettings["Language"] + ".xaml";
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            return LOCALE_FILE_STRING + configFile.AppSettings.Settings["Language"].Value + ".xaml";
         }  
         
         static public string getLanguage()
@@ -64,7 +65,8 @@ namespace FocusTreeManager
 
         static public string getGamePath()
         {
-            return ConfigurationManager.AppSettings["Path"] as string;
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            return configFile.AppSettings.Settings["Path"].Value as string;
         }
     }
 }
