@@ -57,24 +57,27 @@
                                          AncestorType={x:Type Grid}}}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <ItemsControl ItemsSource="{Binding FociList}">
+                <ItemsControl ItemsSource="{Binding FociList}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Grid local:GridHelpers.RowCount="{Binding RowCount}"
+                            <local:GriddedGrid local:GridHelpers.RowCount="{Binding RowCount}"
                               local:GridHelpers.ColumnCount="{Binding ColumnCount}" 
-                                  Background="Transparent">
-                                <Grid.ColumnDefinitions>
+                                  Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
+                                  GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
+                                <local:GriddedGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="75" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
+                                </local:GriddedGrid.ColumnDefinitions>
+                                <local:GriddedGrid.RowDefinitions>
                                     <RowDefinition Height="75" />
-                                </Grid.RowDefinitions>
-                            </Grid>
+                                </local:GriddedGrid.RowDefinitions>
+                            </local:GriddedGrid>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <v:Focus/>
+                            <v:Focus PreviewMouseLeftButtonDown="Focus_PreviewMouseLeftButtonDown" 
+                                     PreviewMouseMove="Focus_PreviewMouseMove"
+                                     PreviewMouseLeftButtonUp="Focus_PreviewMouseLeftButtonUp"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>

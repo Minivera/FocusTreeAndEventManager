@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views"
              xmlns:m="clr-namespace:FocusTreeManager.Model"
-             mc:Ignorable="d" >
+             mc:Ignorable="d" x:Name="VisualFocus">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

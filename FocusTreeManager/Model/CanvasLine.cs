@@ -11,9 +11,9 @@ namespace FocusTreeManager.Model
 {
     public class CanvasLine : ObservableObject
     {
-        private int x1;
+        private double x1;
 
-        public int X1
+        public double X1
         {
             get
             {
@@ -21,13 +21,13 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<int>(() => this.X1, ref this.x1, value);
+                Set<double>(() => this.X1, ref this.x1, value);
             }
         }
 
-        private int y1;
+        private double y1;
 
-        public int Y1
+        public double Y1
         {
             get
             {
@@ -35,13 +35,13 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<int>(() => this.Y1, ref this.y1, value);
+                Set<double>(() => this.Y1, ref this.y1, value);
             }
         }
 
-        private int x2;
+        private double x2;
 
-        public int X2
+        public double X2
         {
             get
             {
@@ -49,13 +49,13 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<int>(() => this.X2, ref this.x2, value);
+                Set<double>(() => this.X2, ref this.x2, value);
             }
         }
 
-        private int y2;
+        private double y2;
 
-        public int Y2
+        public double Y2
         {
             get
             {
@@ -63,7 +63,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<int>(() => this.Y2, ref this.y2, value);
+                Set<double>(() => this.Y2, ref this.y2, value);
             }
         }
 
@@ -97,7 +97,7 @@ namespace FocusTreeManager.Model
 
         public ISet InternalSet { get; private set; }
 
-        public CanvasLine(int X1, int Y1, int X2, int Y2, System.Windows.Media.Brush Color, bool dashed, ISet set)
+        public CanvasLine(double X1, double Y1, double X2, double Y2, System.Windows.Media.Brush Color, bool dashed, ISet set)
         {
             this.X1 = X1;
             this.Y1 = Y1;

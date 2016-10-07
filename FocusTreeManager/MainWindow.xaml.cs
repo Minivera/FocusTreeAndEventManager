@@ -166,7 +166,9 @@ namespace FocusTreeManager
 
         private void scrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
+            //If we hit a focus rather than an empty grid
+            if (((e.OriginalSource is FrameworkElement) && 
+                (((FrameworkElement)e.OriginalSource).DataContext is Model.Focus)))
             {
                 return;
             }
@@ -179,16 +181,19 @@ namespace FocusTreeManager
 
         private void scrollViewer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ScrollViewer element = sender as ScrollViewer;
-            isMouseHold = false;
-            element.ReleaseMouseCapture();
+            if (isMouseHold)
+            {
+                ScrollViewer element = sender as ScrollViewer;
+                isMouseHold = false;
+                element.ReleaseMouseCapture();
+            }
         }
 
         private void ContentScroll_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            ScrollViewer element = sender as ScrollViewer;
             if (isMouseHold)
             {
+                ScrollViewer element = sender as ScrollViewer;
                 element.CaptureMouse();
                 element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - e.GetPosition(element).X));
                 element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - e.GetPosition(element).Y));
