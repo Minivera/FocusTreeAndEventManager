@@ -13,7 +13,7 @@ namespace FocusTreeManager.Model
     [ProtoContract(AsReferenceDefault = true)]
     public class Focus : ObservableObject
     {
-        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
+const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         [ProtoMember(1)]
         private string image;
