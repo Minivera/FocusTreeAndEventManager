@@ -44,8 +44,17 @@ namespace FocusTreeManager.Model
 
         public MutuallyExclusiveSet(Focus Focus1, Focus Focus2)
         {
-            this.Focus1 = Focus1;
-            this.Focus2 = Focus2;
+            //Set leftmost Focus as Focus 1 and rightmost focus as focus 2
+            if (Focus1.FocusLeft.X < Focus2.FocusLeft.X)
+            {
+                this.Focus1 = Focus1;
+                this.Focus2 = Focus2;
+            }
+            else if(Focus1.FocusLeft.X >= Focus2.FocusLeft.X)
+            {
+                this.Focus2 = Focus1;
+                this.Focus1 = Focus2;
+            }
         }
 
         public void DeleteSetRelations()

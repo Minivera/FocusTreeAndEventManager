@@ -174,8 +174,8 @@ namespace FocusTreeManager.Model
         {
             System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
-                                            inRange(line.X1, line.X2, (int)Position.X) &&
-                                            inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
+                                            inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
+                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
             if (clickedElements.Any())
             { 
                 foreach (CanvasLine line in clickedElements)
@@ -192,8 +192,8 @@ namespace FocusTreeManager.Model
         {
             System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
-                                            inRange(line.X1, line.X2, (int)Position.X) &&
-                                            inRange(line.Y1, line.Y2, (int)Position.Y)).ToList();
+                                            inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
+                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
             if (clickedElements.Any())
             {
                 selectedLine = clickedElements.FirstOrDefault();
@@ -252,10 +252,24 @@ namespace FocusTreeManager.Model
                 EditGridDefinition();
                 DrawOnCanvas();
             }
+            if (msg.Notification == "FocusUpdated")
+            {
+                DrawOnCanvas();
+            }
             if (msg.Notification == "DeleteFocus")
             {
                 Focus Model = (Focus)msg.Sender;
-                //TODO : Kill the sets
+                //Kill the set that might have this focus as parent
+                foreach (Focus focus in FociList)
+                {
+                    foreach (PrerequisitesSet set in focus.Prerequisite.ToList())
+                    {
+                        if (set.FociList.Contains(Model))
+                        {
+                            set.DeleteSetRelations();
+                        }
+                    }
+                }
                 FociList.Remove(Model);
                 RaisePropertyChanged(() => FociList);
                 EditGridDefinition();
@@ -323,13 +337,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        const int FOCUS_WIDTH = 90;
-
-        const int FOCUS_HEIGHT = 122;
-
-        const int TRUE_FOCUS_HEIGHT = 60;
-
-        const int PRE_LINE_HEIGHT = 20;
+        const double PRE_LINE_HEIGHT = 20;
 
         public void DrawOnCanvas()
         {
@@ -343,30 +351,30 @@ namespace FocusTreeManager.Model
                 //Draw Prerequisites
                 foreach (PrerequisitesSet set in focus.Prerequisite)
                 {
-                    //Draw line from top of fist Focus 
+                    //Draw line from top of first Focus 
                     CanvasLine newline = new CanvasLine(
-                        ((set.Focus.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                        (set.Focus.Y + 1) * FOCUS_HEIGHT - TRUE_FOCUS_HEIGHT,
-                        ((set.Focus.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                        ((set.Focus.Y + 1) * FOCUS_HEIGHT) - PRE_LINE_HEIGHT - TRUE_FOCUS_HEIGHT,
+                        set.Focus.FocusTop.X,
+                        set.Focus.FocusTop.Y,
+                        set.Focus.FocusTop.X,
+                        set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                         System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                     CanvasLines.Add(newline);
                     foreach (Focus Prerequisite in set.FociList)
                     {
                         //Draw horizontal lines to prerequisite pos
                         newline = new CanvasLine(
-                            ((set.Focus.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                            (set.Focus.Y + 1) * FOCUS_HEIGHT - PRE_LINE_HEIGHT - TRUE_FOCUS_HEIGHT,
-                            ((Prerequisite.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                            ((set.Focus.Y + 1) * FOCUS_HEIGHT) - PRE_LINE_HEIGHT - TRUE_FOCUS_HEIGHT,
+                            set.Focus.FocusTop.X,
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
+                            Prerequisite.FocusBottom.X,
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                             System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                         CanvasLines.Add(newline);
                         //Draw line to prerequisite bottom
                         newline = new CanvasLine(
-                            ((Prerequisite.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                            (set.Focus.Y + 1) * FOCUS_HEIGHT - PRE_LINE_HEIGHT - TRUE_FOCUS_HEIGHT,
-                            ((Prerequisite.X) * FOCUS_WIDTH) + (FOCUS_WIDTH / 2),
-                            ((Prerequisite.Y + 1) * FOCUS_HEIGHT) + PRE_LINE_HEIGHT,
+                            Prerequisite.FocusBottom.X,
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
+                            Prerequisite.FocusBottom.X,
+                            Prerequisite.FocusBottom.Y,
                             System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                         CanvasLines.Add(newline);
                     }
@@ -375,10 +383,10 @@ namespace FocusTreeManager.Model
                 foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
                 {
                     CanvasLine newline = new CanvasLine(
-                        (set.Focus1.X + 1) * FOCUS_WIDTH,
-                        ((set.Focus1.Y + 1) * FOCUS_HEIGHT) - (FOCUS_HEIGHT / 2),
-                        (set.Focus2.X) * FOCUS_WIDTH,
-                        ((set.Focus2.Y + 1) * FOCUS_HEIGHT) - (FOCUS_HEIGHT / 2),
+                        set.Focus1.FocusRight.X,
+                        set.Focus1.FocusRight.Y,
+                        set.Focus2.FocusLeft.X,
+                        set.Focus2.FocusLeft.Y,
                         System.Windows.Media.Brushes.Red, false, set);
                     if (!CanvasLines.Where((line) => (line.X1 == newline.X1 &&
                                                     line.X2 == newline.X2 &&

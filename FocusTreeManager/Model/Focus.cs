@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Linq;
 
 namespace FocusTreeManager.Model
@@ -12,7 +13,7 @@ namespace FocusTreeManager.Model
     [ProtoContract(AsReferenceDefault = true)]
     public class Focus : ObservableObject
     {
-const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
+        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         [ProtoMember(1)]
         private string image;
@@ -106,6 +107,14 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
             }
         }
 
+        public Point FocusTop { get; set; }
+
+        public Point FocusBottom { get; set; }
+
+        public Point FocusLeft { get; set; }
+
+        public Point FocusRight { get; set; }
+
         private bool isSelected;
 
         public bool IsSelected
@@ -155,6 +164,15 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
             Y = 0;
         }
 
+        public void setPoints(Point Top, Point Bottom, Point Left, Point Right)
+        {
+            FocusTop = Top;
+            FocusBottom = Bottom;
+            FocusLeft = Left;
+            FocusRight = Right;
+            Messenger.Default.Send(new NotificationMessage("FocusUpdated"));
+        }
+
         public void Edit()
         {
             System.Windows.Application.Current.Properties["Mode"] = "Edit";
@@ -163,6 +181,15 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         public void Delete()
         {
+            //Kill the focus sets
+            foreach (MutuallyExclusiveSet set in MutualyExclusive.ToList())
+            {
+                set.DeleteSetRelations();
+            }
+            foreach (PrerequisitesSet set in Prerequisite.ToList())
+            {
+                set.DeleteSetRelations();
+            }
             Messenger.Default.Send(new NotificationMessage(this, "DeleteFocus"));
         }
 
