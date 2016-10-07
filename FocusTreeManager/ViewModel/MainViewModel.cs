@@ -22,9 +22,7 @@ namespace FocusTreeManager.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private DialogCoordinator coordinator;
-
-        private string commandToContinue;
+        private IDialogCoordinator coordinator;
 
         private Project project;
 
@@ -295,17 +293,6 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "SaveProject")
             {
                 saveProject();
-            }
-            if (msg.Notification == "ContinueCommand")
-            {
-                if (commandToContinue == "New")
-                {
-                    newProject();
-                }
-                if (commandToContinue == "Load")
-                {
-                    loadProject();
-                }
             }
             if (msg.Notification == "RefreshProjectViewer")
             {
