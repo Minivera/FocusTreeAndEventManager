@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace FocusTreeManager.Model
 {
-    [ProtoContract]
+    [ProtoContract(AsReferenceDefault = true)]
     public class Focus : ObservableObject
     {
-        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
+const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         [ProtoMember(1)]
         private string image;
@@ -26,6 +26,14 @@ namespace FocusTreeManager.Model
             set
             {
                 Set<string>(() => this.Image, ref this.image, value);
+            }
+        }
+
+        public string Icon
+        {
+            get
+            {
+                return image;
             }
         }
 

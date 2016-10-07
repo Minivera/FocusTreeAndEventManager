@@ -42,6 +42,12 @@ namespace FocusTreeManager.ViewModel
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
+        public EditFocusViewModel SetupFlyout()
+        {
+            RaisePropertyChanged("Focus");
+            return this;
+        }
+
         public void EditFocus()
         {
             Messenger.Default.Send(new NotificationMessage(this, "HideEditFocus"));
@@ -54,6 +60,11 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Target != null && msg.Target != this)
+            {
+                //Message not itended for here
+                return;
+            }
             if (msg.Notification == "HideChangeImage")
             {
                 if ((string)System.Windows.Application.Current.Properties["Mode"] == "Edit")

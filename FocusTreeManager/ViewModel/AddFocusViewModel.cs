@@ -62,6 +62,11 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Target != null && msg.Target != this)
+            {
+                //Message not itended for here
+                return;
+            }
             if (msg.Notification == "HideChangeImage")
             {
                 if ((string)System.Windows.Application.Current.Properties["Mode"] == "Add")

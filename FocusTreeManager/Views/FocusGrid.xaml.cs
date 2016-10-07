@@ -50,12 +50,6 @@ namespace FocusTreeManager.Views
             adornerLayer.Add(Adorner);
         }
 
-        private void UserControl_LayoutUpdated(object sender, EventArgs e)
-        {
-            Messenger.Default.Send(new NotificationMessage("RedrawGrid"));
-            LayoutUpdated -= UserControl_LayoutUpdated;
-        }
-
         private void loadLocales()
         {
             ResourceDictionary resourceLocalization = new ResourceDictionary();

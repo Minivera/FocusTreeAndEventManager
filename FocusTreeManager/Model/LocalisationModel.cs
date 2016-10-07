@@ -17,31 +17,26 @@ namespace FocusTreeManager.Model
 {
     public class LocalisationModel : ObservableObject
     {
-        private string filename;
+        private Guid ID;
 
         public string Filename
         {
             get
             {
-                return filename;
-            }
-            set
-            {
-                Set<string>(() => this.Filename, ref this.filename, value);
+                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ContainerID;
             }
         }
-
-        private string shortName;
 
         public string ShortName
         {
             get
             {
-                return shortName;
+                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ShortName;
             }
             set
             {
-                Set<string>(() => this.ShortName, ref this.shortName, value);
+                (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ShortName = value;
+                RaisePropertyChanged("ShortName");
             }
         }
 
@@ -49,33 +44,19 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(Filename);
+                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).LocalisationMap;
             }
         }
 
-        public LocalisationModel(string filename)
+        public LocalisationModel(Guid ID)
         {
-            this.Filename = filename;
+            this.ID = ID;
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.LocalisationMap == null)
-            {
-                //meant to be dead, return
-                return;
-            }
-            if (msg.Notification == "RenamedContainer")
-            {
-                LocalisationContainer Model = msg.Sender as LocalisationContainer;
-                if (Model == null)
-                {
-                    return;
-                }
-                Filename = Model.ContainerID;
-            }
         }
     }
 }

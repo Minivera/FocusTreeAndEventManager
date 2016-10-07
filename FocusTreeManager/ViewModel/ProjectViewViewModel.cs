@@ -18,7 +18,7 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ProjectViewViewModel : ViewModelBase
     {
-        public string SelectedFile { get; private set; }
+        public ObservableObject SelectedFile { get; private set; }
 
         public ObservableCollection<FociGridContainer> fociContainerList
         {
@@ -104,18 +104,23 @@ namespace FocusTreeManager.ViewModel
 
         private void OpenFocusTree(string param)
         {
-            SelectedFile = param;
-            Messenger.Default.Send(new NotificationMessage(this, "OpenFocusTree"));
+            SelectedFile = fociContainerList.SingleOrDefault((f) => f.ContainerID == param);
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "OpenFocusTree"));
         }
 
         private void OpenLocalisation(string param)
         {
-            SelectedFile = param;
-            Messenger.Default.Send(new NotificationMessage(this, "OpenLocalisation"));
+            SelectedFile = localisationList.SingleOrDefault((f) => f.ContainerID == param);
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "OpenLocalisation"));
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Target != null && msg.Target != this)
+            {
+                //Message not itended for here
+                return;
+            }
             if (msg.Notification == "SendDeleteItemSignal")
             {
                 DeleteElement(msg.Sender);

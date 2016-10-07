@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
-    [ProtoContract]
+    [ProtoContract(SkipConstructor = true)]
     [ProtoInclude(500, typeof(ISet))]
     public class MutuallyExclusiveSet : ObservableObject, ISet
     {
-        [ProtoMember(1)]
+        [ProtoMember(1, AsReference = true)]
         private Focus focus1;
 
         public Focus Focus1
@@ -27,7 +27,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        [ProtoMember(2)]
+        [ProtoMember(2, AsReference = true)]
         private Focus focus2;
 
         public Focus Focus2
@@ -42,8 +42,6 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public MutuallyExclusiveSet() { }
-
         public MutuallyExclusiveSet(Focus Focus1, Focus Focus2)
         {
             this.Focus1 = Focus1;
@@ -56,6 +54,14 @@ namespace FocusTreeManager.Model
             Focus1 = null;
             Focus2.MutualyExclusive.Remove(this);
             Focus2 = null;
+        }
+
+        public void assertInternalFocus(IEnumerable<Focus> fociList)
+        {
+            //Repair Focus 1, get the reference in the list
+            Focus1 = fociList.FirstOrDefault((f) => f.X == Focus1.X && f.Y == Focus1.Y);
+            //Repair Focus 2, get the reference in the list
+            Focus2 = fociList.FirstOrDefault((f) => f.X == Focus2.X && f.Y == Focus2.Y);
         }
     }
 }

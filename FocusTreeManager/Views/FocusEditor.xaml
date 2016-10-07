@@ -52,7 +52,7 @@
         </Grid.RowDefinitions>
         <Label Content="{DynamicResource Focus_Unique_Name}" 
                            Grid.Column="0" Grid.Row="0"/>
-        <TextBox Text="{Binding Focus.UniqueName}" Grid.Row="0" Grid.Column="1" 
+        <TextBox Text="{Binding Focus.UniqueName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
         <Label Content="{DynamicResource Focus_Visible_Name}" 
                            Grid.Column="0" Grid.Row="1"/>
@@ -67,11 +67,13 @@
         <Label Content="{DynamicResource Focus_X}" 
                            Grid.Column="0" Grid.Row="3"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="3" Grid.Column="1" Value="{Binding Path=Focus.X}" />
+                                Grid.Row="3" Grid.Column="1" Value="{Binding Path=Focus.X}" 
+                                TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Y}" 
                            Grid.Column="0" Grid.Row="4"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                            Grid.Row="4" Grid.Column="1" Value="{Binding Path=Focus.Y}"/>
+                                Grid.Row="4" Grid.Column="1" Value="{Binding Path=Focus.Y}"
+                                TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Image}" 
                            Grid.Column="0" Grid.Row="5"/>
         <Image Grid.Column="1" Grid.Row="5" Source="{Binding Focus.Image}"/>
