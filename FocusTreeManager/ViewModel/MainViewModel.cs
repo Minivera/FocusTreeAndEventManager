@@ -301,7 +301,7 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        async public void ExportProject()
+        public void ExportProject()
         {
             var dialog = new CommonOpenFileDialog();
             ResourceDictionary resourceLocalization = new ResourceDictionary();
@@ -319,13 +319,6 @@ namespace FocusTreeManager.ViewModel
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                string Title = resourceLocalization["Application_Loading"] as string;
-                string Message = resourceLocalization["Application_Loading_Parsing"] as string;
-                ProgressDialogController controller = await coordinator.ShowProgressAsync(this, Title, Message);
-                int i = 0;
-                controller.Minimum = 0;
-                controller.Maximum = project.fociContainerList.Count;// + project.localisationList.Count;
-                controller.SetProgress(i);
                 //For each parsed focus trees
                 foreach (KeyValuePair<string, string> item in 
                     FocusTreeParser.ParseAllTrees(project.fociContainerList))
@@ -333,12 +326,18 @@ namespace FocusTreeManager.ViewModel
                     using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".txt"))
                     {
                         tw.Write(item.Value);
-                        controller.SetProgress(++i);
                     }
                 }
-                //TODO: For each parsed localisation files
+                //For each parsed localisation files
+                foreach (KeyValuePair<string, string> item in
+                    LocalisationParser.ParseEverything(project.localisationList))
+                {
+                    using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".yaml"))
+                    {
+                        tw.Write(item.Value);
+                    }
+                }
                 //TODO: For each parsed event
-                await controller.CloseAsync();
             }
         }
     }

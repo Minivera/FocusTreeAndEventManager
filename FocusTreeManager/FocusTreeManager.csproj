@@ -107,6 +107,7 @@
     <Compile Include="Model\LocalisationModel.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Parsers\FocusTreeParser.cs" />
+    <Compile Include="Parsers\LocalisationParser.cs" />
     <Compile Include="ViewModel\ProjectViewViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Views\FocusEditor.xaml.cs">
@@ -128,6 +129,10 @@
     <Page Include="Languages\Fr_fr.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Languages\ru_ru.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ChangeImage.xaml">
       <SubType>Form</SubType>
