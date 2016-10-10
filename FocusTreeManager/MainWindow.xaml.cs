@@ -21,6 +21,8 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using FocusTreeManager.Model;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using System.IO;
+using ProtoBuf;
 
 namespace FocusTreeManager
 {
@@ -45,7 +47,7 @@ namespace FocusTreeManager
                         ResourceDictionary resourceLocalization = new ResourceDictionary();
                         resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
-                        FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout();
+                        FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout(msg.Sender);
                         FocusFlyout.IsOpen = true;
                         break;
                     }
@@ -166,9 +168,10 @@ namespace FocusTreeManager
 
         private void scrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //If we hit a focus rather than an empty grid
+            //If we hit a focus or a scrollbar rather than an empty grid
             if (((e.OriginalSource is FrameworkElement) && 
-                (((FrameworkElement)e.OriginalSource).DataContext is Model.Focus)))
+                (((FrameworkElement)e.OriginalSource).DataContext is Model.Focus ||
+                e.OriginalSource is Rectangle)))
             {
                 return;
             }
@@ -214,8 +217,37 @@ namespace FocusTreeManager
                 var selectedTab = e.AddedItems[0];
                 if (selectedTab is FocusGridModel)
                 {
-                    ((FocusGridModel)selectedTab).RedrawGrid();
                     ((FocusGridModel)selectedTab).isShown = true;
+                }
+            }
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            //If there is a command line argument
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                var fileName = args[1];
+                if (File.Exists(fileName))
+                {
+                    var extension = System.IO.Path.GetExtension(fileName);
+                    //If a fiule was openned and the fil is a project
+                    if (extension == ".h4prj")
+                    {
+                        using (var fs = File.OpenRead(fileName))
+                        {
+                            //Load it
+                            try
+                            {
+                                ((MainViewModel)(new ViewModelLocator()).Main).Project = Serializer.Deserialize<Project>(fs);
+                            }
+                            catch
+                            {
+                                //TODO: Show loading error 
+                            } 
+                        }
+                    }
                 }
             }
         }

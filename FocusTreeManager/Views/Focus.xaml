@@ -59,9 +59,10 @@
                 <MouseBinding Gesture="LeftClick" Command="{Binding TestFinishCommand}" />
             </Image.InputBindings>
         </Image>
-        <Label x:Name="label" Content="{Binding VisibleName}" 
-               HorizontalAlignment="Left" Height="26" Margin="-28,72,-28,-18" 
+        <Label x:Name="label" HorizontalAlignment="Left" Height="26" Margin="-28,72,-28,-18" 
                VerticalAlignment="Top" Width="145" FontFamily="Calibri"
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <TextBlock Text="{Binding VisibleName}"/>
+        </Label>
     </Grid>
 </UserControl>

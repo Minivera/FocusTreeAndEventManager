@@ -7,6 +7,11 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Windows;
+using System.IO;
+using FocusTreeManager.CodeStructures;
+using FocusTreeManager.Parsers;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -90,16 +95,50 @@ namespace FocusTreeManager.ViewModel
             if (item is FociGridContainer)
             {
                 fociContainerList.Remove((FociGridContainer)item);
+                RaisePropertyChanged("fociContainerList");
             }
             else if (item is LocalisationContainer)
             {
                 localisationList.Remove((LocalisationContainer)item);
+                RaisePropertyChanged("localisationList");
             }
         }
 
         private void AddFile(string param)
         {
-            throw new NotImplementedException();
+            var dialog = new CommonOpenFileDialog();
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            dialog.Title = resourceLocalization["Add_Game_File"] as string;
+            dialog.InitialDirectory = Configurator.getGamePath();
+            dialog.AddToMostRecentlyUsedList = false;
+            dialog.AllowNonFileSystemItems = false;
+            dialog.DefaultDirectory = "C:";
+            dialog.EnsureFileExists = true;
+            dialog.EnsurePathExists = true;
+            dialog.EnsureReadOnly = false;
+            dialog.EnsureValidNames = true;
+            dialog.Multiselect = false;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                switch (param)
+                {
+                    case "FocusTree":
+                        {
+                            Script script = new Script();
+                            script.Analyse(File.ReadAllText(dialog.FileName));
+                            fociContainerList.Add(FocusTreeParser.CreateTreeFromScript(dialog.FileName, script));
+                            RaisePropertyChanged("fociContainerList");
+                            break;
+                        }
+                    case "Localisation":
+                        {
+                            localisationList.Add(LocalisationParser.CreateLocaleFromFile(dialog.FileName));
+                            RaisePropertyChanged("fociContainerList");
+                            break;
+                        }
+                }
+            }
         }
 
         private void OpenFocusTree(string param)

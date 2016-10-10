@@ -97,9 +97,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CodeStructures\Assignation.cs" />
+    <Compile Include="CodeStructures\CodeBlock.cs" />
+    <Compile Include="CodeStructures\CodeValue.cs" />
+    <Compile Include="CodeStructures\Comment.cs" />
+    <Compile Include="CodeStructures\ICodeStruct.cs" />
+    <Compile Include="CodeStructures\Script.cs" />
     <Compile Include="Containers\FociGridContainer.cs" />
     <Compile Include="Containers\LocalisationContainer.cs" />
     <Compile Include="GriddedGrid.cs" />
+    <Compile Include="Helper\UiHelper.cs" />
     <Compile Include="Model\FocusGridModel.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="Model\LineAdorner.cs" />
@@ -239,257 +246,108 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Focus\wonderweapons.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\anschluss.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\anti_comintern_pact.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\demand_sudetenland.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_bomber.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_doctrine.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_fighter.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_fighter2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_naval_bomber.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_air_production.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_alliance.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_allies_build_infantry.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_amphibious_assault.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_army_artillery.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_army_artillery2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_army_doctrines.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_army_motorized.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_army_tanks.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_attack_allies.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_axis_build_infantry.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_build_airforce.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_build_nay.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_build_tank.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_CAS.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_cavalry.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construction.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construction2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_civilian.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_civ_factory.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_infrastructure.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_military.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_mil_factory.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_construct_naval_dockyard.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_consumer_goods.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_dangerous_deal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_defence.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_demand_territory.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_forceful_treaty.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_fortify_city.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_improve_relations.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_intelligence_exchange.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_major_alliance.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_major_war.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_military_deal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_military_sphere.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_more_territorial_claims.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_national_unity.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_anti_submarine.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_battleship.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_carrier.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_cruiser.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_doctrines_tactics.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_navy_submarine.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_neutrality_focus.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_occypy_start_war.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_occypy_states_coastal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_occypy_states_ongoing_war.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_oil_refinery.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_political_pressure.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_position_armies.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_positive_trade_relations.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_production.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_production2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_propaganda.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_radar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_scientific_exchange.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_secret_weapon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_small_arms.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_soviet_construction.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_special_forces.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_support_communism.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_support_democracy.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_support_fascism.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_territory_or_war.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_trade.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_war_with_comintern.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\generic_wolf_pack.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\molotov_ribbentrop_pact.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\poland_goal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\rhineland.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\tripartite_pact.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="GFX\Focus\unknown.png">
+    <Resource Include="GFX\Interface\Focus_under.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Interface\Focus_under.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="GFX\Focus\focus_research.png" />
+    <Resource Include="GFX\Focus\focus_rocketry.png" />
+    <Resource Include="GFX\Focus\focus_wonderweapons.png" />
+    <Resource Include="GFX\Focus\goal_anschluss.png" />
+    <Resource Include="GFX\Focus\goal_anti_comintern_pact.png" />
+    <Resource Include="GFX\Focus\goal_demand_sudetenland.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_bomber.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_doctrine.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_fighter.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_fighter2.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_naval_bomber.png" />
+    <Resource Include="GFX\Focus\goal_generic_air_production.png" />
+    <Resource Include="GFX\Focus\goal_generic_alliance.png" />
+    <Resource Include="GFX\Focus\goal_generic_allies_build_infantry.png" />
+    <Resource Include="GFX\Focus\goal_generic_amphibious_assault.png" />
+    <Resource Include="GFX\Focus\goal_generic_army_artillery.png" />
+    <Resource Include="GFX\Focus\goal_generic_army_artillery2.png" />
+    <Resource Include="GFX\Focus\goal_generic_army_doctrines.png" />
+    <Resource Include="GFX\Focus\goal_generic_army_motorized.png" />
+    <Resource Include="GFX\Focus\goal_generic_army_tanks.png" />
+    <Resource Include="GFX\Focus\goal_generic_attack_allies.png" />
+    <Resource Include="GFX\Focus\goal_generic_axis_build_infantry.png" />
+    <Resource Include="GFX\Focus\goal_generic_build_airforce.png" />
+    <Resource Include="GFX\Focus\goal_generic_build_tank.png" />
+    <Resource Include="GFX\Focus\goal_generic_CAS.png" />
+    <Resource Include="GFX\Focus\goal_generic_cavalry.png" />
+    <Resource Include="GFX\Focus\goal_generic_construction.png" />
+    <Resource Include="GFX\Focus\goal_generic_construction2.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_civilian.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_civ_factory.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_infrastructure.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_military.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_mil_factory.png" />
+    <Resource Include="GFX\Focus\goal_generic_construct_naval_dockyard.png" />
+    <Resource Include="GFX\Focus\goal_generic_consumer_goods.png" />
+    <Resource Include="GFX\Focus\goal_generic_dangerous_deal.png" />
+    <Resource Include="GFX\Focus\goal_generic_defence.png" />
+    <Resource Include="GFX\Focus\goal_generic_demand_territory.png" />
+    <Resource Include="GFX\Focus\goal_generic_forceful_treaty.png" />
+    <Resource Include="GFX\Focus\goal_generic_fortify_city.png" />
+    <Resource Include="GFX\Focus\goal_generic_improve_relations.png" />
+    <Resource Include="GFX\Focus\goal_generic_intelligence_exchange.png" />
+    <Resource Include="GFX\Focus\goal_generic_major_alliance.png" />
+    <Resource Include="GFX\Focus\goal_generic_major_war.png" />
+    <Resource Include="GFX\Focus\goal_generic_military_deal.png" />
+    <Resource Include="GFX\Focus\goal_generic_military_sphere.png" />
+    <Resource Include="GFX\Focus\goal_generic_more_territorial_claims.png" />
+    <Resource Include="GFX\Focus\goal_generic_national_unity.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_anti_submarine.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_battleship.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_carrier.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_cruiser.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_doctrines_tactics.png" />
+    <Resource Include="GFX\Focus\goal_generic_navy_submarine.png" />
+    <Resource Include="GFX\Focus\goal_generic_neutrality_focus.png" />
+    <Resource Include="GFX\Focus\goal_generic_occupy_states_coastal.png" />
+    <Resource Include="GFX\Focus\goal_generic_oil_refinery.png" />
+    <Resource Include="GFX\Focus\goal_generic_political_pressure.png" />
+    <Resource Include="GFX\Focus\goal_generic_position_armies.png" />
+    <Resource Include="GFX\Focus\goal_generic_positive_trade_relations.png" />
+    <Resource Include="GFX\Focus\goal_generic_production.png" />
+    <Resource Include="GFX\Focus\goal_generic_production2.png" />
+    <Resource Include="GFX\Focus\goal_generic_propaganda.png" />
+    <Resource Include="GFX\Focus\goal_generic_radar.png" />
+    <Resource Include="GFX\Focus\goal_generic_scientific_exchange.png" />
+    <Resource Include="GFX\Focus\goal_generic_secret_weapon.png" />
+    <Resource Include="GFX\Focus\goal_generic_small_arms.png" />
+    <Resource Include="GFX\Focus\goal_generic_soviet_construction.png" />
+    <Resource Include="GFX\Focus\goal_generic_special_forces.png" />
+    <Resource Include="GFX\Focus\goal_generic_territory_or_war.png" />
+    <Resource Include="GFX\Focus\goal_generic_trade.png" />
+    <Resource Include="GFX\Focus\goal_generic_war_with_comintern.png" />
+    <Resource Include="GFX\Focus\goal_generic_wolf_pack.png" />
+    <Resource Include="GFX\Focus\goal_molotov_ribbentrop_pact.png" />
+    <Resource Include="GFX\Focus\goal_poland_goal.png" />
+    <Resource Include="GFX\Focus\goal_rhineland.png" />
+    <Resource Include="GFX\Focus\goal_support_fourth_int.png" />
+    <Resource Include="GFX\Focus\goal_tripartite_pact.png" />
+    <Resource Include="GFX\Focus\goal_unknown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_support_communism.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_support_democracy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_support_fascism.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_generic_build_navy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_generic_occupy_start_war.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_generic_occupy_states_ongoing_war.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

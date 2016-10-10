@@ -13,7 +13,7 @@ namespace FocusTreeManager.Model
     [ProtoContract(AsReferenceDefault = true)]
     public class Focus : ObservableObject
     {
-const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
+        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         [ProtoMember(1)]
         private string image;
@@ -107,6 +107,21 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
             }
         }
 
+        [ProtoMember(5)]
+        private int cost;
+
+        public int Cost
+        {
+            get
+            {
+                return cost;
+            }
+            set
+            {
+                Set<int>(() => this.Cost, ref this.cost, value);
+            }
+        }
+
         public Point FocusTop { get; set; }
 
         public Point FocusBottom { get; set; }
@@ -158,7 +173,7 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
 
         public void setDefaults()
         {
-            Image = "unknown";
+            Image = "goal_unknown";
             UniqueName = "unknown";
             X = 0;
             Y = 0;
@@ -170,7 +185,6 @@ const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
             FocusBottom = Bottom;
             FocusLeft = Left;
             FocusRight = Right;
-            Messenger.Default.Send(new NotificationMessage("FocusUpdated"));
         }
 
         public void Edit()

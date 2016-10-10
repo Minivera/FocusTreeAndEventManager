@@ -28,6 +28,8 @@
     <system:String x:Key="Focus_X">Position horizontale (X)</system:String>
     <system:String x:Key="Focus_Y">Position vérticale (Y)</system:String>
     <system:String x:Key="Focus_Image">Image</system:String>
+    <system:String x:Key="Focus_Cost">Coût en jour * 7</system:String>
+    <system:String x:Key="Focus_Script">Script interne</system:String>
     <system:String x:Key="Localisation_Language">Langue définie dans les defines</system:String>
     <system:String x:Key="Localisation_Key">Clef</system:String>
     <system:String x:Key="Localisation_Value">Valeur associée</system:String>

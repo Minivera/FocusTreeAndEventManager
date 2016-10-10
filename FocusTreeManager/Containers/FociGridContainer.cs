@@ -69,7 +69,7 @@ namespace FocusTreeManager.Containers
 
         private void SendDeleteSignal()
         {
-            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+            Messenger.Default.Send(new NotificationMessage(this, "SendDeleteItemSignal"));
         }
 
         public void RepairInternalReferences()

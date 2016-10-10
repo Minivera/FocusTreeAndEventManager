@@ -1,4 +1,5 @@
-﻿using FocusTreeManager.Model;
+﻿using FocusTreeManager.Helper;
+using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,11 @@ namespace FocusTreeManager.Views
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(ListGrid);
             LineAdorner Adorner = new LineAdorner(ListGrid, (FocusGridModel)this.DataContext);
             adornerLayer.Add(Adorner);
+            //Build display
+            foreach (Focus focus in UiHelper.FindVisualChildren<Focus>(ListGrid))
+            {
+                focus.DetectPositionPoints();
+            }
         }
 
         private void loadLocales()

@@ -8,7 +8,7 @@
         mc:Ignorable="d ignore"
         DataContext="{Binding ChangeImage, Source={StaticResource Locator}}" 
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" Title="{DynamicResource Chose_Image_Title}" 
-        WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/unknown.png">
+        WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

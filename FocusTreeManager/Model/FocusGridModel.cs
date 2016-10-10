@@ -14,7 +14,7 @@ namespace FocusTreeManager.Model
 {
     public class FocusGridModel : ObservableObject
     {
-        const int MIN_ROW_COUNT = 10;
+        const int MIN_ROW_COUNT = 7;
         const int MIN_COLUMN_COUNT = 20;
 
         private ObservableCollection<CanvasLine> canvasLines;
@@ -29,7 +29,7 @@ namespace FocusTreeManager.Model
 
         private Guid ID;
 
-        public RelayCommand AddFocusCommand { get; private set; }
+        public RelayCommand<object> AddFocusCommand { get; private set; }
 
         public RelayCommand<object> RightClickCommand { get; private set; }
 
@@ -60,6 +60,14 @@ namespace FocusTreeManager.Model
             {
                 columnCount = value;
                 RaisePropertyChanged("ColumnCount");
+            }
+        }
+
+        public Guid UniqueID
+        {
+            get
+            {
+                return ID;
             }
         }
 
@@ -119,7 +127,7 @@ namespace FocusTreeManager.Model
             this.ID = ID;
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
-            AddFocusCommand = new RelayCommand(AddFocus);
+            AddFocusCommand = new RelayCommand<object>(AddFocus);
             RightClickCommand = new RelayCommand<object>(RightClick);
             HoverCommand = new RelayCommand<object>(Hover);
             //Messenger
@@ -164,10 +172,10 @@ namespace FocusTreeManager.Model
             ColumnCount = biggestX.X >= ColumnCount ? biggestX.X + 1 : ColumnCount;
         }
 
-        public void AddFocus()
+        public void AddFocus(object sender)
         {
             System.Windows.Application.Current.Properties["Mode"] = "Add";
-            Messenger.Default.Send(new NotificationMessage("ShowAddFocus"));
+            Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
 
         public void RightClick(object sender)
@@ -252,10 +260,6 @@ namespace FocusTreeManager.Model
                 EditGridDefinition();
                 DrawOnCanvas();
             }
-            if (msg.Notification == "FocusUpdated")
-            {
-                DrawOnCanvas();
-            }
             if (msg.Notification == "DeleteFocus")
             {
                 Focus Model = (Focus)msg.Sender;
@@ -334,6 +338,15 @@ namespace FocusTreeManager.Model
                     RaisePropertyChanged(() => FociList);
                     DrawOnCanvas();
                 }
+            }
+        }
+
+        public void UpdateFocus(Focus sender)
+        {
+            if (this.isShown)
+            {
+                EditGridDefinition();
+                DrawOnCanvas();
             }
         }
 

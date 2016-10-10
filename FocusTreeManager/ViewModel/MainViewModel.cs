@@ -299,6 +299,22 @@ namespace FocusTreeManager.ViewModel
                 TabsModelList.Clear();
                 RaisePropertyChanged("TabsModelList");
             }
+            if (msg.Notification == "SendDeleteItemSignal")
+            {
+                ObservableObject Model = null;
+                if (msg.Sender is FociGridContainer)
+                {
+                    Model = TabsModelList.FirstOrDefault((m) => m is FocusGridModel && 
+                            ((FocusGridModel)m).UniqueID == ((FociGridContainer)msg.Sender).IdentifierID);
+                }
+                else if (msg.Sender is LocalisationContainer)
+                {
+                    Model = TabsModelList.FirstOrDefault((m) => m is LocalisationModel &&
+                            ((LocalisationModel)m).UniqueID == ((LocalisationContainer)msg.Sender).IdentifierID);
+                }
+                TabsModelList.Remove(Model);
+                RaisePropertyChanged("TabsModelList");
+            }
         }
 
         public void ExportProject()

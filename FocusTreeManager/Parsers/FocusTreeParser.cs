@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FocusTreeManager.CodeStructures;
+using System.IO;
 
 namespace FocusTreeManager.Parsers
 {
@@ -40,7 +42,8 @@ namespace FocusTreeManager.Parsers
             {
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
-                text.AppendLine("\t\ticon = " + "GFX_goal_" + focus.Icon);
+                text.AppendLine("\t\ticon = GFX_" + focus.Icon);
+                text.AppendLine("\t\tcost = " + focus.Cost);
                 if (focus.Prerequisite.Any())
                 {
                     foreach (PrerequisitesSet prereqisite in focus.Prerequisite)
@@ -118,6 +121,74 @@ namespace FocusTreeManager.Parsers
                 CheckPrerequisite(HoldedList, SortedList);
             }
             return SortedList;
+        }
+
+        public static FociGridContainer CreateTreeFromScript(string fileName, Script script)
+        {
+            Dictionary<string, PrerequisitesSet> waitingList = new Dictionary<string, PrerequisitesSet>();
+            FociGridContainer container = new FociGridContainer(Path.GetFileNameWithoutExtension(fileName));
+            container.TAG = script.Find("tag") != null ? script.Find("tag").Parse() : "";
+            foreach (CodeBlock block in script.FindAll<CodeBlock>("focus"))
+            {
+                Focus newFocus = new Focus();
+                newFocus.UniqueName = block.Find("id").Parse();
+                newFocus.Image = block.Find("icon").Parse().Replace("GFX_", "");
+                newFocus.X = int.Parse(block.Find("x").Parse());
+                newFocus.Y = int.Parse(block.Find("y").Parse());
+                newFocus.Cost = int.Parse(block.Find("cost").Parse());
+                foreach (ICodeStruct exclusives in block.FindAll<ICodeStruct>("mutually_exclusive"))
+                {
+                    foreach (ICodeStruct focuses in exclusives.FindAll<ICodeStruct>("focus"))
+                    {
+                        //Check if focus exists in list
+                        Focus found = container.FociList.FirstOrDefault((f) =>
+                            f.UniqueName == focuses.Parse());
+                        if (found != null)
+                        {
+                            MutuallyExclusiveSet set = new MutuallyExclusiveSet(newFocus, found);
+                            newFocus.MutualyExclusive.Add(set);
+                            found.MutualyExclusive.Add(set);
+                        }
+                    }
+                }
+                foreach (ICodeStruct prerequistes in block.FindAll<ICodeStruct>("prerequisite"))
+                {
+                    if (!prerequistes.FindAll<ICodeStruct>("focus").Any())
+                    {
+                        break;
+                    }
+                    PrerequisitesSet set = new PrerequisitesSet(newFocus);
+                    foreach (ICodeStruct focuses in prerequistes.FindAll<ICodeStruct>("focus"))
+                    {
+                        //Add the focus as a prerequisites in the current existing focuses
+                        //or put into wait
+                        Focus search = container.FociList.FirstOrDefault((f) =>
+                            f.UniqueName == focuses.Parse());
+                        if (search != null)
+                        {
+                            set.FociList.Add(search);
+                        }
+                        else
+                        {
+                            waitingList[focuses.Parse()] = set;
+                        }
+                    }
+                    newFocus.Prerequisite.Add(set);
+                }
+                //TODO: Load script
+                container.FociList.Add(newFocus);
+            }
+            //Repair lost sets, shouldn't happen, but in case
+            foreach (KeyValuePair<string, PrerequisitesSet> item in waitingList)
+            {
+                Focus search = container.FociList.FirstOrDefault((f) =>
+                        f.UniqueName == item.Key);
+                if (search != null)
+                {
+                    item.Value.FociList.Add(search);
+                }
+            }
+            return container;
         }
 
         private static void CheckPrerequisite(List<Focus> HoldedList, List<Focus> CurrentList)

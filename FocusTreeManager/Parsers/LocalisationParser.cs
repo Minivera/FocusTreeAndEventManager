@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Linq;
 using FocusTreeManager.Containers;
 using FocusTreeManager.Model;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace FocusTreeManager.Parsers
 {
@@ -29,6 +33,31 @@ namespace FocusTreeManager.Parsers
                 text.AppendLine(" " + pair.Key + ":0 " + "\"" + pair.Value + "\"");
             }
             return text.ToString();
+        }
+
+        public static LocalisationContainer CreateLocaleFromFile(string fileName)
+        {
+            LocalisationContainer container = new LocalisationContainer(Path.GetFileNameWithoutExtension(fileName));
+            IEnumerable<string> lines = File.ReadLines(fileName);
+            bool firstline = true;
+            foreach (string line in lines)
+            {
+                if (firstline)
+                {
+                    container.ShortName = line.Replace(":", "").Trim();
+                    firstline = false;
+                }
+                else
+                {
+                    LocaleContent content = new LocaleContent()
+                    {
+                        Key = line.Split(':')[0].Trim(),
+                        Value = Regex.Match(line.Split(':')[1], "\"([^\"]*)\"").Groups[1].Value.Trim()
+                    };
+                    container.LocalisationMap.Add(content);
+                }
+            }
+            return container;
         }
     }
 }

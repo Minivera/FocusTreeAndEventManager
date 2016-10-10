@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FocusTreeManager.Model;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace FocusTreeManager.Views
     /// </summary>
     public partial class Focus : UserControl
     {
+        private Point OldPoint;
+
         private DispatcherTimer dispatcherTimer;
 
         public Focus()
@@ -33,7 +36,7 @@ namespace FocusTreeManager.Views
             //Timer
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 16);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             dispatcherTimer.Start();
         }
 
@@ -54,9 +57,13 @@ namespace FocusTreeManager.Views
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            Model.Focus model = this.DataContext as Model.Focus;
+            DetectPositionPoints();
+        }
+
+        public void DetectPositionPoints()
+        {
             DependencyObject parent = VisualTreeHelper.GetParent(this);
-            while (!(parent is Grid ))
+            while (!(parent is Grid))
             {
                 if (parent == null)
                 {
@@ -66,10 +73,18 @@ namespace FocusTreeManager.Views
                 parent = VisualTreeHelper.GetParent(parent);
             }
             Point position = this.TranslatePoint(new Point(0, 0), (FrameworkElement)parent);
-            model.setPoints(new Point(position.X + (this.RenderSize.Width / 2), position.Y + 40), 
+            //If the focus has not changed position
+            if (OldPoint != null && OldPoint == position)
+            {
+                return;
+            }
+            OldPoint = position;
+            Model.Focus model = this.DataContext as Model.Focus;
+            model.setPoints(new Point(position.X + (this.RenderSize.Width / 2), position.Y + 40),
                             new Point(position.X + (this.RenderSize.Width / 2), position.Y + (this.RenderSize.Height)),
                             new Point(position.X, position.Y + (this.RenderSize.Height / 2)),
                             new Point(position.X + (this.RenderSize.Width), position.Y + (this.RenderSize.Height / 2)));
+            ((FocusGridModel)((FrameworkElement)parent).DataContext).UpdateFocus(model);
         }
     }
 }

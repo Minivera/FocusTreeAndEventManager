@@ -29,18 +29,21 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <DockPanel.ContextMenu>
-            <ContextMenu>
-                <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}" 
-                                          Command="{Binding AddFocusCommand}"/>
-            </ContextMenu>
-        </DockPanel.ContextMenu>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Label Content="{DynamicResource Focus_TAG}"/>
             <TextBox Text="{Binding Path=TAG}"/>
         </StackPanel>
         <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
-            <Grid Margin="45,0,45,0" x:Name="ListGrid">
+            <Grid Margin="45,0,45,0" x:Name="ListGrid" 
+                  Tag="{Binding RelativeSource={RelativeSource Self}}">
+                <Grid.ContextMenu>
+                    <ContextMenu >
+                        <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}"
+                              Command="{Binding AddFocusCommand}"
+                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={
+                                    RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
                 <Grid.InputBindings>
                     <MouseBinding Gesture="LeftClick" Command="{Binding RightClickCommand}" 
                       CommandParameter="{Binding RelativeSource=
@@ -61,7 +64,7 @@
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <local:GriddedGrid local:GridHelpers.RowCount="{Binding RowCount}"
-                              local:GridHelpers.ColumnCount="{Binding ColumnCount}" 
+                              local:GridHelpers.ColumnCount="{Binding ColumnCount}" x:Name="CentralGrid"
                                   Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
                                   GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
                                 <local:GriddedGrid.ColumnDefinitions>

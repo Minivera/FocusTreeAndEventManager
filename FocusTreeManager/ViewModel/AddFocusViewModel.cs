@@ -2,6 +2,10 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using System;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -42,10 +46,14 @@ namespace FocusTreeManager.ViewModel
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        public AddFocusViewModel SetupFlyout()
+        public AddFocusViewModel SetupFlyout(object sender)
         {
+            Point mousePos = Mouse.GetPosition((IInputElement)sender);
             Focus = new Focus();
             Focus.setDefaults();
+            //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Anoying
+            Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
+            Focus.Y = (int)Math.Floor(mousePos.Y / 140);
             RaisePropertyChanged("Focus");
             return this;
         }

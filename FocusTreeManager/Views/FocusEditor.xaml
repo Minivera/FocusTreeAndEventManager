@@ -44,7 +44,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="65"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="90"/>
@@ -61,9 +62,11 @@
                              IsReadOnly="True"/>
         <Label Content="{DynamicResource Focus_Description}" 
                            Grid.Column="0" Grid.Row="2"/>
-        <TextBlock Text="{Binding Focus.Description, Mode=OneWay}" Grid.Row="2" Grid.Column="1" 
+        <ScrollViewer Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="{Binding Focus.Description, Mode=OneWay}"  
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Description}"
                              TextWrapping="Wrap" VerticalAlignment="Center"/>
+        </ScrollViewer>
         <Label Content="{DynamicResource Focus_X}" 
                            Grid.Column="0" Grid.Row="3"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
@@ -74,13 +77,18 @@
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
                                 Grid.Row="4" Grid.Column="1" Value="{Binding Path=Focus.Y}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
-        <Label Content="{DynamicResource Focus_Image}" 
+        <Label Content="{DynamicResource Focus_Cost}" 
                            Grid.Column="0" Grid.Row="5"/>
-        <Image Grid.Column="1" Grid.Row="5" Source="{Binding Focus.Image}"/>
+        <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
+                                Grid.Row="5" Grid.Column="1" Value="{Binding Path=Focus.Cost}"
+                                TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
+        <Label Content="{DynamicResource Focus_Image}" 
+                           Grid.Column="0" Grid.Row="6"/>
+        <Image Grid.Column="1" Grid.Row="6" Source="{Binding Focus.Image}"/>
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
-                            Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" />
+                            Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" />
         <Button Style="{DynamicResource SquareButtonStyle}" 
                             Content="{DynamicResource Command_Accept}" Command="{Binding FocusCommand}" 
-                            Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
+                            Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

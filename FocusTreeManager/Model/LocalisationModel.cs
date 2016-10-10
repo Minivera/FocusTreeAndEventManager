@@ -19,6 +19,14 @@ namespace FocusTreeManager.Model
     {
         private Guid ID;
 
+        public Guid UniqueID
+        {
+            get
+            {
+                return ID;
+            }
+        }
+
         public string Filename
         {
             get

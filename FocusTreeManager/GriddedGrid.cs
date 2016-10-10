@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -61,16 +63,15 @@ namespace FocusTreeManager
             {
                 if (GridLinesVisibility == GridLinesVisibilityEnum.Both)
                 {
-                    foreach (var rowDefinition in RowDefinitions)
+                    foreach (var rowDefinition in RowDefinitions.Skip(1))
                     {
                         dc.DrawLine(new Pen(GridLineBrush, GridLineThickness), new Point(0, rowDefinition.Offset), new Point(ActualWidth, rowDefinition.Offset));
                     }
-
-                    foreach (var columnDefinition in ColumnDefinitions)
+                    foreach (var columnDefinition in ColumnDefinitions.Skip(1))
                     {
                         dc.DrawLine(new Pen(GridLineBrush, GridLineThickness), new Point(columnDefinition.Offset, 0), new Point(columnDefinition.Offset, ActualHeight));
                     }
-                    dc.DrawRectangle(Brushes.Transparent, new Pen(GridLineBrush, GridLineThickness), new Rect(0, 0, ActualWidth, ActualHeight));
+                    //dc.DrawRectangle(Brushes.Transparent, new Pen(GridLineBrush, GridLineThickness), new Rect(0, 0, ActualWidth, ActualHeight));
                 }
                 else if (GridLinesVisibility == GridLinesVisibilityEnum.Vertical)
                 {

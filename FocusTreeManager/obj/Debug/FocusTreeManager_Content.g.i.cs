@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("configuration.xml")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("gfx/focus/goal_generic_occupy_states_ongoing_war.png")]
 
 
