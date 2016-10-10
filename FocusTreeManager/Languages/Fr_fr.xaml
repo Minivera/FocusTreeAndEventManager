@@ -13,7 +13,7 @@
     <system:String x:Key="Add_Mutually_Focus">Rendre le focus mutuellement éxcusif avec...</system:String>
     <system:String x:Key="Add_Prerequisite_Focus">Ajouter des prérequis optionel au Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Ajouter un prérequis obligatoire au Focus</system:String>
-    <system:String x:Key="Add_Game_File">Ajouter un Fichier du jeu</system:String>
+    <system:String x:Key="Add_Game_File">Importer un Fichier du jeu</system:String>
     <system:String x:Key="Add_Game_Element">Nouvel élément</system:String>
     <system:String x:Key="Delete_Game_Element">Supprimer l'élément</system:String>
     <system:String x:Key="Project_New">Créer un nouveau projet</system:String>
