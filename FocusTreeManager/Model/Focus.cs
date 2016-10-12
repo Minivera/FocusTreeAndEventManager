@@ -107,7 +107,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        [ProtoMember(5)]
+        [ProtoMember(7)]
         private int cost;
 
         public int Cost

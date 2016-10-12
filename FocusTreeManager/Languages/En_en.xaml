@@ -6,6 +6,7 @@
     <system:String x:Key="Chose_Image_Title">Choose the focus Icon</system:String>
     <system:String x:Key="Localize_Title">Create localisation</system:String>
     <system:String x:Key="Game_Path_Title">Select game installation folder</system:String>
+    <system:String x:Key="Scripter_Title">Scripter</system:String>
     <system:String x:Key="Load_Title">Select a project</system:String>
     <system:String x:Key="Add_Focus">Add a new Focus</system:String>
     <system:String x:Key="Edit_Focus">Edit Focus</system:String>
@@ -35,6 +36,7 @@
     <system:String x:Key="Localisation_Value">Localisation value</system:String>
     <system:String x:Key="Localisation_Reminder">If you add a new language, 
         remember to add it manually to the language.yaml file too.</system:String>
+    
     <system:String x:Key="Command_Accept">Accept</system:String>
     <system:String x:Key="Command_Change">Change</system:String>
     <system:String x:Key="Command_Select">Select</system:String>
