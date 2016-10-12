@@ -19,6 +19,7 @@ $RECYCLE.BIN/
 
 # Visual Studio Temporary Files
 *.suo
+bin/
 
 # =========================
 # Operating System Files
