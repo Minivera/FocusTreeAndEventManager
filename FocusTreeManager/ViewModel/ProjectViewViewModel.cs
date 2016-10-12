@@ -23,8 +23,6 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ProjectViewViewModel : ViewModelBase
     {
-        public ObservableObject SelectedFile { get; private set; }
-
         public ObservableCollection<FociGridContainer> fociContainerList
         {
             get
@@ -53,9 +51,9 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand<string> AddElementCommand { get; private set; }
 
-        public RelayCommand<string> OpenFileTreeCommand { get; private set; }
+        public RelayCommand<Guid> OpenFileTreeCommand { get; private set; }
 
-        public RelayCommand<string> OpenFileLocaleCommand { get; private set; }
+        public RelayCommand<Guid> OpenFileLocaleCommand { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ProjectViewModel class.
@@ -65,8 +63,8 @@ namespace FocusTreeManager.ViewModel
             //Commands
             AddFileCommand = new RelayCommand<string>(AddFile);
             AddElementCommand = new RelayCommand<string>(AddElement);
-            OpenFileTreeCommand = new RelayCommand<string>(OpenFocusTree);
-            OpenFileLocaleCommand = new RelayCommand<string>(OpenLocalisation);
+            OpenFileTreeCommand = new RelayCommand<Guid>(OpenFocusTree);
+            OpenFileLocaleCommand = new RelayCommand<Guid>(OpenLocalisation);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -141,16 +139,16 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        private void OpenFocusTree(string param)
+        private void OpenFocusTree(Guid param)
         {
-            SelectedFile = fociContainerList.SingleOrDefault((f) => f.ContainerID == param);
-            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "OpenFocusTree"));
+            FociGridContainer SelectedFile = fociContainerList.SingleOrDefault((f) => f.IdentifierID == param);
+            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenFocusTree"));
         }
 
-        private void OpenLocalisation(string param)
+        private void OpenLocalisation(Guid param)
         {
-            SelectedFile = localisationList.SingleOrDefault((f) => f.ContainerID == param);
-            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "OpenLocalisation"));
+            LocalisationContainer SelectedFile = localisationList.SingleOrDefault((f) => f.IdentifierID == param);
+            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenLocalisation"));
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

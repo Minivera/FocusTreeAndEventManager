@@ -45,7 +45,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                         Path=DataContext.OpenFileTreeCommand}"
-                                        CommandParameter="{Binding ContainerID}" 
+                                        CommandParameter="{Binding IdentifierID}" 
                                         MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -89,7 +89,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileLocaleCommand}"
-                                                  CommandParameter="{Binding ContainerID}" 
+                                                  CommandParameter="{Binding IdentifierID}" 
                                                   MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">

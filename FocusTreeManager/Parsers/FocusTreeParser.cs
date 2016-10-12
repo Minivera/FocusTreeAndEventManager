@@ -58,7 +58,7 @@ namespace FocusTreeManager.Parsers
                 }
                 if (focus.MutualyExclusive.Any())
                 {
-                    text.AppendLine("\t\tmutually_exclusive = ");
+                    text.AppendLine("\t\tmutually_exclusive = {");
                     foreach (MutuallyExclusiveSet ExclusiveSet in focus.MutualyExclusive)
                     {
                         if (ExclusiveSet.Focus1.UniqueName != focus.UniqueName)
@@ -80,47 +80,109 @@ namespace FocusTreeManager.Parsers
             text.AppendLine("}");
             return text.ToString();
         }
-
+        
         private static List<Focus> prepareParse(List<Focus> listFoci)
         {
             List<Focus> SortedList = new List<Focus>();
             List<Focus> HoldedList = new List<Focus>();
-            //Loop inside the list sorted by X then Y
-            foreach (Focus focus in listFoci.OrderBy(f => f.X)
-                                    .ThenBy(f => f.Y)
-                                    .ToList())
+            //Add the roots, the nodes without any perequisites. Helps with performance
+            SortedList.AddRange(listFoci.Where((f) => !f.Prerequisite.Any()));
+            int MaxY = listFoci.Max(i => i.Y);
+            int MaxX = listFoci.Max(i => i.X);
+            //For each X in the grid
+            for (int i = 0; i < MaxX; i++)
             {
-                //If there is any prerequisites
-                if (focus.Prerequisite.Any())
+                //For each Y in the grid
+                for (int j = 0; j < MaxY; j++)
                 {
-                    bool isValid = true;
-                    //Loop inside all prerequisites
-                    foreach (PrerequisitesSet set in focus.Prerequisite)
+                    //If there is a focus with the current X and Y
+                    Focus focus = listFoci.FirstOrDefault((f) => f.X == i && f.Y == j);
+                    if (focus == null)
                     {
-                        //Check if all the prerequisites are added
-                        if (!set.FociList.All(value => SortedList.Contains(value)))
+                        continue;
+                    }
+                    //If the prerequisites are not present
+                    if (!CheckPrerequisite(focus, SortedList))
+                    {
+                        foreach (PrerequisitesSet set in focus.Prerequisite)
                         {
-                            //Add the current focus to the holded list, break
+                            //check if any of the prerequisite can be added immediatly
+                            foreach (Focus setFocus in set.FociList)
+                            {
+                                //If that focus has no prerequisites or the prerequisites are present
+                                if ((CheckPrerequisite(setFocus, SortedList) || !setFocus.Prerequisite.Any())
+                                    && !SortedList.Contains(setFocus))
+                                {
+                                    //Add it if it is not there already
+                                    SortedList.Add(setFocus);
+                                }
+                            }
+                        }
+                        //Recheck prerequisite again
+                        if (CheckPrerequisite(focus, SortedList) && !SortedList.Contains(focus))
+                        {
+                            //Add the focus to the sorted list
+                            SortedList.Add(focus);
+                        }
+                        else
+                        {
+                            //Add the current focus to the holded list
                             HoldedList.Add(focus);
-                            isValid = false;
                             break;
                         }
                     }
-                    if (isValid)
+                    else if (!SortedList.Contains(focus))
                     {
-                        //If all prerequisites were okay, add it to the list
+                        //Otherwise, add it to the list
                         SortedList.Add(focus);
                     }
-                }
-                else
-                {
-                    //Otherwise, add it to the list
-                    SortedList.Add(focus);
+                    //Check if we can add some of the holded focus
+                    AddBackwardsPrerequisite(HoldedList, SortedList);
                 }
                 //Check if we can add some of the holded focus
-                CheckPrerequisite(HoldedList, SortedList);
+                AddBackwardsPrerequisite(HoldedList, SortedList);
             }
+            //Check if we can add some of the holded focus
+            AddBackwardsPrerequisite(HoldedList, SortedList);
+            //Just to be sure, add any prerequisite that are not in the list, but in the original
+            SortedList.AddRange(listFoci.Except(SortedList));
             return SortedList;
+        }
+
+        private static bool CheckPrerequisite(Focus focus, List<Focus> SortedList)
+        {
+            foreach (PrerequisitesSet set in focus.Prerequisite)
+            {
+                //Check if all the prerequisites are added
+                if (!set.FociList.All(value => SortedList.Contains(value)))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static void AddBackwardsPrerequisite(List<Focus> HoldedList, List<Focus> SortedList)
+        {
+            bool wasAdded = false;
+            List<Focus> TempoList = HoldedList.ToList();
+            //Run through all focus holded
+            foreach (Focus focus in TempoList)
+            {
+                if (CheckPrerequisite(focus, SortedList) && !SortedList.Contains(focus))
+                {
+                    //If all prerequisites were okay, add it to the list
+                    SortedList.Add(focus);
+                    HoldedList.Remove(focus);
+                    wasAdded = true;
+                }
+                //If one focus was added
+                if (wasAdded)
+                {
+                    //Recheck prerequisites
+                    AddBackwardsPrerequisite(HoldedList, SortedList);
+                }
+            }
         }
 
         public static FociGridContainer CreateTreeFromScript(string fileName, Script script)
@@ -189,40 +251,6 @@ namespace FocusTreeManager.Parsers
                 }
             }
             return container;
-        }
-
-        private static void CheckPrerequisite(List<Focus> HoldedList, List<Focus> CurrentList)
-        {
-            bool wasAdded = false;
-            List<Focus> TempoList = HoldedList.ToList();
-            //Run through all focus holded
-            foreach (Focus focus in TempoList)
-            {
-                bool isValid = true;
-                //Loop inside all prerequisites
-                foreach (PrerequisitesSet set in focus.Prerequisite)
-                {
-                    //Check if all the prerequisites are added
-                    if (set.FociList.Except(CurrentList).Any())
-                    {
-                        isValid = false;
-                        break;
-                    }
-                }
-                if (isValid)
-                {
-                    //If all prerequisites were okay, add it to the list
-                    CurrentList.Add(focus);
-                    HoldedList.Remove(focus);
-                    wasAdded = true;
-                }
-                //If one focus was added
-                if (wasAdded)
-                {
-                    //Recheck prerequisites
-                    CheckPrerequisite(HoldedList, CurrentList);
-                }
-            }
         }
     }
 }

@@ -266,10 +266,9 @@ namespace FocusTreeManager.ViewModel
             }
             if (msg.Notification == "OpenFocusTree")
             {
-                ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-                FociGridContainer container = model.SelectedFile as FociGridContainer;
+                FociGridContainer container = msg.Sender as FociGridContainer;
                 if (TabsModelList.Where((t) => t is FocusGridModel && 
-                        ((FocusGridModel)t).Filename == container.ContainerID).Any())
+                        ((FocusGridModel)t).UniqueID == container.IdentifierID).Any())
                 {
                     return;
                 }
@@ -279,10 +278,9 @@ namespace FocusTreeManager.ViewModel
             }
             if (msg.Notification == "OpenLocalisation")
             {
-                ProjectViewViewModel model = msg.Sender as ProjectViewViewModel;
-                LocalisationContainer container = model.SelectedFile as LocalisationContainer;
+                LocalisationContainer container = msg.Sender as LocalisationContainer;
                 if (TabsModelList.Where((t) => t is LocalisationModel && 
-                            ((LocalisationModel)t).Filename == container.ContainerID).Any())
+                            ((LocalisationModel)t).UniqueID == container.IdentifierID).Any())
                 {
                     return;
                 }
