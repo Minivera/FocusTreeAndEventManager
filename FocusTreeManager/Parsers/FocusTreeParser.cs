@@ -13,6 +13,11 @@ namespace FocusTreeManager.Parsers
 {
     static class FocusTreeParser
     {
+        private static readonly string[] CORE_FOCUS_SCRIPTS_ELEMENTS =
+        {
+            "ai_will_do", "completion_reward", "available", "bypass", "cancel"
+        };
+
         public static Dictionary<string, string> ParseAllTrees(ObservableCollection<FociGridContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
@@ -235,9 +240,23 @@ namespace FocusTreeManager.Parsers
                             waitingList[focuses.Parse()] = set;
                         }
                     }
-                    newFocus.Prerequisite.Add(set);
+                    //If any prerequisite was added (Poland has empty prerequisite blocks...)
+                    if (set.FociList.Any())
+                    { 
+                        newFocus.Prerequisite.Add(set);
+                    }
                 }
-                //TODO: Load script
+                //Get all core scripting elements
+                Script InternalFocusScript = new Script();
+                for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
+                {
+                    ICodeStruct found = block.FindExternal(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
+                    if (found != null)
+                    {
+                        InternalFocusScript.Code.Add(found);
+                    }
+                }
+                newFocus.InternalScript = InternalFocusScript.Parse();
                 container.FociList.Add(newFocus);
             }
             //Repair lost sets, shouldn't happen, but in case

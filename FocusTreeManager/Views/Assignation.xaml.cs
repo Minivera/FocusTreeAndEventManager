@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace FocusTreeManager.Views
 {
     /// <summary>
-    /// Logique d'interaction pour FocusEditor.xaml
+    /// Logique d'interaction pour Assignation.xaml
     /// </summary>
-    public partial class FocusEditor : UserControl
+    public partial class Assignation : UserControl
     {
-        public FocusEditor()
+        public Assignation()
         {
             InitializeComponent();
             loadLocales();
@@ -37,6 +37,25 @@ namespace FocusTreeManager.Views
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             this.Resources.MergedDictionaries.Add(resourceLocalization);
+        }
+
+        private void TextBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((TextBox)sender).BorderThickness = new Thickness(1);
+        }
+
+        private void TextBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((TextBox)sender).BorderThickness = new Thickness(0);
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Keyboard.ClearFocus();
+                ((TextBox)sender).BorderThickness = new Thickness(0);
+            }
         }
     }
 }

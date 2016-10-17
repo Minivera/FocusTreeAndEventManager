@@ -11,7 +11,7 @@ namespace FocusTreeManager.CodeStructures
     /// Code block containing one or multiple assignations. It contains everything
     /// that is between one level of brackets.
     /// </summary>
-    class CodeBlock : ICodeStruct
+    public class CodeBlock : ICodeStruct
     {
         private int Level;
 
@@ -43,14 +43,22 @@ namespace FocusTreeManager.CodeStructures
                     {
                         Assignation tempo = new Assignation(Level + 1);
                         tempo.Analyse(inlines.Value);
-                        Code.Add(tempo);
+                        //If tempo has a value
+                        if (!String.IsNullOrEmpty(tempo.Assignee))
+                        {
+                            Code.Add(tempo);
+                        }
                     }
                 } 
                 else
                 {
                     Assignation tempo = new Assignation(Level + 1);
                     tempo.Analyse(ItemMatch.Value);
-                    Code.Add(tempo);
+                    //If tempo has a value
+                    if (!String.IsNullOrEmpty(tempo.Assignee))
+                    {
+                        Code.Add(tempo);
+                    }
                 }
             }
         }
@@ -70,7 +78,7 @@ namespace FocusTreeManager.CodeStructures
                 {
                     tabulations += "\t";
                 }
-                content.Append("{");
+                content.AppendLine("{");
                 foreach (Assignation item in Code)
                 {
                     //Parse each internal assignations
@@ -87,6 +95,20 @@ namespace FocusTreeManager.CodeStructures
             foreach (ICodeStruct item in Code)
             {
                 found = item.Find(TagToFind);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        public ICodeStruct FindExternal(string TagToFind)
+        {
+            ICodeStruct found;
+            foreach (ICodeStruct item in Code)
+            {
+                found = item.FindExternal(TagToFind);
                 if (found != null)
                 {
                     return found;

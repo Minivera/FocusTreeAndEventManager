@@ -36,15 +36,34 @@
     <system:String x:Key="Localisation_Value">Localisation value</system:String>
     <system:String x:Key="Localisation_Reminder">If you add a new language, 
         remember to add it manually to the language.yaml file too.</system:String>
-    
+    <system:String x:Key="Scripter_Controls">Controls</system:String>
+    <system:String x:Key="Scripter_GUI">Graphical interface</system:String>
+    <system:String x:Key="Scripter_Code">Code</system:String>
+    <system:String x:Key="Scripter_Assignation">Assignations</system:String>
+    <system:String x:Key="Scripter_Assignation_Custom">Custom assignation</system:String>
+    <system:String x:Key="Scripter_Conditions">Conditions</system:String>
+    <system:String x:Key="Scripter_Condition_If">If block</system:String>
+    <system:String x:Key="Scripter_Condition_AND">Or block</system:String>
+    <system:String x:Key="Scripter_Condition_OR">And block</system:String>
+    <system:String x:Key="Scripter_Condition_NOT">Not block</system:String>
+    <system:String x:Key="Scripter_Condition_Limit">Limit block</system:String>
+    <system:String x:Key="Scripter_Block">Common Code blocks</system:String>
+    <system:String x:Key="Scripter_Block_AI">Ai_will_do block</system:String>
+    <system:String x:Key="Scripter_Block_Reward">Reward block</system:String>
+    <system:String x:Key="Scripter_Block_Available">Availability block</system:String>
+    <system:String x:Key="Scripter_Block_Bypass">Bypass block</system:String>
+    <system:String x:Key="Scripter_Block_Cancel">Cancel block</system:String>
+    <system:String x:Key="Scripter_Block_Custom">Custom code block</system:String>
     <system:String x:Key="Command_Accept">Accept</system:String>
     <system:String x:Key="Command_Change">Change</system:String>
+    <system:String x:Key="Command_Edit">Edit</system:String>
     <system:String x:Key="Command_Select">Select</system:String>
     <system:String x:Key="Command_Save">Save</system:String>
     <system:String x:Key="Command_Cancel">Cancel</system:String>
     <system:String x:Key="Command_Find">Find</system:String>
     <system:String x:Key="Command_Continue">Continue without saving</system:String>
     <system:String x:Key="Command_Quit">Quit without saving</system:String>
+    <system:String x:Key="Command_Delete">Delete</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>

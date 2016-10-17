@@ -52,6 +52,10 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -106,17 +110,24 @@
     <Compile Include="Containers\FociGridContainer.cs" />
     <Compile Include="Containers\LocalisationContainer.cs" />
     <Compile Include="GriddedGrid.cs" />
+    <Compile Include="Helper\ModelsToScriptHelper.cs" />
     <Compile Include="Helper\UiHelper.cs" />
+    <Compile Include="Model\AssignationModel.cs" />
     <Compile Include="Model\FocusGridModel.cs" />
     <Compile Include="Model\ISet.cs" />
-    <Compile Include="Model\LineAdorner.cs" />
+    <Compile Include="Adorners\LineAdorner.cs" />
     <Compile Include="Model\LocaleContent.cs" />
     <Compile Include="Model\LocalisationModel.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Parsers\FocusTreeParser.cs" />
     <Compile Include="Parsers\LocalisationParser.cs" />
     <Compile Include="ViewModel\ProjectViewViewModel.cs" />
+    <Compile Include="ViewModel\ScripterControlsViewModel.cs" />
+    <Compile Include="ViewModel\ScripterViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="Views\Assignation.xaml.cs">
+      <DependentUpon>Assignation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FocusEditor.xaml.cs">
       <DependentUpon>FocusEditor.xaml</DependentUpon>
     </Compile>
@@ -125,6 +136,12 @@
     </Compile>
     <Compile Include="Views\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Scripter.xaml.cs">
+      <DependentUpon>Scripter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScripterControls.xaml.cs">
+      <DependentUpon>ScripterControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -137,9 +154,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Languages\ru_ru.xaml">
+    <Page Include="Languages\Ru_ru.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Assignation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ChangeImage.xaml">
       <SubType>Form</SubType>
@@ -202,6 +223,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Scripter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScripterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

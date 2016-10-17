@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace FocusTreeManager.Views
 {
     /// <summary>
-    /// Logique d'interaction pour FocusEditor.xaml
+    /// Logique d'interaction pour ScripterControlsContainer.xaml
     /// </summary>
-    public partial class FocusEditor : UserControl
+    public partial class ScripterControls : UserControl
     {
-        public FocusEditor()
+        public ScripterControls()
         {
             InitializeComponent();
             loadLocales();

@@ -1,4 +1,6 @@
-﻿using FocusTreeManager.Model;
+﻿using FocusTreeManager.CodeStructures;
+using FocusTreeManager.Model;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -13,9 +15,9 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class EditFocusViewModel : ViewModelBase
     {
-        private Focus focus;
+        private Model.Focus focus;
 
-        public Focus Focus
+        public Model.Focus Focus
         {
             get
             {
@@ -32,6 +34,8 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand ChangeImageCommand { get; private set; }
 
+        public RelayCommand EditScriptCommand { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the EditFocusViewModel class.
         /// </summary>
@@ -39,6 +43,7 @@ namespace FocusTreeManager.ViewModel
         {
             FocusCommand = new RelayCommand(EditFocus);
             ChangeImageCommand = new RelayCommand(ChangeImage);
+            EditScriptCommand = new RelayCommand(EditScript);
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
@@ -56,6 +61,16 @@ namespace FocusTreeManager.ViewModel
         public void ChangeImage()
         {
             Messenger.Default.Send(new NotificationMessage(this, "ShowChangeImage"));
+        }
+
+        public void EditScript()
+        {
+            ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
+            Script newScript = new Script();
+            newScript.Analyse(focus.InternalScript);
+            ViewModel.setCode(newScript, focus);
+            Scripter dialog = new Scripter();
+            dialog.ShowDialog();
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

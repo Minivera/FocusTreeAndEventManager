@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    class CodeValue : ICodeStruct
+    public class CodeValue : ICodeStruct
     {
         public string Value { get; set; }
 
@@ -23,6 +23,12 @@ namespace FocusTreeManager.CodeStructures
         }
 
         public ICodeStruct Find(string TagToFind)
+        {
+            //End of structure
+            return null;
+        }
+
+        public ICodeStruct FindExternal(string TagToFind)
         {
             //End of structure
             return null;

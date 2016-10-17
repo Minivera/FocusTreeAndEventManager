@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    interface ICodeStruct
+    public interface ICodeStruct
     {
         string Parse();
         void Analyse(string code);
         ICodeStruct Find(string TagToFind);
+        ICodeStruct FindExternal(string TagToFind);
         List<ICodeStruct> FindAll<T>(string TagToFind);
     }
 }

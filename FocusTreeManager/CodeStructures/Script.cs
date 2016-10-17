@@ -7,7 +7,7 @@ namespace FocusTreeManager.CodeStructures
     /// <summary>
     /// Hold the whole script in any text file, a text file contains one or multiple assignations.
     /// </summary>
-    class Script : ICodeStruct
+    public class Script : ICodeStruct
     {
         /// <summary>
         /// Regex that check for eathier an assignation with a code block (text = {...})
@@ -53,6 +53,20 @@ namespace FocusTreeManager.CodeStructures
             foreach (ICodeStruct item in Code)
             {
                 found = item.Find(TagToFind);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        public ICodeStruct FindExternal(string TagToFind)
+        {
+            ICodeStruct found;
+            foreach (ICodeStruct item in Code)
+            {
+                found = item.FindExternal(TagToFind);
                 if (found != null)
                 {
                     return found;

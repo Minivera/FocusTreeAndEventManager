@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views
 {
     /// <summary>
-    /// Logique d'interaction pour FocusEditor.xaml
+    /// Logique d'interaction pour Scripter.xaml
     /// </summary>
-    public partial class FocusEditor : UserControl
+    public partial class Scripter : MetroWindow
     {
-        public FocusEditor()
+        public Scripter()
         {
             InitializeComponent();
             loadLocales();
@@ -30,6 +30,10 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Notification == "HideScripter")
+            {
+                this.Hide();
+            }
         }
 
         private void loadLocales()

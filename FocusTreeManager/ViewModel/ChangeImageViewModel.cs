@@ -44,7 +44,6 @@ namespace FocusTreeManager.ViewModel
         {
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), IMAGE_PATH);
             ImageList = new List<string>(Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly));
-
             SelectCommand = new RelayCommand<string>((s) => SelectFocus(s));
         }
 

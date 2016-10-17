@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    class Comment : ICodeStruct
+    public class Comment : ICodeStruct
     {
         public void Analyse(string Code)
         {
@@ -14,6 +14,11 @@ namespace FocusTreeManager.CodeStructures
         }
 
         public ICodeStruct Find(string TagToFind)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICodeStruct FindExternal(string TagToFind)
         {
             throw new NotImplementedException();
         }

@@ -39,6 +39,8 @@ namespace FocusTreeManager.ViewModel
             SimpleIoc.Default.Register<EditFocusViewModel>();
             SimpleIoc.Default.Register<ChangeImageViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<ScripterViewModel>();
+            SimpleIoc.Default.Register<ScripterControlsViewModel>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
         }
 
@@ -92,6 +94,22 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+            }
+        }
+
+        public ScripterViewModel Scripter
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ScripterViewModel>();
+            }
+        }
+
+        public ScripterControlsViewModel ScripterControls
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ScripterControlsViewModel>();
             }
         }
 

@@ -122,6 +122,21 @@ namespace FocusTreeManager.Model
             }
         }
 
+        [ProtoMember(8)]
+        private string internalScript;
+
+        public string InternalScript
+        {
+            get
+            {
+                return internalScript;
+            }
+            set
+            {
+                Set<string>(() => this.InternalScript, ref this.internalScript, value);
+            }
+        }
+
         public Point FocusTop { get; set; }
 
         public Point FocusBottom { get; set; }

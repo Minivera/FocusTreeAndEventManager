@@ -4,20 +4,11 @@ using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using FocusTreeManager.Model;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
@@ -108,18 +99,22 @@ namespace FocusTreeManager
 
         async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            MessageDialogResult Result = await ShowSaveDialog();
-            if (Result == MessageDialogResult.Affirmative)
+            MainViewModel Model = this.DataContext as MainViewModel;
+            if (Model.isProjectExist)
             {
-                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
-                //Show Save dialog and quit
-                Application.Current.Shutdown();
-            }
-            else if (Result == MessageDialogResult.FirstAuxiliary)
-            {
-                //Quit without saving
-                Application.Current.Shutdown();
+                e.Cancel = true;
+                MessageDialogResult Result = await ShowSaveDialog();
+                if (Result == MessageDialogResult.Affirmative)
+                {
+                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
+                    //Show Save dialog and quit
+                    Application.Current.Shutdown();
+                }
+                else if (Result == MessageDialogResult.FirstAuxiliary)
+                {
+                    //Quit without saving
+                    Application.Current.Shutdown();
+                }
             }
         }
 

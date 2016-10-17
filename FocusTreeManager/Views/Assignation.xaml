@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.Assignation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views"
+             mc:Ignorable="d" Height="30">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel>
+            <Border BorderThickness="1" BorderBrush="{Binding BorderColor}" DockPanel.Dock="Left"
+                             Background="{Binding BorderColor}" CornerRadius="5" Width="100">
+                <TextBlock Text="{Binding Text}" FontFamily="Courier New" 
+                             FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap"
+                             Margin="5,0,15,0" Foreground="{Binding Color}" 
+                             />
+            </Border>
+            <Border BorderThickness="1" BorderBrush="{Binding BorderColor}" DockPanel.Dock="Left"
+                             Background="{Binding BackgroundColor}" CornerRadius="5" 
+                             Margin="-10,0,0,0">
+                <TextBox Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" FontFamily="Courier New" 
+                            FontSize="11" VerticalAlignment="Center" DockPanel.Dock="Right"
+                            IsReadOnly="{Binding IsNotEditable, Mode=OneWay}" 
+                            VerticalContentAlignment="Center" Background="{Binding BackgroundColor}"
+                            BorderThickness="0" KeyDown="TextBox_KeyDown"
+                            MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave"
+                            Foreground="{Binding Color}" CaretBrush="{Binding Color}"
+                            Height="20" Margin="5,0,5,0"/>
+            </Border>
+        </DockPanel>
+    </Grid>
+</UserControl>
