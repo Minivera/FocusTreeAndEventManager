@@ -60,7 +60,7 @@ namespace FocusTreeManager.CodeStructures
                 tabulations += "\t";
             }
             StringBuilder content = new StringBuilder();
-            content.Append(tabulations + Assignee + " = " + Value.Parse());
+            content.AppendLine(tabulations + Assignee + " = " + Value.Parse());
             return content.ToString();
         }
 

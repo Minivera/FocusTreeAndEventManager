@@ -79,7 +79,7 @@ namespace FocusTreeManager.Parsers
                 }
                 text.AppendLine("\t\tx = " + focus.X);
                 text.AppendLine("\t\ty = " + focus.Y);
-                //TODO: Write the focus code
+                text.AppendLine(focus.InternalScript);
                 text.AppendLine("\t}");
             }
             text.AppendLine("}");

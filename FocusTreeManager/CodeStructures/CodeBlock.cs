@@ -66,26 +66,19 @@ namespace FocusTreeManager.CodeStructures
         public string Parse()
         {
             StringBuilder content = new StringBuilder();
-            if (Code.Count == 1)
+            //Get the right amount of tabulations for the level
+            string tabulations = "";
+            for (int i = 1; i < Level; i++)
             {
-                content.Append("{ " + Code.FirstOrDefault().Parse() + " }");
+                tabulations += "\t";
             }
-            else if(Code.Count > 1)
+            content.AppendLine("{");
+            foreach (Assignation item in Code)
             {
-                //Get the right amount of tabulations for the level
-                string tabulations = "";
-                for (int i = 1; i < Level; i++)
-                {
-                    tabulations += "\t";
-                }
-                content.AppendLine("{");
-                foreach (Assignation item in Code)
-                {
-                    //Parse each internal assignations
-                    content.AppendLine(item.Parse());
-                }
-                content.AppendLine(tabulations + "}");
+                //Parse each internal assignations
+                content.AppendLine(item.Parse());
             }
+            content.AppendLine(tabulations + "}");
             return content.ToString();
         }
 

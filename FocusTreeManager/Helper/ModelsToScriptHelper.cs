@@ -145,7 +145,7 @@ namespace FocusTreeManager.Helper
             }
         }
 
-        public static Script TransformModelsToScript(List<AssignationModel> models, int StartingLevel = 1)
+        public static Script TransformModelsToScript(List<AssignationModel> models, int StartingLevel = 2)
         {
             Script newScript = new Script();
             foreach (AssignationModel assignation in models)
