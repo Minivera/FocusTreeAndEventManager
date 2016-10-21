@@ -2,8 +2,8 @@
 *        Beta_1a      *
 ***********************
 
-- Parsing code will now be wellformed, without random new line or ugly placment.
-- When analysing user-written code, the application will now register any parsing errors.
+- Parsing code will now be well formed, without random new line or ugly placement.
+- When analyzing user-written code, the application will now register any parsing errors.
 - Error dawg will now tell you where there are errors
 - Improved script loading and scripter stability
 - Scripter and script interpretor now knows that > and < exists
@@ -11,10 +11,10 @@
 - Mutually exclusives lines won't overlap the foci anymore.
 - Fixed a crash with France tree and empty prerequisite blocks
 - Switching tabs in the main windows will not correctly reload lines
-- The focus grid is now indefinetly scrollable
+- The focus grid is now indefinitely scrollable
 - Settings windows will now show on the first start
-- You can now set your preference for scipting, either the scripter or manual coding.
-- When editing scripts, the scripter windows will show the prefered tab
-- The scripter and editor will now update when chaging tabs
+- You can now set your preference for scripting, either the scripter or manual coding.
+- When editing scripts, the scripter windows will show the preferred tab
+- The scripter and editor will now update when changing tabs
 - You can now edit script manually with a minimalistic editor (Will be updated in the future)
 - The scripter is now generic (Preparing for the Events)
