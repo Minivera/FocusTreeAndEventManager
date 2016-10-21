@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
+    [ProtoContract(SkipConstructor = true)]
     public class CodeValue : ICodeStruct
     {
+        [ProtoMember(1)]
         public string Value { get; set; }
+
+        public CodeValue()
+        { }
 
         public CodeValue(string value)
         {
-            this.Value = value;
+            this.Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
         }
 
         public void Analyse(string code)
@@ -22,19 +28,19 @@ namespace FocusTreeManager.CodeStructures
             return;
         }
 
-        public ICodeStruct Find(string TagToFind)
+        public ICodeStruct FindValue(string TagToFind)
         {
             //End of structure
             return null;
         }
 
-        public ICodeStruct FindExternal(string TagToFind)
+        public ICodeStruct FindAssignation(string TagToFind)
         {
             //End of structure
             return null;
         }
 
-        public List<ICodeStruct> FindAll<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             //End of structure
             return new List<ICodeStruct>();
@@ -42,7 +48,7 @@ namespace FocusTreeManager.CodeStructures
 
         public string Parse()
         {
-            return Regex.Replace(Value, @"\t|\n|\r|\s", "");
+            return Value;
         }
     }
 }

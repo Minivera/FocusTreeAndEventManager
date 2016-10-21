@@ -76,14 +76,10 @@ namespace FocusTreeManager.ViewModel
         public void EditScript()
         {
             ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            Script newScript = new Script();
-            if (!string.IsNullOrEmpty(focus.InternalScript))
-            {
-                newScript.Analyse(focus.InternalScript);
-            }
-            ViewModel.setCode(newScript, focus);
-            Scripter dialog = new Scripter();
+            ViewModel.setCode(focus.InternalScript);
+            EditScript dialog = new EditScript();
             dialog.ShowDialog();
+            focus.InternalScript = ViewModel.ManagedScript;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

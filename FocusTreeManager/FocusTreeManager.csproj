@@ -118,8 +118,10 @@
     </ApplicationDefinition>
     <Compile Include="CodeStructures\Assignation.cs" />
     <Compile Include="CodeStructures\CodeBlock.cs" />
+    <Compile Include="CodeStructures\CodeExceptions\RecursiveCodeException.cs" />
     <Compile Include="CodeStructures\CodeValue.cs" />
     <Compile Include="CodeStructures\Comment.cs" />
+    <Compile Include="CodeStructures\ErrorLogger.cs" />
     <Compile Include="CodeStructures\ICodeStruct.cs" />
     <Compile Include="CodeStructures\Script.cs" />
     <Compile Include="Containers\FociGridContainer.cs" />
@@ -136,27 +138,37 @@
     <Compile Include="Model\Project.cs" />
     <Compile Include="Parsers\FocusTreeParser.cs" />
     <Compile Include="Parsers\LocalisationParser.cs" />
+    <Compile Include="ViewModel\ErrorDawgViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewViewModel.cs" />
     <Compile Include="ViewModel\ScripterControlsViewModel.cs" />
     <Compile Include="ViewModel\ScripterViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="Views\Assignation.xaml.cs">
+    <Compile Include="Views\EditScript.xaml.cs">
+      <DependentUpon>EditScript.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\Assignation.xaml.cs">
       <DependentUpon>Assignation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FocusEditor.xaml.cs">
+    <Compile Include="Views\UserControls\ErrorDawg.xaml.cs">
+      <DependentUpon>ErrorDawg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\FocusEditor.xaml.cs">
       <DependentUpon>FocusEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Localisation.xaml.cs">
+    <Compile Include="Views\UserControls\Localisation.xaml.cs">
       <DependentUpon>Localisation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProjectView.xaml.cs">
+    <Compile Include="Views\UserControls\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Scripter.xaml.cs">
+    <Compile Include="Views\UserControls\Scripter.xaml.cs">
       <DependentUpon>Scripter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScripterControls.xaml.cs">
+    <Compile Include="Views\UserControls\ScripterControls.xaml.cs">
       <DependentUpon>ScripterControls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Errors.xaml.cs">
+      <DependentUpon>Errors.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -173,7 +185,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Assignation.xaml">
+    <Page Include="Views\EditScript.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\Assignation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,15 +197,19 @@
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Focus.xaml">
+    <Page Include="Views\UserControls\ErrorDawg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FocusEditor.xaml">
+    <Page Include="Views\UserControls\Focus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FocusGrid.xaml">
+    <Page Include="Views\UserControls\FocusEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\FocusGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,10 +235,10 @@
     <Compile Include="Views\ChangeImage.xaml.cs">
       <DependentUpon>ChangeImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Focus.xaml.cs">
+    <Compile Include="Views\UserControls\Focus.xaml.cs">
       <DependentUpon>Focus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FocusGrid.xaml.cs">
+    <Compile Include="Views\UserControls\FocusGrid.xaml.cs">
       <DependentUpon>FocusGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -233,21 +253,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Localisation.xaml">
+    <Page Include="Views\UserControls\Localisation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProjectView.xaml">
+    <Page Include="Views\UserControls\ProjectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Scripter.xaml">
+    <Page Include="Views\UserControls\Scripter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScripterControls.xaml">
+    <Page Include="Views\UserControls\ScripterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Errors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
@@ -405,6 +429,19 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="goal_unknown.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licence.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Interface\thisisdog.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

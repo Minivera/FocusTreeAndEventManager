@@ -72,7 +72,7 @@ namespace FocusTreeManager.Views
                 }
                 parent = VisualTreeHelper.GetParent(parent);
             }
-            Point position = this.TranslatePoint(new Point(0, 0), (FrameworkElement)parent);
+            Point position = this.TranslatePoint(new Point(1, 1), (FrameworkElement)parent);
             //If the focus has not changed position
             if (OldPoint != null && OldPoint == position)
             {

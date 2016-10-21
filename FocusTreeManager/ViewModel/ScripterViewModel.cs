@@ -8,6 +8,7 @@ using GongSolutions.Wpf.DragDrop;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -23,7 +24,8 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ScripterViewModel : ViewModelBase, IDropTarget
     {
-        private ObservableCollection<AssignationModel> codeBlocks;
+        private readonly ObservableCollection<AssignationModel> codeBlocks 
+            = new ObservableCollection<AssignationModel>();
 
         public ObservableCollection<AssignationModel> CodeBlocks
         {
@@ -33,15 +35,32 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public string ScriptText
+        private Script managedScript;
+
+        public Script ManagedScript
         {
             get
             {
-                return ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList()).Parse();
+                return managedScript;
             }
         }
 
-        private Focus AssociatedFocus;
+        private string editorScript;
+
+        public string EditorScript
+        {
+            get
+            {
+                return editorScript;
+            }
+            set
+            {
+                editorScript = value;
+                RaisePropertyChanged(() => EditorScript);
+            }
+        }
+
+        public string SelectedTabIndex { get; set; }
 
         public RelayCommand SaveScriptCommand { get; private set; }
 
@@ -52,30 +71,59 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public ScripterViewModel()
         {
-            codeBlocks = new ObservableCollection<AssignationModel>();
             SaveScriptCommand = new RelayCommand(SaveScript);
             CancelCommand = new RelayCommand(CancelScript);
         }
         
-        public void setCode(Script internalScript, Focus focus)
+        public void setCode(Script internalScript)
         {
-            codeBlocks = new ObservableCollection<AssignationModel>(ModelsToScriptHelper.
-                TransformScriptToModels(internalScript, new RelayCommand<object>(DeleteNode)));
-            AssociatedFocus = focus;
+            codeBlocks.Clear();
+            managedScript = internalScript;
+            EditorScript = internalScript.Parse();
+            List<AssignationModel> listBlock = ModelsToScriptHelper.
+                TransformScriptToModels(internalScript, new RelayCommand<object>(DeleteNode));
+            foreach (AssignationModel item in listBlock)
+            {
+                codeBlocks.Add(item);
+            }
+        }
+
+        public void ScriptToScripter()
+        {
+            ManagedScript.Analyse(editorScript);
+            codeBlocks.Clear();
+            List<AssignationModel> listBlock = ModelsToScriptHelper.
+                TransformScriptToModels(ManagedScript, new RelayCommand<object>(DeleteNode));
+            foreach (AssignationModel item in listBlock)
+            {
+                codeBlocks.Add(item);
+            }
+            RaisePropertyChanged(() => CodeBlocks);
+        }
+
+        public void ScripterToScript()
+        {
+            managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList(), 1);
+            EditorScript = managedScript.Parse();
         }
 
         public void SaveScript()
         {
-            AssociatedFocus.InternalScript = ScriptText;
-            AssociatedFocus = null;
-            codeBlocks = new ObservableCollection<AssignationModel>();
+            if (SelectedTabIndex == "Scripter")
+            {
+                managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
+            }
+            else if (SelectedTabIndex == "Editor")
+            {
+                ManagedScript.Analyse(editorScript);
+            }
+            codeBlocks.Clear();
             Messenger.Default.Send(new NotificationMessage("HideScripter"));
         }
 
         public void CancelScript()
         {
-            AssociatedFocus = null;
-            codeBlocks = new ObservableCollection<AssignationModel>();
+            codeBlocks.Clear();
             Messenger.Default.Send(new NotificationMessage("HideScripter"));
         }
 

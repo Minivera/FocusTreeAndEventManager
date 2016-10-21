@@ -14,6 +14,9 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using System.IO;
 using ProtoBuf;
+using System.Windows.Media;
+using System.Collections.Generic;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager
 {
@@ -27,6 +30,13 @@ namespace FocusTreeManager
             InitializeComponent();
             loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            //If the app has never been started
+            if (!Configurator.getFirstStart())
+            {
+                Settings view = new Settings();
+                view.ShowDialog();
+                Configurator.setFirstStart();
+            }
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -213,6 +223,15 @@ namespace FocusTreeManager
                 if (selectedTab is FocusGridModel)
                 {
                     ((FocusGridModel)selectedTab).isShown = true;
+                    foreach (FocusGrid grid in UiHelper.FindVisualChildren<FocusGrid>(CentralTabControl))
+                    {
+                        if (grid.DataContext == selectedTab)
+                        {
+                            grid.setupInternalFoci();
+                            ((FocusGridModel)selectedTab).RedrawGrid();
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -235,7 +254,8 @@ namespace FocusTreeManager
                             //Load it
                             try
                             {
-                                ((MainViewModel)(new ViewModelLocator()).Main).Project = Serializer.Deserialize<Project>(fs);
+                                ((MainViewModel)(new ViewModelLocator()).Main).Project = 
+                                    Serializer.Deserialize<Project>(fs);
                             }
                             catch
                             {
@@ -244,6 +264,27 @@ namespace FocusTreeManager
                         }
                     }
                 }
+            }
+        }
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            int RowsToAdd = 0;
+            int ColumnsToAdd = 0;
+            ScrollViewer scrollViewer = sender as ScrollViewer;
+            if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
+                //Max Vertical
+                RowsToAdd++;
+            }
+            if (scrollViewer.HorizontalOffset == scrollViewer.ScrollableWidth)
+            {
+                //Max horizontal
+                ColumnsToAdd++;
+            }
+            foreach (FocusGrid grid in UiHelper.FindVisualChildren<FocusGrid>((FrameworkElement)sender))
+            {
+                ((FocusGridModel)grid.DataContext).AddGridCells(RowsToAdd, ColumnsToAdd);
             }
         }
     }

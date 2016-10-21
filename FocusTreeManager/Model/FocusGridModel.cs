@@ -172,6 +172,12 @@ namespace FocusTreeManager.Model
             ColumnCount = biggestX.X >= ColumnCount ? biggestX.X + 1 : ColumnCount;
         }
 
+        public void AddGridCells(int RowsToAdd, int ColumnsToAddt)
+        {
+            RowCount += RowsToAdd;
+            ColumnCount += ColumnsToAddt;
+        }
+
         public void AddFocus(object sender)
         {
             System.Windows.Application.Current.Properties["Mode"] = "Add";

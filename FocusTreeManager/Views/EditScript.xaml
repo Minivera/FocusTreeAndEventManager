@@ -1,0 +1,39 @@
+﻿<Controls:MetroWindow x:Class="FocusTreeManager.Views.EditScript"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FocusTreeManager.Views"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png" 
+        GlowBrush="{DynamicResource AccentColorBrush}" WindowState="Maximized"
+        Title="{DynamicResource Scripter_Title}" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Scripter, Source={StaticResource Locator}}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <local:Scripter Grid.Row="0" ></local:Scripter>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10" 
+                    VerticalAlignment="Bottom" Grid.Row="1">
+            <Button Content="{DynamicResource Command_Cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0"
+                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150" />
+            <Button Content="{DynamicResource Command_Accept}" Command="{Binding SaveScriptCommand}"
+                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+        </StackPanel>
+        <Grid HorizontalAlignment="Right" Width="70" Height="110" x:Name="GridErrors" Grid.Row="1"
+              Margin="0,-170,15,0" Panel.ZIndex="1">
+            <local:ErrorDawg />
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>

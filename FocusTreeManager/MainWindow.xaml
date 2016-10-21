@@ -28,7 +28,7 @@
                               PreviewMouseMove="ContentScroll_PreviewMouseMove" 
                               PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
                               PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
-                              Background="Transparent">
+                              Background="Transparent" ScrollChanged="ScrollViewer_ScrollChanged">
                     <v:FocusGrid></v:FocusGrid>
                 </ScrollViewer>
             </DataTemplate>
@@ -136,15 +136,21 @@
     <DockPanel>
         <v:ProjectView DockPanel.Dock="Left"/>
         <DockPanel DockPanel.Dock="Right" >
-            <StatusBar DockPanel.Dock="Bottom">
-                <StatusBarItem>
-                    <TextBlock Name="StatusText" Text="{Binding StatusText}"/>
-                </StatusBarItem>
-            </StatusBar>
+            <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
+                <StatusBar>
+                    <StatusBarItem>
+                        <TextBlock Name="StatusText" Text="{Binding StatusText}"/>
+                    </StatusBarItem>
+                </StatusBar>
+                <Grid HorizontalAlignment="Right" Width="70" Height="110" Margin="0,-130,15,0" x:Name="GridErrors">
+                    <v:ErrorDawg />
+                </Grid>
+            </Grid>
             <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
                      FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
                 <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
-                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" SelectionChanged="CentralTabControl_SelectionChanged" >
+                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" 
+                    SelectionChanged="CentralTabControl_SelectionChanged" >
                     <dragablz:TabablzControl.HeaderItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Filename}"  />

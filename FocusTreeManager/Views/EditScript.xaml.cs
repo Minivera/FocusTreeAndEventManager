@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace FocusTreeManager.Views
 {
     /// <summary>
-    /// Logique d'interaction pour Scripter.xaml
+    /// Logique d'interaction pour EditScript.xaml
     /// </summary>
-    public partial class Scripter : MetroWindow
+    public partial class EditScript : MetroWindow
     {
-        public Scripter()
+        public EditScript()
         {
             InitializeComponent();
             loadLocales();
@@ -30,6 +30,10 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
             if (msg.Notification == "HideScripter")
             {
                 this.Hide();

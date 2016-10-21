@@ -68,5 +68,34 @@ namespace FocusTreeManager
             var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
             return configFile.AppSettings.Settings["Path"].Value as string;
         }
+
+        static public void setFirstStart()
+        {
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            configFile.AppSettings.Settings["IsFirstStart"].Value = "true";
+            configFile.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        static public bool getFirstStart()
+        {
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            string value = configFile.AppSettings.Settings["IsFirstStart"].Value as string;
+            return value == "false" ? false : true;
+        }
+
+        static public void setScripterPreference(string preference)
+        {
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            configFile.AppSettings.Settings["ScripterPreference"].Value = preference;
+            configFile.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        static public string getScripterPreference()
+        {
+            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
+            return configFile.AppSettings.Settings["ScripterPreference"].Value as string;
+        }
     }
 }

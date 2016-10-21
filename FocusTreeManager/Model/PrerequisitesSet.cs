@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace FocusTreeManager.Model
 {
     [ProtoContract(SkipConstructor = true)]
-    [ProtoInclude(500, typeof(ISet))]
     public class PrerequisitesSet : ObservableObject, ISet
     {
         [ProtoMember(1, AsReference = true)]

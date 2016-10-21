@@ -79,7 +79,7 @@ namespace FocusTreeManager.Parsers
                 }
                 text.AppendLine("\t\tx = " + focus.X);
                 text.AppendLine("\t\ty = " + focus.Y);
-                text.AppendLine(focus.InternalScript);
+                text.AppendLine(focus.InternalScript.Parse());
                 text.AppendLine("\t}");
             }
             text.AppendLine("}");
@@ -194,18 +194,18 @@ namespace FocusTreeManager.Parsers
         {
             Dictionary<string, PrerequisitesSet> waitingList = new Dictionary<string, PrerequisitesSet>();
             FociGridContainer container = new FociGridContainer(Path.GetFileNameWithoutExtension(fileName));
-            container.TAG = script.Find("tag") != null ? script.Find("tag").Parse() : "";
-            foreach (CodeBlock block in script.FindAll<CodeBlock>("focus"))
+            container.TAG = script.FindValue("tag") != null ? script.FindValue("tag").Parse() : "";
+            foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
                 Focus newFocus = new Focus();
-                newFocus.UniqueName = block.Find("id").Parse();
-                newFocus.Image = block.Find("icon").Parse().Replace("GFX_", "");
-                newFocus.X = int.Parse(block.Find("x").Parse());
-                newFocus.Y = int.Parse(block.Find("y").Parse());
-                newFocus.Cost = int.Parse(block.Find("cost").Parse());
-                foreach (ICodeStruct exclusives in block.FindAll<ICodeStruct>("mutually_exclusive"))
+                newFocus.UniqueName = block.FindValue("id").Parse();
+                newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
+                newFocus.X = int.Parse(block.FindValue("x").Parse());
+                newFocus.Y = int.Parse(block.FindValue("y").Parse());
+                newFocus.Cost = int.Parse(block.FindValue("cost").Parse());
+                foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>("mutually_exclusive"))
                 {
-                    foreach (ICodeStruct focuses in exclusives.FindAll<ICodeStruct>("focus"))
+                    foreach (ICodeStruct focuses in exclusives.FindAllValuesOfType<ICodeStruct>("focus"))
                     {
                         //Check if focus exists in list
                         Focus found = container.FociList.FirstOrDefault((f) =>
@@ -218,14 +218,14 @@ namespace FocusTreeManager.Parsers
                         }
                     }
                 }
-                foreach (ICodeStruct prerequistes in block.FindAll<ICodeStruct>("prerequisite"))
+                foreach (ICodeStruct prerequistes in block.FindAllValuesOfType<ICodeStruct>("prerequisite"))
                 {
-                    if (!prerequistes.FindAll<ICodeStruct>("focus").Any())
+                    if (!prerequistes.FindAllValuesOfType<ICodeStruct>("focus").Any())
                     {
                         break;
                     }
                     PrerequisitesSet set = new PrerequisitesSet(newFocus);
-                    foreach (ICodeStruct focuses in prerequistes.FindAll<ICodeStruct>("focus"))
+                    foreach (ICodeStruct focuses in prerequistes.FindAllValuesOfType<ICodeStruct>("focus"))
                     {
                         //Add the focus as a prerequisites in the current existing focuses
                         //or put into wait
@@ -250,13 +250,13 @@ namespace FocusTreeManager.Parsers
                 Script InternalFocusScript = new Script();
                 for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
                 {
-                    ICodeStruct found = block.FindExternal(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
+                    ICodeStruct found = block.FindAssignation(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
                     if (found != null)
                     {
                         InternalFocusScript.Code.Add(found);
                     }
                 }
-                newFocus.InternalScript = InternalFocusScript.Parse();
+                newFocus.InternalScript = InternalFocusScript;
                 container.FociList.Add(newFocus);
             }
             //Repair lost sets, shouldn't happen, but in case

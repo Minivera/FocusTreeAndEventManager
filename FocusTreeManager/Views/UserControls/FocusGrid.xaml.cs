@@ -49,6 +49,11 @@ namespace FocusTreeManager.Views
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(ListGrid);
             LineAdorner Adorner = new LineAdorner(ListGrid, (FocusGridModel)this.DataContext);
             adornerLayer.Add(Adorner);
+            setupInternalFoci();
+        }
+
+        public void setupInternalFoci()
+        {
             //Build display
             foreach (Focus focus in UiHelper.FindVisualChildren<Focus>(ListGrid))
             {

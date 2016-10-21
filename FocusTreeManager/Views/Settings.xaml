@@ -32,35 +32,43 @@
                 <Setter Property="Width" Value="200"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Button">
-                <Setter Property="MinWidth" Value="150"/>
-                <Setter Property="Height" Value="25"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="35*"/>
             <ColumnDefinition Width="65*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource Application_Language}" />
-        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AvailableLanguages}"
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Message}" />
+        <Label Grid.Column="0" Grid.Row="1" Content="{DynamicResource Application_Language}" />
+        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding AvailableLanguages}"
                   DisplayMemberPath="Name"
                   SelectedValue="{Binding SelectedLanguage, UpdateSourceTrigger=PropertyChanged}" />
-        <Label Grid.Column="0" Grid.Row="1" Content="{DynamicResource Application_Game_Path}" />
-        <TextBox Grid.Column="1" Grid.Row="1" IsReadOnly="True" Text="{Binding GamePath}"/>
-        <Button Grid.Column="1" Grid.Row="2" Content="{DynamicResource Command_Find}" Command="{Binding FindCommand}"/>
-        <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{DynamicResource Command_Accept}" Click="Button_Click"/>
+        <Label Grid.Column="0" Grid.Row="2" Content="{DynamicResource Application_Game_Path}" />
+        <TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Text="{Binding GamePath}"/>
+        <Button Grid.Column="1" Grid.Row="2" Content="{DynamicResource Command_Find}" Command="{Binding FindCommand}"
+                Width="50" Style="{DynamicResource SquareButtonStyle}" HorizontalAlignment="Right"
+                Height="29" Margin="0,3,6,2"/>
+        <Label Grid.Column="0" Grid.Row="3" Content="{DynamicResource Application_Scripter_Preference}" />
+        <ComboBox Grid.Column="1" Grid.Row="3"
+                  DisplayMemberPath="Name" SelectedValuePath="Content"
+                  SelectedValue="{Binding ScripterPreference, UpdateSourceTrigger=PropertyChanged}" >
+            <ComboBoxItem Content="Scripter"/>
+            <ComboBoxItem Content="Editor"/>
+        </ComboBox>
+        <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" 
+                Content="{DynamicResource Command_Accept}" Click="Button_Click"
+                Style="{DynamicResource SquareButtonStyle}" Width="150"/>
     </Grid>
 </Controls:MetroWindow>

@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -54,7 +55,22 @@ namespace FocusTreeManager.Helper
             List<AssignationModel> listModels = new List<AssignationModel>();
             foreach (ICodeStruct code in script.Code)
             {
-                listModels.Add(BlockToModel(code, deleteCommand));
+                try
+                {
+                    listModels.Add(BlockToModel(code, deleteCommand));
+                }
+                catch (RecursiveCodeException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Error when parsing the script to scripter controls");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
+                }
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
+                    continue;
+                }
             }
             return listModels;
         }
@@ -78,15 +94,15 @@ namespace FocusTreeManager.Helper
                         Color = ASSIGNATIONS_COLORS[2],
                         IsNotEditable = false,
                         CanHaveChild = false,
-                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " = " +
-                                Regex.Replace(((CodeValue)block.Value).Value, @"\t|\n|\r|\s", ""),
+                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator
+                                + " " + Regex.Replace(((CodeValue)block.Value).Value, @"\t|\n|\r|\s", ""),
                         Text = resourceLocalization["Scripter_Assignation_Custom"] as string,
                         DeleteNodeCommand = deleteCommand
                     };
                     //Ignore childs even if there is some
                 }
                 //Otherwise, the child is a codeblock
-                else
+                else if (block.Value is CodeBlock)
                 {
                     AssignationModel newAssignation = new AssignationModel()
                     {
@@ -95,7 +111,8 @@ namespace FocusTreeManager.Helper
                         Color = getColorArray(block.Assignee)[2],
                         IsNotEditable = false,
                         CanHaveChild = true,
-                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " = {}",
+                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + 
+                            " " + block.Operator + " {}",
                         Text = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
                     };
@@ -104,6 +121,12 @@ namespace FocusTreeManager.Helper
                         newAssignation.Childrens.Add(BlockToModel(code, deleteCommand));
                     }
                     return newAssignation;
+                }
+                else
+                {
+                    //An error in the code, log it
+                    RecursiveCodeException e = new RecursiveCodeException();
+                    throw e.AddToRecursiveChain("Invalid assignation", block.Assignee);
                 }
             }
             return null;
@@ -145,12 +168,27 @@ namespace FocusTreeManager.Helper
             }
         }
 
-        public static Script TransformModelsToScript(List<AssignationModel> models, int StartingLevel = 2)
+        public static Script TransformModelsToScript(List<AssignationModel> models, int StartingLevel = 3)
         {
             Script newScript = new Script();
             foreach (AssignationModel assignation in models)
             {
-                newScript.Code.Add(ModelToBlock(assignation, StartingLevel));
+                try
+                {
+                    newScript.Code.Add(ModelToBlock(assignation, StartingLevel));
+                }
+                catch (RecursiveCodeException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Error when parsing the scripter controls to a script");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
+                }
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
+                    continue;
+                }
             }
             return newScript;
         }
@@ -173,7 +211,32 @@ namespace FocusTreeManager.Helper
                     newBlock = new Assignation(level)
                     {
                         Assignee = model.Code.Split('=')[0].Trim(),
+                        Operator = "=",
                         Value = new CodeBlock(level + 1)
+                    };
+                }
+                //If contains lesser than, but also does not contains a block
+                else if (model.Code.Contains("<") &&
+                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                {
+                    //If yes, assignation
+                    return new Assignation(level)
+                    {
+                        Assignee = model.Code.Split('<')[0].Trim(),
+                        Operator = "<",
+                        Value = new CodeValue(model.Code.Split('<')[1].Trim())
+                    };
+                }
+                //If contains bigger than, but also does not contains a block
+                else if (model.Code.Contains(">") &&
+                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                {
+                    //If yes, assignation
+                    return new Assignation(level)
+                    {
+                        Assignee = model.Code.Split('>')[0].Trim(),
+                        Operator = ">",
+                        Value = new CodeValue(model.Code.Split('>')[1].Trim())
                     };
                 }
                 else
@@ -182,6 +245,7 @@ namespace FocusTreeManager.Helper
                     newBlock = new Assignation(level)
                     {
                         Assignee = model.Code,
+                        Operator = "=",
                         Value = new CodeBlock(level + 1)
                     };
                 }
@@ -202,7 +266,32 @@ namespace FocusTreeManager.Helper
                     return new Assignation(level)
                     {
                         Assignee = model.Code.Split('=')[0].Trim(),
+                        Operator = "=",
                         Value = new CodeValue(model.Code.Split('=')[1].Trim())
+                    };
+                }
+                //If contains lesser than, but also does not contains a block
+                else if (model.Code.Contains("<") &&
+                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                {
+                    //If yes, assignation
+                    return new Assignation(level)
+                    {
+                        Assignee = model.Code.Split('<')[0].Trim(),
+                        Operator = "<",
+                        Value = new CodeValue(model.Code.Split('<')[1].Trim())
+                    };
+                }
+                //If contains bigger than, but also does not contains a block
+                else if (model.Code.Contains(">") &&
+                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                {
+                    //If yes, assignation
+                    return new Assignation(level)
+                    {
+                        Assignee = model.Code.Split('>')[0].Trim(),
+                        Operator = ">",
+                        Value = new CodeValue(model.Code.Split('>')[1].Trim())
                     };
                 }
                 //If contains equals, but also contains a block

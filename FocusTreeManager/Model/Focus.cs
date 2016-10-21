@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Linq;
+using FocusTreeManager.CodeStructures;
 
 namespace FocusTreeManager.Model
 {
@@ -123,9 +124,9 @@ namespace FocusTreeManager.Model
         }
 
         [ProtoMember(8)]
-        private string internalScript;
+        private Script internalScript;
 
-        public string InternalScript
+        public Script InternalScript
         {
             get
             {
@@ -133,7 +134,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<string>(() => this.InternalScript, ref this.internalScript, value);
+                Set<Script>(() => this.InternalScript, ref this.internalScript, value);
             }
         }
 
@@ -188,6 +189,7 @@ namespace FocusTreeManager.Model
 
         public void setDefaults()
         {
+            InternalScript = new Script();
             Image = "goal_unknown";
             UniqueName = "unknown";
             X = 0;

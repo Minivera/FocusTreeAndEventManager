@@ -2,11 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:FocusTreeManager.Resources"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="First_Start">Please configure the application on the first start.</system:String>
     <system:String x:Key="Main_Title">Focus Tree And Event Manager</system:String>
     <system:String x:Key="Chose_Image_Title">Choose the focus Icon</system:String>
     <system:String x:Key="Localize_Title">Create localisation</system:String>
     <system:String x:Key="Game_Path_Title">Select game installation folder</system:String>
     <system:String x:Key="Scripter_Title">Scripter</system:String>
+    <system:String x:Key="Errors_Title">Error list</system:String>
     <system:String x:Key="Load_Title">Select a project</system:String>
     <system:String x:Key="Add_Focus">Add a new Focus</system:String>
     <system:String x:Key="Edit_Focus">Edit Focus</system:String>
@@ -64,6 +66,7 @@
     <system:String x:Key="Command_Continue">Continue without saving</system:String>
     <system:String x:Key="Command_Quit">Quit without saving</system:String>
     <system:String x:Key="Command_Delete">Delete</system:String>
+    <system:String x:Key="Command_Reset">Empty</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>
@@ -75,6 +78,7 @@
     <system:String x:Key="Exit_Confirm_Title">Confirmation</system:String>
     <system:String x:Key="Application_Language">Application language</system:String>
     <system:String x:Key="Application_Game_Path">Path to the game files</system:String>
+    <system:String x:Key="Application_Scripter_Preference">Coding preference</system:String>
     <system:String x:Key="Application_Loading">Please wait</system:String>
     <system:String x:Key="Application_Loading_Parsing">The project files are being exported</system:String>
     <system:String x:Key="Application_Error">An unknown error occured</system:String>

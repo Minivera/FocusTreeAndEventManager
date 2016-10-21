@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace FocusTreeManager.Model
 {
     [ProtoContract]
+    [ProtoInclude(1, typeof(MutuallyExclusiveSet))]
+    [ProtoInclude(2, typeof(PrerequisitesSet))]
     public interface ISet
     {
         void DeleteSetRelations();

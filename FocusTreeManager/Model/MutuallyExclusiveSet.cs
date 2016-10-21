@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace FocusTreeManager.Model
 {
     [ProtoContract(SkipConstructor = true)]
-    [ProtoInclude(500, typeof(ISet))]
     public class MutuallyExclusiveSet : ObservableObject, ISet
     {
         [ProtoMember(1, AsReference = true)]
@@ -45,12 +44,12 @@ namespace FocusTreeManager.Model
         public MutuallyExclusiveSet(Focus Focus1, Focus Focus2)
         {
             //Set leftmost Focus as Focus 1 and rightmost focus as focus 2
-            if (Focus1.FocusLeft.X < Focus2.FocusLeft.X)
+            if (Focus1.X < Focus2.X)
             {
                 this.Focus1 = Focus1;
                 this.Focus2 = Focus2;
             }
-            else if(Focus1.FocusLeft.X >= Focus2.FocusLeft.X)
+            else if(Focus1.X >= Focus2.X)
             {
                 this.Focus2 = Focus1;
                 this.Focus1 = Focus2;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,17 @@ namespace FocusTreeManager.CodeStructures
     /// Code block containing one or multiple assignations. It contains everything
     /// that is between one level of brackets.
     /// </summary>
+    [ProtoContract(SkipConstructor = true)]
     public class CodeBlock : ICodeStruct
     {
+        [ProtoMember(1)]
         private int Level;
 
+        [ProtoMember(2, AsReference = true)]
         public List<ICodeStruct> Code { get; set; }
+
+        public CodeBlock()
+        { }
 
         public CodeBlock(int level)
         {
@@ -72,22 +79,22 @@ namespace FocusTreeManager.CodeStructures
             {
                 tabulations += "\t";
             }
-            content.AppendLine("{");
+            content.Append("{\n");
             foreach (Assignation item in Code)
             {
                 //Parse each internal assignations
-                content.AppendLine(item.Parse());
+                content.Append(item.Parse());
             }
-            content.AppendLine(tabulations + "}");
+            content.Append(tabulations + "}");
             return content.ToString();
         }
 
-        public ICodeStruct Find(string TagToFind)
+        public ICodeStruct FindValue(string TagToFind)
         {
             ICodeStruct found;
             foreach (ICodeStruct item in Code)
             {
-                found = item.Find(TagToFind);
+                found = item.FindValue(TagToFind);
                 if (found != null)
                 {
                     return found;
@@ -96,12 +103,12 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public ICodeStruct FindExternal(string TagToFind)
+        public ICodeStruct FindAssignation(string TagToFind)
         {
             ICodeStruct found;
             foreach (ICodeStruct item in Code)
             {
-                found = item.FindExternal(TagToFind);
+                found = item.FindAssignation(TagToFind);
                 if (found != null)
                 {
                     return found;
@@ -110,12 +117,12 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public List<ICodeStruct> FindAll<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
             foreach (ICodeStruct item in Code)
             {
-                founds.AddRange(item.FindAll<T>(TagToFind));
+                founds.AddRange(item.FindAllValuesOfType<T>(TagToFind));
             }
             return founds;
         }

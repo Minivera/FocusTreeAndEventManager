@@ -2,12 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:FocusTreeManager.Resources"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="First_Start">Veuillez configurer l'application au premeir démarrage.</system:String>
     <system:String x:Key="Main_Title">Gestionnaire de Focus Tree et Event</system:String>
     <system:String x:Key="Chose_Image_Title">Choisir l'icône du Focus</system:String>
     <system:String x:Key="Localize_Title">Créer la localisation</system:String>
     <system:String x:Key="Game_Path_Title">Sélectionner le dossier du jeu</system:String>
     <system:String x:Key="Load_Title">Sélèctionner un projet</system:String>
     <system:String x:Key="Scripter_Title">Scripter</system:String>
+    <system:String x:Key="Errors_Title">Liste d'erreurs</system:String>
     <system:String x:Key="Add_Focus">Ajouter un nouveau Focus</system:String>
     <system:String x:Key="Edit_Focus">Modifier un Focus</system:String>
     <system:String x:Key="Delete_Focus">Supprimer un Focus</system:String>
@@ -64,6 +66,7 @@
     <system:String x:Key="Command_Continue">Continuer sans sauvegarder</system:String>
     <system:String x:Key="Command_Find">Parcourir</system:String>
     <system:String x:Key="Command_Delete">Supprimer</system:String>
+    <system:String x:Key="Command_Reset">Vider</system:String>
     <system:String x:Key="Menu_Settings">Paramètres</system:String>
     <system:String x:Key="Menu_Project">Projet</system:String>
     <system:String x:Key="Menu_Export">Exporter</system:String>
@@ -76,6 +79,7 @@
     <system:String x:Key="Exit_Confirm_Title">Confirmation</system:String>
     <system:String x:Key="Application_Language">Langue de l'application</system:String>
     <system:String x:Key="Application_Game_Path">Chemin vers les fichiers du jeu</system:String>
+    <system:String x:Key="Application_Scripter_Preference">Préférence pour la programmation</system:String>
     <system:String x:Key="Application_Loading">Veuillez patienter</system:String>
     <system:String x:Key="Application_Loading_Parsing">Les fichiers du projets sont en cours d'exportation</system:String>
     <system:String x:Key="Application_Error">Une erreur s'est produite</system:String>

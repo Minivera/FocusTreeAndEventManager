@@ -56,6 +56,29 @@ namespace FocusTreeManager.ViewModel
                 RaisePropertyChanged("GamePath");
             }
         }
+
+        public string ScripterPreference
+        {
+            get
+            {
+                return Configurator.getScripterPreference();
+            }
+            set
+            {
+                Configurator.setScripterPreference(value);
+                RaisePropertyChanged("ScripterPreference");
+            }
+        }
+
+        private string message;
+
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
         
         public RelayCommand FindCommand { get; private set; }
 
@@ -67,6 +90,18 @@ namespace FocusTreeManager.ViewModel
             availableLanguages = Configurator.returnAllLanguages();
             selectedLanguage = availableLanguages.SingleOrDefault((l) => l.FileName == Configurator.getLanguage());
             FindCommand = new RelayCommand(SelectGameFolder);
+            if (!Configurator.getFirstStart())
+            {
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                message = resourceLocalization["First_Start"] as string;
+                RaisePropertyChanged("Message");
+            }
+            else
+            {
+                message = "";
+                RaisePropertyChanged("Message");
+            }
         }
 
         public void SelectGameFolder()

@@ -41,6 +41,7 @@ namespace FocusTreeManager.ViewModel
             SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<ScripterViewModel>();
             SimpleIoc.Default.Register<ScripterControlsViewModel>();
+            SimpleIoc.Default.Register<ErrorDawgViewModel>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
         }
 
@@ -110,6 +111,14 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ScripterControlsViewModel>();
+            }
+        }
+
+        public ErrorDawgViewModel ErrorDawg
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ErrorDawgViewModel>();
             }
         }
 
