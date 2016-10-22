@@ -10,7 +10,7 @@
 - The first focus in the grid view will now display its line correctly on the first opening
 - Mutually exclusives lines won't overlap the foci anymore.
 - Fixed a crash with France tree and empty prerequisite blocks
-- Switching tabs in the main windows will not correctly reload lines
+- Switching tabs in the main windows will now correctly reload lines
 - The focus grid is now indefinitely scrollable
 - Settings windows will now show on the first start
 - You can now set your preference for scripting, either the scripter or manual coding.
@@ -18,3 +18,11 @@
 - The scripter and editor will now update when changing tabs
 - You can now edit script manually with a minimalistic editor (Will be updated in the future)
 - The scripter is now generic (Preparing for the Events)
+
+***********************
+*        Beta_1b      *
+***********************
+
+- The code editor now allows you to press enter
+- Settings windows will now work in production
+- Fixed a crash on startup with Beta_1a

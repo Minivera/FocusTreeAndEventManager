@@ -23,8 +23,7 @@ namespace FocusTreeManager
 
         static public string getLanguageFile()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            return LOCALE_FILE_STRING + configFile.AppSettings.Settings["Language"].Value + ".xaml";
+            return LOCALE_FILE_STRING + FocusTreeManager.Properties.Settings.Default.Language + ".xaml";
         }  
         
         static public string getLanguage()
@@ -34,10 +33,8 @@ namespace FocusTreeManager
 
         static public void setLanguage(string Language)
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            configFile.AppSettings.Settings["Language"].Value = Language;
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FocusTreeManager.Properties.Settings.Default.Language = Language;
+            FocusTreeManager.Properties.Settings.Default.Save();
         }
 
         static public List<LanguageSelector> returnAllLanguages()
@@ -57,45 +54,35 @@ namespace FocusTreeManager
 
         static public void setGamePath(string path)
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            configFile.AppSettings.Settings["Path"].Value = path;
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FocusTreeManager.Properties.Settings.Default.Path = path;
+            FocusTreeManager.Properties.Settings.Default.Save();
         }
 
         static public string getGamePath()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            return configFile.AppSettings.Settings["Path"].Value as string;
+            return FocusTreeManager.Properties.Settings.Default.Path;
         }
 
         static public void setFirstStart()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            configFile.AppSettings.Settings["IsFirstStart"].Value = "true";
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FocusTreeManager.Properties.Settings.Default.IsFirstStart = true;
+            FocusTreeManager.Properties.Settings.Default.Save();
         }
 
         static public bool getFirstStart()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            string value = configFile.AppSettings.Settings["IsFirstStart"].Value as string;
-            return value == "false" ? false : true;
+            return FocusTreeManager.Properties.Settings.Default.IsFirstStart;
         }
 
         static public void setScripterPreference(string preference)
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            configFile.AppSettings.Settings["ScripterPreference"].Value = preference;
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FocusTreeManager.Properties.Settings.Default.ScripterPreference = preference;
+            FocusTreeManager.Properties.Settings.Default.Save();
         }
 
         static public string getScripterPreference()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(Assembly.GetEntryAssembly().Location);
-            return configFile.AppSettings.Settings["ScripterPreference"].Value as string;
+            return FocusTreeManager.Properties.Settings.Default.ScripterPreference;
         }
     }
 }

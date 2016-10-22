@@ -60,7 +60,7 @@
                                 UpdateSourceTrigger=PropertyChanged}"
                         FontFamily="Monaco" FontSize="12"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        Foreground="White">
+                        Foreground="White" TextWrapping="Wrap" AcceptsReturn="True">
                 </TextBox>
             </ScrollViewer>
         </TabItem>
