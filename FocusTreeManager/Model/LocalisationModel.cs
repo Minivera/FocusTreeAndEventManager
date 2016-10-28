@@ -65,6 +65,10 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Notification == "ContainerRenamed")
+            {
+                RaisePropertyChanged(() => Filename);
+            }
         }
     }
 }

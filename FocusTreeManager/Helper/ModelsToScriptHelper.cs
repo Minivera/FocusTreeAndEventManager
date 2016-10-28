@@ -53,6 +53,10 @@ namespace FocusTreeManager.Helper
         public static List<AssignationModel> TransformScriptToModels(Script script, RelayCommand<object> deleteCommand)
         {
             List<AssignationModel> listModels = new List<AssignationModel>();
+            if (script.Code == null)
+            {
+                return listModels;
+            }
             foreach (ICodeStruct code in script.Code)
             {
                 try
@@ -158,24 +162,24 @@ namespace FocusTreeManager.Helper
             //If a common control
             if (index >= 0 && index <= 4)
             {
-                //Return condition bursh
+                //Return condition brush
                 return CONDITIONS_COLORS;
             }
             else
             {
-                //Return block bursh
+                //Return block brush
                 return BLOCKS_COLORS;
             }
         }
 
-        public static Script TransformModelsToScript(List<AssignationModel> models, int StartingLevel = 3)
+        public static Script TransformModelsToScript(List<AssignationModel> models)
         {
             Script newScript = new Script();
             foreach (AssignationModel assignation in models)
             {
                 try
                 {
-                    newScript.Code.Add(ModelToBlock(assignation, StartingLevel));
+                    newScript.Code.Add(ModelToBlock(assignation));
                 }
                 catch (RecursiveCodeException e)
                 {
@@ -199,7 +203,7 @@ namespace FocusTreeManager.Helper
         /// <param name="model">The model to loop into</param>
         /// <param name="level">The current level of the script</param>
         /// <returns>a well formed ICodeStruct made from the model's data.</returns>
-        private static ICodeStruct ModelToBlock(AssignationModel model, int level)
+        private static ICodeStruct ModelToBlock(AssignationModel model, int level = 0)
         {
             if (model.Childrens.Any())
             {

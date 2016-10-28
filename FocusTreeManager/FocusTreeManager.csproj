@@ -51,8 +51,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dragablz, Version=0.0.3.171, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dragablz.0.0.3.171\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.3.176, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.176\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -118,6 +118,8 @@
     </ApplicationDefinition>
     <Compile Include="CodeStructures\Assignation.cs" />
     <Compile Include="CodeStructures\CodeBlock.cs" />
+    <Compile Include="CodeStructures\CodeEditor\CodeEditorContent.cs" />
+    <Compile Include="CodeStructures\CodeEditor\InnerTextBlock.cs" />
     <Compile Include="CodeStructures\CodeExceptions\RecursiveCodeException.cs" />
     <Compile Include="CodeStructures\CodeValue.cs" />
     <Compile Include="CodeStructures\Comment.cs" />
@@ -143,6 +145,11 @@
     <Compile Include="ViewModel\ScripterControlsViewModel.cs" />
     <Compile Include="ViewModel\ScripterViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="Views\CodeEditor\CodeEditor.xaml.cs">
+      <DependentUpon>CodeEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodeEditor\DrawingControl.cs" />
+    <Compile Include="Helper\CodeHelper.cs" />
     <Compile Include="Views\EditScript.xaml.cs">
       <DependentUpon>EditScript.xaml</DependentUpon>
     </Compile>
@@ -185,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\CodeEditor\CodeEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EditScript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -221,7 +232,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GridHelpers.cs" />
+    <Compile Include="Helper\GridHelpers.cs" />
     <Compile Include="Configurator.cs" />
     <Compile Include="Model\CanvasLine.cs" />
     <Compile Include="Model\Focus.cs" />
@@ -296,6 +307,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Common\ScripterSymbols\Conditions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\ScripterSymbols\Assigners.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\ScripterSymbols\Keywords.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -441,7 +461,11 @@
   <ItemGroup>
     <Resource Include="GFX\Interface\thisisdog.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Common\ScripterSymbols\Snippets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

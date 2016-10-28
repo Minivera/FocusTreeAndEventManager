@@ -54,9 +54,10 @@ namespace FocusTreeManager.ViewModel
         public AddFocusViewModel SetupFlyout(object sender)
         {
             Point mousePos = Mouse.GetPosition((IInputElement)sender);
-            Focus = new Model.Focus();
-            Focus.setDefaults();
-            //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Anoying
+            Model.Focus focus = new Model.Focus();
+            focus.setDefaults();
+            Focus = focus;
+            //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
             Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
             Focus.Y = (int)Math.Floor(mousePos.Y / 140);
             RaisePropertyChanged("Focus");
@@ -86,7 +87,7 @@ namespace FocusTreeManager.ViewModel
         {
             if (msg.Target != null && msg.Target != this)
             {
-                //Message not itended for here
+                //Message not intended for here
                 return;
             }
             if (msg.Notification == "HideChangeImage")

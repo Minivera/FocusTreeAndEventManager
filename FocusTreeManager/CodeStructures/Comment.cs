@@ -33,7 +33,7 @@ namespace FocusTreeManager.CodeStructures
             throw new NotImplementedException();
         }
 
-        public string Parse()
+        public string Parse(int StartLevel = -1)
         {
             throw new NotImplementedException();
         }

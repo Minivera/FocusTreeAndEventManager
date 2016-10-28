@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract]
     public class CodeValue : ICodeStruct
     {
         [ProtoMember(1)]
@@ -46,7 +46,7 @@ namespace FocusTreeManager.CodeStructures
             return new List<ICodeStruct>();
         }
 
-        public string Parse()
+        public string Parse(int StartLevel = -1)
         {
             return Value;
         }

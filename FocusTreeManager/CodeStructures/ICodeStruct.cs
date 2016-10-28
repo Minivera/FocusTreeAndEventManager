@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract]
     [ProtoInclude(1, typeof(Assignation))]
     [ProtoInclude(2, typeof(CodeBlock))]
     [ProtoInclude(3, typeof(CodeValue))]
     [ProtoInclude(4, typeof(Comment))]
     public interface ICodeStruct
     {
-        string Parse();
+        string Parse(int StartLevel = -1);
         void Analyse(string code);
         ICodeStruct FindValue(string TagToFind);
         ICodeStruct FindAssignation(string TagToFind);

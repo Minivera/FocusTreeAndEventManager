@@ -26,3 +26,11 @@
 - The code editor now allows you to press enter
 - Settings windows will now work in production
 - Fixed a crash on startup with Beta_1a
+
+***********************
+*        Beta_1c      *
+***********************
+
+- Renaming a file will now rename the tab
+- Fixed a crash when a focus has no internal script and you edit a loaded project
+- The code editor now supports Syntax highlighting and automatic formatting.

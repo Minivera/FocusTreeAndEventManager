@@ -12,7 +12,7 @@ namespace FocusTreeManager.CodeStructures
     /// Code block containing one or multiple assignations. It contains everything
     /// that is between one level of brackets.
     /// </summary>
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract]
     public class CodeBlock : ICodeStruct
     {
         [ProtoMember(1)]
@@ -22,7 +22,10 @@ namespace FocusTreeManager.CodeStructures
         public List<ICodeStruct> Code { get; set; }
 
         public CodeBlock()
-        { }
+        {
+            this.Level = 0;
+            Code = new List<ICodeStruct>();
+        }
 
         public CodeBlock(int level)
         {
@@ -70,12 +73,13 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public string Parse()
+        public string Parse(int StartLevel = -1)
         {
+            int BasicLevel = StartLevel == -1 ? Level : StartLevel + 1;
             StringBuilder content = new StringBuilder();
             //Get the right amount of tabulations for the level
             string tabulations = "";
-            for (int i = 1; i < Level; i++)
+            for (int i = 1; i < BasicLevel; i++)
             {
                 tabulations += "\t";
             }
@@ -83,7 +87,7 @@ namespace FocusTreeManager.CodeStructures
             foreach (Assignation item in Code)
             {
                 //Parse each internal assignations
-                content.Append(item.Parse());
+                content.Append(item.Parse(BasicLevel));
             }
             content.Append(tabulations + "}");
             return content.ToString();

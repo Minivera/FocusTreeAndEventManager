@@ -9,7 +9,7 @@ namespace FocusTreeManager.CodeStructures
     /// <summary>
     /// Hold the whole script in any text file, a text file contains one or multiple assignations.
     /// </summary>
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract]
     [ProtoInclude(500, typeof(ICodeStruct))]
     public class Script : ICodeStruct
     {
@@ -59,14 +59,18 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public string Parse()
+        public string Parse(int StartLevel = -1)
         {
             string content = "";
+            if (Code == null)
+            {
+                return content;
+            }
             foreach (ICodeStruct item in Code)
             {
                 try
                 {
-                    content += item.Parse();
+                    content += item.Parse(StartLevel);
                 }
                 catch (RecursiveCodeException e)
                 {

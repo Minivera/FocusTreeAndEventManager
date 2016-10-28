@@ -78,10 +78,10 @@ namespace FocusTreeManager.ViewModel
         public void setCode(Script internalScript)
         {
             codeBlocks.Clear();
-            managedScript = internalScript;
-            EditorScript = internalScript.Parse();
+            managedScript = internalScript == null ? new Script() : internalScript;
+            EditorScript = internalScript == null? "" : internalScript.Parse(0);
             List<AssignationModel> listBlock = ModelsToScriptHelper.
-                TransformScriptToModels(internalScript, new RelayCommand<object>(DeleteNode));
+                TransformScriptToModels(managedScript, new RelayCommand<object>(DeleteNode));
             foreach (AssignationModel item in listBlock)
             {
                 codeBlocks.Add(item);
@@ -103,7 +103,7 @@ namespace FocusTreeManager.ViewModel
 
         public void ScripterToScript()
         {
-            managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList(), 1);
+            managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
             EditorScript = managedScript.Parse();
         }
 

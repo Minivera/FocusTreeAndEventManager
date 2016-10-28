@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract]
     public class Assignation : ICodeStruct
     {
         [ProtoMember(1)]
@@ -25,7 +25,9 @@ namespace FocusTreeManager.CodeStructures
         public string Operator { get; set; }
 
         public Assignation()
-        { }
+        {
+            this.Level = 0;
+        }
 
         public Assignation(int level)
         {
@@ -79,10 +81,11 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public string Parse()
+        public string Parse(int StartLevel = -1)
         {
+            int BasicLevel = StartLevel == -1 ? Level : StartLevel + 1;
             string tabulations = "";
-            for (int i = 1; i < Level; i++)
+            for (int i = 1; i < BasicLevel; i++)
             {
                 tabulations += "\t";
             }
@@ -96,7 +99,7 @@ namespace FocusTreeManager.CodeStructures
                 }
                 else
                 {
-                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse() + "\n");
+                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse(BasicLevel) + "\n");
                 }
             }
             catch (RecursiveCodeException e)

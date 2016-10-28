@@ -66,13 +66,13 @@ namespace FocusTreeManager.Views
                 TabItem selectedTab = e.AddedItems[0] as TabItem;
                 if (selectedTab == ScripterTab)
                 {
-                    ((ScripterViewModel)DataContext).ScriptToScripter();
                     ((ScripterViewModel)DataContext).SelectedTabIndex = "Scripter";
+                    ((ScripterViewModel)DataContext).ScriptToScripter();
                 }
                 else if (selectedTab == EditorTab)
                 {
-                    ((ScripterViewModel)DataContext).ScripterToScript();
                     ((ScripterViewModel)DataContext).SelectedTabIndex = "Editor";
+                    ((ScripterViewModel)DataContext).ScripterToScript();
                 }
             }
         }

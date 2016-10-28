@@ -32,5 +32,20 @@ namespace FocusTreeManager.Helper
                 }
             }
         }
+
+        public static T FindVisualParent<T>(DependencyObject depObj, 
+            FrameworkElement HighestParent) where T : DependencyObject
+        {
+            if (depObj != null && depObj != HighestParent)
+            {
+                DependencyObject parent = VisualTreeHelper.GetParent(depObj);
+                if (parent != null && parent is T)
+                {
+                    return (T)parent;
+                }
+                return FindVisualParent<T>(parent, HighestParent);
+            }
+            return null;
+        }
     }
 }

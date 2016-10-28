@@ -247,11 +247,6 @@ namespace FocusTreeManager.Model
                 //is not shown, do not manage
                 return;
             }
-            if (msg.Target != null && msg.Target != this)
-            {
-                //Message not itended for here
-                return;
-            }
             if (msg.Notification == "HideAddFocus")
             {
                 System.Windows.Application.Current.Properties["Mode"] = null;
@@ -344,6 +339,10 @@ namespace FocusTreeManager.Model
                     RaisePropertyChanged(() => FociList);
                     DrawOnCanvas();
                 }
+            }
+            if (msg.Notification == "ContainerRenamed")
+            {
+                RaisePropertyChanged(() => Filename);
             }
         }
 
