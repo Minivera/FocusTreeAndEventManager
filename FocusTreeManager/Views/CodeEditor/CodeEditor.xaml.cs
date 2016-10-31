@@ -13,11 +13,15 @@ using System.Threading;
 using FocusTreeManager.Helper;
 using FocusTreeManager.CodeStructures.CodeEditor;
 using System.ComponentModel;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
 	public partial class CodeEditor : TextBox, INotifyPropertyChanged
     {
+        public int TabSize { get; set; }
+
         public double LineHeight
         {
 			get
@@ -65,15 +69,19 @@ namespace FocusTreeManager.Views.CodeEditor
 
 		private int maxLineCountInBlock;
 
-		public CodeEditor()
+        private bool WaitingForClosingBracket = false;
+
+        public CodeEditor()
         {
 			InitializeComponent();
 			MaxLineCountInBlock = 100;
 			LineHeight = FontSize * 1.3;
+            TabSize = 4;
 			totalLineCount = 1;
 			blocks = new List<InnerTextBlock>();
 			Loaded += (s, e) => {
                 ApplyTemplate();
+                Text = Text.Replace("\t", new string(' ', TabSize));
                 renderCanvas = (DrawingControl)Template.FindName("PART_RenderCanvas", this);
                 lineNumbersCanvas = (DrawingControl)Template.FindName("PART_LineNumbersCanvas", this);
 				scrollViewer = (ScrollViewer)Template.FindName("PART_ContentHost", this);
@@ -96,9 +104,21 @@ namespace FocusTreeManager.Views.CodeEditor
 				InvalidateBlocks(e.Changes.First().Offset);
 				InvalidateVisual();
 			};
+            PreviewTextInput += (s, e) => {
+                if (e.Text.Contains("{"))
+                {
+                    WaitingForClosingBracket = true;
+                }
+                if (e.Text.Contains("}"))
+                {
+                    WaitingForClosingBracket = false;
+                }
+            };
+            PreviewKeyDown += new KeyEventHandler(CodeEditor_OnPreviewKeyDown);
+            SelectionChanged += new RoutedEventHandler(CodeEditor_SelectionChanged);
         }
 
-		protected override void OnRender(DrawingContext drawingContext)
+        protected override void OnRender(DrawingContext drawingContext)
         {
 			DrawBlocks();
 			base.OnRender(drawingContext);
@@ -112,6 +132,200 @@ namespace FocusTreeManager.Views.CodeEditor
             }
 			InvalidateVisual();
 		}
+
+        private void CodeEditor_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            ManageTabs(e);
+            ManageFormatting(e);
+        }
+
+        #region BracketHiglightBlocks
+
+        private int openBracketPos = -1;
+        private int closeBracketPos = -1;
+
+        #endregion
+
+        private void CodeEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            //Get caret position and highlight the blocks that are needed
+            int caretPosition = CaretIndex;
+            //If the caret is not far enough, caret reset
+            if (caretPosition < 1)
+            {
+                return;
+            }
+            //if the caret is near an opening bracket, the caret can be before or after the caret
+            if (Text.Substring(caretPosition, 1).Contains("{"))
+            {
+                openBracketPos = caretPosition;
+                closeBracketPos = CodeHelper.getAssociatedClosingBracket(Text, caretPosition);
+            }
+            else if (Text.Substring(caretPosition - 1, 1).Contains("{"))
+            {
+                caretPosition -= 1;
+                openBracketPos = caretPosition;
+                closeBracketPos = CodeHelper.getAssociatedClosingBracket(Text, caretPosition);
+            }
+            //else if the caret is near a closing bracket, the caret can be before or after the caret
+            else if (Text.Substring(caretPosition, 1).Contains("}"))
+            {
+                openBracketPos = CodeHelper.getAssociatedOpeningBracket(Text, caretPosition);
+                closeBracketPos = caretPosition;
+            }
+            else if (Text.Substring(caretPosition - 1, 1).Contains("}"))
+            {
+                caretPosition -= 1;
+                openBracketPos = CodeHelper.getAssociatedOpeningBracket(Text, caretPosition);
+                closeBracketPos = caretPosition;
+            }
+            else
+            {
+                openBracketPos = -1;
+                closeBracketPos = -1;
+            }
+            InvalidateBlocks(caretPosition);
+            InvalidateVisual();
+        }
+
+        private void ManageTabs(KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab && Keyboard.Modifiers == ModifierKeys.None)
+            {
+                string tab = new string(' ', TabSize);
+                //Check if text is selected
+                if (!string.IsNullOrEmpty(SelectedText))
+                {
+                    StringBuilder builder = new StringBuilder(Text);
+                    int caretStart = Text.IndexOf(SelectedText);
+                    int Start = Text.Substring(0, Text.IndexOf(SelectedText)).LastIndexOf("\n");
+                    //To calculate the real length from first \n to last \n with the selected text in the middle
+                    //Extract the selected text from \n to end of selected text
+                    string subtext = Text.Substring(Start, SelectedText.Length);
+                    //Remove everything until the end of selected text
+                    builder.Remove(0, Start + subtext.Length);
+                    //Real length is equal to the subtext length plus distance to fist \n in cleaned builder
+                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n");
+                    int pos = Start;
+                    //if yes, add a tab at the beginning of the line;
+                    foreach (string line in Text.Substring(Start, RealLength).Split('\n'))
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            continue;
+                        }
+                        builder = new StringBuilder(Text);
+                        //For each line selected
+                        builder.Remove(pos, line.Length + 1);
+                        //Insert the tab at the start of the line plus repair the breakline
+                        builder.Insert(pos, "\n" + tab + line);
+                        Text = builder.ToString();
+                        //Set the position to the start of text line + the size of what we added
+                        pos += line.Length + TabSize + 1;
+                    }
+                    //Set the selected text and caret
+                    CaretIndex = pos;
+                    SelectionStart = caretStart + TabSize;
+                    SelectionLength = pos - caretStart - TabSize;
+                    //Handle the event
+                    e.Handled = true;
+                }
+            }
+            else if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            {
+                //Handle the event
+                e.Handled = true;
+                //Check if text is selected
+                if (!string.IsNullOrEmpty(SelectedText))
+                {
+                    StringBuilder builder = new StringBuilder(Text);
+                    int Start = Text.Substring(0, Text.IndexOf(SelectedText)).LastIndexOf("\n");
+                    //Check if the first line has space to be moved without killing characters
+                    if (!string.IsNullOrWhiteSpace(Text.Substring(Start, TabSize)))
+                    {
+                        //If there are chars, kill the event
+                        return;
+                    }
+                    int caretStart = Text.IndexOf(SelectedText);
+                    //To calculate the real length from first \n to last \n with the selected text in the middle
+                    //Extract the selected text from \n to end of selected text
+                    string subtext = Text.Substring(Start, SelectedText.Length);
+                    //Remove everything until the end of selected text
+                    builder.Remove(0, Start + subtext.Length);
+                    //Real length is equal to the subtext length plus distance to fist \n in cleaned builder
+                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n");
+                    int pos = Start;
+                    //if yes, add a tab at the beginning of the line;
+                    foreach (string line in Text.Substring(Start, RealLength).Split('\n'))
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            continue;
+                        }
+                        builder = new StringBuilder(Text);
+                        //For each line selected
+                        builder.Remove(pos, line.Length + 1);
+                        //Remove the tab at the start of the line plus repair the breakline
+                        builder.Insert(pos, "\n" + line.Substring(TabSize));
+                        Text = builder.ToString();
+                        //Set the position to the start of text line - the size of what we removed
+                        pos += line.Length - TabSize + 1;
+                    }
+                    //Set the selected text and caret
+                    CaretIndex = pos;
+                    SelectionStart = caretStart - TabSize;
+                    SelectionLength = pos - caretStart + TabSize;
+                }
+                else
+                {
+                    int caret = CaretIndex;
+                    //Remove a tab 
+                    StringBuilder builder = new StringBuilder(Text);
+                    //Get the position of line start with spaces
+                    int Start = Text.Substring(0, CaretIndex).LastIndexOf("\n") + 1;
+                    //Check if the first line has space to be moved without killing characters
+                    if (!string.IsNullOrWhiteSpace(Text.Substring(Start, TabSize)))
+                    {
+                        //If there are chars, kill the event
+                        return;
+                    }
+                    //Get the whole line
+                    string subtext = Text.Substring(Start, Text.Substring(Start).IndexOf("\n"));
+                    //Remove the line from the builder
+                    builder.Remove(Start, subtext.Length);
+                    //Add it again without the tab
+                    builder.Insert(Start, subtext.Substring(TabSize));
+                    Text = builder.ToString();
+                    //Place the caret where it was - the text removed
+                    CaretIndex = caret - TabSize;
+                }
+            }
+        }
+
+        private void ManageFormatting(KeyEventArgs e)
+        {
+            if (e.Key == Key.Return && Keyboard.Modifiers == ModifierKeys.None)
+            {
+                int caret = CaretIndex;
+                //Handle the event
+                e.Handled = true;
+                //Get the indent level
+                int indent = CodeHelper.getLevelOfIndent(Text.Substring(0, caret));
+                //If needed, add a closing bracket
+                if (WaitingForClosingBracket)
+                {
+                    Text = Text.Insert(caret, "\n" + new string(' ', TabSize * (indent - 1)) + "}");
+                    WaitingForClosingBracket = false;
+                }
+                //Insert a number of tab equals to the indent level + 1 after the \n
+                string tab = new string(' ', TabSize * (indent));
+                Text = Text.Insert(caret, "\n" + tab);
+                //Place the caret to the new position
+                CaretIndex = caret + (TabSize * (indent)) + 1;
+            }
+        }
+
+        #region SyntaxHiglighting
 
         private void UpdateTotalLineCount()
         {
@@ -147,8 +361,8 @@ namespace FocusTreeManager.Views.CodeEditor
 				block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, block.LineEndIndex);
 				blocks.Add(block);
 				FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
-			}
-		}
+            }
+        }
 
 		private void InvalidateBlocks(int changeOffset)
         {
@@ -202,7 +416,7 @@ namespace FocusTreeManager.Views.CodeEditor
                     }
 					blocks.Add(block);
 					FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
-					break;
+                    break;
 				}
 				if (localLineCount > maxLineCountInBlock)
                 {
@@ -223,7 +437,7 @@ namespace FocusTreeManager.Views.CodeEditor
                     }
                     blocks.Add(block);
 					FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
-					charStart = i + 1;
+                    charStart = i + 1;
 					lineStart += maxLineCountInBlock;
 					localLineCount = 1;
 					if (i > lvchar)
@@ -232,7 +446,7 @@ namespace FocusTreeManager.Views.CodeEditor
                     }
 				}
 			}
-		}
+        }
 
 		private void DrawBlocks()
         {
@@ -295,15 +509,15 @@ namespace FocusTreeManager.Views.CodeEditor
         {
 			currentBlock.FormattedText = GetFormattedText(currentBlock.RawText);
             Dispatcher.Invoke(() => {
-                CodeEditorContent.Instance.Highlight(currentBlock.FormattedText);
+                CodeEditorContent.Instance.Highlight(currentBlock.FormattedText, openBracketPos, closeBracketPos);
                 currentBlock.Code = -1;
             });
         }
 
-		/// <summary>
-		/// Returns a formatted text object from the given string
-		/// </summary>
-		private FormattedText GetFormattedText(string text)
+        /// <summary>
+        /// Returns a formatted text object from the given string
+        /// </summary>
+        private FormattedText GetFormattedText(string text)
         {
 			FormattedText ft = new FormattedText(
 				text,
@@ -357,6 +571,8 @@ namespace FocusTreeManager.Views.CodeEditor
 			ft.LineHeight = lineHeight;
 			return ft.Width;
 		}
+
+        #endregion
 
         #region INotify
         public event PropertyChangedEventHandler PropertyChanged;

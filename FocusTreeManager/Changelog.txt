@@ -34,3 +34,5 @@
 - Renaming a file will now rename the tab
 - Fixed a crash when a focus has no internal script and you edit a loaded project
 - The code editor now supports Syntax highlighting and automatic formatting.
+- Added basic syntax highlighting words, must be improved
+- Fixed an error being logged when handling empty block (like availability = {}) in the scripter

@@ -85,7 +85,25 @@ namespace FocusTreeManager.Helper
             if (currentBlock is Assignation)
             {
                 Assignation block = currentBlock as Assignation;
-                //check children
+                //Check if simply empty, consider an empty block
+                if (block.Value == null)
+                {
+                    ResourceDictionary resourceLocalization = new ResourceDictionary();
+                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                    //Simple assignation, return corresponding model
+                    return new AssignationModel()
+                    {
+                        BackgroundColor = BLOCKS_COLORS[0],
+                        BorderColor = BLOCKS_COLORS[1],
+                        Color = BLOCKS_COLORS[2],
+                        IsNotEditable = false,
+                        CanHaveChild = true,
+                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator + " {}",
+                        Text = getAssignationName(block.Assignee),
+                        DeleteNodeCommand = deleteCommand
+                    };
+                }
+                //check if a code value
                 if (block.Value is CodeValue)
                 {
                     ResourceDictionary resourceLocalization = new ResourceDictionary();

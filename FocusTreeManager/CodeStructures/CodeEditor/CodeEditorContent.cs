@@ -21,6 +21,8 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         private readonly Brush ConditionColor = (SolidColorBrush)
             (new BrushConverter().ConvertFrom("#b71c1c"));
 
+        private readonly Brush DelimiterColor = Brushes.Red;
+
         private static readonly Lazy<CodeEditorContent> lazy =
         new Lazy<CodeEditorContent>(() => new CodeEditorContent());
 
@@ -48,7 +50,7 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(filename);
-            //Load all the childrens of the root node
+            //Load all the children of the root node
             foreach (XmlNode node in doc.DocumentElement.ChildNodes)
             {
                 listToModify.Add(node.InnerText);
@@ -95,9 +97,9 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
             return false;
         }
 
-        public void Highlight(FormattedText text)
+        public void Highlight(FormattedText text, int openingBracketPos, int ClosingBracketPos)
         {
-            Regex wordsRgx = new Regex("[a-zA-Z_][a-zA-Z0-9_]*");
+            Regex wordsRgx = new Regex(@"[a-zA-Z_\{\}][a-zA-Z0-9_\{\}]*");
             foreach (Match m in wordsRgx.Matches(text.Text))
             {
                 if (IsKnownKeyword(m.Value))
@@ -115,6 +117,18 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
                 else if(IsKnownAssigner(m.Value))
                 {
                     text.SetForegroundBrush(AssignerColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                else if (m.Value == "{" && m.Index == openingBracketPos)
+                {
+                    text.SetForegroundBrush(DelimiterColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                else if (m.Value == "}" && m.Index == ClosingBracketPos)
+                {
+                    text.SetForegroundBrush(DelimiterColor, m.Index, m.Length);
                     text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
                     text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
                 }
