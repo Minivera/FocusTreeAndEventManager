@@ -148,7 +148,7 @@ namespace FocusTreeManager.Helper
                 {
                     //An error in the code, log it
                     RecursiveCodeException e = new RecursiveCodeException();
-                    throw e.AddToRecursiveChain("Invalid assignation", block.Assignee);
+                    throw e.AddToRecursiveChain("Invalid assignation", block.Assignee, block.Line.ToString());
                 }
             }
             return null;
@@ -322,7 +322,8 @@ namespace FocusTreeManager.Helper
                     //Empty code block, create as such
                     return new Assignation(level)
                     {
-                        Assignee = model.Code.Split('=')[0].Trim()
+                        Assignee = model.Code.Split('=')[0].Trim(),
+                        Operator = "="
                     };
                 }
                 else

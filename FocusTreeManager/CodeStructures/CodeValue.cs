@@ -22,7 +22,7 @@ namespace FocusTreeManager.CodeStructures
             this.Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
         }
 
-        public void Analyse(string code)
+        public void Analyse(string code, int line = -1)
         {
             //Can't analyse
             return;

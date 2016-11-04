@@ -15,10 +15,11 @@ using FocusTreeManager.CodeStructures.CodeEditor;
 using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
+using FocusTreeManager.Containers;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
-	public partial class CodeEditor : TextBox, INotifyPropertyChanged
+	public partial class CodeEditor : TextBox
     {
         public int TabSize { get; set; }
 
@@ -51,9 +52,19 @@ namespace FocusTreeManager.Views.CodeEditor
 				maxLineCountInBlock = value > 0 ? value : 0;
 				blockHeight = value * LineHeight;
 			}
-		}
+        }
 
-		private DrawingControl renderCanvas;
+        public delegate void RenderedDelegate();
+
+        public RenderedDelegate RenderMethod { get; set; }
+
+        public delegate void TextUpdateDelegate(string NewText);
+
+        public TextUpdateDelegate TextUpdated { get; set; }
+
+        private CodeNavigator navigator;
+
+        private DrawingControl renderCanvas;
 
 		private DrawingControl lineNumbersCanvas;
 
@@ -90,7 +101,7 @@ namespace FocusTreeManager.Views.CodeEditor
 				scrollViewer.ScrollChanged += OnScrollChanged;
 				InvalidateBlocks(0);
 				InvalidateVisual();
-			};
+            };
 			SizeChanged += (s, e) => {
                 if (e.HeightChanged == false)
                 {
@@ -103,7 +114,16 @@ namespace FocusTreeManager.Views.CodeEditor
 				UpdateTotalLineCount();
 				InvalidateBlocks(e.Changes.First().Offset);
 				InvalidateVisual();
-			};
+                //If navigator exists
+                if (navigator != null)
+                {
+                    navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
+                    navigator.UpdateText(GetFormattedText(Text),
+                        new Point(2 - HorizontalOffset, VerticalOffset),
+                        scrollViewer.VerticalOffset);
+                    TextUpdated(Text);
+                }
+            };
             PreviewTextInput += (s, e) => {
                 if (e.Text.Contains("{"))
                 {
@@ -122,21 +142,41 @@ namespace FocusTreeManager.Views.CodeEditor
         {
 			DrawBlocks();
 			base.OnRender(drawingContext);
-		}
+            //Render the navigator once the editor is ready
+            if (navigator == null && scrollViewer.ViewportHeight != 0)
+            {
+                navigator = new CodeNavigator(GetFormattedText(Text),
+                    new Point(2 - HorizontalOffset, VerticalOffset));
+                navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
+                navigator.ScrollMethod = new CodeNavigator.ScrollDelegate(Scroll);
+                RenderMethod();
+            }
+        }
 
 		private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-			if (e.VerticalChange != 0)
+            if (e.VerticalChange != 0)
             {
                 UpdateBlocks();
             }
 			InvalidateVisual();
+            //If a navigator exists
+            if (navigator != null)
+            {
+                navigator.setScrolling(scrollViewer.VerticalOffset);
+            }
 		}
 
         private void CodeEditor_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             ManageTabs(e);
             ManageFormatting(e);
+            if (e.Key == Key.Z && 
+                (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == 
+                (ModifierKeys.Control | ModifierKeys.Alt))
+            {
+                this.Redo();
+            }
         }
 
         #region BracketHiglightBlocks
@@ -150,8 +190,8 @@ namespace FocusTreeManager.Views.CodeEditor
         {
             //Get caret position and highlight the blocks that are needed
             int caretPosition = CaretIndex;
-            //If the caret is not far enough, caret reset
-            if (caretPosition < 1)
+            //If the caret is not valid, caret reset
+            if (caretPosition < 1 || caretPosition >= Text.Length)
             {
                 return;
             }
@@ -225,11 +265,18 @@ namespace FocusTreeManager.Views.CodeEditor
                     }
                     //Set the selected text and caret
                     CaretIndex = pos;
-                    SelectionStart = caretStart + TabSize;
-                    SelectionLength = pos - caretStart - TabSize;
-                    //Handle the event
-                    e.Handled = true;
+                    Select(caretStart + TabSize, pos - caretStart - TabSize);
                 }
+                else
+                {
+                    int caret = CaretIndex;
+                    //Insert the tab
+                    Text = Text.Insert(CaretIndex, tab);
+                    //Place the caret where it was - the text removed
+                    CaretIndex = caret + TabSize;
+                }
+                //Handle the event
+                e.Handled = true;
             }
             else if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
             {
@@ -258,7 +305,7 @@ namespace FocusTreeManager.Views.CodeEditor
                     //if yes, add a tab at the beginning of the line;
                     foreach (string line in Text.Substring(Start, RealLength).Split('\n'))
                     {
-                        if (string.IsNullOrWhiteSpace(line))
+                        if (string.IsNullOrWhiteSpace(line) && line.Length <= TabSize)
                         {
                             continue;
                         }
@@ -273,8 +320,7 @@ namespace FocusTreeManager.Views.CodeEditor
                     }
                     //Set the selected text and caret
                     CaretIndex = pos;
-                    SelectionStart = caretStart - TabSize;
-                    SelectionLength = pos - caretStart + TabSize;
+                    Select(caretStart - TabSize, pos - caretStart + TabSize);
                 }
                 else
                 {
@@ -324,6 +370,95 @@ namespace FocusTreeManager.Views.CodeEditor
                 CaretIndex = caret + (TabSize * (indent)) + 1;
             }
         }
+
+        #region PublicMethods
+
+        private Regex TextToHighlight;
+
+        public MatchCollection Find(Regex TextToFind, int index)
+        {
+            TextToHighlight = TextToFind;
+            foreach (InnerTextBlock block in blocks)
+            {
+                MatchCollection Selected = TextToFind.Matches(block.RawText);
+                if (Selected.Count <= index)
+                {
+                    return Selected;
+                }
+                Match currentSelect = Selected[index];
+                Select(block.CharStartIndex + currentSelect.Index, currentSelect.Length);
+                ScrollToLine(Text.Substring(0, SelectionStart).Count(s => s == '\n'));
+                return Selected;
+            }
+            return null;
+        }
+
+        public MatchCollection Replace(Regex TextToFind, string TextToReplace, int index)
+        {
+            TextToHighlight = TextToFind;
+            foreach (InnerTextBlock block in blocks)
+            {
+                MatchCollection Selected = TextToFind.Matches(block.RawText);
+                if (Selected.Count <= index)
+                {
+                    return Selected;
+                }
+                Match currentSelect = Selected[index];
+                Select(block.CharStartIndex + currentSelect.Index, currentSelect.Length);
+                SelectedText = TextToReplace;
+                ScrollToLine(Text.Substring(0, SelectionStart).Count(s => s == '\n'));
+                return Selected;
+            }
+            return null;
+        }
+
+        public void EndFindAndReplace()
+        {
+            TextToHighlight = null;
+            InvalidateVisual();
+        }
+
+        public CodeNavigator GetNavigator()
+        {
+            return navigator;
+        }
+
+        public void Scroll(double verticalOffset)
+        {
+            scrollViewer.ScrollToVerticalOffset(verticalOffset);
+        }
+
+        public void Select(string ElementName, int Line)
+        {
+            ScrollToLine(Line - 1);
+            int lineIndex = 0;
+            int i = 1;
+            foreach (string line in Text.Split('\n'))
+            {
+                //Skip empty lines
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    lineIndex++;
+                    continue;
+                }
+                if (i == Line)
+                {
+                    if (line.IndexOf(ElementName) >= 0)
+                    {
+                        Dispatcher.BeginInvoke(new ThreadStart(delegate ()
+                        {
+                            Select(lineIndex + line.IndexOf(ElementName), ElementName.Length);
+                            Focus();
+                        }), null);
+                    }
+                    break;
+                }
+                lineIndex += line.Length + 1;
+                i++;
+            }
+        }
+
+        #endregion
 
         #region SyntaxHiglighting
 
@@ -464,11 +599,26 @@ namespace FocusTreeManager.Views.CodeEditor
 				double bottom = top + blockHeight;
 				if (top < ActualHeight && bottom > 0)
                 {
-					try
+                    try
                     {
-					    dc.DrawText(block.FormattedText, new Point(2 - 
+                        if (TextToHighlight != null)
+                        {
+                            foreach (Match m in TextToHighlight.Matches(block.FormattedText.Text))
+                            {
+                                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
+                                        new Point(2 - HorizontalOffset, block.Position.Y - this.VerticalOffset),
+                                        m.Index, m.Length);
+                                if (highlight != null)
+                                {
+                                    Brush brush = new SolidColorBrush(Brushes.LightCyan.Color);
+                                    brush.Opacity = 0.5;
+                                    dc.DrawGeometry(brush, null, highlight);
+                                }
+                            }
+                        }
+                        dc.DrawText(block.FormattedText, new Point(2 -
                             HorizontalOffset, block.Position.Y - VerticalOffset));
-					    lineNumbersCanvas.Width = GetFormattedTextWidth(string.Format("{0:0000}", 
+                        lineNumbersCanvas.Width = GetFormattedTextWidth(string.Format("{0:0000}", 
                             totalLineCount)) + 5;
 						dc2.DrawText(block.LineNumbers, new Point(lineNumbersCanvas.ActualWidth, 1 + 
                             block.Position.Y - VerticalOffset));
@@ -509,7 +659,8 @@ namespace FocusTreeManager.Views.CodeEditor
         {
 			currentBlock.FormattedText = GetFormattedText(currentBlock.RawText);
             Dispatcher.Invoke(() => {
-                CodeEditorContent.Instance.Highlight(currentBlock.FormattedText, openBracketPos, closeBracketPos);
+                CodeEditorContent.Instance.Highlight(currentBlock.FormattedText, 
+                    openBracketPos, closeBracketPos);
                 currentBlock.Code = -1;
             });
         }
@@ -572,16 +723,6 @@ namespace FocusTreeManager.Views.CodeEditor
 			return ft.Width;
 		}
 
-        #endregion
-
-        #region INotify
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
     }
 }

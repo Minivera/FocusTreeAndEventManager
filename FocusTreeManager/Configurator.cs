@@ -84,5 +84,27 @@ namespace FocusTreeManager
         {
             return FocusTreeManager.Properties.Settings.Default.ScripterPreference;
         }
+
+        static public void setEditorShowStruct(bool preference)
+        {
+            FocusTreeManager.Properties.Settings.Default.EditorShowStruct = preference;
+            FocusTreeManager.Properties.Settings.Default.Save();
+        }
+
+        static public bool getEditorShowStruct()
+        {
+            return FocusTreeManager.Properties.Settings.Default.EditorShowStruct;
+        }
+
+        static public void setEditorShowPlan(bool preference)
+        {
+            FocusTreeManager.Properties.Settings.Default.EditorShowPlan = preference;
+            FocusTreeManager.Properties.Settings.Default.Save();
+        }
+
+        static public bool getEditorShowPlan()
+        {
+            return FocusTreeManager.Properties.Settings.Default.EditorShowPlan;
+        }
     }
 }

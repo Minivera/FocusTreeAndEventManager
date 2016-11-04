@@ -30,6 +30,10 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
         }
 
         private void loadLocales()

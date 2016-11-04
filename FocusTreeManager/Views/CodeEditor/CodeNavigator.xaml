@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.CodeEditor.CodeNavigator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views.CodeEditor"
+             mc:Ignorable="d" Loaded="UserControl_Loaded"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}" 
+             Margin="0,0,0,15">
+    <Grid>
+        <Viewbox>
+            <Canvas x:Name="NavigatorCanvas"
+                    Width="150"
+                    Height="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                               AncestorType=UserControl, 
+                                               AncestorLevel=1},
+                                               Path=ActualHeight}">
+                <Rectangle Width="150"
+                           x:Name="VisualRectangle"
+                           VerticalAlignment="Top"
+                           PreviewMouseLeftButtonDown="VisualRectangle_PreviewMouseLeftButtonDown">
+                </Rectangle>
+                <Rectangle Fill="#59C9C9C9" Opacity="0.5" x:Name="NavigatorRectangle"
+                        Width="150" 
+                        PreviewMouseLeftButtonDown="Border_PreviewMouseLeftButtonDown"
+                        PreviewMouseLeftButtonUp="Border_PreviewMouseLeftButtonUp"
+                        PreviewMouseMove="Border_PreviewMouseMove"/>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

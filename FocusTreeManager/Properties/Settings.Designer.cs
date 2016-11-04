@@ -70,5 +70,29 @@ namespace FocusTreeManager.Properties {
                 this["ScripterPreference"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EditorShowStruct {
+            get {
+                return ((bool)(this["EditorShowStruct"]));
+            }
+            set {
+                this["EditorShowStruct"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EditorShowPlan {
+            get {
+                return ((bool)(this["EditorShowPlan"]));
+            }
+            set {
+                this["EditorShowPlan"] = value;
+            }
+        }
     }
 }

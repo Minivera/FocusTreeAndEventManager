@@ -13,7 +13,7 @@ namespace FocusTreeManager.CodeStructures
         public Comment()
         { }
 
-        public void Analyse(string Code)
+        public void Analyse(string Code, int line = -1)
         {
             throw new NotImplementedException();
         }

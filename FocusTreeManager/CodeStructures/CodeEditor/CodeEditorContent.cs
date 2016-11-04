@@ -97,7 +97,8 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
             return false;
         }
 
-        public void Highlight(FormattedText text, int openingBracketPos, int ClosingBracketPos)
+        public void Highlight(FormattedText text, int openingBracketPos, 
+            int ClosingBracketPos)
         {
             Regex wordsRgx = new Regex(@"[a-zA-Z_\{\}][a-zA-Z0-9_\{\}]*");
             foreach (Match m in wordsRgx.Matches(text.Text))

@@ -2,6 +2,7 @@
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace FocusTreeManager.CodeStructures
@@ -31,18 +32,20 @@ namespace FocusTreeManager.CodeStructures
             Code = new List<ICodeStruct>();
         }
 
-        public void Analyse(string code)
+        public void Analyse(string code, int line = -1)
         {
             Code.Clear();
             Regex regex = new Regex(REGEX_BRACKETS);
             //For each block of text = brackets
+            int currentLine = 1;
             foreach (Match ItemMatch in regex.Matches(code))
             {
                 try
                 {
                     Assignation tempo = new Assignation(1);
-                    tempo.Analyse(ItemMatch.Value);
+                    tempo.Analyse(ItemMatch.Value, currentLine);
                     Code.Add(tempo);
+                    currentLine += ItemMatch.Value.Count(s => s == '\n') + 1;
                 }
                 catch (RecursiveCodeException e)
                 {
@@ -70,7 +73,7 @@ namespace FocusTreeManager.CodeStructures
             {
                 try
                 {
-                    content += item.Parse(StartLevel);
+                    content += item.Parse(StartLevel) + "\n";
                 }
                 catch (RecursiveCodeException e)
                 {

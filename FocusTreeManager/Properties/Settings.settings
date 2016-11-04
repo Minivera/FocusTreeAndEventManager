@@ -14,5 +14,11 @@
     <Setting Name="ScripterPreference" Type="System.String" Scope="User">
       <Value Profile="(Default)">Scripter</Value>
     </Setting>
+    <Setting Name="EditorShowStruct" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="EditorShowPlan" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -33,7 +33,7 @@ namespace FocusTreeManager.CodeStructures
             Code = new List<ICodeStruct>();
         }
 
-        public void Analyse(string code)
+        public void Analyse(string code, int line = -1)
         {
             Regex regex = new Regex(Script.REGEX_BRACKETS);
             //For each block of text = brackets
@@ -52,7 +52,7 @@ namespace FocusTreeManager.CodeStructures
                     foreach (Match inlines in regex2.Matches(ItemMatch.Value))
                     {
                         Assignation tempo = new Assignation(Level + 1);
-                        tempo.Analyse(inlines.Value);
+                        tempo.Analyse(inlines.Value, line);
                         //If tempo has a value
                         if (!String.IsNullOrEmpty(tempo.Assignee))
                         {
@@ -63,13 +63,14 @@ namespace FocusTreeManager.CodeStructures
                 else
                 {
                     Assignation tempo = new Assignation(Level + 1);
-                    tempo.Analyse(ItemMatch.Value);
+                    tempo.Analyse(ItemMatch.Value, line + 1);
                     //If tempo has a value
                     if (!String.IsNullOrEmpty(tempo.Assignee))
                     {
                         Code.Add(tempo);
                     }
                 }
+                line += ItemMatch.Value.Count(s => s == '\n');
             }
         }
 

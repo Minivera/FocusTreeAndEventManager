@@ -36,3 +36,11 @@
 - The code editor now supports Syntax highlighting and automatic formatting.
 - Added basic syntax highlighting words, must be improved
 - Fixed an error being logged when handling empty block (like availability = {}) in the scripter
+- Fixed a crash with the code editor when using CTRL + arrow keys
+- Script editor can now be scrolled using a code preview navigator
+- Pressing tab in the code editor will now insert a valid tab
+- Scripts will now remember the lines in the files for errors
+- Script editor can now be navigated with a code structure viewer
+- Scripts will now be parsed with a linebreak between blocks (Example, linebreak between foci)
+- Fixed some UI elements not changing languages (Need to to check all of them)
+- Can now search and replace in the code Editor

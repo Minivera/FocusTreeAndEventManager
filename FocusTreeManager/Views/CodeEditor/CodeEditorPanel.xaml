@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.CodeEditor.CodeEditorPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views.CodeEditor"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid x:Name="EditorGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" x:Name="ColumnStructure"/>
+                <ColumnDefinition Width="5" x:Name="ColumnSplitter"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" x:Name="ColumnPreview"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="GridPreview" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="{DynamicResource Editor_Structure}" Background="{DynamicResource AccentBaseColorBrush}" 
+                       Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5"
+                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <local:CodeStructureViewer x:Name="Viewer" Grid.Row="1" FocusManager.IsFocusScope="True"/>
+            </Grid>
+            <GridSplitter Grid.Column="1"  Width="5" HorizontalAlignment="Stretch" x:Name="GridSplitter"/>
+            <Grid x:Name="GridEditor" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Margin="5,0,5,5">
+                    <ToolBarTray>
+                        <ToolBar>
+                            <Button ToolTip="{DynamicResource Editor_Cut_Desc}"
+                                x:Name="CutButton" Command="ApplicationCommands.Cut">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_scissor}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBlock Text="{DynamicResource Editor_Cut}"  Margin="3,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                            <Button ToolTip="{DynamicResource Editor_Copy_Desc}"
+                                x:Name="CopyButton" Command="ApplicationCommands.Copy">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clipboard}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBlock Text="{DynamicResource Editor_Copy}"  Margin="3,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                            <Button ToolTip="{DynamicResource Editor_Paste_Desc}"
+                                x:Name="PasteButton" Command="ApplicationCommands.Paste">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clipboard_paste}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBlock Text="{DynamicResource Editor_Paste}"  Margin="3,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                        </ToolBar>
+                        <ToolBar>
+                            <Button ToolTip="{DynamicResource Editor_Undo_Desc}"
+                                x:Name="UndoButton" Command="ApplicationCommands.Undo">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="15"
+                               Height="15"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_undo}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                            <Button ToolTip="{DynamicResource Editor_Redo_Desc}"
+                                x:Name="RedoButton" Command="ApplicationCommands.Redo">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="15"
+                               Height="15"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_redo}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </ToolBar>
+                        <ToolBar>
+                            <Button ToolTip="{DynamicResource Editor_Search_Desc}"
+                                x:Name="SearchButton" Click="SearchButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_magnify}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBlock Text="{DynamicResource Editor_Search}"  Margin="3,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                            <Button ToolTip="{DynamicResource Editor_Replace_Desc}"
+                                x:Name="ReplaceButton" Click="ReplaceButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_repeat}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBlock Text="{DynamicResource Editor_Replace}"  Margin="3,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                        </ToolBar>
+                        <ToolBar>
+                            <ToggleButton ToolTip="{DynamicResource Editor_Show_Struc_Desc}"
+                                      x:Name="ShowStructButton" Click="ShowStructButton_Click">
+                                <TextBlock FontSize="14">
+                                <iconPacks:PackIconEntypo Kind="FlowCascade" />
+                                </TextBlock>
+                            </ToggleButton>
+                            <ToggleButton ToolTip="{DynamicResource Editor_Show_Plan_Desc}"
+                                      x:Name="ShowPlanButton" Click="ShowPlanButton_Click">
+                                <TextBlock FontSize="14">
+                                <iconPacks:PackIconEntypo Kind="News" />
+                                </TextBlock>
+                            </ToggleButton>
+                        </ToolBar>
+                    </ToolBarTray>
+                </StackPanel>
+                <local:CodeEditor Grid.Row="1" DataContext="{Binding Scripter, Source={StaticResource Locator}}"
+                                  x:Name="Editor" Text="{Binding EditorScript, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid x:Name="GridNvaigation" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="{DynamicResource Editor_Navigation}" Background="{DynamicResource AccentBaseColorBrush}" 
+                           Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5"
+                           VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                </StackPanel>
+                <Grid x:Name="NavigatorGrid" Grid.Row="1" Width="200" Height="Auto" />
+            </Grid>
+        </Grid>
+        <Canvas x:Name="PopupsCanvas">
+            <Thumb Canvas.Top="100" Canvas.Right="200" Canvas.ZIndex="99" DragDelta="Thumb_DragDelta"
+                   x:Name="ThumbFind">
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <local:Find Visibility="Hidden" x:Name="FindPanel"
+                        FocusManager.IsFocusScope="True"/>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
+            <Thumb Canvas.Top="100" Canvas.Right="200" Canvas.ZIndex="99" DragDelta="Thumb_DragDelta"
+                   x:Name="ThumbReplace">
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <local:Replace Visibility="Hidden" x:Name="ReplacePanel" 
+                           FocusManager.IsFocusScope="True"/>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
+        </Canvas>
+    </Grid>
+</UserControl>

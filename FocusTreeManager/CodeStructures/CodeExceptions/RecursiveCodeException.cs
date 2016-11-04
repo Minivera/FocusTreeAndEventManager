@@ -10,6 +10,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
     {
         public int ErrorNumber;
         public string ClassName;
+        public string Line;
         public string Message;
         public string TimeStamp;
     }
@@ -31,17 +32,19 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
                 foreach (ErrorStruct item in Messages)
                 {
                     message += item.TimeStamp + "# " + item.ErrorNumber
-                        + " " + item.Message + " at " + item.ClassName;
+                        + " " + item.Message + " at " + item.ClassName +
+                        " on line " + item.Line;
                 }
                 return message;
             }
         }
 
-        public RecursiveCodeException AddToRecursiveChain(string message, string className)
+        public RecursiveCodeException AddToRecursiveChain(string message, string className, string Line)
         {
             ErrorStruct tempo = new ErrorStruct();
             tempo.ClassName = className;
             tempo.Message = message;
+            tempo.Line = Line;
             tempo.ErrorNumber = Messages.Count + 1;
             tempo.TimeStamp = "[" + DateTime.Now.ToString("h:mm:ss tt") + "]";
             Messages.Add(tempo);

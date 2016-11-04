@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.ViewModel;
+using FocusTreeManager.Views.CodeEditor;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System;

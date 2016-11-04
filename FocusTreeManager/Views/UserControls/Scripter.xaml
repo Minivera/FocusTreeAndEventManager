@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:FocusTreeManager.Views"
         xmlns:e="clr-namespace:FocusTreeManager.Views.CodeEditor"
         mc:Ignorable="d" DataContext="{Binding Scripter, Source={StaticResource Locator}}" 
-        Loaded="MetroWindow_Loaded">
+        Loaded="MetroWindow_Loaded" >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -55,7 +55,7 @@
             </Grid>
         </TabItem>
         <TabItem Header="{DynamicResource Scripter_Code}" x:Name="EditorTab">
-            <e:CodeEditor Text="{Binding EditorScript, UpdateSourceTrigger=PropertyChanged}" />
+            <e:CodeEditorPanel></e:CodeEditorPanel>
         </TabItem>
     </TabControl>
 </UserControl>

@@ -24,6 +24,9 @@ namespace FocusTreeManager.CodeStructures
         [ProtoMember(4)]
         public string Operator { get; set; }
 
+        [ProtoMember(5)]
+        public int Line { get; set; }
+
         public Assignation()
         {
             this.Level = 0;
@@ -34,7 +37,7 @@ namespace FocusTreeManager.CodeStructures
             this.Level = level;
         }
 
-        public void Analyse(string code)
+        public void Analyse(string code, int line = -1)
         {
             Regex regex = new Regex(Script.REGEX_BRACKETS);
             Match match = regex.Match(code);
@@ -43,7 +46,8 @@ namespace FocusTreeManager.CodeStructures
             text = Regex.Replace(text, @"(#.*\n)", String.Empty);
             Assignee = Regex.Replace(text, @"\t|\n|\r|\s", "");
             Operator = Regex.Replace(match.Groups[2].Value, @"\t|\n|\r|\s", "");
-            //If we can detect at leats one code block
+            Line = line;
+            //If we can detect at least one code block
             if (!String.IsNullOrWhiteSpace(match.Groups[3].Value))
             {
                 try
@@ -52,19 +56,19 @@ namespace FocusTreeManager.CodeStructures
                     //Kill comments if possible
                     text2 = Regex.Replace(text2, @"(#.*\n)", String.Empty);
                     CodeBlock block = new CodeBlock(Level + 1);
-                    block.Analyse(text2);
+                    block.Analyse(text2, Line);
                     Value = block;
                 }
                 catch (RecursiveCodeException e)
                 {
                     //TODO: Add language support
-                    throw e.AddToRecursiveChain("Error during anlysis chain", Assignee);
+                    throw e.AddToRecursiveChain("Error during analysis chain", Assignee, Line.ToString());
                 }
                 catch (Exception)
                 {
                     //TODO: Add language support
                     RecursiveCodeException e = new RecursiveCodeException();
-                    throw e.AddToRecursiveChain("Impossible to analyse associated code", Assignee);
+                    throw e.AddToRecursiveChain("Impossible to analyse associated code", Assignee, Line.ToString());
                 }
             }
             else if (!String.IsNullOrWhiteSpace(match.Groups[4].Value))
@@ -95,7 +99,7 @@ namespace FocusTreeManager.CodeStructures
                 if (Value == null)
                 {
                     //Empty block
-                    content.Append(tabulations + Assignee + " " + Operator + " { \n\n }" + "\n");
+                    content.Append(tabulations + Assignee + " " + Operator + " {\n\n}" + "\n");
                 }
                 else
                 {
@@ -105,13 +109,13 @@ namespace FocusTreeManager.CodeStructures
             catch (RecursiveCodeException e)
             {
                 //TODO: Add language support
-                throw e.AddToRecursiveChain("Error during parsing chain", Assignee);
+                throw e.AddToRecursiveChain("Error during parsing chain", Assignee, Line.ToString());
             }
             catch (Exception)
             {
                 //TODO: Add language support
                 RecursiveCodeException e = new RecursiveCodeException();
-                throw e.AddToRecursiveChain("Impossible to parse associated code", Assignee);
+                throw e.AddToRecursiveChain("Impossible to parse associated code", Assignee, Line.ToString());
             }
             return content.ToString();
         }

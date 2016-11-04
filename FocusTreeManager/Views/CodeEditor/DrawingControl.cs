@@ -22,6 +22,11 @@ namespace FocusTreeManager.Views.CodeEditor
 			return visual.RenderOpen();
 		}
 
+        public DrawingVisual getVisual()
+        {
+            return visual;
+        }
+
 		protected override int VisualChildrenCount
         {
 			get { return visuals.Count; }
