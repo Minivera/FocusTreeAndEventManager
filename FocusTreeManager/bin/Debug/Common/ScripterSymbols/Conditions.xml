@@ -2,6 +2,7 @@
   <condition>if</condition>
   <condition>and</condition>
   <condition>or</condition>
+  <condition>not</condition>
   <condition>has_added_tension_amount</condition>
   <condition>is_on_continent</condition>
   <condition>has_volunteers_amount_from</condition>

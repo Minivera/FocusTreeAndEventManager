@@ -50,16 +50,22 @@ namespace FocusTreeManager.Views.CodeEditor
             DrawingContext dc = drawing.RenderOpen();
             dc.DrawText(formattedText, textPos);
             dc.Close();
-            TextHeight = formattedText.Height;
-            VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
-            //Set properties to make them exist
-            NavigatorRectangle.SetValue(Canvas.TopProperty, 0.0);
-            NavigatorRectangle.SetValue(Canvas.LeftProperty, 0.0);
+            if (!drawing.ContentBounds.IsEmpty)
+            { 
+                TextHeight = formattedText.Height;
+                VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
+                //Set properties to make them exist
+                NavigatorRectangle.SetValue(Canvas.TopProperty, 0.0);
+                NavigatorRectangle.SetValue(Canvas.LeftProperty, 0.0);
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            setVisuals();
+            if (!drawing.ContentBounds.IsEmpty)
+            {
+                setVisuals();
+            }
         }
 
         private void setVisuals()
