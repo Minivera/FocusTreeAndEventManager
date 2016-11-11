@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using FocusTreeManager.CodeStructures.CodeExceptions;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,14 @@ namespace FocusTreeManager.CodeStructures
         public string Parse(int StartLevel = -1)
         {
             return Value;
+        }
+
+        public Script GetContentAsScript(string[] except)
+        {
+            //TODO: Add language support
+            RecursiveCodeException e = new RecursiveCodeException();
+            throw e.AddToRecursiveChain("Impossible to obtain content, value has not code",
+                                            Value, "-1");
         }
     }
 }

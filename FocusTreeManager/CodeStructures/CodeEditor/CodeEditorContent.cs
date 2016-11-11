@@ -21,8 +21,6 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         private readonly Brush ConditionColor = (SolidColorBrush)
             (new BrushConverter().ConvertFrom("#b71c1c"));
 
-        private readonly Brush DelimiterColor = Brushes.Red;
-
         private static readonly Lazy<CodeEditorContent> lazy =
         new Lazy<CodeEditorContent>(() => new CodeEditorContent());
 
@@ -98,7 +96,7 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         }
 
         public void Highlight(FormattedText text, int openingBracketPos, 
-            int ClosingBracketPos)
+            int ClosingBracketPos, Brush DelimiterBrush)
         {
             Regex wordsRgx = new Regex(@"[a-zA-Z_\{\}][a-zA-Z0-9_\{\}]*");
             foreach (Match m in wordsRgx.Matches(text.Text))
@@ -123,13 +121,13 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
                 }
                 else if (m.Value == "{" && m.Index == openingBracketPos)
                 {
-                    text.SetForegroundBrush(DelimiterColor, m.Index, m.Length);
+                    text.SetForegroundBrush(DelimiterBrush, m.Index, m.Length);
                     text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
                     text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
                 }
                 else if (m.Value == "}" && m.Index == ClosingBracketPos)
                 {
-                    text.SetForegroundBrush(DelimiterColor, m.Index, m.Length);
+                    text.SetForegroundBrush(DelimiterBrush, m.Index, m.Length);
                     text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
                     text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
                 }

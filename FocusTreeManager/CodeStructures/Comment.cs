@@ -37,5 +37,10 @@ namespace FocusTreeManager.CodeStructures
         {
             throw new NotImplementedException();
         }
+
+        public Script GetContentAsScript(string[] except)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

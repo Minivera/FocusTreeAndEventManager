@@ -71,14 +71,17 @@ namespace FocusTreeManager.ViewModel
 
         public void ChangeImage()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "ShowChangeImage"));
+            ChangeImage view = new ChangeImage();
+            (new ViewModelLocator()).ChangeImage.LoadImages("Focus");
+            view.ShowDialog();
+            Focus.Image = (new ViewModelLocator()).ChangeImage.FocusImage;
         }
 
         public void EditScript()
         {
             ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            ViewModel.setCode(focus.InternalScript);
-            EditScript dialog = new EditScript();
+            EditScript dialog = new EditScript(Focus.InternalScript,
+                ScripterControlsViewModel.ScripterType.FocusTree);
             dialog.ShowDialog();
             focus.InternalScript = ViewModel.ManagedScript;
         }
@@ -89,14 +92,6 @@ namespace FocusTreeManager.ViewModel
             {
                 //Message not intended for here
                 return;
-            }
-            if (msg.Notification == "HideChangeImage")
-            {
-                if ((string)System.Windows.Application.Current.Properties["Mode"] == "Add")
-                { 
-                    ChangeImageViewModel viewModel = (ChangeImageViewModel)msg.Sender;
-                    Focus.Image = viewModel.FocusImage;
-                }
             }
         }
     }

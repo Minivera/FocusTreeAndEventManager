@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        mc:Ignorable="d ignore"
+        mc:Ignorable="d ignore" GlowBrush="{DynamicResource AccentColorBrush}"
         DataContext="{Binding ChangeImage, Source={StaticResource Locator}}" 
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" Title="{DynamicResource Chose_Image_Title}" 
         WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png">
@@ -17,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <DockPanel>
+    <ScrollViewer>
         <ItemsControl ItemsSource="{Binding ImageList}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -26,15 +26,19 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Canvas Width="90" Height="80" Margin="5">
-                        <Image Source="{Binding}"/>
+                    <Grid>
+                        <Image Source="{Binding}" ToolTip="{Binding}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Stretch="None" Margin="10"/>
                         <Button Content="{DynamicResource Command_Select}" 
                                 Command="{Binding ChangeImage.SelectCommand, Source={StaticResource Locator}}" 
                                 CommandParameter="{Binding}" 
-                                VerticalContentAlignment="Bottom" Canvas.Left="25" Canvas.Top="55"/>
-                    </Canvas>
+                                VerticalAlignment="Bottom"
+                                Height="25" Width="75"/>
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </DockPanel>
+    </ScrollViewer>
 </Controls:MetroWindow>

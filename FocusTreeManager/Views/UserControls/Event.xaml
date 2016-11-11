@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.Event"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views.UserControls"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" GotFocus="UserControl_GotFocus">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <Style x:Key="ControlStyle" TargetType="Control">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
+                <Setter Property="Margin" Value="-4,0,5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Controls:NumericUpDown">
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid MinWidth="500">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="60*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" x:Name="TitleAndId"/>
+            <RowDefinition Height="180" x:Name="Picture"/>
+            <RowDefinition Height="70" x:Name="DescriptionSwitch"/>
+            <RowDefinition Height="150" x:Name="Description"/>
+            <RowDefinition Height="35" x:Name="FirstAndSecondBools"/>
+            <RowDefinition Height="35" x:Name="ThirdAndFourthBools"/>
+            <RowDefinition Height="35" x:Name="ChangeScript"/>
+            <RowDefinition Height="150" x:Name="Options"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Background="{DynamicResource AccentBaseColorBrush}">
+                <Label Content="{DynamicResource Event_Id}" Padding="5" 
+                           VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <TextBlock Text="{Binding Title}" Background="{DynamicResource AccentBaseColorBrush}" 
+                       Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5,0,0,5"
+                       VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                       ToolTip="{DynamicResource Event_Title}"/>
+        </StackPanel>
+        <Image Grid.Row="1" Grid.ColumnSpan="2" Source="{Binding ImagePath}" 
+               ToolTip="{DynamicResource Event_Picture}" />
+        <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
+                Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="0,0,0,5" 
+                Style="{DynamicResource SquareButtonStyle}" Width="150"/>
+        <Controls:ToggleSwitch Grid.Row="2" Header="{DynamicResource Event_Type_Switch}" 
+                               OffLabel="{DynamicResource Event_Type_Switch_1}" 
+                               OnLabel="{DynamicResource Event_Type_Switch_2}"
+                               IsChecked="{Binding SwitchIsChecked}"/>
+        <DockPanel Grid.Row="3" Grid.ColumnSpan="2" x:Name="DescriptionText">
+            <Label Content="{DynamicResource Event_Description}" Padding="5" 
+                           DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
+            <ScrollViewer DockPanel.Dock="Bottom" >
+                <TextBlock Text="{Binding Description}" Padding="5" 
+                           HorizontalAlignment="Stretch"/>
+            </ScrollViewer>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Grid.ColumnSpan="2" x:Name="DescriptionList" Background="{Binding Path=Background, 
+                                    RelativeSource={RelativeSource Mode=FindAncestor,
+                                    AncestorType=Border, AncestorLevel=1}}"
+                      Visibility="{Binding Path=SwitchIsChecked, Converter={StaticResource BoolToVis}}">
+            <Label Content="{DynamicResource Event_Description_Options}" Padding="5" 
+                           DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
+            <DataGrid ItemsSource="{Binding Path=Descriptions}"
+                          AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
+                          AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}" 
+                          DockPanel.Dock="Bottom" x:Name="GridDescriptions">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Text}" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{DynamicResource Event_Description_Text}"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Width="150" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.EditDescScriptCommand, 
+                                            RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type DataGrid}}}" 
+                                        CommandParameter="{Binding}" 
+                                        Content="{DynamicResource Command_Change}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{DynamicResource Event_Description_Script}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <CheckBox Grid.Row="4" Grid.Column="0" Content="{DynamicResource Event_Major}"
+                  IsChecked="{Binding IsMajor}"/>
+        <CheckBox Grid.Row="4" Grid.Column="1" Content="{DynamicResource Event_Triggered}"
+                  IsChecked="{Binding IsTriggeredOnly}"/>
+        <CheckBox Grid.Row="5" Grid.Column="0" Content="{DynamicResource Event_Hidden}"
+                  IsChecked="{Binding IsHidden}"/>
+        <CheckBox Grid.Row="5" Grid.Column="1" Content="{DynamicResource Event_Fired_Once}"
+                  IsChecked="{Binding IsFiredOnce}"/>
+        <Label Content="{DynamicResource Event_Script}" 
+                           Grid.Column="0" Grid.Row="6"/>
+        <Button Content="{DynamicResource Command_Edit}" 
+                Grid.Row="6" Grid.Column="1" Command="{Binding EditScriptCommand}" 
+                Style="{DynamicResource SquareButtonStyle}" Width="150" Height="25"/>
+        <DockPanel Grid.Row="7" Grid.ColumnSpan="2">
+            <Label Content="{DynamicResource Event_Option}" Padding="5" 
+                           DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
+            <DataGrid ItemsSource="{Binding Path=Options}" DockPanel.Dock="Bottom"
+                      AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
+                      AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
+                      x:Name="GridOptions">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{DynamicResource Event_Option_Name}"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Text}" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{DynamicResource Event_Option_Text}"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Width="150" CanUserResize="False" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.EditOptionScriptCommand, 
+                                            RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type DataGrid}}}" 
+                                        CommandParameter="{Binding}"
+                                        Content="{DynamicResource Command_Change}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{DynamicResource Event_Option_Script}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>

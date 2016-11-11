@@ -59,6 +59,7 @@ namespace FocusTreeManager.Views.CodeEditor
             loadLocales();
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            DataContext = this;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

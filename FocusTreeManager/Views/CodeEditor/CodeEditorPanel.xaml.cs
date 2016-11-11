@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
-    /// <summary>
-    /// Logique d'interaction pour CodeEditorPanel.xaml
-    /// </summary>
     public partial class CodeEditorPanel : UserControl
     {
 

@@ -73,14 +73,22 @@ namespace FocusTreeManager.Views.CodeEditor
             //Height
             relativeScrollingY = LinkedScrollViewerHeight / VisualRealSize.Height > 0.7
                                       ? 0.7 : LinkedScrollViewerHeight / VisualRealSize.Height;
-            double heightToUse = ActualHeight < TextHeight ? ActualHeight : TextHeight;
             relativeHeightTransform = ActualHeight / VisualRealSize.Height > 0.7
-                                      ? 0.7 : ActualHeight / VisualRealSize.Height;
+                                    ? 0.7 : ActualHeight / VisualRealSize.Height;
             VisualRectangle.Height = VisualRealSize.Height * relativeHeightTransform;
-            NavigatorRectangle.Height = (relativeScrollingY * VisualRealSize.Height) * relativeHeightTransform;
             //Width
             double relativeWidthTransform = NavigatorCanvas.Width / VisualRealSize.Width > 1
                                       ? 1 : NavigatorCanvas.Width / VisualRealSize.Width;
+            //Check if rectangle must be shown
+            if (ActualHeight < TextHeight)
+            {
+                NavigatorRectangle.Height = (relativeScrollingY * VisualRealSize.Height) *
+                    relativeHeightTransform;
+            }
+            else
+            {
+                NavigatorRectangle.Height = 0;
+            }
             //Transform and add the visuals
             ScaleTransform transform = new ScaleTransform(Math.Round(relativeWidthTransform, 2),
                                                           Math.Round(relativeHeightTransform, 2));
@@ -103,10 +111,13 @@ namespace FocusTreeManager.Views.CodeEditor
             DrawingContext dc = drawing.RenderOpen();
             dc.DrawText(formattedText, textPos);
             dc.Close();
-            TextHeight = formattedText.Height;
-            VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
-            NavigatorRectangle.SetValue(Canvas.TopProperty, verticalOffset);
-            setVisuals();
+            if (!drawing.ContentBounds.IsEmpty)
+            {
+                TextHeight = formattedText.Height;
+                VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
+                NavigatorRectangle.SetValue(Canvas.TopProperty, verticalOffset);
+                setVisuals();
+            }
         }
 
         public void setScrolling(double verticalOffset)

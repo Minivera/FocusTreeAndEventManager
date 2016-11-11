@@ -29,7 +29,7 @@
                 <ItemsControl ItemsSource="{Binding fociContainerList, Mode=OneWay}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" />
+                            <StackPanel Orientation="Vertical" MinHeight="40"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -80,7 +80,7 @@
                 <ItemsControl ItemsSource="{Binding localisationList, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" />
+                            <StackPanel Orientation="Vertical" MinHeight="40"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -112,8 +112,93 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Expander>
-            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}">
-
+            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}" >
+                <Expander.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                                          Command="{Binding AddElementCommand}" CommandParameter="Event"/>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="Event"/>
+                    </ContextMenu>
+                </Expander.ContextMenu>
+                <ItemsControl ItemsSource="{Binding eventList, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.InputBindings>
+                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
+                                                  Path=DataContext.OpenFileEventCommand}"
+                                                  CommandParameter="{Binding IdentifierID}" 
+                                                  MouseAction="LeftDoubleClick" />
+                                </Label.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="20"
+                                   Height="20"
+                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBox Margin="4 0 0 0" Width="110"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0" 
+                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
+                                             KeyDown="TextBox_KeyDown" />
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+            <Expander x:Name="GenericExpander" Header="{DynamicResource Manage_Generic}" >
+                <Expander.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                                          Command="{Binding AddElementCommand}" CommandParameter="Generic"/>
+                        <MenuItem Header="{DynamicResource Add_Game_File}" 
+                                          Command="{Binding AddFileCommand}" CommandParameter="Generic"/>
+                    </ContextMenu>
+                </Expander.ContextMenu>
+                <ItemsControl ItemsSource="{Binding scriptList, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.InputBindings>
+                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
+                                                  Path=DataContext.OpenFileGenericCommand}"
+                                                  CommandParameter="{Binding IdentifierID}" 
+                                                  MouseAction="LeftDoubleClick" />
+                                </Label.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="20"
+                                   Height="20"
+                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <TextBox Margin="4 0 0 0" Width="110"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0" 
+                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
+                                             KeyDown="TextBox_KeyDown" />
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Expander>
         </StackPanel>
     </ScrollViewer>

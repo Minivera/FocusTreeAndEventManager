@@ -19,5 +19,6 @@ namespace FocusTreeManager.CodeStructures
         ICodeStruct FindValue(string TagToFind);
         ICodeStruct FindAssignation(string TagToFind);
         List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind);
+        Script GetContentAsScript(string[] except);
     }
 }

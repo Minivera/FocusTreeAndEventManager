@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 
@@ -16,7 +17,7 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ChangeImageViewModel : ViewModelBase
     {
-        const string IMAGE_PATH = @"GFX\Focus\";
+        const string IMAGE_PATH = @"GFX\";
         
         public RelayCommand<string> SelectCommand { get; private set; }
 
@@ -35,16 +36,22 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public List<string> ImageList { get; private set; }
+        public ObservableCollection<string> ImageList { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ChangeImageViewModel class.
         /// </summary>
         public ChangeImageViewModel()
         {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), IMAGE_PATH);
-            ImageList = new List<string>(Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly));
             SelectCommand = new RelayCommand<string>((s) => SelectFocus(s));
+        }
+
+        public void LoadImages(string SubFolder)
+        {
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), 
+                IMAGE_PATH + SubFolder + "\\");
+            ImageList = new ObservableCollection<string>(Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly));
+            RaisePropertyChanged(() => ImageList);
         }
 
         public void SelectFocus(string path)

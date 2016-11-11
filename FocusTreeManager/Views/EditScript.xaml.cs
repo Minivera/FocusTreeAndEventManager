@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FocusTreeManager.CodeStructures;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -13,18 +14,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
 
 namespace FocusTreeManager.Views
 {
-    /// <summary>
-    /// Logique d'interaction pour EditScript.xaml
-    /// </summary>
     public partial class EditScript : MetroWindow
     {
-        public EditScript()
+        public Script ScriptText { get; private set; }
+
+        public ScripterType ScriptType { get; private set; }
+
+        public EditScript(Script ScriptText, ScripterType ScriptType)
         {
             InitializeComponent();
             loadLocales();
+            this.ScriptText = ScriptText;
+            this.ScriptType = ScriptType;
+            DataContext = this;
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 

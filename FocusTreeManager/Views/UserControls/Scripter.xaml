@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusTreeManager.Views"
         xmlns:e="clr-namespace:FocusTreeManager.Views.CodeEditor"
-        mc:Ignorable="d" DataContext="{Binding Scripter, Source={StaticResource Locator}}" 
+        mc:Ignorable="d"  
         Loaded="MetroWindow_Loaded" >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -27,7 +27,10 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TabControl x:Name="TabScript" >
+    <TabControl x:Name="TabScript" DataContext="{Binding Scripter, Source={StaticResource Locator}}">
+        <TabItem Header="{DynamicResource Scripter_Code}" x:Name="EditorTab">
+            <e:CodeEditorPanel></e:CodeEditorPanel>
+        </TabItem>
         <TabItem Header="{DynamicResource Scripter_GUI}" x:Name="ScripterTab">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -51,11 +54,9 @@
                     </TreeView>
                 </ScrollViewer>
                 <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-                <local:ScripterControls Grid.Column="2" />
+                <local:ScripterControls CurrentType="{Binding DataContext.ScriptType, 
+                            RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Grid.Column="2" />
             </Grid>
-        </TabItem>
-        <TabItem Header="{DynamicResource Scripter_Code}" x:Name="EditorTab">
-            <e:CodeEditorPanel></e:CodeEditorPanel>
         </TabItem>
     </TabControl>
 </UserControl>

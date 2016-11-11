@@ -178,5 +178,28 @@ namespace FocusTreeManager.CodeStructures
             }
             return founds;
         }
+
+        public Script GetContentAsScript(string[] except)
+        {
+            Script newScript = new Script();
+            if (Value is CodeBlock)
+            {
+                foreach (Assignation item in ((CodeBlock)Value).Code)
+                {
+                    if (!except.Contains(item.Assignee))
+                    {
+                        newScript.Code.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                //TODO: Add language support
+                RecursiveCodeException e = new RecursiveCodeException();
+                throw e.AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
+                                             Assignee, Line.ToString());
+            }
+            return newScript;
+        }
     }
 }

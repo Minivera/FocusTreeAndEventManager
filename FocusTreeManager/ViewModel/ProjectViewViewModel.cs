@@ -47,6 +47,30 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
+        public ObservableCollection<EventContainer> eventList
+        {
+            get
+            {
+                if ((new ViewModelLocator()).Main.isProjectExist)
+                {
+                    return (new ViewModelLocator()).Main.Project.eventList;
+                }
+                return null;
+            }
+        }
+
+        public ObservableCollection<ScriptContainer> scriptList
+        {
+            get
+            {
+                if ((new ViewModelLocator()).Main.isProjectExist)
+                {
+                    return (new ViewModelLocator()).Main.Project.scriptList;
+                }
+                return null;
+            }
+        }
+
         public RelayCommand<string> AddFileCommand { get; private set; }
 
         public RelayCommand<string> AddElementCommand { get; private set; }
@@ -54,6 +78,10 @@ namespace FocusTreeManager.ViewModel
         public RelayCommand<Guid> OpenFileTreeCommand { get; private set; }
 
         public RelayCommand<Guid> OpenFileLocaleCommand { get; private set; }
+
+        public RelayCommand<Guid> OpenFileEventCommand { get; private set; }
+
+        public RelayCommand<Guid> OpenFileGenericCommand { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ProjectViewModel class.
@@ -65,6 +93,8 @@ namespace FocusTreeManager.ViewModel
             AddElementCommand = new RelayCommand<string>(AddElement);
             OpenFileTreeCommand = new RelayCommand<Guid>(OpenFocusTree);
             OpenFileLocaleCommand = new RelayCommand<Guid>(OpenLocalisation);
+            OpenFileEventCommand = new RelayCommand<Guid>(OpenEvent);
+            OpenFileGenericCommand = new RelayCommand<Guid>(OpenScript);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -74,17 +104,21 @@ namespace FocusTreeManager.ViewModel
             switch(param)
             {
                 case "FocusTree" :
-                {
-                    fociContainerList.Add(new FociGridContainer("FocusTree" + fociContainerList.Count().ToString()));
+                    fociContainerList.Add(new FociGridContainer("FocusTree_" + fociContainerList.Count().ToString()));
                     RaisePropertyChanged("fociContainerList");
                     break;
-                }
                 case "Localisation":
-                {
-                    localisationList.Add(new LocalisationContainer("Localisation" + localisationList.Count().ToString()));
+                    localisationList.Add(new LocalisationContainer("Localisation_" + localisationList.Count().ToString()));
                     RaisePropertyChanged("localisationList");
                     break;
-                }
+                case "Event":
+                    eventList.Add(new EventContainer("Event_" + eventList.Count().ToString()));
+                    RaisePropertyChanged("eventList");
+                    break;
+                case "Generic":
+                    scriptList.Add(new ScriptContainer("Script" + eventList.Count().ToString()));
+                    RaisePropertyChanged("scriptList");
+                    break;
             }
         }
 
@@ -99,6 +133,16 @@ namespace FocusTreeManager.ViewModel
             {
                 localisationList.Remove((LocalisationContainer)item);
                 RaisePropertyChanged("localisationList");
+            }
+            else if (item is EventContainer)
+            {
+                eventList.Remove((EventContainer)item);
+                RaisePropertyChanged("eventList");
+            }
+            else if (item is ScriptContainer)
+            {
+                scriptList.Remove((ScriptContainer)item);
+                RaisePropertyChanged("scriptList");
             }
         }
 
@@ -119,22 +163,37 @@ namespace FocusTreeManager.ViewModel
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                switch (param)
+                try
                 {
-                    case "FocusTree":
-                        {
+                    switch(param)
+                    {
+                        case "FocusTree":
                             Script script = new Script();
                             script.Analyse(File.ReadAllText(dialog.FileName));
                             fociContainerList.Add(FocusTreeParser.CreateTreeFromScript(dialog.FileName, script));
                             RaisePropertyChanged("fociContainerList");
                             break;
-                        }
-                    case "Localisation":
-                        {
+                        case "Localisation":
                             localisationList.Add(LocalisationParser.CreateLocaleFromFile(dialog.FileName));
-                            RaisePropertyChanged("fociContainerList");
+                            RaisePropertyChanged("localisationList");
                             break;
-                        }
+                        case "Event":
+                            Script scriptEvent = new Script();
+                            scriptEvent.Analyse(File.ReadAllText(dialog.FileName));
+                            eventList.Add(EventParser.CreateEventFromScript(dialog.FileName, scriptEvent));
+                            RaisePropertyChanged("eventList");
+                            break;
+                        case "Generic":
+                            scriptList.Add(ScriptParser.CreateScriptFromFile(dialog.FileName));
+                            RaisePropertyChanged("scriptList");
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Impossible to load " + dialog.FileName + 
+                        ", file is not valid. Please check your syntax and try again.");
                 }
             }
         }
@@ -149,6 +208,18 @@ namespace FocusTreeManager.ViewModel
         {
             LocalisationContainer SelectedFile = localisationList.SingleOrDefault((f) => f.IdentifierID == param);
             Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenLocalisation"));
+        }
+
+        private void OpenEvent(Guid param)
+        {
+            EventContainer SelectedFile = eventList.SingleOrDefault((f) => f.IdentifierID == param);
+            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenEventList"));
+        }
+
+        private void OpenScript(Guid param)
+        {
+            ScriptContainer SelectedFile = scriptList.SingleOrDefault((f) => f.IdentifierID == param);
+            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenScriptList"));
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -166,6 +237,8 @@ namespace FocusTreeManager.ViewModel
             {
                 RaisePropertyChanged("fociContainerList");
                 RaisePropertyChanged("localisationList");
+                RaisePropertyChanged("eventList");
+                RaisePropertyChanged("scriptList");
             }
         }
     }

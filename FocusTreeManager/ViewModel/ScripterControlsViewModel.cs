@@ -1,9 +1,11 @@
 ﻿using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using System.Xml;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -15,6 +17,31 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ScripterControlsViewModel : ViewModelBase
     {
+        const string XML_FILES_PATH = @"Common\ScripterControls\";
+
+        public enum ScripterType
+        {
+            FocusTree,
+            Event,
+            EventOption,
+            EventDescription,
+            Generic
+        }
+
+        public enum ControlType
+        {
+            Assignation,
+            Block,
+            Condition
+        }
+
+        public struct ControlInfo
+        {
+            public string control;
+            public string controlName;
+            public ControlType controlType;
+        }
+
         public static readonly Brush[] CONDITIONS_COLORS = 
         {
             (SolidColorBrush)(new BrushConverter().ConvertFrom("#b71c1c")),
@@ -66,6 +93,29 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
+        public List<ControlInfo> CommonControls
+        {
+            get
+            {
+                return getCommonControls();
+            }
+        }
+
+        private ScripterType currentType = ScripterType.Generic;
+
+        public ScripterType CurrentType
+        {
+            get
+            {
+                return currentType;
+            }
+            set
+            {
+                currentType = value;
+                BuildCommonControls();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the ScripterControlsViewModel class.
         /// </summary>
@@ -77,162 +127,100 @@ namespace FocusTreeManager.ViewModel
             BuildCommonControls();
         }
 
-        public void BuildCommonControls()
+        private void BuildCommonControls()
         {
-            //Temporary (?) common controls builder
-            BuildConditions();
-            BuildBlock();
-            BuildAssignations();
+            conditions.Clear();
+            blocks.Clear();
+            assigantions.Clear();
+            //Load the required XMl File
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XML_FILES_PATH + currentType.ToString() + ".xml");
+            //Load all the children of the root node
+            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Assignations/Control"))
+            {
+                assigantions.Add(new AssignationModel()
+                {
+                    LocalizationKey = node.Attributes["Text"].Value,
+                    Code = node.Attributes["Code"].Value,
+                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                    BackgroundColor = ASSIGNATIONS_COLORS[0],
+                    BorderColor = ASSIGNATIONS_COLORS[1],
+                    Color = ASSIGNATIONS_COLORS[2],
+                });
+            }
+            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Blocks/Control"))
+            {
+                conditions.Add(new AssignationModel()
+                {
+                    LocalizationKey = node.Attributes["Text"].Value,
+                    Code = node.Attributes["Code"].Value,
+                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                    BackgroundColor = CONDITIONS_COLORS[0],
+                    BorderColor = CONDITIONS_COLORS[1],
+                    Color = CONDITIONS_COLORS[2],
+                });
+            }
+            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Conditions/Control"))
+            {
+                Blocks.Add(new AssignationModel()
+                {
+                    LocalizationKey = node.Attributes["Text"].Value,
+                    Code = node.Attributes["Code"].Value,
+                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                    BackgroundColor = BLOCKS_COLORS[0],
+                    BorderColor = BLOCKS_COLORS[1],
+                    Color = BLOCKS_COLORS[2],
+                });
+            }
         }
 
-        private void BuildConditions()
+        private List<ControlInfo> getCommonControls()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            //Condition IF
-            conditions.Add(new AssignationModel()
+            List<ControlInfo> array = new List<ControlInfo>();
+            foreach (AssignationModel model in assigantions)
             {
-                Text = resourceLocalization["Scripter_Condition_If"] as string,
-                Code = "if = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = CONDITIONS_COLORS[0],
-                BorderColor = CONDITIONS_COLORS[1],
-                Color = CONDITIONS_COLORS[2],
-            });
-            //Condition AND
-            conditions.Add(new AssignationModel()
+                //If known control
+                if (model.IsNotEditable)
+                {
+                    array.Add(new ControlInfo()
+                    {
+                        control = model.Code.Split('=')[0].Trim(),
+                        controlName = model.LocalizationKey,
+                        controlType = ControlType.Assignation
+                    });
+                }
+            }
+            foreach (AssignationModel model in blocks)
             {
-                Text = resourceLocalization["Scripter_Condition_AND"] as string,
-                Code = "AND = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = CONDITIONS_COLORS[0],
-                BorderColor = CONDITIONS_COLORS[1],
-                Color = CONDITIONS_COLORS[2],
-            });
-            //Condition OR
-            conditions.Add(new AssignationModel()
+                //If known control
+                if (model.IsNotEditable)
+                {
+                    array.Add(new ControlInfo()
+                    {
+                        control = model.Code.Split('=')[0].Trim(),
+                        controlName = model.LocalizationKey,
+                        controlType = ControlType.Block
+                    });
+                }
+            }
+            foreach (AssignationModel model in conditions)
             {
-                Text = resourceLocalization["Scripter_Condition_OR"] as string,
-                Code = "OR = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = CONDITIONS_COLORS[0],
-                BorderColor = CONDITIONS_COLORS[1],
-                Color = CONDITIONS_COLORS[2],
-            });
-            //Condition NOT
-            conditions.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Condition_NOT"] as string,
-                Code = "NOT = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = CONDITIONS_COLORS[0],
-                BorderColor = CONDITIONS_COLORS[1],
-                Color = CONDITIONS_COLORS[2],
-            });
-            //Condition LIMIT
-            conditions.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Condition_Limit"] as string,
-                Code = "limit = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = CONDITIONS_COLORS[0],
-                BorderColor = CONDITIONS_COLORS[1],
-                Color = CONDITIONS_COLORS[2],
-            });
-        }
-        
-        private void BuildBlock()
-        {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            //Block AI
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_AI"] as string,
-                Code = "ai_will_do = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-            //Block Completion reward
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_Reward"] as string,
-                Code = "completion_reward = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-            //Availability Block
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_Available"] as string,
-                Code = "available = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-            //Bypass Block
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_Bypass"] as string,
-                Code = "bypass = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-            //Cancel Block
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_Cancel"] as string,
-                Code = "cancel = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-            //Custom Block
-            Blocks.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Block_Custom"] as string,
-                Code = "block_name = {}",
-                IsNotEditable = true,
-                CanHaveChild = true,
-                BackgroundColor = BLOCKS_COLORS[0],
-                BorderColor = BLOCKS_COLORS[1],
-                Color = BLOCKS_COLORS[2],
-            });
-        }
+                //If known control
+                if (model.IsNotEditable)
+                {
+                    array.Add(new ControlInfo()
+                    {
+                        control = model.Code.Split('=')[0].Trim(),
+                        controlName = model.LocalizationKey,
+                        controlType = ControlType.Condition
+                    });
+                }
 
-        private void BuildAssignations()
-        {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            //Custom assignation
-            assigantions.Add(new AssignationModel()
-            {
-                Text = resourceLocalization["Scripter_Assignation_Custom"] as string,
-                Code = "prop = value",
-                IsNotEditable = false,
-                CanHaveChild = false,
-                BackgroundColor = ASSIGNATIONS_COLORS[0],
-                BorderColor = ASSIGNATIONS_COLORS[1],
-                Color = ASSIGNATIONS_COLORS[2],
-            });
+            }
+            return array;
         }
     }
 }

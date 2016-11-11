@@ -79,7 +79,7 @@ namespace FocusTreeManager.Parsers
                 }
                 text.AppendLine("\t\tx = " + focus.X);
                 text.AppendLine("\t\ty = " + focus.Y);
-                text.AppendLine(focus.InternalScript.Parse());
+                text.AppendLine(focus.InternalScript.Parse(3));
                 text.AppendLine("\t}");
             }
             text.AppendLine("}");
@@ -194,7 +194,7 @@ namespace FocusTreeManager.Parsers
         {
             Dictionary<string, PrerequisitesSet> waitingList = new Dictionary<string, PrerequisitesSet>();
             FociGridContainer container = new FociGridContainer(Path.GetFileNameWithoutExtension(fileName));
-            container.TAG = script.FindValue("tag") != null ? script.FindValue("tag").Parse() : "";
+            container.TAG = script.FindValue("tag").Parse();
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
                 Focus newFocus = new Focus();

@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -35,13 +36,18 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        private Script managedScript;
+        private Script managedScript = new Script();
 
         public Script ManagedScript
         {
             get
             {
                 return managedScript;
+            }
+            set
+            {
+                managedScript = value;
+                setCode(managedScript);
             }
         }
 
@@ -56,9 +62,12 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 editorScript = value;
+                ManagedScript.Analyse(value);
                 RaisePropertyChanged(() => EditorScript);
             }
         }
+
+        public ScripterType ScriptType { get; set; }
 
         public string SelectedTabIndex { get; set; }
 
@@ -75,10 +84,9 @@ namespace FocusTreeManager.ViewModel
             CancelCommand = new RelayCommand(CancelScript);
         }
         
-        public void setCode(Script internalScript)
+        private void setCode(Script internalScript)
         {
             codeBlocks.Clear();
-            managedScript = internalScript == null ? new Script() : internalScript;
             EditorScript = internalScript == null? "" : internalScript.Parse(0);
             List<AssignationModel> listBlock = ModelsToScriptHelper.
                 TransformScriptToModels(managedScript, new RelayCommand<object>(DeleteNode));

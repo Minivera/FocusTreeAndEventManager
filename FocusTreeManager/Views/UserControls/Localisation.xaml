@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views"
-             mc:Ignorable="d" >
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
                 <Style x:Key="ControlStyle" TargetType="Control">
@@ -30,12 +30,17 @@
             <TextBox Text="{Binding Path=ShortName}"/>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Path=LocalisationMap}" DockPanel.Dock="Bottom"
-                  AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
+                  AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
+                  AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
+                  ColumnWidth="*" Width="{Binding Path=ActualWidth, 
+                                    RelativeSource={RelativeSource Mode=FindAncestor,
+                                    AncestorType=DockPanel, AncestorLevel=1}}"
+                  x:Name="LocalisationGrid">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Key}">
+                <DataGridTextColumn Binding="{Binding Key}" >
                     <DataGridTextColumn.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{DynamicResource Localisation_Key}"/>
+                            <TextBlock Text="{DynamicResource Localisation_Key}" />
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
                 </DataGridTextColumn>

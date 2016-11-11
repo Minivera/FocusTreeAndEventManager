@@ -131,5 +131,18 @@ namespace FocusTreeManager.CodeStructures
             }
             return founds;
         }
+
+        public Script GetContentAsScript(string[] except)
+        {
+            Script newScript = new Script();
+            foreach (Assignation item in Code)
+            {
+                if (!except.Contains(item.Assignee))
+                {
+                    newScript.Code.Add(item);
+                }
+            }
+            return newScript;
+        }
     }
 }

@@ -26,14 +26,18 @@ namespace FocusTreeManager.Model
         [ProtoMember(3)]
         public ObservableCollection<LocalisationContainer> localisationList { get; set; }
 
-        //[ProtoMember(4)]
-        //public ObservableCollection<Event> eventList { get; set; }
+        [ProtoMember(4)]
+        public ObservableCollection<EventContainer> eventList { get; set; }
+
+        [ProtoMember(5)]
+        public ObservableCollection<ScriptContainer> scriptList { get; set; }
 
         public Project()
         {
             fociContainerList = new ObservableCollection<FociGridContainer>();
             localisationList = new ObservableCollection<LocalisationContainer>();
-            //eventList = new ObservableCollection<Event>();
+            eventList = new ObservableCollection<EventContainer>();
+            scriptList = new ObservableCollection<ScriptContainer>();
         }
 
         public FociGridContainer getSpecificFociList(Guid containerID)
@@ -45,6 +49,18 @@ namespace FocusTreeManager.Model
         public LocalisationContainer getSpecificLocalisationMap(Guid containerID)
         {
             LocalisationContainer container = localisationList.SingleOrDefault((c) => c.IdentifierID == containerID);
+            return container;
+        }
+
+        public EventContainer getSpecificEventList(Guid containerID)
+        {
+            EventContainer container = eventList.SingleOrDefault((c) => c.IdentifierID == containerID);
+            return container;
+        }
+
+        public ScriptContainer getSpecificScriptList(Guid containerID)
+        {
+            ScriptContainer container = scriptList.SingleOrDefault((c) => c.IdentifierID == containerID);
             return container;
         }
 
@@ -64,7 +80,7 @@ namespace FocusTreeManager.Model
                 return null;
             }
             return localisationList.FirstOrDefault((l) => l.LocalisationMap.
-                    Where((x) => x.Key.ToLower() == key.ToLower()).Any());
+                    Where((x) => x.Key != null && x.Key.ToLower() == key.ToLower()).Any());
         }
     }
 }

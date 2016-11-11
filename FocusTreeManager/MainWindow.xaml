@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusTreeManager"
         xmlns:v="clr-namespace:FocusTreeManager.Views"
+        xmlns:vu="clr-namespace:FocusTreeManager.Views.UserControls"
         xmlns:m="clr-namespace:FocusTreeManager.Model"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
@@ -35,12 +36,39 @@
             <DataTemplate DataType="{x:Type m:LocalisationModel}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto" 
-                              PreviewMouseMove="ContentScroll_PreviewMouseMove" 
-                              PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
-                              PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp"
                               Background="Transparent">
                     <v:Localisation></v:Localisation>
                 </ScrollViewer>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type m:EventModel}">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto" 
+                              Background="Transparent">
+                    <vu:EventList></vu:EventList>
+                </ScrollViewer>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type m:ScriptModel}">
+                <Grid DataContext="{Binding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid.InputBindings>
+                        <KeyBinding Modifiers="Control"
+                        Key="S"
+                        Command="{Binding SaveScriptCommand}"
+                        CommandParameter="{Binding ElementName=Scripter}"/>
+                    </Grid.InputBindings>
+                    <v:Scripter Script="{Binding DataContext.InternalScript, 
+                                RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                Grid.Row="0" x:Name="Scripter"/>
+                    <StackPanel HorizontalAlignment="Right" Grid.Row="1">
+                        <Button Content="{DynamicResource Command_Save}" 
+                                Command="{Binding SaveScriptCommand}"
+                                CommandParameter="{Binding ElementName=Scripter}"
+                                Width="150" Style="{DynamicResource SquareButtonStyle}" />
+                    </StackPanel>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>

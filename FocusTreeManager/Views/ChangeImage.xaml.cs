@@ -18,15 +18,12 @@ namespace FocusTreeManager.Views
             InitializeComponent();
             loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            this.MaxHeight = (System.Windows.SystemParameters.PrimaryScreenHeight * 0.90);
+            this.MaxWidth = (System.Windows.SystemParameters.PrimaryScreenWidth * 0.90);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Target != null && msg.Target != this)
-            {
-                //Message not itended for here
-                return;
-            }
             if (msg.Notification == "HideChangeImage")
             {
                 this.Hide();

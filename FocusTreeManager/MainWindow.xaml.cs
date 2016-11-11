@@ -17,6 +17,7 @@ using ProtoBuf;
 using System.Windows.Media;
 using System.Collections.Generic;
 using FocusTreeManager.Helper;
+using Dragablz;
 
 namespace FocusTreeManager
 {
@@ -86,12 +87,6 @@ namespace FocusTreeManager
                 case "RefreshTabViewer":
                     {
                         ((ObservableCollection<ObservableObject>)CentralTabControl.ItemsSource).Clear();
-                        break;
-                    }
-                case "ShowChangeImage":
-                    {
-                        ChangeImage view = new ChangeImage();
-                        view.ShowDialog();
                         break;
                     }
                 case "ChangeLanguage":
@@ -210,11 +205,25 @@ namespace FocusTreeManager
 
         private void CentralTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!(e.OriginalSource is TabablzControl))
+            {
+                return;
+            }
             foreach (var item in ((TabControl)e.Source).Items)
             {
                 if (item is FocusGridModel)
                 {
                     ((FocusGridModel)item).isShown = false;
+                }
+                else if (item is EventModel)
+                {
+                    ((EventModel)item).isShown = false;
+                }
+                //Save all potential datagrids unsaved rows
+                foreach (DataGrid grid
+                    in UiHelper.FindVisualChildren<DataGrid>((TabControl)e.Source))
+                {
+                    grid.CommitEdit();
                 }
             }
             if (e.AddedItems.Count > 0)
@@ -233,6 +242,10 @@ namespace FocusTreeManager
                         }
                     }
                 }
+                else if (selectedTab is EventModel)
+                {
+                    ((EventModel)selectedTab).isShown = true;
+                }
             }
         }
 
@@ -246,7 +259,7 @@ namespace FocusTreeManager
                 if (File.Exists(fileName))
                 {
                     var extension = System.IO.Path.GetExtension(fileName);
-                    //If a fiule was openned and the fil is a project
+                    //If a file was opened and the fil is a project
                     if (extension == ".h4prj")
                     {
                         using (var fs = File.OpenRead(fileName))

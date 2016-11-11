@@ -62,7 +62,7 @@
                 <Label Content="{DynamicResource Editor_Search}" HorizontalAlignment="Right" 
                        VerticalAlignment="Center" />
                 <ComboBox Grid.Column="1" IsEditable="True" ItemsSource="{Binding SearchHistory}" 
-                          Text="{Binding SelectedText}" Margin="5" x:Name="ComboFind"/>
+                          Margin="5" x:Name="ComboFind"/>
                 <Label Content="{DynamicResource Editor_Find_Occurences}" HorizontalAlignment="Right" 
                        Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="0,0,25,0"
                        Visibility="Hidden" x:Name="OccurencesLabel"/>

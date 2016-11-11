@@ -23,6 +23,12 @@ namespace FocusTreeManager.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        const string FOCUS_TREE_PATH = @"\common\national_focus\";
+
+        const string LOCALISATION_PATH = @"\localisation\";
+
+        const string EVENTS_PATH = @"\events\";
+
         private IDialogCoordinator coordinator;
 
         private Project project;
@@ -260,11 +266,6 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Target != null && msg.Target != this)
-            {
-                //Message not itended for here
-                return;
-            }
             if (msg.Notification == "OpenFocusTree")
             {
                 FociGridContainer container = msg.Sender as FociGridContainer;
@@ -286,6 +287,30 @@ namespace FocusTreeManager.ViewModel
                     return;
                 }
                 LocalisationModel newModel = new LocalisationModel(container.IdentifierID);
+                TabsModelList.Add(newModel);
+                RaisePropertyChanged("TabsModelList");
+            }
+            if (msg.Notification == "OpenEventList")
+            {
+                EventContainer container = msg.Sender as EventContainer;
+                if (TabsModelList.Where((t) => t is EventModel &&
+                            ((EventModel)t).UniqueID == container.IdentifierID).Any())
+                {
+                    return;
+                }
+                EventModel newModel = new EventModel(container.IdentifierID);
+                TabsModelList.Add(newModel);
+                RaisePropertyChanged("TabsModelList");
+            }
+            if (msg.Notification == "OpenScriptList")
+            {
+                ScriptContainer container = msg.Sender as ScriptContainer;
+                if (TabsModelList.Where((t) => t is ScriptModel &&
+                            ((ScriptModel)t).UniqueID == container.IdentifierID).Any())
+                {
+                    return;
+                }
+                ScriptModel newModel = new ScriptModel(container.IdentifierID);
                 TabsModelList.Add(newModel);
                 RaisePropertyChanged("TabsModelList");
             }
@@ -334,25 +359,48 @@ namespace FocusTreeManager.ViewModel
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
+                string path = dialog.FileName + FOCUS_TREE_PATH;
+                Directory.CreateDirectory(path);
                 //For each parsed focus trees
                 foreach (KeyValuePair<string, string> item in 
                     FocusTreeParser.ParseAllTrees(project.fociContainerList))
+                {
+                    using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
+                    {
+                        tw.Write(item.Value);
+                    }
+                }
+                path = dialog.FileName + LOCALISATION_PATH;
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                //For each parsed localisation files
+                foreach (KeyValuePair<string, string> item in
+                    LocalisationParser.ParseEverything(project.localisationList))
+                {
+                    using (TextWriter tw = new StreamWriter(path + item.Key + ".yaml"))
+                    {
+                        tw.Write(item.Value);
+                    }
+                }
+                path = dialog.FileName + EVENTS_PATH;
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                //For each parsed event file
+                foreach (KeyValuePair<string, string> item in
+                    EventParser.ParseAllEvents(project.eventList))
+                {
+                    using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
+                    {
+                        tw.Write(item.Value);
+                    }
+                }
+                //For each parsed script file
+                foreach (KeyValuePair<string, string> item in
+                    ScriptParser.ParseEverything(project.scriptList))
                 {
                     using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".txt"))
                     {
                         tw.Write(item.Value);
                     }
                 }
-                //For each parsed localisation files
-                foreach (KeyValuePair<string, string> item in
-                    LocalisationParser.ParseEverything(project.localisationList))
-                {
-                    using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".yaml"))
-                    {
-                        tw.Write(item.Value);
-                    }
-                }
-                //TODO: For each parsed event
             }
         }
     }

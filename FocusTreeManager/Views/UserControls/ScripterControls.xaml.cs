@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +14,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
 
 namespace FocusTreeManager.Views
 {
-    /// <summary>
-    /// Logique d'interaction pour ScripterControlsContainer.xaml
-    /// </summary>
     public partial class ScripterControls : UserControl
     {
+        public static readonly DependencyProperty ScripterTypeProperty =
+        DependencyProperty.Register("CurrentType", typeof(ScripterType), typeof(ScripterControls),
+        new UIPropertyMetadata(ScripterType.Generic));
+
+        public ScripterType CurrentType
+        {
+            get { return (ScripterType)GetValue(ScripterTypeProperty); }
+            set { SetValue(ScripterTypeProperty, value); }
+        }
+
         public ScripterControls()
         {
             InitializeComponent();
             loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            Loaded += (s, e) =>
+            {
+                ScripterControlsViewModel Vm = DataContext as ScripterControlsViewModel;
+                if (Vm != null)
+                {
+                    Vm.CurrentType = CurrentType;
+                }
+            };
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

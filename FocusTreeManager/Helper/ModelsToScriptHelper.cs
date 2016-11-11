@@ -1,6 +1,7 @@
 ﻿using FocusTreeManager.CodeStructures;
 using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Model;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -34,20 +35,6 @@ namespace FocusTreeManager.Helper
             (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffeb3b")),
             (SolidColorBrush)(new BrushConverter().ConvertFrom("#f57f17")),
             (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"))
-        };
-
-        private static readonly string[] COMMON_CONTROLS =
-        {
-            "if", "AND", "OR", "NOT", "limit", "ai_will_do",
-            "completion_reward", "available", "bypass", "cancel"
-        };
-
-        private static readonly string[] COMMON_CONTROLS_NAMES =
-        {
-            "Scripter_Condition_If", "Scripter_Condition_AND", "Scripter_Condition_OR",
-            "Scripter_Condition_NOT", "Scripter_Condition_Limit", "Scripter_Block_AI",
-            "Scripter_Block_Reward", "Scripter_Block_Available", "Scripter_Block_Bypass",
-            "Scripter_Block_Cancel"
         };
 
         public static List<AssignationModel> TransformScriptToModels(Script script, RelayCommand<object> deleteCommand)
@@ -99,7 +86,7 @@ namespace FocusTreeManager.Helper
                         IsNotEditable = false,
                         CanHaveChild = true,
                         Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator + " {}",
-                        Text = getAssignationName(block.Assignee),
+                        LocalizationKey = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
                     };
                 }
@@ -118,7 +105,7 @@ namespace FocusTreeManager.Helper
                         CanHaveChild = false,
                         Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator
                                 + " " + Regex.Replace(((CodeValue)block.Value).Value, @"\t|\n|\r|\s", ""),
-                        Text = resourceLocalization["Scripter_Assignation_Custom"] as string,
+                        LocalizationKey = "Scripter_Assignation_Custom",
                         DeleteNodeCommand = deleteCommand
                     };
                     //Ignore childs even if there is some
@@ -135,7 +122,7 @@ namespace FocusTreeManager.Helper
                         CanHaveChild = true,
                         Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + 
                             " " + block.Operator + " {}",
-                        Text = getAssignationName(block.Assignee),
+                        LocalizationKey = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
                     };
                     foreach (ICodeStruct code in ((CodeBlock)block.Value).Code)
@@ -159,35 +146,42 @@ namespace FocusTreeManager.Helper
             part = Regex.Replace(part, @"\t|\n|\r", String.Empty);
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            int index = Array.IndexOf(COMMON_CONTROLS, part);
-            //If a common control
-            if (index >= 0)
+            foreach (ScripterControlsViewModel.ControlInfo item in 
+                (new ViewModelLocator()).ScripterControls.CommonControls)
             {
-                //Return its control name
-                return resourceLocalization[COMMON_CONTROLS_NAMES[index]] as string;
+                //If we can find a control with that particular name
+                if (item.control == part)
+                {
+                    return item.controlName;
+                }
             }
-            else
-            {
-                //Otherwise, random control
-                return resourceLocalization["Scripter_Block_Custom"] as string;
-            }
+            //Otherwise, random control
+            return "Scripter_Block_Custom";
         }
 
         private static Brush[] getColorArray(string part)
         {
             part = Regex.Replace(part, @"\t|\n|\r", String.Empty);
-            int index = Array.IndexOf(COMMON_CONTROLS, part);
-            //If a common control
-            if (index >= 0 && index <= 4)
+            foreach (ScripterControlsViewModel.ControlInfo item in
+                (new ViewModelLocator()).ScripterControls.CommonControls)
             {
-                //Return condition brush
-                return CONDITIONS_COLORS;
+                //If we can find a control with that particular name
+                if (item.control == part)
+                {
+                    //Check type and return the correct color array
+                    switch (item.controlType)
+                    {
+                        case ScripterControlsViewModel.ControlType.Assignation:
+                            return ASSIGNATIONS_COLORS;
+                        case ScripterControlsViewModel.ControlType.Block:
+                            return BLOCKS_COLORS;
+                        case ScripterControlsViewModel.ControlType.Condition:
+                            return CONDITIONS_COLORS;
+                    }
+                }
             }
-            else
-            {
-                //Return block brush
-                return BLOCKS_COLORS;
-            }
+            //Otherwise, return block brush
+            return BLOCKS_COLORS;
         }
 
         public static Script TransformModelsToScript(List<AssignationModel> models)

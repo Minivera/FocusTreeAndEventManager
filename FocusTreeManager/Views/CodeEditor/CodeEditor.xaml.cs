@@ -21,7 +21,45 @@ namespace FocusTreeManager.Views.CodeEditor
 {
 	public partial class CodeEditor : TextBox
     {
-        public int TabSize { get; set; }
+        public static readonly DependencyProperty FoundBrushProperty =
+        DependencyProperty.Register("FoundTextBrush", typeof(Brush), typeof(CodeEditor),
+        new UIPropertyMetadata(Brushes.LightGoldenrodYellow));
+
+        public Brush FoundTextBrush
+        {
+            get { return (Brush)GetValue(FoundBrushProperty); }
+            set { SetValue(FoundBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty HighlightBrushProperty =
+        DependencyProperty.Register("HighlightTextBrush", typeof(Brush), typeof(CodeEditor),
+        new UIPropertyMetadata(Brushes.LightCyan));
+
+        public Brush HighlightTextBrush
+        {
+            get { return (Brush)GetValue(HighlightBrushProperty); }
+            set { SetValue(HighlightBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty BracketBrushProperty =
+        DependencyProperty.Register("BracketBrush", typeof(Brush), typeof(CodeEditor),
+        new UIPropertyMetadata(Brushes.Crimson));
+
+        public Brush BracketBrush
+        {
+            get { return (Brush)GetValue(BracketBrushProperty); }
+            set { SetValue(BracketBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty TabSizeProperty =
+        DependencyProperty.Register("TabSize", typeof(int), typeof(CodeEditor),
+        new UIPropertyMetadata(4));
+
+        public int TabSize
+        {
+            get { return (int)GetValue(TabSizeProperty); }
+            set { SetValue(TabSizeProperty, value); }
+        }
 
         public double LineHeight
         {
@@ -82,6 +120,10 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private bool WaitingForClosingBracket = false;
 
+        private Regex TextToHighlight;
+
+        private Regex FoundText;
+
         public CodeEditor()
         {
 			InitializeComponent();
@@ -136,6 +178,7 @@ namespace FocusTreeManager.Views.CodeEditor
             };
             PreviewKeyDown += new KeyEventHandler(CodeEditor_OnPreviewKeyDown);
             SelectionChanged += new RoutedEventHandler(CodeEditor_SelectionChanged);
+            PreviewMouseDoubleClick += new MouseButtonEventHandler(CodeEditor_MouseDoubleClick);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -143,7 +186,7 @@ namespace FocusTreeManager.Views.CodeEditor
 			DrawBlocks();
 			base.OnRender(drawingContext);
             //Render the navigator once the editor is ready
-            if (navigator == null && scrollViewer.ViewportHeight != 0)
+            if (navigator == null && scrollViewer!= null && scrollViewer.ViewportHeight != 0)
             {
                 navigator = new CodeNavigator(GetFormattedText(Text),
                     new Point(2 - HorizontalOffset, VerticalOffset));
@@ -179,6 +222,27 @@ namespace FocusTreeManager.Views.CodeEditor
             }
         }
 
+        private void CodeEditor_MouseDoubleClick(object sender,  MouseButtonEventArgs e)
+        {
+            int nextSpace = Text.IndexOf(' ', CaretIndex);
+            int selectionStart = 0;
+            string trimmedString = string.Empty;
+            if (nextSpace != -1)
+            {
+                trimmedString = Text.Substring(0, nextSpace);
+            }
+            else
+            {
+                trimmedString = Text;
+            }
+            if (trimmedString.LastIndexOf(' ') != -1)
+            {
+                selectionStart = 1 + trimmedString.LastIndexOf(' ');
+                trimmedString = trimmedString.Substring(1 + trimmedString.LastIndexOf(' '));
+            }
+            Select(selectionStart, trimmedString.Length);
+        }
+
         #region BracketHiglightBlocks
 
         private int openBracketPos = -1;
@@ -188,12 +252,23 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void CodeEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            TextToHighlight = null;
             //Get caret position and highlight the blocks that are needed
             int caretPosition = CaretIndex;
             //If the caret is not valid, caret reset
             if (caretPosition < 1 || caretPosition >= Text.Length)
             {
                 return;
+            }
+            //Check if the selected text is a word and fi we can highlight it
+            if (SelectedText.IndexOf(' ') == -1)
+            { 
+                //If only accepted chars and is there more than once
+                if (Regex.IsMatch(SelectedText, @"(?i)^[a-z_\-0-9]+")
+                    && Regex.Matches(Text, SelectedText).Count > 1)
+                {
+                    TextToHighlight = new Regex(@"\b" + SelectedText + @"\b");
+                }
             }
             //if the caret is near an opening bracket, the caret can be before or after the caret
             if (Text.Substring(caretPosition, 1).Contains("{"))
@@ -373,11 +448,9 @@ namespace FocusTreeManager.Views.CodeEditor
 
         #region PublicMethods
 
-        private Regex TextToHighlight;
-
         public MatchCollection Find(Regex TextToFind, int index)
         {
-            TextToHighlight = TextToFind;
+            FoundText = TextToFind;
             foreach (InnerTextBlock block in blocks)
             {
                 MatchCollection Selected = TextToFind.Matches(block.RawText);
@@ -395,7 +468,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         public MatchCollection Replace(Regex TextToFind, string TextToReplace, int index)
         {
-            TextToHighlight = TextToFind;
+            FoundText = TextToFind;
             foreach (InnerTextBlock block in blocks)
             {
                 MatchCollection Selected = TextToFind.Matches(block.RawText);
@@ -414,7 +487,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         public void EndFindAndReplace()
         {
-            TextToHighlight = null;
+            FoundText = null;
             InvalidateVisual();
         }
 
@@ -610,7 +683,22 @@ namespace FocusTreeManager.Views.CodeEditor
                                         m.Index, m.Length);
                                 if (highlight != null)
                                 {
-                                    Brush brush = new SolidColorBrush(Brushes.LightCyan.Color);
+                                    Brush brush = HighlightTextBrush.Clone();
+                                    brush.Opacity = 0.5;
+                                    dc.DrawGeometry(brush, null, highlight);
+                                }
+                            }
+                        }
+                        if (FoundText != null)
+                        {
+                            foreach (Match m in FoundText.Matches(block.FormattedText.Text))
+                            {
+                                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
+                                        new Point(2 - HorizontalOffset, block.Position.Y - this.VerticalOffset),
+                                        m.Index, m.Length);
+                                if (highlight != null)
+                                {
+                                    Brush brush = FoundTextBrush.Clone();
                                     brush.Opacity = 0.5;
                                     dc.DrawGeometry(brush, null, highlight);
                                 }
@@ -660,7 +748,7 @@ namespace FocusTreeManager.Views.CodeEditor
 			currentBlock.FormattedText = GetFormattedText(currentBlock.RawText);
             Dispatcher.Invoke(() => {
                 CodeEditorContent.Instance.Highlight(currentBlock.FormattedText, 
-                    openBracketPos, closeBracketPos);
+                    openBracketPos, closeBracketPos, BracketBrush);
                 currentBlock.Code = -1;
             });
         }

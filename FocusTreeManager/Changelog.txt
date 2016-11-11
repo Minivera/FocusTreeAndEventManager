@@ -44,3 +44,27 @@
 - Scripts will now be parsed with a linebreak between blocks (Example, linebreak between foci)
 - Fixed some UI elements not changing languages (Need to to check all of them)
 - Can now search and replace in the code Editor
+
+***********************
+*        Beta_2       *
+***********************
+
+- The Scripter will now create its controls from a XML file in Common\ScripterControls
+- The Scripter may now create scripts for Events, event descriptions and event options as well as focus trees
+- The scripter and by extension the code Editor is now fully generic, configured by XML files.
+- Setting screen is less ugly and deformed in other languages
+- Tabs for hidden focus tree will now correctly rename
+- Fixed a crash with the code editor when opening an empty script a second time
+- Changed the minimum size for the project view expanders to 40 from 0
+- Fixed a major crash when entering text in a grid (Like the localisation grid) and changing tabs (Temporary Fix)
+- Added a small glow around the change image windows to make it pop
+- The code editor will now select the whole word when double clicking on one (Will not select spaces and will not ignore _)
+- Selecting a whole word will highlight all other instances of that word in the code editor
+- Fixed a bug with the preview scroll rectangle showing when code was too short to be scrolled
+- Added an error message when loading invalid game files
+- Switched the code Editor and Scripter GUI to reduce lag
+- Fixed a bug with events not refreshing when creating a new project
+- Added Event support
+- Added generic script files support
+- Files will now be exported in folders to make exporting easier (Except for generic)
+- Repaired the Find and Replace dialogs history
