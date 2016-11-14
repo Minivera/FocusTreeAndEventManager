@@ -42,11 +42,14 @@ namespace FocusTreeManager.Views.UserControls
             this.Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
-        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Model.Event model = this.DataContext as Model.Event;
-            model.EditDescScriptCommand.RaiseCanExecuteChanged();
-            model.EditOptionScriptCommand.RaiseCanExecuteChanged();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Model.Event model = this.DataContext as Model.Event;
+                model.EditDescScriptCommand.RaiseCanExecuteChanged();
+                model.EditOptionScriptCommand.RaiseCanExecuteChanged();
+            }), DispatcherPriority.ContextIdle, null);
         }
     }
 }

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
+        xmlns:local="clr-namespace:FocusTreeManager.Views"
         mc:Ignorable="d ignore" GlowBrush="{DynamicResource AccentColorBrush}"
-        DataContext="{Binding ChangeImage, Source={StaticResource Locator}}" 
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" Title="{DynamicResource Chose_Image_Title}" 
         WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png">
     <Window.Resources>
@@ -21,21 +22,20 @@
         <ItemsControl ItemsSource="{Binding ImageList}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel />
+                    <WrapPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Image Source="{Binding}" ToolTip="{Binding}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Stretch="None" Margin="10"/>
+                    <Grid Margin="10">
+                        <Image ToolTip="{Binding Image}" x:Name="ImageToChose"
+                               l:Loader.DisplayOption="FullResolution"
+                               l:Loader.Source="{Binding Image}" MaxWidth="{Binding MaxWidth}"/>
                         <Button Content="{DynamicResource Command_Select}" 
                                 Command="{Binding ChangeImage.SelectCommand, Source={StaticResource Locator}}" 
-                                CommandParameter="{Binding}" 
-                                VerticalAlignment="Bottom"
-                                Height="25" Width="75"/>
+                                CommandParameter="{Binding Image}" 
+                                Height="25" Width="150" VerticalAlignment="Bottom"
+                                Style="{DynamicResource SquareButtonStyle}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

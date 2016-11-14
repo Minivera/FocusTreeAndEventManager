@@ -61,7 +61,7 @@ namespace FocusTreeManager.ViewModel
         public void ChangeImage()
         {
             ChangeImage view = new ChangeImage();
-            (new ViewModelLocator()).ChangeImage.LoadImages("Focus");
+            (new ViewModelLocator()).ChangeImage.LoadImages("Focus", Focus.Icon);
             view.ShowDialog();
             Focus.Image = (new ViewModelLocator()).ChangeImage.FocusImage;
         }

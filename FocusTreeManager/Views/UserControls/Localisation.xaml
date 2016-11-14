@@ -7,7 +7,9 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
-                <Style x:Key="ControlStyle" TargetType="Control">
+            <CollectionViewSource x:Key="LocalisationSource" Filter="CollectionViewSource_Filter" 
+                                  Source="{Binding LocalisationMap}"/>
+            <Style x:Key="ControlStyle" TargetType="Control">
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
@@ -19,39 +21,105 @@
                 <Setter Property="Width" Value="200"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
+            <Style x:Key="TransparentStyle" TargetType="{x:Type Button}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <ContentPresenter/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+    <Grid VirtualizingStackPanel.VirtualizationMode="Recycling">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="7,0,0,0">
             <Label Content="{DynamicResource Localisation_Language}"/>
             <TextBox Text="{Binding Path=ShortName}"/>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Path=LocalisationMap}" DockPanel.Dock="Bottom"
+        <DataGrid ItemsSource="{Binding Source={StaticResource LocalisationSource}}" Grid.Row="1"
                   AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
                   AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
                   ColumnWidth="*" Width="{Binding Path=ActualWidth, 
                                     RelativeSource={RelativeSource Mode=FindAncestor,
                                     AncestorType=DockPanel, AncestorLevel=1}}"
-                  x:Name="LocalisationGrid">
+                  x:Name="LocalisationGrid" VirtualizingStackPanel.IsVirtualizing="true">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Key}" >
                     <DataGridTextColumn.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{DynamicResource Localisation_Key}" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{DynamicResource Localisation_Key}" Grid.Row="0"/>
+                                <Button Grid.Column="1" x:Name="FilterKeyButton" Click="FilterKeyButton_Click"
+                                        Style="{StaticResource TransparentStyle}" Margin="7,0,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="10" Height="10"
+                                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                                 Path=Foreground}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Visual="{StaticResource appbar_filter_alphabetical}" 
+                                                         Stretch="Fill" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </StackPanel>
+                                </Button>
+                                <TextBox Grid.Row="1" x:Name="FilterKeyTextBox" Visibility="Collapsed" Grid.ColumnSpan="2"
+                                         Loaded="FilterKeyTextBox_Loaded" TextChanged="FilterKeyTextBox_TextChanged"/>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Value}">
                     <DataGridTextColumn.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{DynamicResource Localisation_Value}"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{DynamicResource Localisation_Value}" Grid.Row="0"/>
+                                <Button Grid.Column="1" x:Name="FilterValueButton" Click="FilterValueButton_Click"
+                                        Style="{StaticResource TransparentStyle}" Margin="7,0,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="10" Height="10"
+                                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                                    Path=Foreground}" >
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Visual="{StaticResource appbar_filter_alphabetical}" 
+                                                         Stretch="Fill" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </StackPanel>
+                                </Button>
+                                <TextBox Grid.Row="1" x:Name="FilterValueTextBox" Visibility="Collapsed"  Grid.ColumnSpan="2"
+                                         Loaded="FilterValueTextBox_Loaded" TextChanged="FilterValueTextBox_TextChanged"/>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+    </Grid>
 </UserControl>

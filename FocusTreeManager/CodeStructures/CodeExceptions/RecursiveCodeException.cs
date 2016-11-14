@@ -16,7 +16,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
     }
 
     /// <summary>
-    /// Special expcetion that builds itself as it is thrown. 
+    /// Special exception that builds itself as it is thrown. 
     /// Allows to build a custom stacktrace in the code analysis and
     /// parsing functions.
     /// </summary>
@@ -33,7 +33,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
                 {
                     message += item.TimeStamp + "# " + item.ErrorNumber
                         + " " + item.Message + " at " + item.ClassName +
-                        " on line " + item.Line;
+                        " on line " + item.Line + "\n";
                 }
                 return message;
             }

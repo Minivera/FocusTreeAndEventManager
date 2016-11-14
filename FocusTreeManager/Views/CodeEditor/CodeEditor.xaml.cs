@@ -186,7 +186,7 @@ namespace FocusTreeManager.Views.CodeEditor
 			DrawBlocks();
 			base.OnRender(drawingContext);
             //Render the navigator once the editor is ready
-            if (navigator == null && scrollViewer!= null && scrollViewer.ViewportHeight != 0)
+            if (navigator == null && scrollViewer != null && scrollViewer.ViewportHeight != 0)
             {
                 navigator = new CodeNavigator(GetFormattedText(Text),
                     new Point(2 - HorizontalOffset, VerticalOffset));
@@ -501,32 +501,20 @@ namespace FocusTreeManager.Views.CodeEditor
             scrollViewer.ScrollToVerticalOffset(verticalOffset);
         }
 
-        public void Select(string ElementName, int Line)
+        public void Select(string ElementName, int Occurence)
         {
-            ScrollToLine(Line - 1);
-            int lineIndex = 0;
-            int i = 1;
-            foreach (string line in Text.Split('\n'))
+            int i = 0;
+            foreach (Match word in Regex.Matches(Text, @"\b" + ElementName + @"\b"))
             {
-                //Skip empty lines
-                if (string.IsNullOrWhiteSpace(line))
+                if (i == Occurence)
                 {
-                    lineIndex++;
-                    continue;
-                }
-                if (i == Line)
-                {
-                    if (line.IndexOf(ElementName) >= 0)
+                    Dispatcher.BeginInvoke(new ThreadStart(delegate ()
                     {
-                        Dispatcher.BeginInvoke(new ThreadStart(delegate ()
-                        {
-                            Select(lineIndex + line.IndexOf(ElementName), ElementName.Length);
-                            Focus();
-                        }), null);
-                    }
-                    break;
+                        Select(word.Index, word.Length);
+                        Focus();
+                    }), null);
+                    return;
                 }
-                lineIndex += line.Length + 1;
                 i++;
             }
         }

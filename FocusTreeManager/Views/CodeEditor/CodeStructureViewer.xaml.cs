@@ -3,6 +3,7 @@ using FocusTreeManager.Helper;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ namespace FocusTreeManager.Views.CodeEditor
     public struct CodeElement
     {
         public string Name { get; set; }
-        public int Line { get; set; }
+        public int Occurence { get; set; }
         public List<CodeElement> Childrens { get; set; }
     }
 
@@ -38,43 +39,46 @@ namespace FocusTreeManager.Views.CodeEditor
 
         public void SetupViewer(string script)
         {
+            List<string> AllAddedNames = new List<string>();
             CodeBlocks.Clear();
             Script newscript = new Script();
             newscript.Analyse(script);
             foreach (CodeStructures.Assignation item in newscript.Code)
             {
                 CodeElement element = new CodeElement();
-                element.Line = item.Line;
+                element.Occurence = AllAddedNames.Where((n) => n == item.Assignee).Count();
                 element.Name = item.Assignee;
                 if (item.Value is CodeBlock)
                 {
-                    element.Childrens = RunInBlock(item.Value as CodeBlock);
+                    element.Childrens = RunInBlock(item.Value as CodeBlock, AllAddedNames);
                 }
                 else
                 {
                     element.Childrens = new List<CodeElement>();
                 }
+                AllAddedNames.Add(element.Name);
                 CodeBlocks.Add(element);
             }
             OnPropertyChanged("CodeBlocks");
         }
 
-        private List<CodeElement> RunInBlock(CodeBlock block)
+        private List<CodeElement> RunInBlock(CodeBlock block, List<string> AllAddedNames)
         {
             List<CodeElement> newlist = new List<CodeElement>();
-            foreach (CodeStructures.Assignation item in block.Code)
+            foreach (CodeStructures.Assignation item in block.Code.Where((t) => t is CodeStructures.Assignation))
             {
                 CodeElement element = new CodeElement();
-                element.Line = item.Line;
+                element.Occurence = AllAddedNames.Where((n) => n == item.Assignee).Count();
                 element.Name = item.Assignee;
                 if (item.Value is CodeBlock)
                 {
-                    element.Childrens = RunInBlock(item.Value as CodeBlock);
+                    element.Childrens = RunInBlock(item.Value as CodeBlock, AllAddedNames);
                 }
                 else
                 {
                     element.Childrens = new List<CodeElement>();
                 }
+                AllAddedNames.Add(element.Name);
                 newlist.Add(element);
             }
             return newlist;
@@ -89,7 +93,7 @@ namespace FocusTreeManager.Views.CodeEditor
                 if (treeViewItem != null)
                 {
                     CodeElement codeBlock = (CodeElement)treeViewItem.DataContext;
-                    LinkedEditor.Select(codeBlock.Name, codeBlock.Line);
+                    LinkedEditor.Select(codeBlock.Name, codeBlock.Occurence);
                     e.Handled = true;
                 }
             }

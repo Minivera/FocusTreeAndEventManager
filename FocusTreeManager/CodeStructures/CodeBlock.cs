@@ -72,6 +72,18 @@ namespace FocusTreeManager.CodeStructures
                 }
                 line += ItemMatch.Value.Count(s => s == '\n');
             }
+            //Test if code is empty, but the text is not
+            if (!Code.Any() && !string.IsNullOrWhiteSpace(code))
+            {
+                //Cut the code in parts and add them as code values
+                foreach (string item in code.Split(new string[] { " ", "\r\n", "\n" }, StringSplitOptions.None))
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        Code.Add(new CodeValue(item));
+                    }
+                }
+            }
         }
 
         public string Parse(int StartLevel = -1)
@@ -84,13 +96,26 @@ namespace FocusTreeManager.CodeStructures
             {
                 tabulations += "\t";
             }
-            content.Append("{\n");
-            foreach (Assignation item in Code)
+            content.Append("{");
+            foreach (ICodeStruct item in Code)
             {
-                //Parse each internal assignations
-                content.Append(item.Parse(BasicLevel));
+                if (item is Assignation)
+                {
+                    //Parse each internal assignations
+                    content.Append("\n" + item.Parse(BasicLevel));
+                }
+                else if (item is CodeValue)
+                {
+                    //Parse all value spaced by one space
+                    content.Append(" " + item.Parse(BasicLevel) + " ");
+                }
             }
-            content.Append(tabulations + "}");
+            if (Code.Last() is Assignation)
+            {
+                //Add the last breakline and tabulations if needed
+                content.Append("\n" + tabulations);
+            }
+            content.Append("}");
             return content.ToString();
         }
 

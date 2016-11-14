@@ -17,7 +17,7 @@
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
-            <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}">
+            <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}" >
                 <Expander.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource Add_Game_Element}" 
@@ -29,7 +29,7 @@
                 <ItemsControl ItemsSource="{Binding fociContainerList, Mode=OneWay}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -80,7 +80,7 @@
                 <ItemsControl ItemsSource="{Binding localisationList, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -112,7 +112,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Expander>
-            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}" >
+            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}">
                 <Expander.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource Add_Game_Element}" 
@@ -124,7 +124,7 @@
                 <ItemsControl ItemsSource="{Binding eventList, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -156,7 +156,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Expander>
-            <Expander x:Name="GenericExpander" Header="{DynamicResource Manage_Generic}" >
+            <Expander x:Name="GenericExpander" Header="{DynamicResource Manage_Generic}">
                 <Expander.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource Add_Game_Element}" 
@@ -168,7 +168,7 @@
                 <ItemsControl ItemsSource="{Binding scriptList, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40"/>
+                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>

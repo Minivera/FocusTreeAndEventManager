@@ -62,7 +62,6 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 editorScript = value;
-                ManagedScript.Analyse(value);
                 RaisePropertyChanged(() => EditorScript);
             }
         }
@@ -98,7 +97,7 @@ namespace FocusTreeManager.ViewModel
 
         public void ScriptToScripter()
         {
-            ManagedScript.Analyse(editorScript);
+            managedScript.Analyse(editorScript);
             codeBlocks.Clear();
             List<AssignationModel> listBlock = ModelsToScriptHelper.
                 TransformScriptToModels(ManagedScript, new RelayCommand<object>(DeleteNode));
@@ -112,7 +111,7 @@ namespace FocusTreeManager.ViewModel
         public void ScripterToScript()
         {
             managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
-            EditorScript = managedScript.Parse();
+            editorScript = managedScript.Parse();
         }
 
         public void SaveScript()

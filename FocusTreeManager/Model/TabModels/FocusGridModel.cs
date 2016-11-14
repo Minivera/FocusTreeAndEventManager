@@ -242,12 +242,16 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (this.Filename == null)
+            {
+                return;
+            }
             //Always manage container renamed
             if (msg.Notification == "ContainerRenamed")
             {
                 RaisePropertyChanged(() => Filename);
             }
-            if (!this.isShown || this.Filename == null)
+            if (!this.isShown)
             {
                 //is not shown, do not manage
                 return;

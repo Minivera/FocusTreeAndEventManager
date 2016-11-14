@@ -96,14 +96,16 @@ namespace FocusTreeManager.CodeStructures
             StringBuilder content = new StringBuilder();
             try
             {
-                if (Value == null)
+                // If the value is nothing but it has an operator
+                if (Value == null && Operator != null)
                 {
                     //Empty block
-                    content.Append(tabulations + Assignee + " " + Operator + " {\n\n}" + "\n");
+                    content.Append(tabulations + Assignee + " " + Operator + " {\n\n}");
                 }
+                //Otherwise, print as usual
                 else
                 {
-                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse(BasicLevel) + "\n");
+                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse(BasicLevel));
                 }
             }
             catch (RecursiveCodeException e)

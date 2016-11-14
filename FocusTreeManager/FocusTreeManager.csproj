@@ -91,6 +91,9 @@
       <HintPath>..\packages\Windows7APICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PhotoLoader">
+      <HintPath>..\..\PhotoLoader\PhotoLoader\bin\Debug\PhotoLoader.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.1.0\lib\net451\protobuf-net.dll</HintPath>
     </Reference>
@@ -121,6 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncImageLoader\ImageLoaders\ExternalLoader.cs" />
+    <Compile Include="AsyncImageLoader\ImageLoaders\Iload.cs" />
+    <Compile Include="AsyncImageLoader\ImageLoaders\ILoader.cs" />
+    <Compile Include="AsyncImageLoader\ImageLoaders\LoaderFactory.cs" />
+    <Compile Include="AsyncImageLoader\ImageLoaders\LocalDiskLoader.cs" />
+    <Compile Include="AsyncImageLoader\Loader.cs" />
+    <Compile Include="AsyncImageLoader\Manager.cs" />
+    <Compile Include="AsyncImageLoader\Types.cs" />
     <Compile Include="CodeStructures\Assignation.cs" />
     <Compile Include="CodeStructures\CodeBlock.cs" />
     <Compile Include="CodeStructures\CodeEditor\CodeEditorContent.cs" />
@@ -136,10 +147,10 @@
     <Compile Include="Containers\EventContainer.cs" />
     <Compile Include="Containers\ScriptContainer.cs" />
     <Compile Include="Containers\LocalisationContainer.cs" />
-    <Compile Include="GriddedGrid.cs" />
+    <Compile Include="Views\GriddedGrid.cs" />
     <Compile Include="Helper\ModelsToScriptHelper.cs" />
     <Compile Include="Helper\UiHelper.cs" />
-    <Compile Include="Model\TabModels\AssignationModel.cs" />
+    <Compile Include="Model\AssignationModel.cs" />
     <Compile Include="Model\EventDescription.cs" />
     <Compile Include="Model\EventOption.cs" />
     <Compile Include="Model\TabModels\FocusGridModel.cs" />
@@ -147,7 +158,7 @@
     <Compile Include="Adorners\LineAdorner.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\LocaleContent.cs" />
-    <Compile Include="Model\EventModel.cs" />
+    <Compile Include="Model\TabModels\EventModel.cs" />
     <Compile Include="Model\TabModels\ScriptModel.cs" />
     <Compile Include="Model\TabModels\LocalisationModel.cs" />
     <Compile Include="Model\Project.cs" />

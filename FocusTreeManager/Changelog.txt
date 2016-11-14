@@ -68,3 +68,12 @@
 - Added generic script files support
 - Files will now be exported in folders to make exporting easier (Except for generic)
 - Repaired the Find and Replace dialogs history
+- Improved the localisation performance with very large files significantly (Almost no lag for 500 Ko+ files)
+- Added Filtering capabilities to the localisation list
+- The code editor Structure navigator (Left Panel) is now more reliable
+- An error in the script will now display the line where the error has happened
+- The focus cost now allows decimals
+- The code interpreter now supports inline values only assignation (Exemple : add_ideas = { SOMETHING })
+- The code interpreter now supports multiline values only assignation (Exemple : add_ideas = { \n SOMETHING \n SOMETHING_ELSE })
+- Images in the application will now load after the window is shown rather than hang.
+- Overwriting a project save file will not prevent it to load again anymore.

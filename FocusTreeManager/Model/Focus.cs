@@ -14,7 +14,7 @@ namespace FocusTreeManager.Model
     [ProtoContract(AsReferenceDefault = true)]
     public class Focus : ObservableObject
     {
-        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Focus/";
+        const string IMAGE_PATH = "pack://application:,,,/FocusTreeManager;component/GFX/Focus/";
 
         [ProtoMember(1)]
         private string image;
@@ -109,9 +109,9 @@ namespace FocusTreeManager.Model
         }
 
         [ProtoMember(7)]
-        private int cost;
+        private double cost;
 
-        public int Cost
+        public double Cost
         {
             get
             {
@@ -119,7 +119,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<int>(() => this.Cost, ref this.cost, value);
+                Set<double>(() => this.Cost, ref this.cost, value);
             }
         }
 

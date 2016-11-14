@@ -34,18 +34,10 @@
                 </ScrollViewer>
             </DataTemplate>
             <DataTemplate DataType="{x:Type m:LocalisationModel}">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                              VerticalScrollBarVisibility="Auto" 
-                              Background="Transparent">
-                    <v:Localisation></v:Localisation>
-                </ScrollViewer>
+                <v:Localisation></v:Localisation>
             </DataTemplate>
             <DataTemplate DataType="{x:Type m:EventModel}">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                              VerticalScrollBarVisibility="Auto" 
-                              Background="Transparent">
-                    <vu:EventList></vu:EventList>
-                </ScrollViewer>
+                <vu:EventList></vu:EventList>
             </DataTemplate>
             <DataTemplate DataType="{x:Type m:ScriptModel}">
                 <Grid DataContext="{Binding}">

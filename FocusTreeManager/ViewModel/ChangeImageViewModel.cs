@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace FocusTreeManager.ViewModel
@@ -17,7 +18,15 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ChangeImageViewModel : ViewModelBase
     {
-        const string IMAGE_PATH = @"GFX\";
+        public class ImageData
+        {
+            public string Image { get; set; }
+            public int MaxWidth { get; set; }
+        }
+
+        const string GFX_FOLDER = @"GFX\";
+
+        const string IMAGE_PATH = @"pack://application:,,,/FocusTreeManager;component/GFX/";
         
         public RelayCommand<string> SelectCommand { get; private set; }
 
@@ -36,21 +45,31 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public ObservableCollection<string> ImageList { get; private set; }
+        public ObservableCollection<ImageData> ImageList { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ChangeImageViewModel class.
         /// </summary>
         public ChangeImageViewModel()
         {
+            ImageList = new ObservableCollection<ImageData>();
             SelectCommand = new RelayCommand<string>((s) => SelectFocus(s));
         }
 
-        public void LoadImages(string SubFolder)
+        public void LoadImages(string SubFolder, string CurrentImage)
         {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), 
-                IMAGE_PATH + SubFolder + "\\");
-            ImageList = new ObservableCollection<string>(Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly));
+            int MaxWidth = SubFolder == "Focus" ? 100 : 250;
+            ImageList.Clear();
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                GFX_FOLDER + SubFolder + "\\");
+            foreach (string fileName in Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly))
+            {
+                ImageList.Add(new ImageData() {
+                    Image = IMAGE_PATH + SubFolder + "/" + Path.GetFileName(fileName),
+                    MaxWidth = MaxWidth
+                });
+            }
+            focusImage = CurrentImage;
             RaisePropertyChanged(() => ImageList);
         }
 

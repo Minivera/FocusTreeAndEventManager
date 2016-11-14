@@ -67,10 +67,21 @@ namespace FocusTreeManager.Model
         public void SaveToFile(string filename)
         {
             this.filename = filename;
-            using (var fs = File.Create(filename))
+            if (File.Exists(filename))
             {
-                Serializer.Serialize(fs, this);
+                using (var fs = File.Create(filename))
+                {
+                    Serializer.Serialize(fs, this);
+                }
             }
+            else
+            {
+                using (var fs = new FileStream(filename, FileMode.Truncate))
+                {
+                    Serializer.Serialize(fs, this);
+                }
+            }
+            
         }
 
         public LocalisationContainer getLocalisationWithKey(string key)

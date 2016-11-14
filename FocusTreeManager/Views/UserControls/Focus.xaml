@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views"
              xmlns:m="clr-namespace:FocusTreeManager.Model"
+             xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
              mc:Ignorable="d" x:Name="VisualFocus">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -28,32 +29,34 @@
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid Width="89" Height="80">
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="20"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                        <!-- Remove the BlurEffect -->
+                        <Setter Property="Effect" Value="{x:Null}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Image Source="/FocusTreeManager;component/GFX/Interface/Focus_under.png" Margin="-38,42,-35,-42" Stretch="None" />
-        <Image Source="{Binding Image}" x:Name="FocusIcon" ToolTip="{Binding Description}">
-            <Image.Style>
-                <Style TargetType="{x:Type Image}">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="20"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                            <!-- Remove the BlurEffect -->
-                            <Setter Property="Effect" Value="{x:Null}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Image.Style>
+        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" 
+               l:Loader.DisplayOption="FullResolution"
+               l:Loader.Source="{Binding Path=Image}">
             <Image.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditFocusCommand}" />
                 <MouseBinding Gesture="LeftClick" Command="{Binding TestFinishCommand}" />

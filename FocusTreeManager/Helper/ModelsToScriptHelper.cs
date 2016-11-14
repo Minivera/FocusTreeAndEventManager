@@ -68,6 +68,8 @@ namespace FocusTreeManager.Helper
 
         private static AssignationModel BlockToModel(ICodeStruct currentBlock, RelayCommand<object> deleteCommand)
         {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             //Should never loop inside something other than an assignation, check type
             if (currentBlock is Assignation)
             {
@@ -75,8 +77,6 @@ namespace FocusTreeManager.Helper
                 //Check if simply empty, consider an empty block
                 if (block.Value == null)
                 {
-                    ResourceDictionary resourceLocalization = new ResourceDictionary();
-                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                     //Simple assignation, return corresponding model
                     return new AssignationModel()
                     {
@@ -93,8 +93,6 @@ namespace FocusTreeManager.Helper
                 //check if a code value
                 if (block.Value is CodeValue)
                 {
-                    ResourceDictionary resourceLocalization = new ResourceDictionary();
-                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                     //Simple assignation, return corresponding model
                     return new AssignationModel()
                     {
@@ -120,7 +118,7 @@ namespace FocusTreeManager.Helper
                         Color = getColorArray(block.Assignee)[2],
                         IsNotEditable = false,
                         CanHaveChild = true,
-                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + 
+                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") +
                             " " + block.Operator + " {}",
                         LocalizationKey = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
@@ -137,6 +135,22 @@ namespace FocusTreeManager.Helper
                     RecursiveCodeException e = new RecursiveCodeException();
                     throw e.AddToRecursiveChain("Invalid assignation", block.Assignee, block.Line.ToString());
                 }
+            }
+            //If the current block is a code Value (Corrsponding to block = { Value }
+            else if (currentBlock is CodeValue)
+            {
+                //Print the value
+                return new AssignationModel()
+                {
+                    BackgroundColor = ASSIGNATIONS_COLORS[0],
+                    BorderColor = ASSIGNATIONS_COLORS[1],
+                    Color = ASSIGNATIONS_COLORS[2],
+                    IsNotEditable = false,
+                    CanHaveChild = false,
+                    Code = Regex.Replace(currentBlock.Parse(), @"\t|\n|\r|\s", ""),
+                    LocalizationKey = "Scripter_Assignation_Custom",
+                    DeleteNodeCommand = deleteCommand
+                };
             }
             return null;
         }
@@ -322,11 +336,8 @@ namespace FocusTreeManager.Helper
                 }
                 else
                 {
-                    //Weird block, just return its code
-                    return new Assignation(level)
-                    {
-                        Assignee = model.Code
-                    };
+                    //Code value in block 
+                    return new CodeValue(model.Code);
                 }
             }
         }

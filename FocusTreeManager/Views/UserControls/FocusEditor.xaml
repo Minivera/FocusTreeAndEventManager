@@ -75,9 +75,9 @@
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Cost}" 
                            Grid.Column="0" Grid.Row="5"/>
-        <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
+        <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="0.1" InterceptArrowKeys="True"
                                 Grid.Row="5" Grid.Column="1" Value="{Binding Path=Focus.Cost}"
-                                TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
+                                TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="True"/>
         <Label Content="{DynamicResource Focus_Image}" 
                            Grid.Column="0" Grid.Row="6"/>
         <Image Grid.Column="1" Grid.Row="6" Source="{Binding Focus.Image}"/>

@@ -31,7 +31,8 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ContainerID;
+                var element = (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID);
+                return element != null ? element.ContainerID : null;
             }
         }
 
@@ -65,6 +66,10 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (this.Filename == null)
+            {
+                return;
+            }
             if (msg.Notification == "ContainerRenamed")
             {
                 RaisePropertyChanged(() => Filename);

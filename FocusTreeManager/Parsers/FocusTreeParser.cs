@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
+using System.Globalization;
 
 namespace FocusTreeManager.Parsers
 {
@@ -48,7 +49,7 @@ namespace FocusTreeManager.Parsers
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
                 text.AppendLine("\t\ticon = GFX_" + focus.Icon);
-                text.AppendLine("\t\tcost = " + focus.Cost);
+                text.AppendLine("\t\tcost = " + string.Format("{0:0.00}", focus.Cost));
                 if (focus.Prerequisite.Any())
                 {
                     foreach (PrerequisitesSet prereqisite in focus.Prerequisite)
@@ -202,7 +203,7 @@ namespace FocusTreeManager.Parsers
                 newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
                 newFocus.X = int.Parse(block.FindValue("x").Parse());
                 newFocus.Y = int.Parse(block.FindValue("y").Parse());
-                newFocus.Cost = int.Parse(block.FindValue("cost").Parse());
+                newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);
                 foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>("mutually_exclusive"))
                 {
                     foreach (ICodeStruct focuses in exclusives.FindAllValuesOfType<ICodeStruct>("focus"))
@@ -270,6 +271,24 @@ namespace FocusTreeManager.Parsers
                 }
             }
             return container;
+        }
+
+        public static double GetDouble(string value, double defaultValue)
+        {
+            double result;
+            //Try parsing in the current culture
+            if (!double.TryParse(value, System.Globalization.NumberStyles.Any, 
+                CultureInfo.CurrentCulture, out result) &&
+                //Then try in US english
+                !double.TryParse(value, System.Globalization.NumberStyles.Any, 
+                CultureInfo.GetCultureInfo("en-US"), out result) &&
+                //Then in neutral language
+                !double.TryParse(value, System.Globalization.NumberStyles.Any, 
+                CultureInfo.InvariantCulture, out result))
+            {
+                result = defaultValue;
+            }
+            return result;
         }
     }
 }
