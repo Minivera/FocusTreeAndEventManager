@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -53,14 +54,22 @@ namespace FocusTreeManager.ViewModel
 
         public AddFocusViewModel SetupFlyout(object sender)
         {
-            Point mousePos = Mouse.GetPosition((IInputElement)sender);
-            Model.Focus focus = new Model.Focus();
-            focus.setDefaults();
-            Focus = focus;
-            //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
-            Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
-            Focus.Y = (int)Math.Floor(mousePos.Y / 140);
-            RaisePropertyChanged("Focus");
+            try
+            {
+                Point mousePos = Mouse.GetPosition((IInputElement)sender);
+                Model.Focus focus = new Model.Focus();
+                focus.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
+                                    .FirstOrDefault((t) => t is FocusGridModel && ((FocusGridModel)t).isShown))
+                                    .FociList.Count());
+                Focus = focus;
+                //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
+                Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
+                Focus.Y = (int)Math.Floor(mousePos.Y / 140);
+                RaisePropertyChanged("Focus");
+            }
+            catch (Exception)
+            {
+            }
             return this;
         }
 

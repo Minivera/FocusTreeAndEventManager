@@ -91,7 +91,8 @@
       <HintPath>..\packages\Windows7APICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PhotoLoader">
+    <Reference Include="PhotoLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PhotoLoader\PhotoLoader\bin\Debug\PhotoLoader.dll</HintPath>
     </Reference>
     <Reference Include="protobuf-net">
@@ -147,6 +148,7 @@
     <Compile Include="Containers\EventContainer.cs" />
     <Compile Include="Containers\ScriptContainer.cs" />
     <Compile Include="Containers\LocalisationContainer.cs" />
+    <Compile Include="Helper\LoggingHelper.cs" />
     <Compile Include="Views\GriddedGrid.cs" />
     <Compile Include="Helper\ModelsToScriptHelper.cs" />
     <Compile Include="Helper\UiHelper.cs" />

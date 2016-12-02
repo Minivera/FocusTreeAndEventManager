@@ -187,11 +187,11 @@ namespace FocusTreeManager.Model
             TestFinishCommand = new RelayCommand(FinishSetCommands);
         }
 
-        public void setDefaults()
+        public void setDefaults(int FocusNumber)
         {
             InternalScript = new Script();
             Image = "goal_unknown";
-            UniqueName = "unknown";
+            UniqueName = "newfocus_" + FocusNumber;
             X = 0;
             Y = 0;
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Threading;
-using PhotoLoader.ImageLoaders;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows;

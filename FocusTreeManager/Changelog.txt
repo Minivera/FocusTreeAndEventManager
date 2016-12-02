@@ -77,3 +77,11 @@
 - The code interpreter now supports multiline values only assignation (Exemple : add_ideas = { \n SOMETHING \n SOMETHING_ELSE })
 - Images in the application will now load after the window is shown rather than hang.
 - Overwriting a project save file will not prevent it to load again anymore.
+
+***********************
+*       Beta_2a       *
+***********************
+- Fixed a bug preventing deleting localization files.
+- Changed the name of defaults focuses to newFocus_number
+- All exception, even handled ones, will be written in the Log\Exceptions.log file
+- Crashes will no be written in the Log\Crashes.log file.

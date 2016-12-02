@@ -85,7 +85,14 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Label>
+                            <Label DataContext="{Binding}">
+                                <Label.ContextMenu>
+                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+		                                         RelativeSource={RelativeSource Self}}">
+                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
+                                                  Command="{Binding DeleteElementCommand}"/>
+                                    </ContextMenu>
+                                </Label.ContextMenu>
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileLocaleCommand}"
@@ -129,7 +136,14 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Label>
+                            <Label DataContext="{Binding}">
+                                <Label.ContextMenu>
+                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+		                                         RelativeSource={RelativeSource Self}}">
+                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
+                                                  Command="{Binding DeleteElementCommand}"/>
+                                    </ContextMenu>
+                                </Label.ContextMenu>
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileEventCommand}"
@@ -173,7 +187,14 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Label>
+                            <Label DataContext="{Binding}">
+                                <Label.ContextMenu>
+                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+		                                         RelativeSource={RelativeSource Self}}">
+                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
+                                                  Command="{Binding DeleteElementCommand}"/>
+                                    </ContextMenu>
+                                </Label.ContextMenu>
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileGenericCommand}"
