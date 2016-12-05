@@ -1,11 +1,5 @@
-﻿using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Ink;
-using System.Windows.Media;
+﻿using FocusTreeManager.DataContract;
+using GalaSoft.MvvmLight;
 
 namespace FocusTreeManager.Model
 {

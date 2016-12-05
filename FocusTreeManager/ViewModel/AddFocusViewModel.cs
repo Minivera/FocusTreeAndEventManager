@@ -20,9 +20,9 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class AddFocusViewModel : ViewModelBase
     {
-        private Model.Focus focus;
+        private FocusModel focus;
 
-        public Model.Focus Focus
+        public FocusModel Focus
         {
             get
             {
@@ -57,8 +57,8 @@ namespace FocusTreeManager.ViewModel
             try
             {
                 Point mousePos = Mouse.GetPosition((IInputElement)sender);
-                Model.Focus focus = new Model.Focus();
-                focus.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
+                FocusModel focus = FocusModel.createNewModel();
+                focus.DataContract.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
                                     .FirstOrDefault((t) => t is FocusGridModel && ((FocusGridModel)t).isShown))
                                     .FociList.Count());
                 Focus = focus;

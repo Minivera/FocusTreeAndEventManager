@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
 using System.Globalization;
+using FocusTreeManager.DataContract;
 
 namespace FocusTreeManager.Parsers
 {
@@ -19,7 +20,7 @@ namespace FocusTreeManager.Parsers
             "ai_will_do", "completion_reward", "available", "bypass", "cancel"
         };
 
-        public static Dictionary<string, string> ParseAllTrees(ObservableCollection<FociGridContainer> Containers)
+        public static Dictionary<string, string> ParseAllTrees(List<FociGridContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (FociGridContainer container in Containers)
@@ -200,7 +201,7 @@ namespace FocusTreeManager.Parsers
             {
                 Focus newFocus = new Focus();
                 newFocus.UniqueName = block.FindValue("id").Parse();
-                newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
+                newFocus.Icon = block.FindValue("icon").Parse().Replace("GFX_", "");
                 newFocus.X = int.Parse(block.FindValue("x").Parse());
                 newFocus.Y = int.Parse(block.FindValue("y").Parse());
                 newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);

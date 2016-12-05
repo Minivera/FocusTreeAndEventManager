@@ -8,12 +8,13 @@ using FocusTreeManager.Model;
 using System.IO;
 using System.Text.RegularExpressions;
 using FocusTreeManager.CodeStructures;
+using FocusTreeManager.DataContract;
 
 namespace FocusTreeManager.Parsers
 {
     public class ScriptParser
     {
-        public static Dictionary<string, string> ParseEverything(ObservableCollection<ScriptContainer> Containers)
+        public static Dictionary<string, string> ParseEverything(List<ScriptContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (ScriptContainer container in Containers)

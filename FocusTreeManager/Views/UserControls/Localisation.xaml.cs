@@ -56,7 +56,7 @@ namespace FocusTreeManager.Views
 
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
-            LocaleContent item = e.Item as LocaleContent;
+            LocaleModel item = e.Item as LocaleModel;
             if (item != null)
             {
                 if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null)

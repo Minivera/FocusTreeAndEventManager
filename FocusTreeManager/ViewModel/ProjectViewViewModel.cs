@@ -12,6 +12,8 @@ using System.Windows;
 using System.IO;
 using FocusTreeManager.CodeStructures;
 using FocusTreeManager.Parsers;
+using FocusTreeManager.DataContract;
+using System.Collections.Generic;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -27,9 +29,15 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                if ((new ViewModelLocator()).Main.isProjectExist)
-                { 
-                    return (new ViewModelLocator()).Main.Project.fociContainerList;
+                if ((new ViewModelLocator()).Main.IsProjectExist)
+                {
+                    ObservableCollection<FociGridContainer> list = 
+                        new ObservableCollection<FociGridContainer>();
+                    foreach (var item in Project.Instance.fociContainerList)
+                    {
+                        list.Add(item);
+                    }
+                    return list;
                 }
                 return null;
             }
@@ -39,9 +47,15 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                if ((new ViewModelLocator()).Main.isProjectExist)
+                if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    return (new ViewModelLocator()).Main.Project.localisationList;
+                    ObservableCollection<LocalisationContainer> list =
+                        new ObservableCollection<LocalisationContainer>();
+                    foreach (var item in Project.Instance.localisationList)
+                    {
+                        list.Add(item);
+                    }
+                    return list;
                 }
                 return null;
             }
@@ -51,9 +65,15 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                if ((new ViewModelLocator()).Main.isProjectExist)
+                if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    return (new ViewModelLocator()).Main.Project.eventList;
+                    ObservableCollection<EventContainer> list =
+                        new ObservableCollection<EventContainer>();
+                    foreach (var item in Project.Instance.eventList)
+                    {
+                        list.Add(item);
+                    }
+                    return list;
                 }
                 return null;
             }
@@ -63,9 +83,15 @@ namespace FocusTreeManager.ViewModel
         {
             get
             {
-                if ((new ViewModelLocator()).Main.isProjectExist)
+                if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    return (new ViewModelLocator()).Main.Project.scriptList;
+                    ObservableCollection<ScriptContainer> list =
+                        new ObservableCollection<ScriptContainer>();
+                    foreach (var item in Project.Instance.scriptList)
+                    {
+                        list.Add(item);
+                    }
+                    return list;
                 }
                 return null;
             }
@@ -104,19 +130,21 @@ namespace FocusTreeManager.ViewModel
             switch(param)
             {
                 case "FocusTree" :
-                    fociContainerList.Add(new FociGridContainer("FocusTree_" + fociContainerList.Count().ToString()));
+                    Project.Instance.fociContainerList.Add(new FociGridContainer("FocusTree_" + 
+                        fociContainerList.Count().ToString()));
                     RaisePropertyChanged("fociContainerList");
                     break;
                 case "Localisation":
-                    localisationList.Add(new LocalisationContainer("Localisation_" + localisationList.Count().ToString()));
+                    Project.Instance.localisationList.Add(new LocalisationContainer("Localisation_" + 
+                        localisationList.Count().ToString()));
                     RaisePropertyChanged("localisationList");
                     break;
                 case "Event":
-                    eventList.Add(new EventContainer("Event_" + eventList.Count().ToString()));
+                    Project.Instance.eventList.Add(new EventContainer("Event_" + eventList.Count().ToString()));
                     RaisePropertyChanged("eventList");
                     break;
                 case "Generic":
-                    scriptList.Add(new ScriptContainer("Script" + eventList.Count().ToString()));
+                    Project.Instance.scriptList.Add(new ScriptContainer("Script" + eventList.Count().ToString()));
                     RaisePropertyChanged("scriptList");
                     break;
             }
@@ -126,22 +154,22 @@ namespace FocusTreeManager.ViewModel
         {
             if (item is FociGridContainer)
             {
-                fociContainerList.Remove((FociGridContainer)item);
+                Project.Instance.fociContainerList.Remove((FociGridContainer)item);
                 RaisePropertyChanged("fociContainerList");
             }
             else if (item is LocalisationContainer)
             {
-                localisationList.Remove((LocalisationContainer)item);
+                Project.Instance.localisationList.Remove((LocalisationContainer)item);
                 RaisePropertyChanged("localisationList");
             }
             else if (item is EventContainer)
             {
-                eventList.Remove((EventContainer)item);
+                Project.Instance.eventList.Remove((EventContainer)item);
                 RaisePropertyChanged("eventList");
             }
             else if (item is ScriptContainer)
             {
-                scriptList.Remove((ScriptContainer)item);
+                Project.Instance.scriptList.Remove((ScriptContainer)item);
                 RaisePropertyChanged("scriptList");
             }
         }
@@ -170,21 +198,25 @@ namespace FocusTreeManager.ViewModel
                         case "FocusTree":
                             Script script = new Script();
                             script.Analyse(File.ReadAllText(dialog.FileName));
-                            fociContainerList.Add(FocusTreeParser.CreateTreeFromScript(dialog.FileName, script));
+                            Project.Instance.fociContainerList.Add(FocusTreeParser.CreateTreeFromScript
+                                (dialog.FileName, script));
                             RaisePropertyChanged("fociContainerList");
                             break;
                         case "Localisation":
-                            localisationList.Add(LocalisationParser.CreateLocaleFromFile(dialog.FileName));
+                            Project.Instance.localisationList.Add(LocalisationParser.CreateLocaleFromFile
+                                (dialog.FileName));
                             RaisePropertyChanged("localisationList");
                             break;
                         case "Event":
                             Script scriptEvent = new Script();
                             scriptEvent.Analyse(File.ReadAllText(dialog.FileName));
-                            eventList.Add(EventParser.CreateEventFromScript(dialog.FileName, scriptEvent));
+                            Project.Instance.eventList.Add(EventParser.CreateEventFromScript
+                                (dialog.FileName, scriptEvent));
                             RaisePropertyChanged("eventList");
                             break;
                         case "Generic":
-                            scriptList.Add(ScriptParser.CreateScriptFromFile(dialog.FileName));
+                            Project.Instance.scriptList.Add(ScriptParser.CreateScriptFromFile
+                                (dialog.FileName));
                             RaisePropertyChanged("scriptList");
                             break;
                     }

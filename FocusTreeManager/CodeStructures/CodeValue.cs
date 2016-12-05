@@ -1,18 +1,17 @@
 ﻿using FocusTreeManager.CodeStructures.CodeExceptions;
-using ProtoBuf;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
 {
-    [ProtoContract]
+    [KnownType(typeof(Assignation))]
+    [KnownType(typeof(CodeBlock))]
+    [KnownType(typeof(CodeValue))]
+    [DataContract(Name = "code_value")]
     public class CodeValue : ICodeStruct
     {
-        [ProtoMember(1)]
+        [DataMember(Name = "value", Order = 0)]
         public string Value { get; set; }
 
         public CodeValue()

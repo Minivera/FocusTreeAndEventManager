@@ -1,10 +1,9 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
 {
@@ -12,13 +11,16 @@ namespace FocusTreeManager.CodeStructures
     /// Code block containing one or multiple assignations. It contains everything
     /// that is between one level of brackets.
     /// </summary>
-    [ProtoContract]
+    [KnownType(typeof(Assignation))]
+    [KnownType(typeof(CodeBlock))]
+    [KnownType(typeof(CodeValue))]
+    [DataContract(Name = "code_block")]
     public class CodeBlock : ICodeStruct
     {
-        [ProtoMember(1)]
+        [DataMember(Name = "level", Order = 0)]
         private int Level;
-
-        [ProtoMember(2, AsReference = true)]
+        
+        [DataMember(Name = "code", Order = 1)]
         public List<ICodeStruct> Code { get; set; }
 
         public CodeBlock()

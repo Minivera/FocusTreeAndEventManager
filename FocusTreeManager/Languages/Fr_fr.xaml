@@ -142,4 +142,7 @@
         veuillez réessayer.</system:String>
     <system:String x:Key="Application_Error_Loading">Le chargement du projet n'a pas fonctionné correctement, 
         veuillez réessayer.</system:String>
+    <system:String x:Key="Application_Legacy_Loading">Le project chargé utilise l'ancien format de sauvegarde, 
+        le projet est en cours de transfert vers le nouveau format.</system:String>
+    <system:String x:Key="Application_Error_Transfer">Le projet n'a pas pu être transféré vers le nouveau format</system:String>
 </ResourceDictionary>

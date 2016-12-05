@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
+using FocusTreeManager.DataContract;
 
 namespace FocusTreeManager.Parsers
 {
@@ -18,7 +19,7 @@ namespace FocusTreeManager.Parsers
             "immediate", "mean_time_to_happen", "trigger"
         };
 
-        public static Dictionary<string, string> ParseAllEvents(ObservableCollection<EventContainer> Containers)
+        public static Dictionary<string, string> ParseAllEvents(List<EventContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (EventContainer container in Containers)

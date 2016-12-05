@@ -36,7 +36,7 @@
             <DataTemplate DataType="{x:Type m:LocalisationModel}">
                 <v:Localisation></v:Localisation>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type m:EventModel}">
+            <DataTemplate DataType="{x:Type m:EventTabModel}">
                 <vu:EventList></vu:EventList>
             </DataTemplate>
             <DataTemplate DataType="{x:Type m:ScriptModel}">
@@ -143,11 +143,11 @@
                     <Label Content="{DynamicResource Project_Load}" FontSize="20" HorizontalAlignment="Center"/>
                     <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="SaveButton"
                             Content="{DynamicResource appbar_page_download}" Width="100" Height="100"
-                            Command="{Binding SaveProjectCommand}" IsEnabled="{Binding isProjectExist}"/>
+                            Command="{Binding SaveProjectCommand}" IsEnabled="{Binding IsProjectExist}"/>
                     <Label Content="{DynamicResource Project_Save}" FontSize="20" HorizontalAlignment="Center"/>
                     <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="SaveAsButton"
                             Content="{DynamicResource appbar_page_duplicate}" Width="100" Height="100"
-                            Command="{Binding SaveProjectAsCommand}" IsEnabled="{Binding isProjectExist}"/>
+                            Command="{Binding SaveProjectAsCommand}" IsEnabled="{Binding IsProjectExist}"/>
                     <Label Content="{DynamicResource Project_Save_As}" FontSize="20" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Controls:Flyout>

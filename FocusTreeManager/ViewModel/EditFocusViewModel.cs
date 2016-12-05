@@ -15,9 +15,9 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class EditFocusViewModel : ViewModelBase
     {
-        private Model.Focus focus;
+        private FocusModel focus;
 
-        public Model.Focus Focus
+        public FocusModel Focus
         {
             get
             {

@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Collections.Generic;
 using FocusTreeManager.Helper;
 using Dragablz;
+using FocusTreeManager.DataContract;
 
 namespace FocusTreeManager
 {
@@ -64,7 +65,7 @@ namespace FocusTreeManager
                         resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
                         FocusFlyout.DataContext = (new ViewModelLocator()).EditFocus_Flyout;
-                        ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.Focus)msg.Sender;
+                        ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.FocusModel)msg.Sender;
                         FocusFlyout.IsOpen = true;
                         break;
                     }
@@ -105,7 +106,7 @@ namespace FocusTreeManager
         async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MainViewModel Model = this.DataContext as MainViewModel;
-            if (Model.isProjectExist)
+            if (Model.IsProjectExist)
             {
                 e.Cancel = true;
                 MessageDialogResult Result = await ShowSaveDialog();
@@ -170,7 +171,7 @@ namespace FocusTreeManager
         {
             //If we hit a focus or a scrollbar rather than an empty grid
             if (((e.OriginalSource is FrameworkElement) && 
-                (((FrameworkElement)e.OriginalSource).DataContext is Model.Focus ||
+                (((FrameworkElement)e.OriginalSource).DataContext is FocusModel ||
                 e.OriginalSource is Rectangle)))
             {
                 return;
@@ -217,7 +218,7 @@ namespace FocusTreeManager
                 }
                 else if (item is EventModel)
                 {
-                    ((EventModel)item).isShown = false;
+                    ((EventTabModel)item).isShown = false;
                 }
                 //Save all potential datagrids unsaved rows
                 foreach (DataGrid grid
@@ -244,7 +245,7 @@ namespace FocusTreeManager
                 }
                 else if (selectedTab is EventModel)
                 {
-                    ((EventModel)selectedTab).isShown = true;
+                    ((EventTabModel)selectedTab).isShown = true;
                 }
             }
         }
@@ -260,21 +261,17 @@ namespace FocusTreeManager
                 {
                     var extension = System.IO.Path.GetExtension(fileName);
                     //If a file was opened and the fil is a project
-                    if (extension == ".h4prj")
+                    if (extension == ".h4prj" || extension == ".xh4prj")
                     {
-                        using (var fs = File.OpenRead(fileName))
+                        //Load it
+                        try
                         {
-                            //Load it
-                            try
-                            {
-                                ((MainViewModel)(new ViewModelLocator()).Main).Project = 
-                                    Serializer.Deserialize<Project>(fs);
-                            }
-                            catch
-                            {
-                                //TODO: Show loading error 
-                            } 
+                            Project.SetInstance(SerializationHelper.Deserialize(fileName));
                         }
+                        catch
+                        {
+                            //TODO: Show loading error 
+                        } 
                     }
                 }
             }

@@ -136,4 +136,7 @@
     <system:String x:Key="Application_Error">An unknown error occurred</system:String>
     <system:String x:Key="Application_Error_Saving">The project failed to save, please try again.</system:String>
     <system:String x:Key="Application_Error_Loading">The project loading failed, please try again.</system:String>
+    <system:String x:Key="Application_Legacy_Loading">The selected project is saved using an old version, 
+        the project is now being transfered in the new version.</system:String>
+    <system:String x:Key="Application_Error_Transfer">The project could not be transfered to the new version.</system:String>
 </ResourceDictionary>

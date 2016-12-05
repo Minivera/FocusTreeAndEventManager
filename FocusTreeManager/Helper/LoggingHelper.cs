@@ -23,7 +23,7 @@ namespace FocusTreeManager.Helper
 
         private static void WriteResult(string result, string logfile)
         {
-            using (StreamWriter sr = File.AppendText(LOG_FOLDER + logfile))
+            using (StreamWriter sr = File.AppendText(LOG_FOLDER + logfile + ".log"))
             {
                 sr.WriteLine(result);
                 sr.Flush();

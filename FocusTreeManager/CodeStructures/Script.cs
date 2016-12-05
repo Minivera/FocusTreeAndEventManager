@@ -1,17 +1,19 @@
 ﻿using FocusTreeManager.CodeStructures.CodeExceptions;
-using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
 {
     /// <summary>
     /// Hold the whole script in any text file, a text file contains one or multiple assignations.
     /// </summary>
-    [ProtoContract]
-    [ProtoInclude(500, typeof(ICodeStruct))]
+    [KnownType(typeof(Assignation))]
+    [KnownType(typeof(CodeBlock))]
+    [KnownType(typeof(CodeValue))]
+    [DataContract(Name = "script_struct")]
     public class Script : ICodeStruct
     {
         /// <summary>
@@ -23,8 +25,8 @@ namespace FocusTreeManager.CodeStructures
 
         //Check for inline assignation (Paradox loves these)
         internal const string REGEX_INLINE_ASSIGNATIONS = @"[^=<>\{]+[ \t]+[=<>][ \t]+[^=<>\s\}]+";
-
-        [ProtoMember(1, AsReference = true)]
+        
+        [DataMember(Name = "code", Order = 0)]
         public List<ICodeStruct> Code { get; set; }
 
         public Script()

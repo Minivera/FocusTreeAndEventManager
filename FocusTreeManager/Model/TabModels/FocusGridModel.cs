@@ -1,4 +1,5 @@
-﻿using FocusTreeManager.ViewModel;
+﻿using FocusTreeManager.DataContract;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -19,7 +20,7 @@ namespace FocusTreeManager.Model
 
         private ObservableCollection<CanvasLine> canvasLines;
 
-        private Focus selectedFocus;
+        private FocusModel selectedFocus;
 
         public CanvasLine selectedLine { get; set; }
 
@@ -75,7 +76,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                var element = Project.Instance.getSpecificFociList(ID);
                 return element != null ? element.ContainerID : null;
             }
         }
@@ -84,12 +85,12 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                var element = Project.Instance.getSpecificFociList(ID);
                 return element != null ? element.TAG : null;
             }
             set
             {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
+                var element = Project.Instance.getSpecificFociList(ID);
                 if (element != null)
                 {
                     element.TAG = value;
@@ -97,14 +98,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public ObservableCollection<Focus> FociList
-        {
-            get
-            {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificFociList(ID);
-                return element != null ? element.FociList : null;
-            }
-        }
+        public ObservableCollection<FocusModel> FociList { get; private set; }
 
         public ObservableCollection<CanvasLine> CanvasLines
         {
@@ -121,10 +115,12 @@ namespace FocusTreeManager.Model
 
         public FocusGridModel(Guid ID)
         {
+            FociList = new ObservableCollection<FocusModel>();
             //Min Row & column Count
             RowCount = MIN_ROW_COUNT;
             ColumnCount = MIN_COLUMN_COUNT;
             this.ID = ID;
+            RefreshFociList();
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
             AddFocusCommand = new RelayCommand<object>(AddFocus);
@@ -134,9 +130,24 @@ namespace FocusTreeManager.Model
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
+        private void RefreshFociList()
+        {
+            var element = Project.Instance.getSpecificFociList(ID);
+            List<FocusModel> Value = element != null ? element.getFocusModelList() : null;
+            if (Value != null)
+            {
+                FociList.Clear();
+                foreach (FocusModel item in Value)
+                {
+                    FociList.Add(item);
+                }
+            }
+            RaisePropertyChanged(() => FociList);
+        }
+
         internal void ChangePosition(object draggedElement, Point currentPoint)
         {
-            if (!(draggedElement is Focus))
+            if (!(draggedElement is FocusModel))
             {
                 return;
             }
@@ -144,20 +155,11 @@ namespace FocusTreeManager.Model
             {
                 int X = (int)Math.Floor(currentPoint.X / 89);
                 int Y = (int)Math.Floor(currentPoint.Y / 140);
-                ((Focus)draggedElement).X = X;
-                ((Focus)draggedElement).Y = Y;
-                RaisePropertyChanged(() => FociList);
+                ((FocusModel)draggedElement).X = X;
+                ((FocusModel)draggedElement).Y = Y;
                 EditGridDefinition();
                 DrawOnCanvas();
             }
-        }
-
-        public void addFocusToList(Focus FocusToAdd)
-        {
-            FociList.Add(FocusToAdd);
-            RowCount = FocusToAdd.Y >= RowCount ? FocusToAdd.Y + 1 : RowCount;
-            ColumnCount = FocusToAdd.X >= ColumnCount ? FocusToAdd.X + 1 : ColumnCount;
-            DrawOnCanvas();
         }
 
         public void EditGridDefinition()
@@ -166,8 +168,8 @@ namespace FocusTreeManager.Model
             {
                 return;
             }
-            Focus biggestY = FociList.Aggregate((i1, i2) => i1.Y > i2.Y ? i1 : i2);
-            Focus biggestX = FociList.Aggregate((i1, i2) => i1.X > i2.X ? i1 : i2);
+            FocusModel biggestY = FociList.Aggregate((i1, i2) => i1.Y > i2.Y ? i1 : i2);
+            FocusModel biggestX = FociList.Aggregate((i1, i2) => i1.X > i2.X ? i1 : i2);
             RowCount = biggestY.Y >= RowCount ? biggestY.Y + 1 : RowCount;
             ColumnCount = biggestX.X >= ColumnCount ? biggestX.X + 1 : ColumnCount;
         }
@@ -196,7 +198,6 @@ namespace FocusTreeManager.Model
                 {
                     line.InternalSet.DeleteSetRelations();
                 }
-                RaisePropertyChanged("FociList");
                 CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
                 DrawOnCanvas();
             }
@@ -256,14 +257,13 @@ namespace FocusTreeManager.Model
                 //is not shown, do not manage
                 return;
             }
-            Focus Model = msg.Sender as Focus;
+            FocusModel Model = msg.Sender as FocusModel;
             switch (msg.Notification)
             {
                 case "HideAddFocus":
                     System.Windows.Application.Current.Properties["Mode"] = null;
                     AddFocusViewModel viewModel = msg.Sender as AddFocusViewModel;
                     addFocusToList(viewModel.Focus);
-                    RaisePropertyChanged(() => FociList);
                     DrawOnCanvas();
                     break;
                 case "HideEditFocus":
@@ -272,21 +272,7 @@ namespace FocusTreeManager.Model
                     DrawOnCanvas();
                     break;
                 case "DeleteFocus":
-                    //Kill the set that might have this focus as parent
-                    foreach (Focus focus in FociList)
-                    {
-                        foreach (PrerequisitesSet set in focus.Prerequisite.ToList())
-                        {
-                            if (set.FociList.Contains(Model))
-                            {
-                                set.DeleteSetRelations();
-                            }
-                        }
-                    }
-                    FociList.Remove(Model);
-                    RaisePropertyChanged(() => FociList);
-                    EditGridDefinition();
-                    DrawOnCanvas();
+                    DeleteFocus(Model);
                     break;
                 case "AddFocusMutually":
                     System.Windows.Application.Current.Properties["Mode"] = "Mutually";
@@ -299,9 +285,10 @@ namespace FocusTreeManager.Model
                     {
                         System.Windows.Application.Current.Properties["Mode"] = null;
                         selectedFocus.IsSelected = false;
-                        var tempo = new MutuallyExclusiveSet(selectedFocus, Model);
-                        selectedFocus.MutualyExclusive.Add(tempo);
-                        Model.MutualyExclusive.Add(tempo);
+                        var tempo = new MutuallyExclusiveSet(selectedFocus.DataContract, Model.DataContract);
+                        selectedFocus.DataContract.MutualyExclusive.Add(tempo);
+                        Model.DataContract.MutualyExclusive.Add(tempo);
+                        RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
                     break;
@@ -321,20 +308,20 @@ namespace FocusTreeManager.Model
                         if (Type == "Required")
                         {
                             //Create new set
-                            PrerequisitesSet set = new PrerequisitesSet(selectedFocus);
-                            set.FociList.Add(Model);
-                            selectedFocus.Prerequisite.Add(set);
+                            PrerequisitesSet set = new PrerequisitesSet(selectedFocus.DataContract);
+                            set.FociList.Add(Model.DataContract);
+                            selectedFocus.DataContract.Prerequisite.Add(set);
                         }
                         else
                         {
                             //Create new set if no exist
                             if (!selectedFocus.Prerequisite.Any())
                             {
-                                PrerequisitesSet set = new PrerequisitesSet(selectedFocus);
-                                selectedFocus.Prerequisite.Add(set);
+                                PrerequisitesSet set = new PrerequisitesSet(selectedFocus.DataContract);
+                                selectedFocus.DataContract.Prerequisite.Add(set);
                             }
-                            //Add Model to first Set
-                            selectedFocus.Prerequisite.First().FociList.Add(Model);
+                            //Add Model to last Set
+                            selectedFocus.DataContract.Prerequisite.Last().FociList.Add(Model.DataContract);
                         }
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
@@ -343,13 +330,49 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public void UpdateFocus(Focus sender)
+        public void UpdateFocus(FocusModel sender)
         {
             if (this.isShown)
             {
                 EditGridDefinition();
                 DrawOnCanvas();
             }
+        }
+
+        private void DeleteFocus(FocusModel Model)
+        {
+            //Kill the set that might have this focus as parent
+            foreach (FocusModel focus in FociList)
+            {
+                foreach (PrerequisitesSetModel set in focus.Prerequisite.ToList())
+                {
+                    if (set.FociList.Contains(Model))
+                    {
+                        set.DataContract.DeleteSetRelations();
+                    }
+                }
+                foreach (MutuallyExclusiveSetModel set in focus.MutualyExclusive.ToList())
+                {
+                    if (set.Focus2 == Model || set.Focus1 == Model)
+                    {
+                        set.DataContract.DeleteSetRelations();
+                    }
+                }
+            }
+            //Kill the focus in the project
+            Project.Instance.getSpecificFociList(ID).FociList.Remove(Model.DataContract);
+            FociList.Remove(Model);
+            EditGridDefinition();
+            DrawOnCanvas();
+        }
+
+        public void addFocusToList(FocusModel FocusToAdd)
+        {
+            Project.Instance.getSpecificFociList(ID).FociList.Add(FocusToAdd.DataContract);
+            FociList.Add(FocusToAdd);
+            RowCount = FocusToAdd.Y >= RowCount ? FocusToAdd.Y + 1 : RowCount;
+            ColumnCount = FocusToAdd.X >= ColumnCount ? FocusToAdd.X + 1 : ColumnCount;
+            DrawOnCanvas();
         }
 
         const double PRE_LINE_HEIGHT = 20;
@@ -361,10 +384,10 @@ namespace FocusTreeManager.Model
                 return;
             }
             CanvasLines.Clear();
-            foreach (Focus focus in FociList)
+            foreach (FocusModel focus in FociList)
             {
                 //Draw Prerequisites
-                foreach (PrerequisitesSet set in focus.Prerequisite)
+                foreach (PrerequisitesSetModel set in focus.Prerequisite)
                 {
                     //Draw line from top of first Focus 
                     CanvasLine newline = new CanvasLine(
@@ -372,9 +395,9 @@ namespace FocusTreeManager.Model
                         set.Focus.FocusTop.Y,
                         set.Focus.FocusTop.X,
                         set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                        System.Windows.Media.Brushes.Teal, set.isRequired(), set);
+                        System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
                     CanvasLines.Add(newline);
-                    foreach (Focus Prerequisite in set.FociList)
+                    foreach (FocusModel Prerequisite in set.FociList.OfType<FocusModel>())
                     {
                         //Draw horizontal lines to prerequisite pos
                         newline = new CanvasLine(
@@ -382,7 +405,7 @@ namespace FocusTreeManager.Model
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                             Prerequisite.FocusBottom.X,
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
+                            System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
                         CanvasLines.Add(newline);
                         //Draw line to prerequisite bottom
                         newline = new CanvasLine(
@@ -390,19 +413,19 @@ namespace FocusTreeManager.Model
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                             Prerequisite.FocusBottom.X,
                             Prerequisite.FocusBottom.Y,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
+                            System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
                         CanvasLines.Add(newline);
                     }
                 }
                 //Draw Mutually exclusives
-                foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
+                foreach (MutuallyExclusiveSetModel set in focus.MutualyExclusive)
                 {
                     CanvasLine newline = new CanvasLine(
                         set.Focus1.FocusRight.X,
                         set.Focus1.FocusRight.Y,
                         set.Focus2.FocusLeft.X,
                         set.Focus2.FocusLeft.Y,
-                        System.Windows.Media.Brushes.Red, false, set);
+                        System.Windows.Media.Brushes.Red, false, set.DataContract);
                     if (!CanvasLines.Where((line) => (line.X1 == newline.X1 &&
                                                     line.X2 == newline.X2 &&
                                                     line.Y1 == newline.Y1 &&

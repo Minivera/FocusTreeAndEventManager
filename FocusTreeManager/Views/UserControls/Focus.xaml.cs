@@ -79,7 +79,7 @@ namespace FocusTreeManager.Views
                 return;
             }
             OldPoint = position;
-            Model.Focus model = this.DataContext as Model.Focus;
+            FocusModel model = this.DataContext as FocusModel;
             model.setPoints(new Point(position.X + (this.RenderSize.Width / 2), position.Y + 40),
                             new Point(position.X + (this.RenderSize.Width / 2), position.Y + (this.RenderSize.Height)),
                             new Point(position.X, position.Y + (this.RenderSize.Height / 2)),

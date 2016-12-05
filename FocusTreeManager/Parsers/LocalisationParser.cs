@@ -7,12 +7,13 @@ using FocusTreeManager.Containers;
 using FocusTreeManager.Model;
 using System.IO;
 using System.Text.RegularExpressions;
+using FocusTreeManager.DataContract;
 
 namespace FocusTreeManager.Parsers
 {
     public class LocalisationParser
     {
-        public static Dictionary<string, string> ParseEverything(ObservableCollection<LocalisationContainer> Containers)
+        public static Dictionary<string, string> ParseEverything(List<LocalisationContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (LocalisationContainer container in Containers)
@@ -24,7 +25,7 @@ namespace FocusTreeManager.Parsers
             return fileList;
         }
 
-        private static string Parse(ObservableCollection<LocaleContent> iMap, string ID, string language)
+        private static string Parse(List<LocaleContent> iMap, string ID, string language)
         {
             StringBuilder text = new StringBuilder();
             text.AppendLine(language + ":");

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FocusTreeManager.Model;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace FocusTreeManager.Views.UserControls
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                Model.Event model = this.DataContext as Model.Event;
+                EventModel model = this.DataContext as EventModel;
                 model.EditDescScriptCommand.RaiseCanExecuteChanged();
                 model.EditOptionScriptCommand.RaiseCanExecuteChanged();
             }), DispatcherPriority.ContextIdle, null);

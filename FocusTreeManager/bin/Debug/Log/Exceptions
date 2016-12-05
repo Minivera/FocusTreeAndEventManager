@@ -1,0 +1,24 @@
+ProtoBuf.ProtoException: Invalid wire-type; this usually means you have over-written a file without truncating or setting the length; see http://stackoverflow.com/q/2152978/23354
+   à ProtoBuf.ProtoReader.StartSubItem(ProtoReader reader)
+System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\Jordi\Desktop\modHoI4\Khan_mod.h4prj'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\Jordi\Desktop\modHoI4\Khan_mod.h4prj'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\Jordi\Desktop\modHoI4\Khan_mod.h4prj'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+System.IO.FileNotFoundException: Le fichier 'C:\Users\Guillaume\Desktop\Khan_mod.xh4prj' est introuvable.
+Nom de fichier : 'C:\Users\Guillaume\Desktop\Khan_mod.xh4prj'
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+System.IO.FileNotFoundException: Le fichier 'C:\Users\Guillaume\Desktop\Khan_mod.xh4prj' est introuvable.
+Nom de fichier : 'C:\Users\Guillaume\Desktop\Khan_mod.xh4prj'
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+System.Runtime.Serialization.InvalidDataContractException: Le type 'FocusTreeManager.Model.Project' ne peut pas hériter d'un type qui n'est pas marqué avec DataContractAttribute ou SerializableAttribute. Marquez le type de base 'GalaSoft.MvvmLight.ObservableObject' avec DataContractAttribute ou SerializableAttribute ou supprimez ces derniers du type dérivé.
+   à System.Runtime.Serialization.ClassDataContract.ClassDataContractCriticalHelper..ctor(Type type)
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/pack://application:,,,/focustreemanager;component/gfx/focus/goal_generic_construct_infrastructure.png.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+System.NotSupportedException: Le format du chemin d'accès donné n'est pas pris en charge.
+   à System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/pack://application:,,,/focustreemanager;component/gfx/focus/goal_tripartite_pact.png.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+System.IO.IOException: Le processus ne peut pas accéder au fichier 'D:\Projets\FocusTreeManager\FocusTreeAndEventManager\FocusTreeManager\bin\Debug\Log\Exceptions', car il est en cours d'utilisation par un autre processus.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)

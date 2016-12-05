@@ -1,22 +1,17 @@
-using Dragablz;
-using FocusTreeManager.CodeStructures;
-using FocusTreeManager.Containers;
+using FocusTreeManager.DataContract;
+using FocusTreeManager.Helper;
 using FocusTreeManager.Model;
 using FocusTreeManager.Parsers;
-using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 
 namespace FocusTreeManager.ViewModel
@@ -30,21 +25,6 @@ namespace FocusTreeManager.ViewModel
         const string EVENTS_PATH = @"\events\";
 
         private IDialogCoordinator coordinator;
-
-        private Project project;
-
-        public Project Project
-        {
-            get
-            {
-                return project;
-            }
-            set
-            {
-                project = value;
-                RaisePropertyChanged("Project");
-            }
-        }
 
         private string statusText;
 
@@ -61,11 +41,18 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public bool isProjectExist
+        private bool isProjectExist = false;
+
+        public bool IsProjectExist
         {
             get
             {
-                return project != null;
+                return isProjectExist;
+            }
+            set
+            {
+                isProjectExist = value;
+                RaisePropertyChanged(() => IsProjectExist);
             }
         }
 
@@ -97,7 +84,7 @@ namespace FocusTreeManager.ViewModel
 
         async private void checkBeforeContinuing(string command)
         {
-            if (project != null)
+            if (isProjectExist)
             {
                 ResourceDictionary resourceLocalization = new ResourceDictionary();
                 resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
@@ -148,7 +135,8 @@ namespace FocusTreeManager.ViewModel
 
         private void newProject()
         {
-            Project = new Project();
+            Project.ResetInstance();
+            IsProjectExist = true;
             Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
                         "RefreshProjectViewer"));
             Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
@@ -174,26 +162,40 @@ namespace FocusTreeManager.ViewModel
                 dialog.EnsurePathExists = true;
                 dialog.EnsureReadOnly = false;
                 dialog.EnsureValidNames = true;
-                dialog.DefaultExtension = "h4prj";
+                dialog.Filters.Add(new CommonFileDialogFilter("Project", "*.xh4prj"));
+                dialog.Filters.Add(new CommonFileDialogFilter("Beta project", "*.h4prj"));
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    using (var fs = File.OpenRead(dialog.FileName))
+                    if (Path.GetExtension(dialog.FileName) == ".h4prj")
                     {
-                        Project = Serializer.Deserialize<Project>(fs);
+                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        string Title = resourceLocalization["Application_Loading"] as string;
+                        string Message = resourceLocalization["Application_Legacy_Loading"] as string;
+                        coordinator.ShowMessageAsync(this, Title, Message);
                     }
-                    //Repair references
-                    foreach (FociGridContainer container in Project.fociContainerList)
+                    Project returnVal = SerializationHelper.Deserialize(dialog.FileName);
+                    if (returnVal == null)
                     {
-                        container.RepairInternalReferences();
+                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        string Title = resourceLocalization["Application_Error"] as string;
+                        string Message = resourceLocalization["Application_Error_Transfer"] as string;
+                        coordinator.ShowMessageAsync(this, Title, Message);
+                        return;
                     }
-                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView, 
-                        "RefreshProjectViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                    else
+                    {
+                        Project.SetInstance(returnVal);
+                    }
+                    Project.Instance.filename = dialog.FileName;
                     RaisePropertyChanged("isProjectExist");
                     TabsModelList = new ObservableCollection<ObservableObject>();
                     RaisePropertyChanged("TabsModelList");
+                    IsProjectExist = true;
+                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                        "RefreshProjectViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
                 }
             }
             catch (Exception)
@@ -208,11 +210,11 @@ namespace FocusTreeManager.ViewModel
 
         private void saveProject()
         {
-            if (project != null && !string.IsNullOrEmpty(project.filename))
+            if (isProjectExist && !string.IsNullOrEmpty(Project.Instance.filename))
             {
                 try
                 {
-                    project.SaveToFile(project.filename);
+                    SerializationHelper.Serialize(Project.Instance.filename, Project.Instance);
                 }
                 catch (Exception)
                 {
@@ -223,7 +225,7 @@ namespace FocusTreeManager.ViewModel
                     coordinator.ShowMessageAsync(this, Title, Message);
                 }
             }
-            else if (project != null)
+            else if (isProjectExist)
             {
                 saveProjectAs();
             }
@@ -238,7 +240,8 @@ namespace FocusTreeManager.ViewModel
                 ResourceDictionary resourceLocalization = new ResourceDictionary();
                 resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                 dialog.Title = resourceLocalization["Project_Save"] as string;
-                dialog.InitialDirectory = string.IsNullOrEmpty(project.filename) ? "C:" : project.filename;
+                dialog.InitialDirectory = string.IsNullOrEmpty(Project.Instance.filename) ? "C:" 
+                    : Project.Instance.filename;
                 dialog.AddToMostRecentlyUsedList = false;
                 dialog.AllowNonFileSystemItems = false;
                 dialog.DefaultDirectory = "C:";
@@ -246,11 +249,13 @@ namespace FocusTreeManager.ViewModel
                 dialog.EnsurePathExists = true;
                 dialog.EnsureReadOnly = false;
                 dialog.EnsureValidNames = true;
-                dialog.DefaultExtension = "h4prj";
+                dialog.Filters.Add(new CommonFileDialogFilter("Project", "*.xh4prj"));
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    project.SaveToFile(dialog.FileName);
+                    Project.Instance.filename = Path.Combine(Path.GetDirectoryName(dialog.FileName),
+                        Path.GetFileNameWithoutExtension(dialog.FileName)) + ".xh4prj";
+                    SerializationHelper.Serialize(Project.Instance.filename, Project.Instance);
                 }
                 Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
             }
@@ -294,11 +299,11 @@ namespace FocusTreeManager.ViewModel
             {
                 EventContainer container = msg.Sender as EventContainer;
                 if (TabsModelList.Where((t) => t is EventModel &&
-                            ((EventModel)t).UniqueID == container.IdentifierID).Any())
+                            ((EventTabModel)t).UniqueID == container.IdentifierID).Any())
                 {
                     return;
                 }
-                EventModel newModel = new EventModel(container.IdentifierID);
+                EventTabModel newModel = new EventTabModel(container.IdentifierID);
                 TabsModelList.Add(newModel);
                 RaisePropertyChanged("TabsModelList");
             }
@@ -363,7 +368,7 @@ namespace FocusTreeManager.ViewModel
                 Directory.CreateDirectory(path);
                 //For each parsed focus trees
                 foreach (KeyValuePair<string, string> item in 
-                    FocusTreeParser.ParseAllTrees(project.fociContainerList))
+                    FocusTreeParser.ParseAllTrees(Project.Instance.fociContainerList))
                 {
                     using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
                     {
@@ -374,7 +379,7 @@ namespace FocusTreeManager.ViewModel
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 //For each parsed localisation files
                 foreach (KeyValuePair<string, string> item in
-                    LocalisationParser.ParseEverything(project.localisationList))
+                    LocalisationParser.ParseEverything(Project.Instance.localisationList))
                 {
                     using (TextWriter tw = new StreamWriter(path + item.Key + ".yaml"))
                     {
@@ -385,7 +390,7 @@ namespace FocusTreeManager.ViewModel
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 //For each parsed event file
                 foreach (KeyValuePair<string, string> item in
-                    EventParser.ParseAllEvents(project.eventList))
+                    EventParser.ParseAllEvents(Project.Instance.eventList))
                 {
                     using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
                     {
@@ -394,7 +399,7 @@ namespace FocusTreeManager.ViewModel
                 }
                 //For each parsed script file
                 foreach (KeyValuePair<string, string> item in
-                    ScriptParser.ParseEverything(project.scriptList))
+                    ScriptParser.ParseEverything(Project.Instance.scriptList))
                 {
                     using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".txt"))
                     {

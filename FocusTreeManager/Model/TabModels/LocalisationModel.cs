@@ -1,17 +1,8 @@
-﻿using FocusTreeManager.Containers;
-using FocusTreeManager.ViewModel;
-using FocusTreeManager.Views;
+﻿using FocusTreeManager.DataContract;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.Model
 {
@@ -31,7 +22,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID);
+                var element = Project.Instance.getSpecificLocalisationMap(ID);
                 return element != null ? element.ContainerID : null;
             }
         }
@@ -40,20 +31,20 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ShortName;
+                return Project.Instance.getSpecificLocalisationMap(ID).ShortName;
             }
             set
             {
-                (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).ShortName = value;
+                Project.Instance.getSpecificLocalisationMap(ID).ShortName = value;
                 RaisePropertyChanged("ShortName");
             }
         }
 
-        public ObservableCollection<LocaleContent> LocalisationMap
+        public ObservableCollection<LocaleModel> LocalisationMap
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificLocalisationMap(ID).LocalisationMap;
+                return Project.Instance.getSpecificLocalisationMap(ID).getLocalisationModelList();
             }
         }
 

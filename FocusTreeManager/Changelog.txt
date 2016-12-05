@@ -85,3 +85,13 @@
 - Changed the name of defaults focuses to newFocus_number
 - All exception, even handled ones, will be written in the Log\Exceptions.log file
 - Crashes will no be written in the Log\Crashes.log file.
+
+***********************
+*       Beta_2b       *
+***********************
+- Fixed a crash with empty prerequisites sets.
+- Changing the focus name will now update everything else.
+- Loading a moved project will now save the project at the right place.
+- Changed the saving process to save in XML rather than in a special binary format, this will resolve many crashes and errors.
+- Fixed a bug with prerequisites always added to the first set of prerequisites
+- Fixed a bug with mutually exclusives line not being deleted when deleting a focus.

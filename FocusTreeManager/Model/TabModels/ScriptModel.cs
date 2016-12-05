@@ -1,18 +1,10 @@
 ﻿using FocusTreeManager.CodeStructures;
-using FocusTreeManager.Containers;
+using FocusTreeManager.DataContract;
 using FocusTreeManager.ViewModel;
-using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace FocusTreeManager.Model
@@ -33,7 +25,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = (new ViewModelLocator()).Main.Project.getSpecificScriptList(ID);
+                var element = Project.Instance.getSpecificScriptList(ID);
                 return element != null ? element.ContainerID : null;
             }
         }
@@ -42,7 +34,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return (new ViewModelLocator()).Main.Project.getSpecificScriptList(ID).InternalScript;
+                return Project.Instance.getSpecificScriptList(ID).InternalScript;
             }
         }
 
@@ -59,7 +51,7 @@ namespace FocusTreeManager.Model
         private void SaveScript(FrameworkElement obj)
         {
             (new ViewModelLocator()).Scripter.SaveScript();
-            (new ViewModelLocator()).Main.Project.getSpecificScriptList(ID).InternalScript =
+            Project.Instance.getSpecificScriptList(ID).InternalScript =
                 (new ViewModelLocator()).Scripter.ManagedScript;
         }
 
