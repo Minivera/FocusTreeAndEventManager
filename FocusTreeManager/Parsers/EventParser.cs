@@ -91,6 +91,11 @@ namespace FocusTreeManager.Parsers
             container.EventNamespace = script.FindValue("add_namespace").Parse();
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("news_event"))
             {
+                //Check if the event is only a call, if it isn't, it must have a picture
+                if (block.FindValue("picture") == null)
+                {
+                    break;
+                }
                 Event newEvent = new Event();
                 newEvent.Type = Event.EventType.news_event;
                 newEvent.Id = block.FindValue("id").Parse();
@@ -133,6 +138,11 @@ namespace FocusTreeManager.Parsers
             }
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("country_event"))
             {
+                //Check if the event is only a call, if it isn't, it must have a picture
+                if (block.FindValue("picture") == null)
+                {
+                    break;
+                }
                 Event newEvent = new Event();
                 newEvent.Type = Event.EventType.country_event;
                 newEvent.Id = block.FindValue("id").Parse();

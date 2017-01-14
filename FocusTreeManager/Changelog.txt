@@ -95,3 +95,12 @@
 - Changed the saving process to save in XML rather than in a special binary format, this will resolve many crashes and errors.
 - Fixed a bug with prerequisites always added to the first set of prerequisites
 - Fixed a bug with mutually exclusives line not being deleted when deleting a focus.
+
+***********************
+*       Beta_2c       *
+***********************
+- Added TFV focus icons
+- Fixed a crash when accessing the log file too fast
+- Fixed some focus icons names
+- Fixed a crash when attempting to read a line in script with a comment in it
+- Fixed a crash when attempting to load event calls in event files. 

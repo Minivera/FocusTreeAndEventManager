@@ -435,23 +435,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="GFX\Interface\Focus_under.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="GFX\Focus\focus_research.png" />
     <Resource Include="GFX\Focus\focus_rocketry.png" />
     <Resource Include="GFX\Focus\focus_wonderweapons.png" />
@@ -507,7 +490,6 @@
     <Resource Include="GFX\Focus\goal_generic_navy_doctrines_tactics.png" />
     <Resource Include="GFX\Focus\goal_generic_navy_submarine.png" />
     <Resource Include="GFX\Focus\goal_generic_neutrality_focus.png" />
-    <Resource Include="GFX\Focus\goal_generic_occupy_states_coastal.png" />
     <Resource Include="GFX\Focus\goal_generic_oil_refinery.png" />
     <Resource Include="GFX\Focus\goal_generic_political_pressure.png" />
     <Resource Include="GFX\Focus\goal_generic_position_armies.png" />
@@ -531,24 +513,21 @@
     <Resource Include="GFX\Focus\goal_support_fourth_int.png" />
     <Resource Include="GFX\Focus\goal_tripartite_pact.png" />
     <Resource Include="GFX\Focus\goal_unknown.png" />
+    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Focus\goal_support_communism.png" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Focus\goal_support_democracy.png" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Focus\goal_support_fascism.png" />
+    <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Focus\goal_generic_build_navy.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="GFX\Focus\goal_generic_occupy_start_war.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="GFX\Focus\goal_generic_occupy_states_ongoing_war.png" />
+    <Resource Include="GFX\Interface\Focus_under.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -835,7 +814,77 @@
   <ItemGroup>
     <Resource Include="Common\ScripterControls\Generic.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="GFX\Focus\focus_AST_never_gallipoli.png" />
+    <Resource Include="GFX\Focus\focus_AST_rats_tobruk.png" />
+    <Resource Include="GFX\Focus\focus_AST_squander_bug.png" />
+    <Resource Include="GFX\Focus\focus_AST_war_japan.png" />
+    <Resource Include="GFX\Focus\focus_generic_air_defense.png" />
+    <Resource Include="GFX\Focus\focus_generic_anti_fascist_diplomacy.png" />
+    <Resource Include="GFX\Focus\focus_generic_coastal_fort.png" />
+    <Resource Include="GFX\Focus\focus_generic_commonwealth_build_infantry.png" />
+    <Resource Include="GFX\Focus\focus_generic_cryptologic_bomb.png" />
+    <Resource Include="GFX\Focus\focus_generic_diplomatic_treaty.png" />
+    <Resource Include="GFX\Focus\focus_generic_home_defense.png" />
+    <Resource Include="GFX\Focus\focus_generic_italy_first.png" />
+    <Resource Include="GFX\Focus\focus_generic_japanese_imperial_glory.png" />
+    <Resource Include="GFX\Focus\focus_generic_join_comintern.png" />
+    <Resource Include="GFX\Focus\focus_generic_little_entente.png" />
+    <Resource Include="GFX\Focus\focus_generic_paratrooper.png" />
+    <Resource Include="GFX\Focus\focus_generic_polish_deal.png" />
+    <Resource Include="GFX\Focus\focus_generic_socialist_science.png" />
+    <Resource Include="GFX\Focus\focus_generic_soviet_politics.png" />
+    <Resource Include="GFX\Focus\focus_generic_strike_at_democracy1.png" />
+    <Resource Include="GFX\Focus\focus_generic_strike_at_democracy2.png" />
+    <Resource Include="GFX\Focus\focus_generic_strike_at_democracy3.png" />
+    <Resource Include="GFX\Focus\focus_generic_support_the_left_right.png" />
+    <Resource Include="GFX\Focus\focus_generic_the_giant_wakes.png" />
+    <Resource Include="GFX\Focus\focus_NZL_bob_semple_tank.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_all_india_forward_bloc.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_british investors.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_clamp_down_on_corruption.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_indianisation_of_army.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_indian_gentlemen_offcers.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_indian_gurkhas.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_lions_of_the_great_war.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_seek_help_from_germany.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_seek_help_from_soviet.png" />
+    <Resource Include="GFX\Focus\focus_RAJ_two_nation_theory.png" />
+    <Resource Include="GFX\Focus\focus_SAF_colonialist_crusade.png" />
+    <Resource Include="GFX\Focus\focus_SAF_german_coup.png" />
+    <Resource Include="GFX\Focus\focus_SAF_secure_africa.png" />
+    <Resource Include="GFX\Focus\focus_SAF_support_ossewabrandwag.png" />
+    <Resource Include="GFX\Focus\goal_continuous_air_production.png" />
+    <Resource Include="GFX\Focus\goal_continuous_armor_production.png" />
+    <Resource Include="GFX\Focus\goal_continuous_boost_freedom.png" />
+    <Resource Include="GFX\Focus\goal_continuous_def_against_influence.png" />
+    <Resource Include="GFX\Focus\goal_continuous_increase_nu.png" />
+    <Resource Include="GFX\Focus\goal_continuous_naval_production.png" />
+    <Resource Include="GFX\Focus\goal_continuous_non_factory_construct.png" />
+    <Resource Include="GFX\Focus\goal_continuous_reduce_training_time.png" />
+    <Resource Include="GFX\Focus\goal_continuous_repairments.png" />
+    <Resource Include="GFX\Focus\goal_continuous_research.png" />
+    <Resource Include="GFX\Focus\goal_continuous_restrict_freedom.png" />
+    <Resource Include="GFX\Focus\goal_continuous_suppression.png" />
+    <Resource Include="GFX\Focus\goal_generic_occypy_start_war.png" />
+    <Resource Include="GFX\Focus\goal_generic_occypy_states_coastal.png" />
+    <Resource Include="GFX\Focus\goal_generic_occypy_states_ongoing_war.png" />
+    <Resource Include="GFX\Focus\goal_tfv_burn_the_royal_portraits.png" />
+    <Resource Include="GFX\Focus\goal_tfv_can_compromise_with_quebec.png" />
+    <Resource Include="GFX\Focus\goal_tfv_can_forced_quebec_conscription.png" />
+    <Resource Include="GFX\Focus\goal_tfv_generic_tech_sharing.png" />
+    <Resource Include="GFX\Focus\goal_tfv_sever_ties_with_uk.png" />
+    <Resource Include="GFX\Focus\goal_tfv_smiling_buddha.png" />
+    <Resource Include="GFX\Focus\goal_tfv_strengthen_commonwealth_ties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_generic_build_navy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GFX\Focus\goal_support_communism.png" />
+    <Resource Include="GFX\Focus\goal_support_democracy.png" />
+    <Resource Include="GFX\Focus\goal_support_fascism.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

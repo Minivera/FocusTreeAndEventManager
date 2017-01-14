@@ -45,7 +45,7 @@ namespace FocusTreeManager.CodeStructures
             Match match = regex.Match(code);
             string text = match.Groups[1].Value;
             //Kill comments if possible
-            text = Regex.Replace(text, @"(#.*\n)", String.Empty);
+            text = Regex.Replace(text, @"(#.*)", String.Empty);
             Assignee = Regex.Replace(text, @"\t|\n|\r|\s", "");
             Operator = Regex.Replace(match.Groups[2].Value, @"\t|\n|\r|\s", "");
             Line = line;
@@ -56,7 +56,7 @@ namespace FocusTreeManager.CodeStructures
                 {
                     string text2 = match.Groups[3].Value;
                     //Kill comments if possible
-                    text2 = Regex.Replace(text2, @"(#.*\n)", String.Empty);
+                    text2 = Regex.Replace(text2, @"(#.*)", String.Empty);
                     CodeBlock block = new CodeBlock(Level + 1);
                     block.Analyse(text2, Line);
                     Value = block;
@@ -77,7 +77,7 @@ namespace FocusTreeManager.CodeStructures
             {
                 string text2 = match.Groups[4].Value;
                 //Kill comments if possible
-                text2 = Regex.Replace(text2, @"(#.*\n)", String.Empty);
+                text2 = Regex.Replace(text2, @"(#.*)", String.Empty);
                 Value = new CodeValue(text2);
             }
             else
