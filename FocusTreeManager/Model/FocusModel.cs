@@ -2,29 +2,38 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System.Collections.Generic;
 using System.Windows;
 using System.Linq;
 using FocusTreeManager.CodeStructures;
-using System;
 using System.Collections.ObjectModel;
 using FocusTreeManager.DataContract;
+using MonitoredUndo;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace FocusTreeManager.Model
 {
-    public class FocusModel : ObservableObject
+    public class FocusModel : ObservableObject, ISupportsUndo
     {
-        public Focus DataContract { get; set; }
+        const string IMAGE_PATH = "pack://application:,,,/FocusTreeManager;component/GFX/Focus/";
+
+        private string image;
 
         public string Image
         {
             get
             {
-                return DataContract.Image;
+                return IMAGE_PATH + image + ".png";
             }
             set
             {
-                DataContract.Icon = value;
+                if (value == image)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Image", image, value, "Image Changed");
+                image = value;
                 RaisePropertyChanged(() => Image);
             }
         }
@@ -33,23 +42,31 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return DataContract.Image;
+                return image;
             }
         }
         
+        private string uniquename;
+
         public string UniqueName
         { 
             get
             {
-                if (DataContract.UniqueName == null)
+                if (string.IsNullOrEmpty(uniquename))
                 {
                     return "unknown";
                 }
-                return DataContract.UniqueName;
+                return uniquename;
             }
             set
             {
-                DataContract.UniqueName = value;
+                if (value == uniquename)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "UniqueName", uniquename, value, "UniqueName Changed");
+                uniquename = value;
                 RaisePropertyChanged(() => UniqueName);
                 RaisePropertyChanged(() => VisibleName);
                 RaisePropertyChanged(() => Description);
@@ -60,7 +77,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = Project.Instance.getLocalisationWithKey(UniqueName);
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(UniqueName);
                 string translation = locales != null ? locales.translateKey(UniqueName) : null;
                 return translation != null ? translation : UniqueName;
             }
@@ -70,60 +87,91 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = Project.Instance.getLocalisationWithKey(UniqueName + "_desc");
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(UniqueName);
                 string translation = locales != null ? locales.translateKey(UniqueName + "_desc") : null;
                 return translation != null ? translation : UniqueName + "_desc";
             }
         }
 
+        private int x;
+
         public int X
         {
             get
             {
-                return DataContract.X;
+                return x;
             }
             set
             {
-                DataContract.X = value;
+                if (value == x)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "X", x, value, "X Changed");
+                x = value;
                 RaisePropertyChanged(() => X);
             }
         }
+
+        private int y;
 
         public int Y
         {
             get
             {
-                return DataContract.Y;
+                return y;
             }
             set
             {
-                DataContract.Y = value;
+                if (value == y)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Y", y, value, "Y Changed");
+                y = value;
                 RaisePropertyChanged(() => Y);
             }
         }
+
+        private double cost;
 
         public double Cost
         {
             get
             {
-                return DataContract.Cost;
+                return cost;
             }
             set
             {
-                DataContract.Cost = value;
+                if (value == cost)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Cost", cost, value, "Cost Changed");
+                cost = value;
                 RaisePropertyChanged(() => Cost);
             }
         }
+
+        private Script internalScript;
 
         public Script InternalScript
         {
             get
             {
-                return DataContract.InternalScript;
+                return internalScript;
             }
             set
             {
-                DataContract.InternalScript = value;
+                if (value == internalScript)
+                {
+                    return;
+                }
+                //Cannot undo the script changes, do it in the scripter
+                internalScript = value;
                 RaisePropertyChanged(() => InternalScript);
             }
         }
@@ -146,25 +194,14 @@ namespace FocusTreeManager.Model
             }
             set
             {
+                //Don,t care about undo here
                 Set<bool>(() => this.IsSelected, ref this.isSelected, value);
             }
         }
-
-        public List<PrerequisitesSetModel> Prerequisite
-        {
-            get
-            {
-                return DataContract.getPrerequisitesModels();
-            }
-        }
-
-        public List<MutuallyExclusiveSetModel> MutualyExclusive
-        {
-            get
-            {
-                return DataContract.getMutuallyExclusivesModels();
-            }
-        }
+        
+        public ObservableCollection<PrerequisitesSetModel> Prerequisite { get; set; }
+        
+        public ObservableCollection<MutuallyExclusiveSetModel> MutualyExclusive { get; set; }
 
         public RelayCommand EditFocusCommand { get; private set; }
 
@@ -176,9 +213,13 @@ namespace FocusTreeManager.Model
         
         public RelayCommand TestFinishCommand { get; private set; }
 
-        public FocusModel(Focus linkedContract)
+        public FocusModel()
         {
-            DataContract = linkedContract;
+            Prerequisite = new ObservableCollection<PrerequisitesSetModel>();
+            Prerequisite.CollectionChanged += Prerequisite_CollectionChanged;
+            MutualyExclusive = new ObservableCollection<MutuallyExclusiveSetModel>();
+            MutualyExclusive.CollectionChanged += MutualyExclusive_CollectionChanged;
+            //Commands
             EditFocusCommand = new RelayCommand(Edit);
             DeleteFocusCommand = new RelayCommand(Delete);
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
@@ -186,10 +227,48 @@ namespace FocusTreeManager.Model
             TestFinishCommand = new RelayCommand(FinishSetCommands);
         }
 
-        static public FocusModel createNewModel()
+        public FocusModel(Focus focus)
         {
-            Focus contract = new Focus();
-            return contract.Model;
+            image = focus.Image;
+            uniquename = focus.UniqueName;
+            x = focus.X;
+            y = focus.Y;
+            cost = focus.Cost;
+            internalScript = focus.InternalScript;
+            Prerequisite = new ObservableCollection<PrerequisitesSetModel>();
+            Prerequisite.CollectionChanged += Prerequisite_CollectionChanged;
+            MutualyExclusive = new ObservableCollection<MutuallyExclusiveSetModel>();
+            MutualyExclusive.CollectionChanged += MutualyExclusive_CollectionChanged;
+            //Commands
+            EditFocusCommand = new RelayCommand(Edit);
+            DeleteFocusCommand = new RelayCommand(Delete);
+            MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
+            PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
+            TestFinishCommand = new RelayCommand(FinishSetCommands);
+        }
+
+        public void RepairSets(Focus focus, List<FocusModel> fociList)
+        {
+            foreach (PrerequisitesSet set in focus.Prerequisite)
+            {
+                //Add the linked focus
+                PrerequisitesSetModel prerequiste = new PrerequisitesSetModel(
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus.UniqueName));
+                //Run through all the parents and add them
+                foreach (Focus parent in set.FociList)
+                {
+                    prerequiste.FociList.Add(
+                        fociList.FirstOrDefault(f => f.UniqueName == parent.UniqueName));
+                }
+                Prerequisite.Add(prerequiste);
+            }
+            foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
+            {
+                //Create the set with both foci
+                MutualyExclusive.Add(new MutuallyExclusiveSetModel(
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName)));
+            }
         }
 
         public void setPoints(Point Top, Point Bottom, Point Left, Point Right)
@@ -211,11 +290,11 @@ namespace FocusTreeManager.Model
             //Kill the focus sets
             foreach (MutuallyExclusiveSetModel set in MutualyExclusive.ToList())
             {
-                set.DataContract.DeleteSetRelations();
+                set.DeleteSetRelations();
             }
             foreach (PrerequisitesSetModel set in Prerequisite.ToList())
             {
-                set.DataContract.DeleteSetRelations();
+                set.DeleteSetRelations();
             }
             Messenger.Default.Send(new NotificationMessage(this, "DeleteFocus"));
         }
@@ -242,5 +321,35 @@ namespace FocusTreeManager.Model
             System.Windows.Application.Current.Properties["ModeParam"] = Type;
             Messenger.Default.Send(new NotificationMessage(this, "AddFocusPrerequisite"));
         }
+        
+        public void setDefaults(int FocusNumber)
+        {
+            internalScript = new Script();
+            image = "goal_unknown";
+            uniquename = "newfocus_" + FocusNumber;
+            x = 0;
+            y = 0;
+        }
+
+        #region Undo/Redo
+
+        void Prerequisite_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "Prerequisite",
+                this.Prerequisite, e, "Prerequisite Changed");
+        }
+
+        void MutualyExclusive_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "MutualyExclusive",
+                this.MutualyExclusive, e, "MutualyExclusive Changed");
+        }
+
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
     }
 }

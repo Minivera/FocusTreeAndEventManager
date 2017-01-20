@@ -1,5 +1,8 @@
-﻿using System;
+﻿using FocusTreeManager.Model;
+using FocusTreeManager.Parsers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -12,15 +15,11 @@ namespace FocusTreeManager.DataContract
     [DataContract(Name = "project")]
     public sealed class Project
     {
-        private static Project instance = new Project();
+        const string FOCUS_TREE_PATH = @"\common\national_focus\";
 
-        public static Project Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        const string LOCALISATION_PATH = @"\localisation\";
+
+        const string EVENTS_PATH = @"\events\";
 
         public string filename { get; set; }
 
@@ -36,7 +35,7 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "script_containers", Order = 3)]
         public List<ScriptContainer> scriptList { get; set; }
 
-        private Project()
+        public Project()
         {
             fociContainerList = new List<FociGridContainer>();
             localisationList = new List<LocalisationContainer>();
@@ -52,48 +51,83 @@ namespace FocusTreeManager.DataContract
             scriptList = ScriptContainer.PopulateFromLegacy(legacyProject.scriptList.ToList());
         }
 
-        static public void ResetInstance()
+        public void ExportProject(string filename)
         {
-            instance = new Project();
-        }
-
-        static public void SetInstance(Project project)
-        {
-            instance = project;
-        }
-
-        public FociGridContainer getSpecificFociList(Guid containerID)
-        {
-            FociGridContainer container = fociContainerList.SingleOrDefault((c) => c.IdentifierID == containerID);
-            return container;
-        }
-
-        public LocalisationContainer getSpecificLocalisationMap(Guid containerID)
-        {
-            LocalisationContainer container = localisationList.SingleOrDefault((c) => c.IdentifierID == containerID);
-            return container;
-        }
-
-        public EventContainer getSpecificEventList(Guid containerID)
-        {
-            EventContainer container = eventList.SingleOrDefault((c) => c.IdentifierID == containerID);
-            return container;
-        }
-
-        public ScriptContainer getSpecificScriptList(Guid containerID)
-        {
-            ScriptContainer container = scriptList.SingleOrDefault((c) => c.IdentifierID == containerID);
-            return container;
-        }
-
-        public LocalisationContainer getLocalisationWithKey(string key)
-        {
-            if (key == null)
+            string path = filename + FOCUS_TREE_PATH;
+            Directory.CreateDirectory(path);
+            //For each parsed focus trees
+            foreach (KeyValuePair<string, string> item in
+                FocusTreeParser.ParseAllTrees(fociContainerList))
             {
-                return null;
+                using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
+                {
+                    tw.Write(item.Value);
+                }
             }
-            return localisationList.FirstOrDefault((l) => l.LocalisationMap.
-                    Where((x) => x.Key != null && x.Key.ToLower() == key.ToLower()).Any());
+            path = filename + LOCALISATION_PATH;
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            //For each parsed localisation files
+            foreach (KeyValuePair<string, string> item in
+                LocalisationParser.ParseEverything(localisationList))
+            {
+                using (TextWriter tw = new StreamWriter(path + item.Key + ".yaml"))
+                {
+                    tw.Write(item.Value);
+                }
+            }
+            path = filename + EVENTS_PATH;
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            //For each parsed event file
+            foreach (KeyValuePair<string, string> item in
+                EventParser.ParseAllEvents(eventList))
+            {
+                using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
+                {
+                    tw.Write(item.Value);
+                }
+            }
+            //For each parsed script file
+            foreach (KeyValuePair<string, string> item in
+                ScriptParser.ParseEverything(scriptList))
+            {
+                using (TextWriter tw = new StreamWriter(filename + "\\" + item.Key + ".txt"))
+                {
+                    tw.Write(item.Value);
+                }
+            }
+        }
+
+        public void UpdateDataContract(ProjectModel model)
+        {
+            //Build foci list
+            fociContainerList.Clear();
+            foreach (FocusGridModel item in model.fociList)
+            {
+                fociContainerList.Add(new FociGridContainer(item));
+            }
+            //Build localization list
+            localisationList.Clear();
+            foreach (LocalisationModel item in model.localisationList)
+            {
+                localisationList.Add(new LocalisationContainer(item));
+            }
+            //Build events list
+            eventList.Clear();
+            foreach (EventTabModel item in model.eventList)
+            {
+                eventList.Add(new EventContainer(item));
+            }
+            //Build scripts list
+            scriptList.Clear();
+            foreach (ScriptModel item in model.scriptList)
+            {
+                scriptList.Add(new ScriptContainer()
+                {
+                    IdentifierID = item.UniqueID,
+                    ContainerID = item.Filename,
+                    InternalScript = item.InternalScript
+                });
+            }
         }
     }
 }

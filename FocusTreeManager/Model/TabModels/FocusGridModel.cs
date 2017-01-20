@@ -3,9 +3,11 @@ using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MonitoredUndo;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +15,7 @@ using System.Windows.Input;
 
 namespace FocusTreeManager.Model
 {
-    public class FocusGridModel : ObservableObject
+    public class FocusGridModel : ObservableObject, ISupportsUndo
     {
         const int MIN_ROW_COUNT = 7;
         const int MIN_COLUMN_COUNT = 20;
@@ -30,11 +32,17 @@ namespace FocusTreeManager.Model
 
         private Guid ID;
 
+        private string filename;
+
+        private string tag;
+
         public RelayCommand<object> AddFocusCommand { get; private set; }
 
         public RelayCommand<object> RightClickCommand { get; private set; }
 
         public RelayCommand<object> HoverCommand { get; private set; }
+
+        public RelayCommand DeleteElementCommand { get; private set; }
 
         public bool isShown { get; set; }
 
@@ -46,8 +54,14 @@ namespace FocusTreeManager.Model
             }
             set
             {
+                if (value == rowCount)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this, 
+                         "RowCount", rowCount, value, "RowCount Changed");
                 rowCount = value;
-                RaisePropertyChanged("RowCount");
+                RaisePropertyChanged(() => RowCount);
             }
         }
 
@@ -59,8 +73,14 @@ namespace FocusTreeManager.Model
             }
             set
             {
+                if (value == columnCount)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "ColumnCount", columnCount, value, "ColumnCount Changed");
                 columnCount = value;
-                RaisePropertyChanged("ColumnCount");
+                RaisePropertyChanged(() => ColumnCount);
             }
         }
 
@@ -76,8 +96,18 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = Project.Instance.getSpecificFociList(ID);
-                return element != null ? element.ContainerID : null;
+                return filename;
+            }
+            set
+            {
+                if (value == filename)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Filename", filename, value, "Filename Changed");
+                filename = value;
+                RaisePropertyChanged(() => Filename);
             }
         }
 
@@ -85,16 +115,18 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var element = Project.Instance.getSpecificFociList(ID);
-                return element != null ? element.TAG : null;
+                return tag;
             }
             set
             {
-                var element = Project.Instance.getSpecificFociList(ID);
-                if (element != null)
+                if (value == tag)
                 {
-                    element.TAG = value;
+                    return;
                 }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "TAG", tag, value, "TAG Changed");
+                tag = value;
+                RaisePropertyChanged(() => TAG);
             }
         }
 
@@ -113,36 +145,56 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public FocusGridModel(Guid ID)
+        public FocusGridModel(string Filename)
         {
+            filename = Filename;
+            ID = Guid.NewGuid();
             FociList = new ObservableCollection<FocusModel>();
+            FociList.CollectionChanged += FociList_CollectionChanged;
             //Min Row & column Count
-            RowCount = MIN_ROW_COUNT;
-            ColumnCount = MIN_COLUMN_COUNT;
-            this.ID = ID;
-            RefreshFociList();
+            rowCount = MIN_ROW_COUNT;
+            columnCount = MIN_COLUMN_COUNT;
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
             AddFocusCommand = new RelayCommand<object>(AddFocus);
             RightClickCommand = new RelayCommand<object>(RightClick);
             HoverCommand = new RelayCommand<object>(Hover);
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        private void RefreshFociList()
+        public FocusGridModel(FociGridContainer container)
         {
-            var element = Project.Instance.getSpecificFociList(ID);
-            List<FocusModel> Value = element != null ? element.getFocusModelList() : null;
-            if (Value != null)
+            //Transfer data
+            ID = container.IdentifierID;
+            filename = container.ContainerID;
+            tag = container.TAG;
+            FociList = new ObservableCollection<FocusModel>();
+            foreach (Focus focus in container.FociList)
             {
-                FociList.Clear();
-                foreach (FocusModel item in Value)
-                {
-                    FociList.Add(item);
-                }
+                FociList.Add(new FocusModel(focus));
             }
-            RaisePropertyChanged(() => FociList);
+            //Rerun to create sets
+            foreach (FocusModel model in FociList)
+            {
+                model.RepairSets(
+                    container.FociList.FirstOrDefault(f => f.UniqueName == model.UniqueName),
+                    FociList.ToList());
+            }
+            //Create the remaining stuff
+            FociList.CollectionChanged += FociList_CollectionChanged;
+            //Min Row & column Count
+            rowCount = MIN_ROW_COUNT;
+            columnCount = MIN_COLUMN_COUNT;
+            canvasLines = new ObservableCollection<CanvasLine>();
+            //Commands
+            AddFocusCommand = new RelayCommand<object>(AddFocus);
+            RightClickCommand = new RelayCommand<object>(RightClick);
+            HoverCommand = new RelayCommand<object>(Hover);
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         internal void ChangePosition(object draggedElement, Point currentPoint)
@@ -224,6 +276,12 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private void SendDeleteSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
         public bool inRange(int Range1, int Range2, int Value)
         {
             int smallest = Math.Min(Range1, Range2);
@@ -285,9 +343,9 @@ namespace FocusTreeManager.Model
                     {
                         System.Windows.Application.Current.Properties["Mode"] = null;
                         selectedFocus.IsSelected = false;
-                        var tempo = new MutuallyExclusiveSet(selectedFocus.DataContract, Model.DataContract);
-                        selectedFocus.DataContract.MutualyExclusive.Add(tempo);
-                        Model.DataContract.MutualyExclusive.Add(tempo);
+                        var tempo = new MutuallyExclusiveSetModel(selectedFocus, Model);
+                        selectedFocus.MutualyExclusive.Add(tempo);
+                        Model.MutualyExclusive.Add(tempo);
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
@@ -308,20 +366,20 @@ namespace FocusTreeManager.Model
                         if (Type == "Required")
                         {
                             //Create new set
-                            PrerequisitesSet set = new PrerequisitesSet(selectedFocus.DataContract);
-                            set.FociList.Add(Model.DataContract);
-                            selectedFocus.DataContract.Prerequisite.Add(set);
+                            PrerequisitesSetModel set = new PrerequisitesSetModel(selectedFocus);
+                            set.FociList.Add(Model);
+                            selectedFocus.Prerequisite.Add(set);
                         }
                         else
                         {
                             //Create new set if no exist
                             if (!selectedFocus.Prerequisite.Any())
                             {
-                                PrerequisitesSet set = new PrerequisitesSet(selectedFocus.DataContract);
-                                selectedFocus.DataContract.Prerequisite.Add(set);
+                                PrerequisitesSetModel set = new PrerequisitesSetModel(selectedFocus);
+                                selectedFocus.Prerequisite.Add(set);
                             }
                             //Add Model to last Set
-                            selectedFocus.DataContract.Prerequisite.Last().FociList.Add(Model.DataContract);
+                            selectedFocus.Prerequisite.Last().FociList.Add(Model);
                         }
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
@@ -348,19 +406,18 @@ namespace FocusTreeManager.Model
                 {
                     if (set.FociList.Contains(Model))
                     {
-                        set.DataContract.DeleteSetRelations();
+                        set.DeleteSetRelations();
                     }
                 }
                 foreach (MutuallyExclusiveSetModel set in focus.MutualyExclusive.ToList())
                 {
                     if (set.Focus2 == Model || set.Focus1 == Model)
                     {
-                        set.DataContract.DeleteSetRelations();
+                        set.DeleteSetRelations();
                     }
                 }
             }
-            //Kill the focus in the project
-            Project.Instance.getSpecificFociList(ID).FociList.Remove(Model.DataContract);
+            //Remove the focus
             FociList.Remove(Model);
             EditGridDefinition();
             DrawOnCanvas();
@@ -368,7 +425,6 @@ namespace FocusTreeManager.Model
 
         public void addFocusToList(FocusModel FocusToAdd)
         {
-            Project.Instance.getSpecificFociList(ID).FociList.Add(FocusToAdd.DataContract);
             FociList.Add(FocusToAdd);
             RowCount = FocusToAdd.Y >= RowCount ? FocusToAdd.Y + 1 : RowCount;
             ColumnCount = FocusToAdd.X >= ColumnCount ? FocusToAdd.X + 1 : ColumnCount;
@@ -395,7 +451,7 @@ namespace FocusTreeManager.Model
                         set.Focus.FocusTop.Y,
                         set.Focus.FocusTop.X,
                         set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                        System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
+                        System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                     CanvasLines.Add(newline);
                     foreach (FocusModel Prerequisite in set.FociList.OfType<FocusModel>())
                     {
@@ -405,7 +461,7 @@ namespace FocusTreeManager.Model
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                             Prerequisite.FocusBottom.X,
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
+                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                         CanvasLines.Add(newline);
                         //Draw line to prerequisite bottom
                         newline = new CanvasLine(
@@ -413,7 +469,7 @@ namespace FocusTreeManager.Model
                             set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                             Prerequisite.FocusBottom.X,
                             Prerequisite.FocusBottom.Y,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set.DataContract);
+                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                         CanvasLines.Add(newline);
                     }
                 }
@@ -425,7 +481,7 @@ namespace FocusTreeManager.Model
                         set.Focus1.FocusRight.Y,
                         set.Focus2.FocusLeft.X,
                         set.Focus2.FocusLeft.Y,
-                        System.Windows.Media.Brushes.Red, false, set.DataContract);
+                        System.Windows.Media.Brushes.Red, false, set);
                     if (!CanvasLines.Where((line) => (line.X1 == newline.X1 &&
                                                     line.X2 == newline.X2 &&
                                                     line.Y1 == newline.Y1 &&
@@ -438,5 +494,20 @@ namespace FocusTreeManager.Model
             RaisePropertyChanged(() => CanvasLines);
             Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
         }
+
+        #region Undo/Redo
+
+        void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "FociList",
+                this.FociList, e, "FociList Changed");
+        }
+        
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
     }
 }

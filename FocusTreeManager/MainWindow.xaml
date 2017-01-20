@@ -11,11 +11,19 @@
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="{DynamicResource Main_Title}" Height="350" Width="525"
         WindowState="Maximized" Icon="GFX/Focus/goal_unknown.png" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Dialog:DialogParticipation.Register="{Binding}" Loaded="MetroWindow_Loaded">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding WindowLoadedCommand}"
+                            PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -77,9 +85,37 @@
         <KeyBinding Modifiers="Control"
                     Key="N"
                     Command="{Binding NewProjectCommand}" />
+        <KeyBinding Modifiers="Control"
+                    Key="Z"
+                    Command="{Binding UndoCommand}" />
+        <KeyBinding Modifiers="Control"
+                    Key="Y"
+                    Command="{Binding RedoCommand}" />
     </Window.InputBindings>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Command="{Binding UndoCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_undo_curve}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding RedoCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_redo_curve}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
             <Button x:Name="ExportButton" Command="{Binding ExportProjectCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"

@@ -104,3 +104,13 @@
 - Fixed some focus icons names
 - Fixed a crash when attempting to read a line in script with a comment in it
 - Fixed a crash when attempting to load event calls in event files. 
+
+***********************
+*       Beta_2d       *
+***********************
+- Removed shine_mask.png from installer to fix image changing issue.
+- Installed Undo/Redo functionnality on most operations.
+- The datacontract for project saving will now only update during the saving process rather than after each action to save memory.
+- Properties will not be changed if changed for the same value to save memory.
+- Improved performance slightly by removing unnecessary steps between commands.
+- Changed many opeations to better suit the undo/redo framework.

@@ -1,29 +1,24 @@
 using FocusTreeManager.DataContract;
-using FocusTreeManager.Helper;
 using FocusTreeManager.Model;
-using FocusTreeManager.Parsers;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using MonitoredUndo;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace FocusTreeManager.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, ISupportsUndo
     {
-        const string FOCUS_TREE_PATH = @"\common\national_focus\";
-
-        const string LOCALISATION_PATH = @"\localisation\";
-
-        const string EVENTS_PATH = @"\events\";
-
         private IDialogCoordinator coordinator;
 
         private string statusText;
@@ -56,6 +51,21 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
+        private ProjectModel project;
+
+        public ProjectModel Project
+        {
+            get
+            {
+                return project;
+            }
+            set
+            {
+                project = value;
+                RaisePropertyChanged(() => Project);
+            }
+        }
+
         public ObservableCollection<ObservableObject> TabsModelList { get; private set; }
         
         public RelayCommand NewProjectCommand { get; private set; }
@@ -68,6 +78,10 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand ExportProjectCommand { get; private set; }
 
+        public RelayCommand UndoCommand { get; private set; }
+
+        public RelayCommand RedoCommand { get; private set; }
+
         public MainViewModel()
         {
             coordinator = DialogCoordinator.Instance;
@@ -78,6 +92,8 @@ namespace FocusTreeManager.ViewModel
             SaveProjectCommand = new RelayCommand(saveProject);
             SaveProjectAsCommand = new RelayCommand(saveProjectAs);
             ExportProjectCommand = new RelayCommand(ExportProject);
+            UndoCommand = new RelayCommand(UndoExecute, UndoCanExecute);
+            RedoCommand = new RelayCommand(RedoExecute, RedoCanExecute);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -135,7 +151,7 @@ namespace FocusTreeManager.ViewModel
 
         private void newProject()
         {
-            Project.ResetInstance();
+            Project = new ProjectModel();
             IsProjectExist = true;
             Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
                         "RefreshProjectViewer"));
@@ -174,8 +190,7 @@ namespace FocusTreeManager.ViewModel
                         string Message = resourceLocalization["Application_Legacy_Loading"] as string;
                         coordinator.ShowMessageAsync(this, Title, Message);
                     }
-                    Project returnVal = SerializationHelper.Deserialize(dialog.FileName);
-                    if (returnVal == null)
+                    if (!DataHolder.LoadContract(dialog.FileName))
                     {
                         resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         string Title = resourceLocalization["Application_Error"] as string;
@@ -183,11 +198,6 @@ namespace FocusTreeManager.ViewModel
                         coordinator.ShowMessageAsync(this, Title, Message);
                         return;
                     }
-                    else
-                    {
-                        Project.SetInstance(returnVal);
-                    }
-                    Project.Instance.filename = dialog.FileName;
                     RaisePropertyChanged("isProjectExist");
                     TabsModelList = new ObservableCollection<ObservableObject>();
                     RaisePropertyChanged("TabsModelList");
@@ -210,11 +220,11 @@ namespace FocusTreeManager.ViewModel
 
         private void saveProject()
         {
-            if (isProjectExist && !string.IsNullOrEmpty(Project.Instance.filename))
+            if (isProjectExist && !string.IsNullOrEmpty(DataHolder.Instance.Project.filename))
             {
                 try
                 {
-                    SerializationHelper.Serialize(Project.Instance.filename, Project.Instance);
+                    DataHolder.Instance.SaveContract(Project);
                 }
                 catch (Exception)
                 {
@@ -240,8 +250,8 @@ namespace FocusTreeManager.ViewModel
                 ResourceDictionary resourceLocalization = new ResourceDictionary();
                 resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                 dialog.Title = resourceLocalization["Project_Save"] as string;
-                dialog.InitialDirectory = string.IsNullOrEmpty(Project.Instance.filename) ? "C:" 
-                    : Project.Instance.filename;
+                dialog.InitialDirectory = string.IsNullOrEmpty(DataHolder.Instance.Project.filename) ? "C:" 
+                    : DataHolder.Instance.Project.filename;
                 dialog.AddToMostRecentlyUsedList = false;
                 dialog.AllowNonFileSystemItems = false;
                 dialog.DefaultDirectory = "C:";
@@ -253,9 +263,9 @@ namespace FocusTreeManager.ViewModel
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    Project.Instance.filename = Path.Combine(Path.GetDirectoryName(dialog.FileName),
+                    DataHolder.Instance.Project.filename = Path.Combine(Path.GetDirectoryName(dialog.FileName),
                         Path.GetFileNameWithoutExtension(dialog.FileName)) + ".xh4prj";
-                    SerializationHelper.Serialize(Project.Instance.filename, Project.Instance);
+                    DataHolder.Instance.SaveContract(Project);
                 }
                 Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
             }
@@ -273,50 +283,26 @@ namespace FocusTreeManager.ViewModel
         {
             if (msg.Notification == "OpenFocusTree")
             {
-                FociGridContainer container = msg.Sender as FociGridContainer;
-                if (TabsModelList.Where((t) => t is FocusGridModel && 
-                        ((FocusGridModel)t).UniqueID == container.IdentifierID).Any())
-                {
-                    return;
-                }
-                FocusGridModel newModel = new FocusGridModel(container.IdentifierID);
-                TabsModelList.Add(newModel);
+                FocusGridModel container = msg.Sender as FocusGridModel;
+                TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenLocalisation")
             {
-                LocalisationContainer container = msg.Sender as LocalisationContainer;
-                if (TabsModelList.Where((t) => t is LocalisationModel && 
-                            ((LocalisationModel)t).UniqueID == container.IdentifierID).Any())
-                {
-                    return;
-                }
-                LocalisationModel newModel = new LocalisationModel(container.IdentifierID);
-                TabsModelList.Add(newModel);
+                LocalisationModel container = msg.Sender as LocalisationModel;
+                TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenEventList")
             {
-                EventContainer container = msg.Sender as EventContainer;
-                if (TabsModelList.Where((t) => t is EventModel &&
-                            ((EventTabModel)t).UniqueID == container.IdentifierID).Any())
-                {
-                    return;
-                }
-                EventTabModel newModel = new EventTabModel(container.IdentifierID);
-                TabsModelList.Add(newModel);
+                EventTabModel container = msg.Sender as EventTabModel;
+                TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenScriptList")
             {
-                ScriptContainer container = msg.Sender as ScriptContainer;
-                if (TabsModelList.Where((t) => t is ScriptModel &&
-                            ((ScriptModel)t).UniqueID == container.IdentifierID).Any())
-                {
-                    return;
-                }
-                ScriptModel newModel = new ScriptModel(container.IdentifierID);
-                TabsModelList.Add(newModel);
+                ScriptModel container = msg.Sender as ScriptModel;
+                TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "SaveProject")
@@ -331,15 +317,25 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "SendDeleteItemSignal")
             {
                 ObservableObject Model = null;
-                if (msg.Sender is FociGridContainer)
+                if (msg.Sender is FocusGridModel)
                 {
                     Model = TabsModelList.FirstOrDefault((m) => m is FocusGridModel && 
-                            ((FocusGridModel)m).UniqueID == ((FociGridContainer)msg.Sender).IdentifierID);
+                            ((FocusGridModel)m).UniqueID == ((FocusGridModel)msg.Sender).UniqueID);
                 }
-                else if (msg.Sender is LocalisationContainer)
+                else if (msg.Sender is LocalisationModel)
                 {
                     Model = TabsModelList.FirstOrDefault((m) => m is LocalisationModel &&
-                            ((LocalisationModel)m).UniqueID == ((LocalisationContainer)msg.Sender).IdentifierID);
+                            ((LocalisationModel)m).UniqueID == ((LocalisationModel)msg.Sender).UniqueID);
+                }
+                else if (msg.Sender is EventTabModel)
+                {
+                    Model = TabsModelList.FirstOrDefault((m) => m is EventTabModel &&
+                            ((EventTabModel)m).UniqueID == ((EventTabModel)msg.Sender).UniqueID);
+                }
+                else if (msg.Sender is ScriptModel)
+                {
+                    Model = TabsModelList.FirstOrDefault((m) => m is ScriptModel &&
+                            ((ScriptModel)m).UniqueID == ((ScriptModel)msg.Sender).UniqueID);
                 }
                 TabsModelList.Remove(Model);
                 RaisePropertyChanged("TabsModelList");
@@ -364,49 +360,69 @@ namespace FocusTreeManager.ViewModel
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                string path = dialog.FileName + FOCUS_TREE_PATH;
-                Directory.CreateDirectory(path);
-                //For each parsed focus trees
-                foreach (KeyValuePair<string, string> item in 
-                    FocusTreeParser.ParseAllTrees(Project.Instance.fociContainerList))
-                {
-                    using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
-                    {
-                        tw.Write(item.Value);
-                    }
-                }
-                path = dialog.FileName + LOCALISATION_PATH;
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                //For each parsed localisation files
-                foreach (KeyValuePair<string, string> item in
-                    LocalisationParser.ParseEverything(Project.Instance.localisationList))
-                {
-                    using (TextWriter tw = new StreamWriter(path + item.Key + ".yaml"))
-                    {
-                        tw.Write(item.Value);
-                    }
-                }
-                path = dialog.FileName + EVENTS_PATH;
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                //For each parsed event file
-                foreach (KeyValuePair<string, string> item in
-                    EventParser.ParseAllEvents(Project.Instance.eventList))
-                {
-                    using (TextWriter tw = new StreamWriter(path + item.Key + ".txt"))
-                    {
-                        tw.Write(item.Value);
-                    }
-                }
-                //For each parsed script file
-                foreach (KeyValuePair<string, string> item in
-                    ScriptParser.ParseEverything(Project.Instance.scriptList))
-                {
-                    using (TextWriter tw = new StreamWriter(dialog.FileName + "\\" + item.Key + ".txt"))
-                    {
-                        tw.Write(item.Value);
-                    }
-                }
+                DataHolder.Instance.Project.ExportProject(dialog.FileName);
             }
         }
+
+        #region Undo/Redo
+
+        private ICommand windowLoadedCommand;
+
+        public ICommand WindowLoadedCommand
+        {
+            get
+            {
+                return windowLoadedCommand ?? 
+                    (windowLoadedCommand = new RelayCommand(OnWindowLoaded));
+            }
+        }
+
+        private void OnWindowLoaded()
+        {
+            var root = UndoService.Current[this];
+            root.UndoStackChanged += new EventHandler(OnUndoStackChanged);
+            root.RedoStackChanged += new EventHandler(OnRedoStackChanged);
+        }
+
+        // Refresh the UI when the undo stack changes.
+        void OnUndoStackChanged(object sender, EventArgs e)
+        {
+            UndoCommand.RaiseCanExecuteChanged();
+        }
+
+        // Refresh the UI when the redo stack changes.
+        void OnRedoStackChanged(object sender, EventArgs e)
+        {
+            RedoCommand.RaiseCanExecuteChanged();
+        }
+
+        private void RedoExecute()
+        {
+            UndoService.Current[this].Redo();
+        }
+
+        private bool RedoCanExecute()
+        {
+            return UndoService.Current[this].CanRedo;
+        }
+
+        private void UndoExecute()
+        {
+            var undoRoot = UndoService.Current[this];
+            undoRoot.Undo();
+        }
+
+        private bool UndoCanExecute()
+        {
+            // Tell the UI whether Undo is available.
+            return UndoService.Current[this].CanUndo;
+        }
+
+        public object GetUndoRoot()
+        {
+            return this;
+        }
+
+        #endregion
     }
 }

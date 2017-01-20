@@ -1,10 +1,6 @@
 ﻿using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -26,17 +22,14 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "foci", Order = 3)]
         public List<Focus> FociList { get; set; }
 
-        public RelayCommand DeleteElementCommand { get; private set; }
-
         public FociGridContainer()
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             IdentifierID = Guid.NewGuid();
+            FociList = new List<Focus>();
         }
 
         public FociGridContainer(Containers.LegacySerialization.FociGridContainer legacyItem)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             IdentifierID = legacyItem.IdentifierID;
             ContainerID = legacyItem.ContainerID;
             TAG = legacyItem.TAG;
@@ -45,16 +38,51 @@ namespace FocusTreeManager.DataContract
 
         public FociGridContainer(string filename)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             ContainerID = filename;
             FociList = new List<Focus>();
             IdentifierID = Guid.NewGuid();
         }
 
-        [OnDeserializing]
-        void OnDeserializing(StreamingContext c)
+        public FociGridContainer(FocusGridModel item)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = item.UniqueID;
+            ContainerID = item.Filename;
+            TAG = item.TAG;
+            FociList = new List<Focus>();
+            foreach (FocusModel model in item.FociList)
+            {
+                FociList.Add(new Focus()
+                {
+                    UniqueName = model.UniqueName,
+                    Image = model.Image,
+                    X = model.X,
+                    Y = model.Y,
+                    Cost = model.Cost,
+                    InternalScript = model.InternalScript
+                });
+            }
+            //Repair sets
+            foreach (Focus focus in FociList)
+            {
+                FocusModel associatedModel = 
+                    item.FociList.FirstOrDefault(f => f.UniqueName == focus.UniqueName);
+                foreach (PrerequisitesSetModel set in associatedModel.Prerequisite)
+                {
+                    PrerequisitesSet newset = new PrerequisitesSet(focus);
+                    foreach (FocusModel model in set.FociList)
+                    {
+                        newset.FociList.Add(FociList.FirstOrDefault(f => f.UniqueName == model.UniqueName));
+                    }
+                    focus.Prerequisite.Add(newset);
+                }
+                foreach (MutuallyExclusiveSetModel set in associatedModel.MutualyExclusive)
+                {
+                    MutuallyExclusiveSet newset = new MutuallyExclusiveSet(
+                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
+                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName));
+                    focus.MutualyExclusive.Add(newset);
+                }
+            }
         }
 
         internal static List<FociGridContainer> PopulateFromLegacy
@@ -66,22 +94,6 @@ namespace FocusTreeManager.DataContract
                 list.Add(new FociGridContainer(legacyItem));
             }
             return list;
-        }
-
-        public List<FocusModel> getFocusModelList()
-        {
-            List<FocusModel> list = new List<FocusModel>();
-            foreach (Focus item in FociList)
-            {
-                list.Add(item.Model);
-            }
-            return list;
-        }
-
-        private void SendDeleteSignal()
-        {
-            Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
         }
     }
 }

@@ -12,18 +12,9 @@ namespace FocusTreeManager.DataContract
     [DataContract(Name = "focus", Namespace = "focusesNs")]
     public class Focus
     {
-        const string IMAGE_PATH = "pack://application:,,,/FocusTreeManager;component/GFX/Focus/";
 
         [DataMember(Name = "image", Order = 0)]
-        public string Icon { get; set; }
-
-        public string Image
-        {
-            get
-            {
-                return IMAGE_PATH + Icon + ".png";
-            }
-        }
+        public string Image { get; set; }
 
         [DataMember(Name = "name", Order = 1)]
         public string UniqueName { get; set; }
@@ -46,18 +37,15 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "mutually_exclusives", Order = 7)]
         public List<MutuallyExclusiveSet> MutualyExclusive { get; set; }
 
-        public FocusModel Model { get; private set; }
-
         public Focus()
         {
             MutualyExclusive = new List<MutuallyExclusiveSet>();
             Prerequisite = new List<PrerequisitesSet>();
-            Model = new FocusModel(this);
         }
 
         public Focus(Model.LegacySerialization.Focus legacyItem)
         {
-            Icon = legacyItem.Icon;
+            Image = legacyItem.Icon;
             UniqueName = legacyItem.UniqueName;
             X = legacyItem.X;
             Y = legacyItem.Y;
@@ -66,33 +54,6 @@ namespace FocusTreeManager.DataContract
             InternalScript.Analyse(legacyItem.InternalScript.Parse());
             MutualyExclusive = new List<MutuallyExclusiveSet>();
             Prerequisite = new List<PrerequisitesSet>();
-            Model = new FocusModel(this);
-        }
-
-        [OnDeserializing]
-        void OnDeserializing(StreamingContext c)
-        {
-            Model = new FocusModel(this);
-        }
-
-        public List<PrerequisitesSetModel> getPrerequisitesModels()
-        {
-            List<PrerequisitesSetModel> list = new List<PrerequisitesSetModel>();
-            foreach (PrerequisitesSet item in Prerequisite)
-            {
-                list.Add(item.Model);
-            }
-            return list;
-        }
-
-        public List<MutuallyExclusiveSetModel> getMutuallyExclusivesModels()
-        {
-            List<MutuallyExclusiveSetModel> list = new List<MutuallyExclusiveSetModel>();
-            foreach (MutuallyExclusiveSet item in MutualyExclusive)
-            {
-                list.Add(item.Model);
-            }
-            return list;
         }
 
         internal static List<Focus> PopulateFromLegacy(
@@ -143,15 +104,6 @@ namespace FocusTreeManager.DataContract
                                                                         i.Y == legacyItem.Focus2.Y));
                 this.MutualyExclusive.Add(set);
             }
-        }
-
-        public void setDefaults(int FocusNumber)
-        {
-            InternalScript = new Script();
-            Icon = "goal_unknown";
-            UniqueName = "newfocus_" + FocusNumber;
-            X = 0;
-            Y = 0;
         }
     }
 }
