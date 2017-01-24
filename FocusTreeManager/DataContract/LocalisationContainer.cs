@@ -26,37 +26,41 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "locales", Order = 4)]
         public List<LocaleContent> LocalisationMap { get; set; }
 
-        public RelayCommand DeleteElementCommand { get; private set; }
-
         public LocalisationContainer()
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = Guid.NewGuid();
+            LocalisationMap = new List<LocaleContent>();
+        }
+
+        public LocalisationContainer(string filename)
+        {
+            ContainerID = filename;
+            LocalisationMap = new List<LocaleContent>();
             IdentifierID = Guid.NewGuid();
         }
 
         public LocalisationContainer(Containers.LegacySerialization.LocalisationContainer legacyItem)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             IdentifierID = legacyItem.IdentifierID;
             ContainerID = legacyItem.ContainerID;
             ShortName = legacyItem­.ShortName;
             LocalisationMap = LocaleContent.PopulateFromLegacy(legacyItem.LocalisationMap.ToList());
         }
 
-        [OnDeserializing]
-        void OnDeserializing(StreamingContext c)
+        public LocalisationContainer(LocalisationModel item)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
-        }
-
-        public ObservableCollection<LocaleModel> getLocalisationModelList()
-        {
-            ObservableCollection<LocaleModel> list = new ObservableCollection<LocaleModel>();
-            foreach (LocaleContent item in LocalisationMap)
+            IdentifierID = item.UniqueID;
+            ContainerID = item.Filename;
+            ShortName = item.Shortname;
+            LocalisationMap = new List<LocaleContent>();
+            foreach (LocaleModel model in item.LocalisationMap)
             {
-                list.Add(new LocaleModel(item));
+                LocalisationMap.Add(new LocaleContent()
+                {
+                    Key = model.Key,
+                    Value = model.Value
+                });
             }
-            return list;
         }
 
         internal static List<LocalisationContainer> PopulateFromLegacy(
@@ -68,25 +72,6 @@ namespace FocusTreeManager.DataContract
                 list.Add(new LocalisationContainer(legacyItem));
             }
             return list;
-        }
-
-        public LocalisationContainer(string filename)
-        {
-            ContainerID = filename;
-            LocalisationMap = new List<LocaleContent>();
-            IdentifierID = Guid.NewGuid();
-        }
-        
-        public string translateKey(string key)
-        {
-            LocaleContent locale = LocalisationMap.SingleOrDefault((l) => l.Key.ToLower() == key.ToLower());
-            return locale != null ? locale.Value : null;
-        }
-
-        private void SendDeleteSignal()
-        {
-            Messenger.Default.Send(new NotificationMessage(this, 
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
         }
     }
 }

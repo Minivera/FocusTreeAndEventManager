@@ -26,7 +26,7 @@
                                           Command="{Binding AddFileCommand}" CommandParameter="FocusTree"/>
                     </ContextMenu>
                 </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding fociContainerList, Mode=OneWay}" >
+                <ItemsControl ItemsSource="{Binding FociList, Mode=OneWay}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
@@ -45,7 +45,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                         Path=DataContext.OpenFileTreeCommand}"
-                                        CommandParameter="{Binding IdentifierID}" 
+                                        CommandParameter="{Binding}" 
                                         MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -58,7 +58,7 @@
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0" 
                                              MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
                                              KeyDown="TextBox_KeyDown" />
@@ -96,7 +96,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileLocaleCommand}"
-                                                  CommandParameter="{Binding IdentifierID}" 
+                                                  CommandParameter="{Binding}" 
                                                   MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -109,7 +109,7 @@
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0" 
                                              MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
                                              KeyDown="TextBox_KeyDown" />
@@ -147,7 +147,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileEventCommand}"
-                                                  CommandParameter="{Binding IdentifierID}" 
+                                                  CommandParameter="{Binding}" 
                                                   MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -160,7 +160,7 @@
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0" 
                                              MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
                                              KeyDown="TextBox_KeyDown" />
@@ -198,7 +198,7 @@
                                 <Label.InputBindings>
                                     <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                                   Path=DataContext.OpenFileGenericCommand}"
-                                                  CommandParameter="{Binding IdentifierID}" 
+                                                  CommandParameter="{Binding}" 
                                                   MouseAction="LeftDoubleClick" />
                                 </Label.InputBindings>
                                 <StackPanel Orientation="Horizontal">
@@ -211,7 +211,7 @@
                                     </Rectangle>
                                     <TextBox Margin="4 0 0 0" Width="110"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ContainerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0" 
                                              MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
                                              KeyDown="TextBox_KeyDown" />

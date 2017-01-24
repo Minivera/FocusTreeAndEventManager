@@ -3,22 +3,29 @@ using FocusTreeManager.DataContract;
 using FocusTreeManager.ViewModel;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
+using MonitoredUndo;
 
 namespace FocusTreeManager.Model
 {
-    public class EventOptionModel : ObservableObject
+    public class EventOptionModel : ObservableObject, ISupportsUndo
     {
-        public EventOption DataContract { get; set; }
+        private string name;
 
         public string Name
         {
             get
             {
-                return DataContract.Name;
+                return name;
             }
             set
             {
-                DataContract.Name = value;
+                if (value == name)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Name", name, value, "Name Changed");
+                name = value;
                 RaisePropertyChanged(() => Name);
                 RaisePropertyChanged(() => Text);
             }
@@ -28,34 +35,37 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = Project.Instance.getLocalisationWithKey(Name);
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(Name);
                 string translation = locales != null ? locales.translateKey(Name) : null;
                 return translation != null ? translation : Name;
             }
         }
 
+        private Script internalScript;
+
         public Script InternalScript
         {
             get
             {
-                return DataContract.InternalScript;
+                return internalScript;
             }
             set
             {
-                DataContract.InternalScript = value;
+                if (value == internalScript)
+                {
+                    return;
+                }
+                internalScript = value;
                 RaisePropertyChanged(() => InternalScript);
             }
         }
 
-        public EventOptionModel(EventOption linkedContract)
-        {
-            DataContract = linkedContract;
-        }
+        public EventOptionModel() { }
 
         public void setDefaults()
         {
-            Name = "namespace.count.a";
-            InternalScript = new Script();
+            name = "namespace.count.a";
+            internalScript = new Script();
         }
 
         public void EditOptionScript()
@@ -64,7 +74,16 @@ namespace FocusTreeManager.Model
             EditScript dialog = new EditScript(InternalScript,
                 ScripterControlsViewModel.ScripterType.EventOption);
             dialog.ShowDialog();
-            InternalScript = ViewModel.ManagedScript;
+            internalScript = ViewModel.ManagedScript;
         }
+
+        #region Undo/Redo
+
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
     }
 }

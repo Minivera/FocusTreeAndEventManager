@@ -266,7 +266,7 @@ namespace FocusTreeManager
                         //Load it
                         try
                         {
-                            Project.SetInstance(SerializationHelper.Deserialize(fileName));
+                            DataHolder.LoadContract(fileName);
                         }
                         catch
                         {

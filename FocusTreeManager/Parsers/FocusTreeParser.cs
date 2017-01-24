@@ -49,7 +49,7 @@ namespace FocusTreeManager.Parsers
             {
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
-                text.AppendLine("\t\ticon = GFX_" + focus.Icon);
+                text.AppendLine("\t\ticon = GFX_" + focus.Image);
                 text.AppendLine("\t\tcost = " + string.Format("{0:0.00}", focus.Cost));
                 if (focus.Prerequisite.Any())
                 {
@@ -169,7 +169,8 @@ namespace FocusTreeManager.Parsers
             return true;
         }
 
-        private static void AddBackwardsPrerequisite(List<Focus> HoldedList, List<Focus> SortedList)
+        private static void AddBackwardsPrerequisite(List<Focus> HoldedList, 
+                                                     List<Focus> SortedList)
         {
             bool wasAdded = false;
             List<Focus> TempoList = HoldedList.ToList();
@@ -192,46 +193,51 @@ namespace FocusTreeManager.Parsers
             }
         }
 
-        public static FociGridContainer CreateTreeFromScript(string fileName, Script script)
+        public static FocusGridModel CreateTreeFromScript(string fileName, Script script)
         {
-            Dictionary<string, PrerequisitesSet> waitingList = new Dictionary<string, PrerequisitesSet>();
-            FociGridContainer container = new FociGridContainer(Path.GetFileNameWithoutExtension(fileName));
+            Dictionary<string, PrerequisitesSetModel> waitingList 
+                = new Dictionary<string, PrerequisitesSetModel>();
+            FocusGridModel container = new FocusGridModel(
+                Path.GetFileNameWithoutExtension(fileName));
             container.TAG = script.FindValue("tag").Parse();
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
-                Focus newFocus = new Focus();
+                FocusModel newFocus = new FocusModel();
                 newFocus.UniqueName = block.FindValue("id").Parse();
-                newFocus.Icon = block.FindValue("icon").Parse().Replace("GFX_", "");
+                newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
                 newFocus.X = int.Parse(block.FindValue("x").Parse());
                 newFocus.Y = int.Parse(block.FindValue("y").Parse());
                 newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);
                 foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>("mutually_exclusive"))
                 {
-                    foreach (ICodeStruct focuses in exclusives.FindAllValuesOfType<ICodeStruct>("focus"))
+                    foreach (ICodeStruct focuses in exclusives
+                        .FindAllValuesOfType<ICodeStruct>("focus"))
                     {
                         //Check if focus exists in list
-                        Focus found = container.FociList.FirstOrDefault((f) =>
+                        FocusModel found = container.FociList.FirstOrDefault((f) =>
                             f.UniqueName == focuses.Parse());
                         if (found != null)
                         {
-                            MutuallyExclusiveSet set = new MutuallyExclusiveSet(newFocus, found);
+                            MutuallyExclusiveSetModel set = 
+                                new MutuallyExclusiveSetModel(newFocus, found);
                             newFocus.MutualyExclusive.Add(set);
                             found.MutualyExclusive.Add(set);
                         }
                     }
                 }
-                foreach (ICodeStruct prerequistes in block.FindAllValuesOfType<ICodeStruct>("prerequisite"))
+                foreach (ICodeStruct prerequistes in block
+                    .FindAllValuesOfType<ICodeStruct>("prerequisite"))
                 {
                     if (!prerequistes.FindAllValuesOfType<ICodeStruct>("focus").Any())
                     {
                         break;
                     }
-                    PrerequisitesSet set = new PrerequisitesSet(newFocus);
+                    PrerequisitesSetModel set = new PrerequisitesSetModel(newFocus);
                     foreach (ICodeStruct focuses in prerequistes.FindAllValuesOfType<ICodeStruct>("focus"))
                     {
                         //Add the focus as a prerequisites in the current existing focuses
                         //or put into wait
-                        Focus search = container.FociList.FirstOrDefault((f) =>
+                        FocusModel search = container.FociList.FirstOrDefault((f) =>
                             f.UniqueName == focuses.Parse());
                         if (search != null)
                         {
@@ -262,9 +268,9 @@ namespace FocusTreeManager.Parsers
                 container.FociList.Add(newFocus);
             }
             //Repair lost sets, shouldn't happen, but in case
-            foreach (KeyValuePair<string, PrerequisitesSet> item in waitingList)
+            foreach (KeyValuePair<string, PrerequisitesSetModel> item in waitingList)
             {
-                Focus search = container.FociList.FirstOrDefault((f) =>
+                FocusModel search = container.FociList.FirstOrDefault((f) =>
                         f.UniqueName == item.Key);
                 if (search != null)
                 {

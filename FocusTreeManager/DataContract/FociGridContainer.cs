@@ -54,7 +54,7 @@ namespace FocusTreeManager.DataContract
                 FociList.Add(new Focus()
                 {
                     UniqueName = model.UniqueName,
-                    Image = model.Image,
+                    Image = model.Icon,
                     X = model.X,
                     Y = model.Y,
                     Cost = model.Cost,

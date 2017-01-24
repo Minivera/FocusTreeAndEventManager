@@ -1,41 +1,62 @@
-﻿using FocusTreeManager.DataContract;
+﻿using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
+using MonitoredUndo;
 
 namespace FocusTreeManager.Model
 {
-    public class LocaleModel : ObservableObject
+    public class LocaleModel : ObservableObject, ISupportsUndo
     {
-        public LocaleContent DataContract { get; set; }
+        private string key;
 
         public string Key
         {
             get
             {
-                return DataContract.Key;
+                return key;
             }
             set
             {
-                DataContract.Key = value;
+                if (value == key)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Key", key, value, "Key Changed");
+                key = value;
                 RaisePropertyChanged(() => Key);
             }
         }
+
+        private string value;
 
         public string Value
         {
             get
             {
-                return DataContract.Value;
+                return value;
             }
             set
             {
-                DataContract.Value = value;
+                if (value == this.value)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Key", value, value, "Key Changed");
+                this.value = value;
                 RaisePropertyChanged(() => Value);
             }
         }
 
-        public LocaleModel(LocaleContent linkedContract)
+        public LocaleModel() { }
+
+        #region Undo/Redo
+
+        public object GetUndoRoot()
         {
-            DataContract = linkedContract;
+            return (new ViewModelLocator()).Main;
         }
+
+        #endregion
     }
 }

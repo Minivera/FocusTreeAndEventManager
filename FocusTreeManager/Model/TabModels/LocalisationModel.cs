@@ -1,12 +1,17 @@
 ﻿using FocusTreeManager.DataContract;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace FocusTreeManager.Model
 {
-    public class LocalisationModel : ObservableObject
+    public class LocalisationModel : ObservableObject, ISupportsUndo
     {
         private Guid ID;
 
@@ -18,41 +23,79 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private string filename;
+
         public string Filename
         {
             get
             {
-                var element = Project.Instance.getSpecificLocalisationMap(ID);
-                return element != null ? element.ContainerID : null;
-            }
-        }
-
-        public string ShortName
-        {
-            get
-            {
-                return Project.Instance.getSpecificLocalisationMap(ID).ShortName;
+                return filename;
             }
             set
             {
-                Project.Instance.getSpecificLocalisationMap(ID).ShortName = value;
-                RaisePropertyChanged("ShortName");
+                if (value == filename)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Filename", filename, value, "Filename Changed");
+                filename = value;
+                RaisePropertyChanged(() => Filename);
             }
         }
 
-        public ObservableCollection<LocaleModel> LocalisationMap
+        private string shortname;
+
+        public string Shortname
         {
             get
             {
-                return Project.Instance.getSpecificLocalisationMap(ID).getLocalisationModelList();
+                return shortname;
+            }
+            set
+            {
+                if (value == shortname)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Shortname", shortname, value, "Shortname Changed");
+                shortname = value;
+                RaisePropertyChanged(() => Shortname);
             }
         }
 
-        public LocalisationModel(Guid ID)
+        public ObservableCollection<LocaleModel> LocalisationMap { get; set; }
+
+        public RelayCommand DeleteElementCommand { get; private set; }
+
+        public LocalisationModel(string Filename)
         {
-            this.ID = ID;
+            filename = Filename;
+            this.ID = Guid.NewGuid();
+            LocalisationMap = new ObservableCollection<LocaleModel>();
+            LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            //Commands
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+        }
+
+        public LocalisationModel(LocalisationContainer container)
+        {
+            this.ID = container.IdentifierID;
+            filename = container.ContainerID;
+            shortname = container.ShortName;
+            LocalisationMap = new ObservableCollection<LocaleModel>();
+            foreach (LocaleContent content in container.LocalisationMap)
+            {
+                LocalisationMap.Add(new LocaleModel() { Key = content.Key, Value = content.Value});
+            }
+            LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            //Commands
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -66,5 +109,33 @@ namespace FocusTreeManager.Model
                 RaisePropertyChanged(() => Filename);
             }
         }
+
+        public string translateKey(string key)
+        {
+            LocaleModel locale = LocalisationMap.SingleOrDefault((l) => 
+                                    l.Key.ToLower() == key.ToLower());
+            return locale != null ? locale.Value : null;
+        }
+
+        private void SendDeleteSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
+        #region Undo/Redo
+
+        void LocalisationMap_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "LocalisationMap",
+                this.LocalisationMap, e, "LocalisationMap Changed");
+        }
+
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
     }
 }

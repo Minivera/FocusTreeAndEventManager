@@ -85,9 +85,9 @@ namespace FocusTreeManager.Parsers
             return text.ToString();
         }
 
-        public static EventContainer CreateEventFromScript(string fileName, Script script)
+        public static EventTabModel CreateEventFromScript(string fileName, Script script)
         {
-            EventContainer container = new EventContainer(Path.GetFileNameWithoutExtension(fileName));
+            EventTabModel container = new EventTabModel(Path.GetFileNameWithoutExtension(fileName));
             container.EventNamespace = script.FindValue("add_namespace").Parse();
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("news_event"))
             {
@@ -96,7 +96,7 @@ namespace FocusTreeManager.Parsers
                 {
                     break;
                 }
-                Event newEvent = new Event();
+                EventModel newEvent = new EventModel();
                 newEvent.Type = Event.EventType.news_event;
                 newEvent.Id = block.FindValue("id").Parse();
                 newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
@@ -110,14 +110,14 @@ namespace FocusTreeManager.Parsers
                     YesToBool(block.FindValue("fire_only_once").Parse()) : false;
                 foreach (ICodeStruct desc in block.FindAllValuesOfType<ICodeStruct>("desc"))
                 {
-                    newEvent.Descriptions.Add(new EventDescription
+                    newEvent.Descriptions.Add(new EventDescriptionModel
                     {
                         InternalScript = desc.GetContentAsScript(new string[0])
                     });
                 }
                 foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                 {
-                    newEvent.Options.Add(new EventOption
+                    newEvent.Options.Add(new EventOptionModel
                     {
                         Name = option.FindValue("name").Parse(),
                         InternalScript = option.GetContentAsScript(new string[1] { "name" })
@@ -143,7 +143,7 @@ namespace FocusTreeManager.Parsers
                 {
                     break;
                 }
-                Event newEvent = new Event();
+                EventModel newEvent = new EventModel();
                 newEvent.Type = Event.EventType.country_event;
                 newEvent.Id = block.FindValue("id").Parse();
                 newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
@@ -157,7 +157,7 @@ namespace FocusTreeManager.Parsers
                     YesToBool(block.FindValue("fire_only_once").Parse()) : false;
                 foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                 {
-                    newEvent.Options.Add(new EventOption
+                    newEvent.Options.Add(new EventOptionModel
                     {
                         Name = option.FindValue("name").Parse(),
                         InternalScript = option.GetContentAsScript(new string[1] { "name" })

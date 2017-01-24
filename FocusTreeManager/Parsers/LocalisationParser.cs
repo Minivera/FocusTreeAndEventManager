@@ -20,7 +20,7 @@ namespace FocusTreeManager.Parsers
             {
                 string ID = container.ContainerID.Replace(" ", "_");
                 ID += "_" + container.ShortName;
-                fileList[ID] = Parse(container.LocalisationMap, ID, container.ShortName);
+                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.ShortName);
             }
             return fileList;
         }
@@ -36,21 +36,22 @@ namespace FocusTreeManager.Parsers
             return text.ToString();
         }
 
-        public static LocalisationContainer CreateLocaleFromFile(string fileName)
+        public static LocalisationModel CreateLocaleFromFile(string fileName)
         {
-            LocalisationContainer container = new LocalisationContainer(Path.GetFileNameWithoutExtension(fileName));
+            LocalisationModel container = new LocalisationModel(
+                Path.GetFileNameWithoutExtension(fileName));
             IEnumerable<string> lines = File.ReadLines(fileName);
             bool firstline = true;
             foreach (string line in lines)
             {
                 if (firstline)
                 {
-                    container.ShortName = line.Replace(":", "").Trim();
+                    container.Shortname = line.Replace(":", "").Trim();
                     firstline = false;
                 }
                 else
                 {
-                    LocaleContent content = new LocaleContent()
+                    LocaleModel content = new LocaleModel()
                     {
                         Key = line.Split(':')[0].Trim(),
                         Value = Regex.Match(line.Split(':')[1], "\"([^\"]*)\"").Groups[1].Value.Trim()

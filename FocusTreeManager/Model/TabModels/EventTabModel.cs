@@ -1,13 +1,16 @@
 ﻿using FocusTreeManager.DataContract;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace FocusTreeManager.Model
 {
-    public class EventTabModel : ObservableObject
+    public class EventTabModel : ObservableObject, ISupportsUndo
     {
         private Guid ID;
 
@@ -19,35 +22,49 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private string filename;
+
         public string Filename
         {
             get
             {
-                var element = Project.Instance.getSpecificEventList(ID);
-                return element != null ? element.ContainerID : null;
+                return filename;
+            }
+            set
+            {
+                if (value == filename)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Filename", filename, value, "Filename Changed");
+                filename = value;
+                RaisePropertyChanged(() => Filename);
             }
         }
+
+        private string eventNamespace;
 
         public string EventNamespace
         {
             get
             {
-                return Project.Instance.getSpecificEventList(ID).EventNamespace;
+                return eventNamespace;
             }
             set
             {
-                Project.Instance.getSpecificEventList(ID).EventNamespace = value;
-                RaisePropertyChanged("EventNamespace");
+                if (value == eventNamespace)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "EventNamespace", eventNamespace, value, "EventNamespace Changed");
+                eventNamespace = value;
+                RaisePropertyChanged(() => EventNamespace);
             }
         }
 
-        public ObservableCollection<EventModel> EventList
-        {
-            get
-            {
-                return Project.Instance.getSpecificEventList(ID).getFocusModelList();
-            }
-        }
+        public ObservableCollection<EventModel> EventList { get; set; }
 
         private EventModel selectedNode = null;
 
@@ -71,20 +88,44 @@ namespace FocusTreeManager.Model
 
         public RelayCommand AddEventCommand { get; set; }
 
-        public EventTabModel(Guid ID)
+        public RelayCommand DeleteElementCommand { get; private set; }
+
+        public EventTabModel(string Filename)
         {
-            this.ID = ID;
+            this.filename = Filename;
+            this.ID = Guid.NewGuid();
+            EventList = new ObservableCollection<EventModel>();
+            EventList.CollectionChanged += EventList_CollectionChanged;
             //Command
             AddEventCommand = new RelayCommand(AddEvent);
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            //Messenger
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        public EventTabModel(EventContainer container)
+        {
+            this.ID = container.IdentifierID;
+            this.filename = container.ContainerID;
+            this.eventNamespace = container.EventNamespace;
+            EventList = new ObservableCollection<EventModel>();
+            foreach (Event item in container.EventList)
+            {
+                EventList.Add(new EventModel(item));
+            }
+            EventList.CollectionChanged += EventList_CollectionChanged;
+            //Command
+            AddEventCommand = new RelayCommand(AddEvent);
+            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         private void AddEvent()
         {
-            Event newEvent = new Event();
+            EventModel newEvent = new EventModel();
             newEvent.setDefaults(EventNamespace);
-            Project.Instance.getSpecificEventList(ID).EventList.Add(newEvent);
+            EventList.Add(newEvent);
             RaisePropertyChanged(() => EventList);
         }
 
@@ -108,10 +149,30 @@ namespace FocusTreeManager.Model
             {
                 case "DeleteEvent":
                     EventModel sender = msg.Sender as EventModel;
-                    Project.Instance.getSpecificEventList(ID).EventList.Remove(sender.DataContract);
+                    EventList.Remove(sender);
                     RaisePropertyChanged(() => EventList);
                     break;
             }
         }
+
+        private void SendDeleteSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+        #region Undo/Redo
+
+        void EventList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "EventList", 
+                this.EventList, e, "EventList Changed");
+        }
+
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
     }
 }

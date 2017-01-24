@@ -25,73 +25,49 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ProjectViewViewModel : ViewModelBase
     {
-        public ObservableCollection<FociGridContainer> fociContainerList
+        public ObservableCollection<FocusGridModel> FociList
         {
             get
             {
                 if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    ObservableCollection<FociGridContainer> list = 
-                        new ObservableCollection<FociGridContainer>();
-                    foreach (var item in Project.Instance.fociContainerList)
-                    {
-                        list.Add(item);
-                    }
-                    return list;
+                    return (new ViewModelLocator()).Main.Project.fociList;
                 }
                 return null;
             }
         }
 
-        public ObservableCollection<LocalisationContainer> localisationList
+        public ObservableCollection<LocalisationModel> localisationList
         {
             get
             {
                 if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    ObservableCollection<LocalisationContainer> list =
-                        new ObservableCollection<LocalisationContainer>();
-                    foreach (var item in Project.Instance.localisationList)
-                    {
-                        list.Add(item);
-                    }
-                    return list;
+                    return (new ViewModelLocator()).Main.Project.localisationList;
                 }
                 return null;
             }
         }
 
-        public ObservableCollection<EventContainer> eventList
+        public ObservableCollection<EventTabModel> eventList
         {
             get
             {
                 if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    ObservableCollection<EventContainer> list =
-                        new ObservableCollection<EventContainer>();
-                    foreach (var item in Project.Instance.eventList)
-                    {
-                        list.Add(item);
-                    }
-                    return list;
+                    return (new ViewModelLocator()).Main.Project.eventList;
                 }
                 return null;
             }
         }
 
-        public ObservableCollection<ScriptContainer> scriptList
+        public ObservableCollection<ScriptModel> scriptList
         {
             get
             {
                 if ((new ViewModelLocator()).Main.IsProjectExist)
                 {
-                    ObservableCollection<ScriptContainer> list =
-                        new ObservableCollection<ScriptContainer>();
-                    foreach (var item in Project.Instance.scriptList)
-                    {
-                        list.Add(item);
-                    }
-                    return list;
+                    return (new ViewModelLocator()).Main.Project.scriptList;
                 }
                 return null;
             }
@@ -101,13 +77,13 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand<string> AddElementCommand { get; private set; }
 
-        public RelayCommand<Guid> OpenFileTreeCommand { get; private set; }
+        public RelayCommand<FocusGridModel> OpenFileTreeCommand { get; private set; }
 
-        public RelayCommand<Guid> OpenFileLocaleCommand { get; private set; }
+        public RelayCommand<LocalisationModel> OpenFileLocaleCommand { get; private set; }
 
-        public RelayCommand<Guid> OpenFileEventCommand { get; private set; }
+        public RelayCommand<EventTabModel> OpenFileEventCommand { get; private set; }
 
-        public RelayCommand<Guid> OpenFileGenericCommand { get; private set; }
+        public RelayCommand<ScriptModel> OpenFileGenericCommand { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ProjectViewModel class.
@@ -117,10 +93,10 @@ namespace FocusTreeManager.ViewModel
             //Commands
             AddFileCommand = new RelayCommand<string>(AddFile);
             AddElementCommand = new RelayCommand<string>(AddElement);
-            OpenFileTreeCommand = new RelayCommand<Guid>(OpenFocusTree);
-            OpenFileLocaleCommand = new RelayCommand<Guid>(OpenLocalisation);
-            OpenFileEventCommand = new RelayCommand<Guid>(OpenEvent);
-            OpenFileGenericCommand = new RelayCommand<Guid>(OpenScript);
+            OpenFileTreeCommand = new RelayCommand<FocusGridModel>(OpenFocusTree);
+            OpenFileLocaleCommand = new RelayCommand<LocalisationModel>(OpenLocalisation);
+            OpenFileEventCommand = new RelayCommand<EventTabModel>(OpenEvent);
+            OpenFileGenericCommand = new RelayCommand<ScriptModel>(OpenScript);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -130,21 +106,23 @@ namespace FocusTreeManager.ViewModel
             switch(param)
             {
                 case "FocusTree" :
-                    Project.Instance.fociContainerList.Add(new FociGridContainer("FocusTree_" + 
-                        fociContainerList.Count().ToString()));
+                    (new ViewModelLocator()).Main.Project.fociList.Add(
+                        new FocusGridModel("FocusTree_" + FociList.Count().ToString()));
                     RaisePropertyChanged("fociContainerList");
                     break;
                 case "Localisation":
-                    Project.Instance.localisationList.Add(new LocalisationContainer("Localisation_" + 
-                        localisationList.Count().ToString()));
+                    (new ViewModelLocator()).Main.Project.localisationList.Add(
+                        new LocalisationModel("Localisation_" + localisationList.Count().ToString()));
                     RaisePropertyChanged("localisationList");
                     break;
                 case "Event":
-                    Project.Instance.eventList.Add(new EventContainer("Event_" + eventList.Count().ToString()));
+                    (new ViewModelLocator()).Main.Project.eventList.Add(
+                        new EventTabModel("Event_" + eventList.Count().ToString()));
                     RaisePropertyChanged("eventList");
                     break;
                 case "Generic":
-                    Project.Instance.scriptList.Add(new ScriptContainer("Script" + eventList.Count().ToString()));
+                    (new ViewModelLocator()).Main.Project.scriptList.Add(
+                        new ScriptModel("Script" + eventList.Count().ToString()));
                     RaisePropertyChanged("scriptList");
                     break;
             }
@@ -154,22 +132,22 @@ namespace FocusTreeManager.ViewModel
         {
             if (item is FociGridContainer)
             {
-                Project.Instance.fociContainerList.Remove((FociGridContainer)item);
+                (new ViewModelLocator()).Main.Project.fociList.Remove((FocusGridModel)item);
                 RaisePropertyChanged("fociContainerList");
             }
             else if (item is LocalisationContainer)
             {
-                Project.Instance.localisationList.Remove((LocalisationContainer)item);
+                (new ViewModelLocator()).Main.Project.localisationList.Remove((LocalisationModel)item);
                 RaisePropertyChanged("localisationList");
             }
             else if (item is EventContainer)
             {
-                Project.Instance.eventList.Remove((EventContainer)item);
+                (new ViewModelLocator()).Main.Project.eventList.Remove((EventTabModel)item);
                 RaisePropertyChanged("eventList");
             }
             else if (item is ScriptContainer)
             {
-                Project.Instance.scriptList.Remove((ScriptContainer)item);
+                (new ViewModelLocator()).Main.Project.scriptList.Remove((ScriptModel)item);
                 RaisePropertyChanged("scriptList");
             }
         }
@@ -198,24 +176,28 @@ namespace FocusTreeManager.ViewModel
                         case "FocusTree":
                             Script script = new Script();
                             script.Analyse(File.ReadAllText(dialog.FileName));
-                            Project.Instance.fociContainerList.Add(FocusTreeParser.CreateTreeFromScript
+                            (new ViewModelLocator()).Main.Project.fociList.Add(
+                                FocusTreeParser.CreateTreeFromScript
                                 (dialog.FileName, script));
                             RaisePropertyChanged("fociContainerList");
                             break;
                         case "Localisation":
-                            Project.Instance.localisationList.Add(LocalisationParser.CreateLocaleFromFile
+                            (new ViewModelLocator()).Main.Project.localisationList.Add(
+                                LocalisationParser.CreateLocaleFromFile
                                 (dialog.FileName));
                             RaisePropertyChanged("localisationList");
                             break;
                         case "Event":
                             Script scriptEvent = new Script();
                             scriptEvent.Analyse(File.ReadAllText(dialog.FileName));
-                            Project.Instance.eventList.Add(EventParser.CreateEventFromScript
+                            (new ViewModelLocator()).Main.Project.eventList.Add(
+                                EventParser.CreateEventFromScript
                                 (dialog.FileName, scriptEvent));
                             RaisePropertyChanged("eventList");
                             break;
                         case "Generic":
-                            Project.Instance.scriptList.Add(ScriptParser.CreateScriptFromFile
+                            (new ViewModelLocator()).Main.Project.scriptList.Add(
+                                ScriptParser.CreateScriptFromFile
                                 (dialog.FileName));
                             RaisePropertyChanged("scriptList");
                             break;
@@ -230,28 +212,28 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        private void OpenFocusTree(Guid param)
+        private void OpenFocusTree(FocusGridModel param)
         {
-            FociGridContainer SelectedFile = fociContainerList.SingleOrDefault((f) => f.IdentifierID == param);
-            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenFocusTree"));
+            Messenger.Default.Send(new NotificationMessage(
+                param, (new ViewModelLocator()).Main, "OpenFocusTree"));
         }
 
-        private void OpenLocalisation(Guid param)
+        private void OpenLocalisation(LocalisationModel param)
         {
-            LocalisationContainer SelectedFile = localisationList.SingleOrDefault((f) => f.IdentifierID == param);
-            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenLocalisation"));
+            Messenger.Default.Send(new NotificationMessage(
+                param, (new ViewModelLocator()).Main, "OpenLocalisation"));
         }
 
-        private void OpenEvent(Guid param)
+        private void OpenEvent(EventTabModel param)
         {
-            EventContainer SelectedFile = eventList.SingleOrDefault((f) => f.IdentifierID == param);
-            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenEventList"));
+            Messenger.Default.Send(new NotificationMessage(
+                param, (new ViewModelLocator()).Main, "OpenEventList"));
         }
 
-        private void OpenScript(Guid param)
+        private void OpenScript(ScriptModel param)
         {
-            ScriptContainer SelectedFile = scriptList.SingleOrDefault((f) => f.IdentifierID == param);
-            Messenger.Default.Send(new NotificationMessage(SelectedFile, (new ViewModelLocator()).Main, "OpenScriptList"));
+            Messenger.Default.Send(new NotificationMessage(
+                param, (new ViewModelLocator()).Main, "OpenScriptList"));
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -267,10 +249,10 @@ namespace FocusTreeManager.ViewModel
             }
             if (msg.Notification == "RefreshProjectViewer")
             {
-                RaisePropertyChanged("fociContainerList");
-                RaisePropertyChanged("localisationList");
-                RaisePropertyChanged("eventList");
-                RaisePropertyChanged("scriptList");
+                RaisePropertyChanged(() => FociList);
+                RaisePropertyChanged(() => localisationList);
+                RaisePropertyChanged(() => eventList);
+                RaisePropertyChanged(() => scriptList);
             }
         }
     }

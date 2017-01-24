@@ -1,5 +1,4 @@
 ﻿using FocusTreeManager.CodeStructures;
-using System;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 
@@ -20,12 +19,6 @@ namespace FocusTreeManager.DataContract
         {
             InternalScript = new Script();
             InternalScript.Analyse(legacyItem.InternalScript.Parse());
-        }
-
-        public void setDefaults()
-        {
-            InternalScript = new Script();
-            InternalScript.Analyse("text = namespace.count.d.desc_id");
         }
 
         internal static List<EventDescription> PopulateFromLegacy(

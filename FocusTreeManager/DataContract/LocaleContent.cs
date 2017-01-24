@@ -1,6 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
 namespace FocusTreeManager.DataContract

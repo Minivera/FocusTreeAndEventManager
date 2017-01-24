@@ -198,6 +198,7 @@ namespace FocusTreeManager.ViewModel
                         coordinator.ShowMessageAsync(this, Title, Message);
                         return;
                     }
+                    project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
                     RaisePropertyChanged("isProjectExist");
                     TabsModelList = new ObservableCollection<ObservableObject>();
                     RaisePropertyChanged("TabsModelList");

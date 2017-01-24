@@ -9,22 +9,32 @@ using System;
 using System.Collections.ObjectModel;
 using static FocusTreeManager.DataContract.Event;
 using FocusTreeManager.DataContract;
+using MonitoredUndo;
+using System.Collections.Specialized;
 
 namespace FocusTreeManager.Model
 {
-    public class EventModel : ObservableObject
+    public class EventModel : ObservableObject, ISupportsUndo
     {
-        public Event DataContract { get; set; }
-        
+        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Events/";
+
+        private string id;
+
         public string Id
         {
             get
             {
-                return DataContract.Id;
+                return id;
             }
             set
             {
-                DataContract.Id = value;
+                if (value == id)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Id", id, value, "Id Changed");
+                id = value;
                 RaisePropertyChanged(() => Id);
                 RaisePropertyChanged(() => Title);
                 RaisePropertyChanged(() => Description);
@@ -35,7 +45,8 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = Project.Instance.getLocalisationWithKey(Id + ".t");
+                
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(Id + ".t");
                 string translation = locales != null ? locales.translateKey(Id + ".t") : null;
                 return translation != null ? translation : Id + ".t";
             }
@@ -45,34 +56,50 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = Project.Instance.getLocalisationWithKey(Id + ".d");
+                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(Id + ".d");
                 string translation = locales != null ? locales.translateKey(Id + ".d") : null;
                 return translation != null ? translation : Id + ".d";
             }
         }
 
+        private EventType type;
+
         public EventType Type
         {
             get
             {
-                return DataContract.Type;
+                return type;
             }
             set
             {
-                DataContract.Type = value;
+                if (value == type)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Type", type, value, "Type Changed");
+                type = value;
                 RaisePropertyChanged(() => Type);
             }
         }
+
+        private string picture;
 
         public string Picture
         {
             get
             {
-                return DataContract.Picture;
+                return picture;
             }
             set
             {
-                DataContract.Picture = value;
+                if (value == picture)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Picture", picture, value, "Picture Changed");
+                picture = value;
                 RaisePropertyChanged(() => Picture);
             }
         }
@@ -81,90 +108,116 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                return DataContract.ImagePath;
+                return IMAGE_PATH + Picture + ".png";
             }
         }
+
+        private bool isMajor;
 
         public bool IsMajor
         {
             get
             {
-                return DataContract.IsMajor;
+                return isMajor;
             }
             set
             {
-                DataContract.IsMajor = value;
+                if (value == isMajor)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "IsMajor", isMajor, value, "IsMajor Changed");
+                isMajor = value;
                 RaisePropertyChanged(() => IsMajor);
             }
         }
+
+        private bool isTriggeredOnly;
 
         public bool IsTriggeredOnly
         {
             get
             {
-                return DataContract.IsTriggeredOnly;
+                return isTriggeredOnly;
             }
             set
             {
-                DataContract.IsTriggeredOnly = value;
+                if (value == isTriggeredOnly)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "IsTriggeredOnly", isTriggeredOnly, value, "IsTriggeredOnly Changed");
+                isTriggeredOnly = value;
                 RaisePropertyChanged(() => IsTriggeredOnly);
             }
         }
+
+        private bool isHidden;
 
         public bool IsHidden
         {
             get
             {
-                return DataContract.IsHidden;
+                return isHidden;
             }
             set
             {
-                DataContract.IsHidden = value;
+                if (value == isHidden)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "IsHidden", isHidden, value, "IsHidden Changed");
+                isHidden = value;
                 RaisePropertyChanged(() => IsHidden);
             }
         }
+
+        private bool isFiredOnce;
 
         public bool IsFiredOnce
         {
             get
             {
-                return DataContract.IsFiredOnce;
+                return isFiredOnce;
             }
             set
             {
-                DataContract.IsFiredOnce = value;
+                if (value == isHidden)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "IsFiredOnce", isFiredOnce, value, "IsFiredOnce Changed");
+                isFiredOnce = value;
                 RaisePropertyChanged(() => IsFiredOnce);
             }
         }
+
+        private Script internalScript;
 
         public Script InternalScript
         {
             get
             {
-                return DataContract.InternalScript;
+                return internalScript;
             }
             set
             {
-                DataContract.InternalScript = value;
+                if (value == internalScript)
+                {
+                    return;
+                }
+                internalScript = value;
                 RaisePropertyChanged(() => InternalScript);
             }
         }
 
-        public List<EventDescriptionModel> Descriptions
-        {
-            get
-            {
-                return DataContract.getDescriptionModels();
-            }
-        }
+        public ObservableCollection<EventDescriptionModel> Descriptions { get; set; }
 
-        public List<EventOptionModel> Options
-        {
-            get
-            {
-                return DataContract.getOptionModels();
-            }
-        }
+        public ObservableCollection<EventOptionModel> Options { get; set; }
 
         public bool SwitchIsChecked
         {
@@ -203,9 +256,50 @@ namespace FocusTreeManager.Model
 
         public RelayCommand ChangeImageCommand { get; private set; }
 
-        public EventModel(Event linkedContract)
+        public EventModel()
         {
-            DataContract = linkedContract;
+            Descriptions = new ObservableCollection<EventDescriptionModel>();
+            Descriptions.CollectionChanged += Descriptions_CollectionChanged;
+            Options = new ObservableCollection<EventOptionModel>();
+            Options.CollectionChanged += Options_CollectionChanged;
+            //Commands
+            EditScriptCommand = new RelayCommand(EditScript);
+            DeleteEventCommand = new RelayCommand(DeleteElement);
+            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript, CanExecuteEdit);
+            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript, CanExecuteEdit);
+            ChangeImageCommand = new RelayCommand(ChangeImage);
+        }
+
+        public EventModel(Event item)
+        {
+            id = item.Id;
+            type = item.Type;
+            picture = item.Picture;
+            isFiredOnce = item.IsFiredOnce;
+            isHidden = item.IsHidden;
+            isMajor = item.IsMajor;
+            isTriggeredOnly = item.IsTriggeredOnly;
+            internalScript = item.InternalScript;
+            Descriptions = new ObservableCollection<EventDescriptionModel>();
+            foreach (EventDescription description in item.Descriptions)
+            {
+                Descriptions.Add(new EventDescriptionModel()
+                    {
+                        InternalScript = description.InternalScript
+                    });
+            }
+            Descriptions.CollectionChanged += Descriptions_CollectionChanged;
+            Options = new ObservableCollection<EventOptionModel>();
+            foreach (EventOption option in item.Options)
+            {
+                Options.Add(new EventOptionModel()
+                {
+                    Name = option.Name,
+                    InternalScript = option.InternalScript
+                });
+            }
+            Options.CollectionChanged += Options_CollectionChanged;
+            //Commands
             EditScriptCommand = new RelayCommand(EditScript);
             DeleteEventCommand = new RelayCommand(DeleteElement);
             EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript, CanExecuteEdit);
@@ -255,5 +349,45 @@ namespace FocusTreeManager.Model
             view.ShowDialog();
             Picture = (new ViewModelLocator()).ChangeImage.FocusImage;
         }
+
+        public void setDefaults(string EventNamespace)
+        {
+            if (string.IsNullOrEmpty(EventNamespace))
+            {
+                EventNamespace = "namespace";
+            }
+            id = EventNamespace + ".0";
+            picture = "event_test";
+            type = EventType.country_event;
+            internalScript = new Script();
+            EventDescriptionModel newDesc = new EventDescriptionModel();
+            newDesc.setDefaults();
+            Descriptions.Add(newDesc);
+            EventOptionModel newOptions = new EventOptionModel();
+            newOptions.setDefaults();
+            Options.Add(newOptions);
+        }
+
+        #region Undo/Redo
+
+        void Descriptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "Descriptions",
+                this.Descriptions, e, "Descriptions Changed");
+        }
+
+        void Options_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "Options",
+                this.Options, e, "Options Changed");
+        }
+
+        public object GetUndoRoot()
+        {
+            return (new ViewModelLocator()).Main;
+        }
+
+        #endregion
+
     }
 }

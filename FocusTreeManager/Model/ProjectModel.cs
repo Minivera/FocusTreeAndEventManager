@@ -69,36 +69,34 @@ namespace FocusTreeManager.Model
                     Where((x) => x.Key != null && x.Key.ToLower() == key.ToLower()).Any());
         }
 
-        public void createFromDataContract(Project dataContract)
+        static public ProjectModel createFromDataContract(Project dataContract)
         {
+            ProjectModel newproject = new ProjectModel();
             //Build foci list
-            fociList.Clear();
             foreach (FociGridContainer container in dataContract.fociContainerList)
             {
-                fociList.Add(new FocusGridModel(container));
+                newproject.fociList.Add(new FocusGridModel(container));
             }
             //Build localization list
-            localisationList.Clear();
             foreach (LocalisationContainer container in dataContract.localisationList)
             {
-                localisationList.Add(new LocalisationModel(container));
+                newproject.localisationList.Add(new LocalisationModel(container));
             }
             //Build events list
-            eventList.Clear();
             foreach (EventContainer container in dataContract.eventList)
             {
-                eventList.Add(new EventTabModel(container));
+                newproject.eventList.Add(new EventTabModel(container));
             }
             //Build scripts list
-            scriptList.Clear();
             foreach (ScriptContainer container in dataContract.scriptList)
             {
-                scriptList.Add(new ScriptModel(container.ContainerID)
+                newproject.scriptList.Add(new ScriptModel(container.ContainerID)
                 {
                     Filename = container.ContainerID,
                     InternalScript = container.InternalScript
                 });
             }
+            return newproject;
         }
 
         #region Undo/Redo

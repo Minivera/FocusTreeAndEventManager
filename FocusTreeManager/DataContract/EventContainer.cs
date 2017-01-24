@@ -1,10 +1,6 @@
 ﻿using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -26,12 +22,10 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "events", Order = 3)]
         public List<Event> EventList { get; set; }
 
-        public RelayCommand DeleteElementCommand { get; private set; }
-
         public EventContainer()
         {
             IdentifierID = Guid.NewGuid();
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EventList = new List<Event>();
         }
 
         public EventContainer(string filename)
@@ -39,22 +33,26 @@ namespace FocusTreeManager.DataContract
             ContainerID = filename;
             EventList = new List<Event>();
             IdentifierID = Guid.NewGuid();
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
         }
 
         public EventContainer(Containers.LegacySerialization.EventContainer legacyItem)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             ContainerID = legacyItem.ContainerID;
             EventNamespace = legacyItem.EventNamespace;
             EventList = Event.PopulateFromLegacy(legacyItem.EventList.ToList());
             IdentifierID = legacyItem.IdentifierID;
         }
 
-        [OnDeserializing]
-        void OnDeserializing(StreamingContext c)
+        public EventContainer(EventTabModel item)
         {
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            IdentifierID = item.UniqueID;
+            ContainerID = item.Filename;
+            EventNamespace = item.EventNamespace;
+            EventList = new List<Event>();
+            foreach (EventModel model in item.EventList)
+            {
+                EventList.Add(new Event(model));
+            }
         }
 
         internal static List<EventContainer> PopulateFromLegacy(
@@ -66,22 +64,6 @@ namespace FocusTreeManager.DataContract
                 list.Add(new EventContainer(legacyItem));
             }
             return list;
-        }
-        
-        public ObservableCollection<EventModel> getFocusModelList()
-        {
-            ObservableCollection<EventModel> list = new ObservableCollection<EventModel>();
-            foreach (Event item in EventList)
-            {
-                list.Add(new EventModel(item));
-            }
-            return list;
-        }
-
-        private void SendDeleteSignal()
-        {
-            Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
         }
     }
 }

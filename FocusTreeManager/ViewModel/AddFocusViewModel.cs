@@ -57,8 +57,8 @@ namespace FocusTreeManager.ViewModel
             try
             {
                 Point mousePos = Mouse.GetPosition((IInputElement)sender);
-                FocusModel focus = FocusModel.createNewModel();
-                focus.DataContract.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
+                FocusModel focus = new FocusModel();
+                focus.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
                                     .FirstOrDefault((t) => t is FocusGridModel && ((FocusGridModel)t).isShown))
                                     .FociList.Count());
                 Focus = focus;

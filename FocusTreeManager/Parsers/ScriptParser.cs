@@ -32,9 +32,9 @@ namespace FocusTreeManager.Parsers
             return text.ToString();
         }
 
-        public static ScriptContainer CreateScriptFromFile(string fileName)
+        public static ScriptModel CreateScriptFromFile(string fileName)
         {
-            ScriptContainer container = new ScriptContainer(Path.GetFileNameWithoutExtension(fileName));
+            ScriptModel container = new ScriptModel(Path.GetFileNameWithoutExtension(fileName));
             Script newScript = new Script();
             newScript.Analyse(File.ReadAllText(fileName));
             container.InternalScript = newScript;
