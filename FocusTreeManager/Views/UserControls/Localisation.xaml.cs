@@ -59,7 +59,8 @@ namespace FocusTreeManager.Views
             LocaleModel item = e.Item as LocaleModel;
             if (item != null)
             {
-                if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null)
+                if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null &&
+                    !string.IsNullOrEmpty(FilterKeyTextBox.Text))
                 {
                     if (item.Key.ToLower().Contains(FilterKeyTextBox.Text.ToLower()))
                     {
@@ -70,7 +71,8 @@ namespace FocusTreeManager.Views
                         e.Accepted = false;
                     }
                 }
-                else if (FilterKey == ColumnToFilter.Value && FilterValueTextBox != null)
+                else if (FilterKey == ColumnToFilter.Value && FilterValueTextBox != null &&
+                    !string.IsNullOrEmpty(FilterKeyTextBox.Text))
                 {
                     if (item.Value.ToLower().Contains(FilterValueTextBox.Text.ToLower()))
                     {

@@ -45,46 +45,20 @@
             Sets a the value which indicates if the UI element always show the focus visual style.
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Accent">
+        <member name="T:MahApps.Metro.Properties.Resources">
             <summary>
-            An object that represents the foreground color for a Metro <see cref="T:MahApps.Metro.AppTheme"/>.
+              A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="F:MahApps.Metro.Accent.Resources">
+        <member name="P:MahApps.Metro.Properties.Resources.ResourceManager">
             <summary>
-            The ResourceDictionary that represents this Accent.
+              Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="P:MahApps.Metro.Accent.Name">
+        <member name="P:MahApps.Metro.Properties.Resources.Culture">
             <summary>
-            Gets/sets the name of the Accent.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Accent.#ctor">
-            <summary>
-            Initializes a new instance of the MahApps.Metro.Accent class.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Accent.#ctor(System.String,System.Uri)">
-            <summary>
-            Initializes a new instance of the MahApps.Metro.Accent class.
-            </summary>
-            <param name="name">The name of the new Accent.</param>
-            <param name="resourceAddress">The URI of the accent ResourceDictionary.</param>
-        </member>
-        <member name="T:MahApps.Metro.AppTheme">
-            <summary>
-            Represents the background theme of the application.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.AppTheme.Resources">
-            <summary>
-            The ResourceDictionary that represents this application theme.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.AppTheme.Name">
-            <summary>
-            Gets the name of the application theme.
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Behaviours.BorderlessWindowBehavior">
@@ -201,223 +175,97 @@
             Determine if the inner ContentPresenter should use AccessText in its style
             </summary> 
         </member>
-        <member name="M:MahApps.Metro.Controls.Extensions.BeginInvoke(System.Windows.Threading.DispatcherObject,System.Action,System.Windows.Threading.DispatcherPriority)">
+        <member name="T:MahApps.Metro.Controls.CustomValidationPopup">
+            <summary>
+            This custom popup is used by the validation error template.
+            It provides some additional nice features:
+                - repositioning if host-window size or location changed
+                - repositioning if host-window gets maximized and vice versa
+                - it's only topmost if the host-window is activated
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.CustomValidationPopup.CloseOnMouseLeftButtonDown">
+            <summary>
+            Gets/sets if the popup can be closed by left mouse button down.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.PrepareCellForEdit(System.Windows.FrameworkElement,System.Windows.RoutedEventArgs)">
+            <summary>
+                Called when a cell has just switched to edit mode. 
+            </summary>
+            <param name="editingElement">A reference to element returned by GenerateEditingElement.</param> 
+            <param name="editingEventArgs">The event args of the input event that caused the cell to go into edit mode. May be null.</param> 
+            <returns>The unedited value of the cell.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.SyncColumnProperty(System.Windows.DependencyObject,System.Windows.DependencyObject,System.Windows.DependencyProperty,System.Windows.DependencyProperty)">
+            <summary>
+            Synchronizes the column property. Taken from Helper code for DataGrid.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.IsDefaultValue(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
+            <summary>
+            Taken from Helper code for DataGrid.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontFamilyProperty">
+            <summary>
+            The DependencyProperty for the FontFamily property. 
+            Default Value: SystemFonts.MessageFontFamily
+            </summary> 
+        </member>
+        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontFamily">
             <summary> 
-              Executes the specified action asynchronously with the DispatcherPriority.Background on the thread that the Dispatcher was created on.
-            </summary>
-            <param name="dispatcherObject">The dispatcher object where the action runs.</param>
-            <param name="invokeAction">An action that takes no parameters.</param>
-            <param name="priority">The dispatcher priority.</param> 
-        </member>
-        <member name="T:MahApps.Metro.Controls.TimePartVisibility">
-            <summary>
-            Defines the visibility for time-parts that are visible for the <see cref="T:MahApps.Metro.Controls.DateTimePicker"/>. 
+            The font family of the desired font. 
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Controls.DateTimePicker">
+        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontSizeProperty">
             <summary>
-                Represents a control that allows the user to select a date and a time.
+            The DependencyProperty for the FontSize property. 
+            Default Value: SystemFonts.MessageFontSize
             </summary>
         </member>
-        <member name="E:MahApps.Metro.Controls.DateTimePicker.SelectedDateChanged">
-            <summary>
-                Occurs when the <see cref="P:MahApps.Metro.Controls.DateTimePicker.SelectedDate" /> property is changed.
+        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontSize">
+            <summary> 
+            The size of the desired font.
+            </summary> 
+        </member>
+        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontStyleProperty">
+            <summary> 
+            The DependencyProperty for the FontStyle property.
+            Default Value: SystemFonts.MessageFontStyle 
             </summary>
         </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDate">
+        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontStyle">
             <summary>
-                Gets or sets the date to display
-            </summary>
-            <returns>
-                The date to display. The default is <see cref="P:System.DateTime.Today" />.
-            </returns>
+            The style of the desired font. 
+            </summary> 
         </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDateEnd">
-            <summary>
-                Gets or sets the last date to be displayed.
-            </summary>
-            <returns>The last date to display.</returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDateStart">
-            <summary>
-                Gets or sets the first date to be displayed.
-            </summary>
-            <returns>The first date to display.</returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.FirstDayOfWeek">
-            <summary>
-                Gets or sets the day that is considered the beginning of the week.
-            </summary>
-            <returns>
-                A <see cref="T:System.DayOfWeek" /> that represents the beginning of the week. The default is the
-                <see cref="P:System.Globalization.DateTimeFormatInfo.FirstDayOfWeek" /> that is determined by the current culture.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.IsTodayHighlighted">
-            <summary>
-                Gets or sets a value that indicates whether the current date will be highlighted.
-            </summary>
-            <returns>true if the current date is highlighted; otherwise, false. The default is true. </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.Orientation">
-            <summary>
-                Gets or sets a value that indicates the dimension by which calendar and clock are stacked.
-            </summary>
-            <returns>
-                The <see cref="T:System.Windows.Controls.Orientation" /> of the calendar and clock. The default is
-                <see cref="F:System.Windows.Controls.Orientation.Horizontal" />.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DateTimePicker.SelectedDate">
-            <summary>
-                Gets or sets the currently selected date.
-            </summary>
-            <returns>
-                The date currently selected. The default is null.
-            </returns>
-        </member>
-        <member name="T:MahApps.Metro.Controls.MetroThumbContentControl">
-            <summary>
-            The MetroThumbContentControl control can be used for titles or something else and enables basic drag movement functionality.
+        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontWeightProperty">
+            <summary> 
+            The DependencyProperty for the FontWeight property.
+            Default Value: SystemFonts.MessageFontWeight
             </summary>
         </member>
-        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragStarted">
+        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontWeight">
             <summary>
-            Adds or remove a DragStartedEvent handler
+            The weight or thickness of the desired font. 
             </summary>
         </member>
-        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragDelta">
+        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.ForegroundProperty">
             <summary>
-            Adds or remove a DragDeltaEvent handler
+            The DependencyProperty for the Foreground property.
+            Default Value: SystemColors.ControlTextBrush 
             </summary>
         </member>
-        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragCompleted">
+        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.Foreground">
             <summary>
-            Adds or remove a DragCompletedEvent handler
-            </summary>
+            An brush that describes the foreground color. This overrides the cell foreground inherited color.
+            </summary> 
         </member>
-        <member name="F:MahApps.Metro.Controls.MetroThumbContentControl.IsDraggingProperty">
+        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.NotifyPropertyChangeForRefreshContent(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
-            DependencyProperty for the IsDragging property.
+            Method used as property changed callback for properties which need RefreshCellContent to be called
             </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroThumbContentControl.IsDragging">
-            <summary>
-            Indicates that the left mouse button is pressed and is over the MetroThumbContentControl.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.Dialogs.DialogCoordinator.Instance">
-            <summary>
-            Gets the default instance if the dialog coordinator, which can be injected into a view model.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.Dialogs.IDialogCoordinator">
-            <summary>
-            Use the dialog coordinator to help you interfact with dialogs from a view model.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowInputAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Shows the input dialog.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the MessageDialog.</param>
-            <param name="message">The message contained within the MessageDialog.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalInputExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Shows the input dialog.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the MessageDialog.</param>
-            <param name="message">The message contained within the MessageDialog.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowLoginAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.LoginDialogSettings)">
-            <summary>
-            Creates a LoginDialog inside of the current window.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the LoginDialog.</param>
-            <param name="message">The message contained within the LoginDialog.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalLoginExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.LoginDialogSettings)">
-            <summary>
-            Creates a LoginDialog outside of the current window.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the LoginDialog.</param>
-            <param name="message">The message contained within the LoginDialog.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMessageAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MessageDialogStyle,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Creates a MessageDialog inside of the current window.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the MessageDialog.</param>
-            <param name="message">The message contained within the MessageDialog.</param>
-            <param name="style">The type of buttons to use.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>A task promising the result of which button was pressed.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalMessageExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MessageDialogStyle,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Creates a MessageDialog outside of the current window.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the MessageDialog.</param>
-            <param name="message">The message contained within the MessageDialog.</param>
-            <param name="style">The type of buttons to use.</param>
-            <param name="settings">Optional settings that override the global metro dialog settings.</param>
-            <returns>A task promising the result of which button was pressed.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowProgressAsync(System.Object,System.String,System.String,System.Boolean,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Creates a ProgressDialog inside of the current window.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="title">The title of the ProgressDialog.</param>
-            <param name="message">The message within the ProgressDialog.</param>
-            <param name="isCancelable">Determines if the cancel button is visible.</param>
-            <param name="settings">Optional Settings that override the global metro dialog settings.</param>
-            <returns>A task promising the instance of ProgressDialogController for this operation.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Adds a Metro Dialog instance to the specified window and makes it visible asynchronously.        
-            <para>You have to close the resulting dialog yourself with <see cref="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.HideMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/>.</para>
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="dialog">The dialog instance itself.</param>
-            <param name="settings">An optional pre-defined settings instance.</param>
-            <returns>A task representing the operation.</returns>
-            <exception cref="T:System.InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.HideMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
-            <summary>
-            Hides a visible Metro Dialog instance.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
-            <param name="dialog">The dialog instance to hide.</param>
-            <param name="settings">An optional pre-defined settings instance.</param>
-            <returns>A task representing the operation.</returns>
-            <exception cref="T:System.InvalidOperationException">
-            The <paramref name="dialog"/> is not visible in the window.
-            This happens if <see cref="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/> hasn't been called before.
-            </exception>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.GetCurrentDialogAsync``1(System.Object)">
-            <summary>
-            Gets the current shown dialog.
-            </summary>
-            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
         </member>
         <member name="T:MahApps.Metro.Controls.Dialogs.BaseMetroDialog">
              <summary>
@@ -469,6 +317,13 @@
             <summary>
             Initializes a new MahApps.Metro.Controls.BaseMetroDialog.
             </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.BaseMetroDialog.ConfigureSettings(MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            With this method it's possible to return your own settings in a custom dialog.
+            </summary>
+            <param name="settings"></param>
+            <returns></returns>
         </member>
         <member name="M:MahApps.Metro.Controls.Dialogs.BaseMetroDialog.OnLoaded">
             <summary>
@@ -598,6 +453,11 @@
             An implementation of BaseMetroDialog allowing arbitrary content.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.Dialogs.DialogCoordinator.Instance">
+            <summary>
+            Gets the default instance if the dialog coordinator, which can be injected into a view model.
+            </summary>
+        </member>
         <member name="M:MahApps.Metro.Controls.Dialogs.DialogManager.ShowLoginAsync(MahApps.Metro.Controls.MetroWindow,System.String,System.String,MahApps.Metro.Controls.Dialogs.LoginDialogSettings)">
             <summary>
             Creates a LoginDialog inside of the current window.
@@ -643,7 +503,7 @@
         <member name="M:MahApps.Metro.Controls.Dialogs.DialogManager.ShowMetroDialogAsync(MahApps.Metro.Controls.MetroWindow,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
             <summary>
             Adds a Metro Dialog instance to the specified window and makes it visible asynchronously.
-            If you want to wait until the user has closed the dialog, use <see cref="!:ShowMetroDialogAsyncAwaitable"/>
+            If you want to wait until the user has closed the dialog, use <see cref="M:MahApps.Metro.Controls.Dialogs.BaseMetroDialog.WaitUntilUnloadedAsync"/>
             <para>You have to close the resulting dialog yourself with <see cref="M:MahApps.Metro.Controls.Dialogs.DialogManager.HideMetroDialogAsync(MahApps.Metro.Controls.MetroWindow,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/>.</para>
             </summary>
             <param name="window">The owning window of the dialog.</param>
@@ -651,6 +511,16 @@
             <param name="settings">An optional pre-defined settings instance.</param>
             <returns>A task representing the operation.</returns>
             <exception cref="T:System.InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.DialogManager.ShowMetroDialogAsync``1(MahApps.Metro.Controls.MetroWindow,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Adds a Metro Dialog instance of the given type to the specified window and makes it visible asynchronously.
+            If you want to wait until the user has closed the dialog, use <see cref="M:MahApps.Metro.Controls.Dialogs.BaseMetroDialog.WaitUntilUnloadedAsync"/>
+            <para>You have to close the resulting dialog yourself with <see cref="M:MahApps.Metro.Controls.Dialogs.DialogManager.HideMetroDialogAsync(MahApps.Metro.Controls.MetroWindow,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/>.</para>
+            </summary>
+            <param name="window">The owning window of the dialog.</param>
+            <param name="settings">An optional pre-defined settings instance.</param>
+            <returns>A task with the dialog representing the operation.</returns>
         </member>
         <member name="M:MahApps.Metro.Controls.Dialogs.DialogManager.HideMetroDialogAsync(MahApps.Metro.Controls.MetroWindow,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
             <summary>
@@ -701,6 +571,114 @@
             <param name="style">The type of buttons to use.</param>
             <param name="settings">Optional settings that override the global metro dialog settings.</param>
             <returns>A task promising the result of which button was pressed.</returns>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Dialogs.IDialogCoordinator">
+            <summary>
+            Use the dialog coordinator to help you interfact with dialogs from a view model.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowInputAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Shows the input dialog.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the MessageDialog.</param>
+            <param name="message">The message contained within the MessageDialog.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalInputExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Shows the input dialog.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the MessageDialog.</param>
+            <param name="message">The message contained within the MessageDialog.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowLoginAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.LoginDialogSettings)">
+            <summary>
+            Creates a LoginDialog inside of the current window.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the LoginDialog.</param>
+            <param name="message">The message contained within the LoginDialog.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalLoginExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.LoginDialogSettings)">
+            <summary>
+            Creates a LoginDialog outside of the current window.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the LoginDialog.</param>
+            <param name="message">The message contained within the LoginDialog.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMessageAsync(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MessageDialogStyle,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Creates a MessageDialog inside of the current window.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the MessageDialog.</param>
+            <param name="message">The message contained within the MessageDialog.</param>
+            <param name="style">The type of buttons to use.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>A task promising the result of which button was pressed.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowModalMessageExternal(System.Object,System.String,System.String,MahApps.Metro.Controls.Dialogs.MessageDialogStyle,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Creates a MessageDialog outside of the current window.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the MessageDialog.</param>
+            <param name="message">The message contained within the MessageDialog.</param>
+            <param name="style">The type of buttons to use.</param>
+            <param name="settings">Optional settings that override the global metro dialog settings.</param>
+            <returns>A task promising the result of which button was pressed.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowProgressAsync(System.Object,System.String,System.String,System.Boolean,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Creates a ProgressDialog inside of the current window.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="title">The title of the ProgressDialog.</param>
+            <param name="message">The message within the ProgressDialog.</param>
+            <param name="isCancelable">Determines if the cancel button is visible.</param>
+            <param name="settings">Optional Settings that override the global metro dialog settings.</param>
+            <returns>A task promising the instance of ProgressDialogController for this operation.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Adds a Metro Dialog instance to the specified window and makes it visible asynchronously.        
+            <para>You have to close the resulting dialog yourself with <see cref="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.HideMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/>.</para>
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="dialog">The dialog instance itself.</param>
+            <param name="settings">An optional pre-defined settings instance.</param>
+            <returns>A task representing the operation.</returns>
+            <exception cref="T:System.InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.HideMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)">
+            <summary>
+            Hides a visible Metro Dialog instance.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
+            <param name="dialog">The dialog instance to hide.</param>
+            <param name="settings">An optional pre-defined settings instance.</param>
+            <returns>A task representing the operation.</returns>
+            <exception cref="T:System.InvalidOperationException">
+            The <paramref name="dialog"/> is not visible in the window.
+            This happens if <see cref="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.ShowMetroDialogAsync(System.Object,MahApps.Metro.Controls.Dialogs.BaseMetroDialog,MahApps.Metro.Controls.Dialogs.MetroDialogSettings)"/> hasn't been called before.
+            </exception>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.IDialogCoordinator.GetCurrentDialogAsync``1(System.Object)">
+            <summary>
+            Gets the current shown dialog.
+            </summary>
+            <param name="context">Typically this should be the view model, which you register in XAML using <see cref="M:MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(System.Windows.DependencyObject,System.Object)"/>.</param>
         </member>
         <member name="T:MahApps.Metro.Controls.Dialogs.InputDialog">
             <summary>
@@ -838,222 +816,6 @@
             </summary>
             <returns>A task representing the operation.</returns>
         </member>
-        <member name="T:MahApps.Metro.Controls.AmPmComparer">
-             <summary>
-             Represents an hour comparison operation that ensures that 12 is smaller than 1.
-             This ensures that in the <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> control the first hour that is selectable is 12 (AM/PM). 
-             </summary>
-            <remarks>
-             This ensures that the first hour that is selectable is 12 (AM/PM). <br></br>
-             This comparer is used only if in the corresponding <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> the value for <see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime"/> is false.
-             </remarks>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ButtonHelper.GetPreserveTextCase(System.Windows.UIElement)">
-            <summary>
-            Overrides the text case behavior for certain buttons.
-            When set to <c>true</c>, the text case will be preserved and won't be changed to upper or lower case.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ButtonHelper.CornerRadiusProperty">
-            <summary>
-            DependencyProperty for <see cref="T:System.Windows.CornerRadius" /> property.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ButtonHelper.GetCornerRadius(System.Windows.UIElement)">
-            <summary> 
-            The CornerRadius property allows users to control the roundness of the button corners independently by 
-            setting a radius value for each corner. Radius values that are too large are scaled so that they
-            smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
-            Description taken from original Microsoft description :-D
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.ComboBoxHelper">
-            <summary>
-            A helper class that provides various attached properties for the ComboBox control.
-            <see cref="T:System.Windows.Controls.ComboBox"/>
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.GetMaxLength(System.Windows.UIElement)">
-            <summary>
-            Gets the Maximum number of characters the TextBox can accept.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.SetMaxLength(System.Windows.UIElement,System.Int32)">
-            <summary>
-            Sets the Maximum number of characters the TextBox can accept.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.GetCharacterCasing(System.Windows.UIElement)">
-            <summary>
-            Gets the Character casing of the TextBox.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.SetCharacterCasing(System.Windows.UIElement,System.Windows.Controls.CharacterCasing)">
-            <summary>
-            Sets the Character casing of the TextBox.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.ControlsHelper">
-            <summary>
-            A helper class that provides various controls.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetDisabledVisualElementVisibility(System.Windows.UIElement)">
-            <summary>
-            Gets the value to handle the visibility of the DisabledVisualElement in the template.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetDisabledVisualElementVisibility(System.Windows.UIElement,System.Windows.Visibility)">
-            <summary>
-            Sets the value to handle the visibility of the DisabledVisualElement in the template.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ControlsHelper.ContentCharacterCasingProperty">
-            <summary>
-            The DependencyProperty for the CharacterCasing property.
-            Controls whether or not content is converted to upper or lower case
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetContentCharacterCasing(System.Windows.UIElement)">
-            <summary>
-            Gets the character casing of the control
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetContentCharacterCasing(System.Windows.UIElement,System.Windows.Controls.CharacterCasing)">
-            <summary>
-            Sets the character casing of the control
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ControlsHelper.ButtonWidthProperty">
-            <summary>
-            This property can be used to set the button width (PART_ClearText) of TextBox, PasswordBox, ComboBox, NumericUpDown
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetFocusBorderBrush(System.Windows.DependencyObject,System.Windows.Media.Brush)">
-            <summary>
-            Sets the brush used to draw the focus border.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetFocusBorderBrush(System.Windows.DependencyObject)">
-            <summary>
-            Gets the brush used to draw the focus border.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetMouseOverBorderBrush(System.Windows.DependencyObject,System.Windows.Media.Brush)">
-            <summary>
-            Sets the brush used to draw the mouse over brush.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetMouseOverBorderBrush(System.Windows.DependencyObject)">
-            <summary>
-            Gets the brush used to draw the mouse over brush.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ControlsHelper.CornerRadiusProperty">
-            <summary>
-            DependencyProperty for <see cref="T:System.Windows.CornerRadius" /> property.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetCornerRadius(System.Windows.UIElement)">
-            <summary> 
-            The CornerRadius property allows users to control the roundness of the button corners independently by 
-            setting a radius value for each corner. Radius values that are too large are scaled so that they
-            smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
-            Description taken from original Microsoft description :-D
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.CustomValidationPopup">
-            <summary>
-            This custom popup is used by the validation error template.
-            It provides some additional nice features:
-                - repositioning if host-window size or location changed
-                - repositioning if host-window gets maximized and vice versa
-                - it's only topmost if the host-window is activated
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.CustomValidationPopup.CloseOnMouseLeftButtonDown">
-            <summary>
-            Gets/sets if the popup can be closed by left mouse button down.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.PrepareCellForEdit(System.Windows.FrameworkElement,System.Windows.RoutedEventArgs)">
-            <summary>
-                Called when a cell has just switched to edit mode. 
-            </summary>
-            <param name="editingElement">A reference to element returned by GenerateEditingElement.</param> 
-            <param name="editingEventArgs">The event args of the input event that caused the cell to go into edit mode. May be null.</param> 
-            <returns>The unedited value of the cell.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.SyncColumnProperty(System.Windows.DependencyObject,System.Windows.DependencyObject,System.Windows.DependencyProperty,System.Windows.DependencyProperty)">
-            <summary>
-            Synchronizes the column property. Taken from Helper code for DataGrid.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.IsDefaultValue(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
-            <summary>
-            Taken from Helper code for DataGrid.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontFamilyProperty">
-            <summary>
-            The DependencyProperty for the FontFamily property. 
-            Default Value: SystemFonts.MessageFontFamily
-            </summary> 
-        </member>
-        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontFamily">
-            <summary> 
-            The font family of the desired font. 
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontSizeProperty">
-            <summary>
-            The DependencyProperty for the FontSize property. 
-            Default Value: SystemFonts.MessageFontSize
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontSize">
-            <summary> 
-            The size of the desired font.
-            </summary> 
-        </member>
-        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontStyleProperty">
-            <summary> 
-            The DependencyProperty for the FontStyle property.
-            Default Value: SystemFonts.MessageFontStyle 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontStyle">
-            <summary>
-            The style of the desired font. 
-            </summary> 
-        </member>
-        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontWeightProperty">
-            <summary> 
-            The DependencyProperty for the FontWeight property.
-            Default Value: SystemFonts.MessageFontWeight
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.FontWeight">
-            <summary>
-            The weight or thickness of the desired font. 
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.DataGridNumericUpDownColumn.ForegroundProperty">
-            <summary>
-            The DependencyProperty for the Foreground property.
-            Default Value: SystemColors.ControlTextBrush 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.DataGridNumericUpDownColumn.Foreground">
-            <summary>
-            An brush that describes the foreground color. This overrides the cell foreground inherited color.
-            </summary> 
-        </member>
-        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.NotifyPropertyChangeForRefreshContent(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            Method used as property changed callback for properties which need RefreshCellContent to be called
-            </summary>
-        </member>
         <member name="F:MahApps.Metro.Controls.DropDownButton.ContentTemplateProperty">
             <summary>
             The DependencyProperty for the ContentTemplate property.
@@ -1169,6 +931,14 @@
             <summary>Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes.</summary>
             <param name="e">Information about the change.</param>
         </member>
+        <member name="M:MahApps.Metro.Controls.Extensions.BeginInvoke(System.Windows.Threading.DispatcherObject,System.Action,System.Windows.Threading.DispatcherPriority)">
+            <summary> 
+              Executes the specified action asynchronously with the DispatcherPriority.Background on the thread that the Dispatcher was created on.
+            </summary>
+            <param name="dispatcherObject">The dispatcher object where the action runs.</param>
+            <param name="invokeAction">An action that takes no parameters.</param>
+            <param name="priority">The dispatcher priority.</param> 
+        </member>
         <member name="T:MahApps.Metro.Controls.FlipView">
             <summary>
             A control that imitate a slideshow with back/forward buttons.
@@ -1178,6 +948,44 @@
             <summary>
             To counteract the double Loaded event issue.
             </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.FlipView.CoerceSelectedIndexProperty(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Coerce SelectedIndexProperty's value.
+            </summary>
+            <param name="d">The object that the property exists on.</param>
+            <param name="value">The new value of the property, prior to any coercion attempt.</param>
+            <returns>The coerced value (with appropriate type). </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.FlipView.ComputeTransition(System.Int32,System.Int32)">
+            <summary>
+            Computes the transition when changing selected index.
+            </summary>
+            <param name="fromIndex">Previous selected index.</param>
+            <param name="toIndex">New selected index.</param>
+        </member>
+        <member name="M:MahApps.Metro.Controls.FlipView.GetNavigationButtons(System.Windows.Controls.Button@,System.Windows.Controls.Button@,System.Collections.Generic.IEnumerable{System.Windows.Controls.Button}@)">
+            <summary>
+            Gets the navigation buttons.
+            </summary>
+            <param name="prevButton">Previous button.</param>
+            <param name="nextButton">Next button.</param>
+            <param name="inactiveButtons">Inactive buttons.</param>
+        </member>
+        <member name="M:MahApps.Metro.Controls.FlipView.ApplyToNavigationButtons(System.Action{System.Windows.Controls.Button},System.Action{System.Windows.Controls.Button},System.Action{System.Windows.Controls.Button})">
+            <summary>
+            Applies actions to navigation buttons.
+            </summary>
+            <param name="prevButtonApply">Action applied to the previous button.</param>
+            <param name="nextButtonApply">Action applied to the next button.</param>
+            <param name="inactiveButtonsApply">Action applied to the inactive buttons.</param>
+            <exception cref="T:System.ArgumentNullException">Any action is null.</exception>
+        </member>
+        <member name="M:MahApps.Metro.Controls.FlipView.DetectControlButtonsStatus(System.Windows.Visibility)">
+            <summary>
+            Sets the visibility of navigation buttons.
+            </summary>
+            <param name="activeButtonsVisibility">Visibility of active buttons.</param>
         </member>
         <member name="M:MahApps.Metro.Controls.FlipView.GoBack">
             <summary>
@@ -1400,6 +1208,468 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenu">
+            <summary>
+            The HamburgerMenu is based on a SplitView control. By default it contains a HamburgerButton and a ListView to display menu items.
+            </summary>
+            <summary>
+            The HamburgerMenu is based on a SplitView control. By default it contains a HamburgerButton and a ListView to display menu items.
+            </summary>
+            <summary>
+            The HamburgerMenu is based on a SplitView control. By default it contains a HamburgerButton and a ListView to display menu items.
+            </summary>
+            <summary>
+            The HamburgerMenu is based on a SplitView control. By default it contains a HamburgerButton and a ListView to display menu items.
+            </summary>
+            <summary>
+            The HamburgerMenu is based on a SplitView control. By default it contains a HamburgerButton and a ListView to display menu items.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.HamburgerMenu.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MahApps.Metro.Controls.HamburgerMenu"/> class.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.HamburgerMenu.OnApplyTemplate">
+            <summary>
+            Override default OnApplyTemplate to capture children controls
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.HamburgerMenu.ItemClick">
+            <summary>
+            Event raised when an item is clicked
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.HamburgerMenu.OptionsItemClick">
+            <summary>
+            Event raised when an options' item is clicked
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerWidthProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerWidth"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerHeightProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerHeight"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerMarginProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMargin"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplate">
+            <summary>
+            Gets or sets the hamburger icon.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerWidth">
+            <summary>
+            Gets or sets main button's width
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerHeight">
+            <summary>
+            Gets or sets main button's height
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMargin">
+            <summary>
+            Gets or sets main button's margin
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemsSourceProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemsSource"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplateSelectorProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplateSelector"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsVisibility"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsItemProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsItem"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsIndexProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsIndex"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemsSource">
+            <summary>
+                Gets or sets an object source used to generate the content of the options.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplate">
+            <summary>
+            Gets or sets the DataTemplate used to display each item in the options.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplateSelector">
+            <summary>
+            Gets or sets the DataTemplateSelector used to display each item in the options.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItems">
+            <summary>
+            Gets the collection used to generate the content of the option list.
+            </summary>
+            <exception cref="T:System.Exception">
+            Exception thrown if OptionsListView is not yet defined.
+            </exception>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsVisibility">
+            <summary>
+            Gets or sets options' visibility.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsItem">
+            <summary>
+            Gets or sets the selected options menu item.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsIndex">
+            <summary>
+            Gets or sets the selected options menu index.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OpenPaneLengthProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OpenPaneLength"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.PanePlacementProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.PanePlacement"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.DisplayModeProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.DisplayMode"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.CompactPaneLengthProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.CompactPaneLength"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.PaneBackgroundProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.PaneBackground"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.IsPaneOpenProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.IsPaneOpen"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ItemsSourceProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ItemsSource"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ItemTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ItemTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ItemTemplateSelectorProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ItemTemplateSelector"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.SelectedItemProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.SelectedItem"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.SelectedIndexProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.SelectedIndex"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ContentTransitionProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ContentTransition"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OpenPaneLength">
+            <summary>
+            Gets or sets the width of the pane when it's fully expanded.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.PanePlacement">
+            <summary>
+            Gets or sets a value that specifies whether the pane is shown on the right or left side of the control.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.DisplayMode">
+            <summary>
+            Gets or sets gets of sets a value that specifies how the pane and content areas are shown.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.CompactPaneLength">
+            <summary>
+            Gets or sets the width of the pane in its compact display mode.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.PaneBackground">
+            <summary>
+            Gets or sets the Brush to apply to the background of the Pane area of the control.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.IsPaneOpen">
+            <summary>
+            Gets or sets a value indicating whether gets or sets a value that specifies whether the pane is expanded to its full width.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.ItemsSource">
+            <summary>
+            Gets or sets an object source used to generate the content of the menu.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.ItemTemplate">
+            <summary>
+            Gets or sets the DataTemplate used to display each item.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.ItemTemplateSelector">
+            <summary>
+            Gets or sets the DataTemplateSelector used to display each item.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.Items">
+            <summary>
+            Gets the collection used to generate the content of the items list.
+            </summary>
+            <exception cref="T:System.Exception">
+            Exception thrown if ButtonsListView is not yet defined.
+            </exception>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedItem">
+            <summary>
+            Gets or sets the selected menu item.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedIndex">
+            <summary>
+            Gets or sets the selected menu index.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenuGlyphItem">
+            <summary>
+            The HamburgerMenuItem provides a glyph based implementation for HamburgerMenu entries.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuGlyphItem.GlyphProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuGlyphItem.Glyph"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuGlyphItem.Glyph">
+            <summary>
+            Gets or sets gets of sets a value that specifies the glyph to use from Segoe MDL2 Assets font.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenuImageItem">
+            <summary>
+            The HamburgerMenuItem provides an image based implementation for HamburgerMenu entries.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuImageItem.ThumbnailProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuImageItem.Thumbnail"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuImageItem.Thumbnail">
+            <summary>
+            Gets or sets gets of sets a value that specifies the glyph to use from Segoe MDL2 Assets font.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenuItem">
+            <summary>
+            The HamburgerMenuItem provides an abstract implementation for HamburgerMenu entries.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.LabelProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.Label"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.TargetPageTypeProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.TargetPageType"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.TagProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.Tag"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.Label">
+            <summary>
+            Gets or sets gets of sets a value that specifies label to display.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.TargetPageType">
+            <summary>
+            Gets or sets gets of sets a value that specifies the page to navigate to (if you use the HamburgerMenu with a Frame content)
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.Tag">
+            <summary>
+            Gets or sets gets of sets a value that specifies an user specific value.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenuItemCollection">
+            <summary>
+            The HamburgerMenuItemCollection provides typed collection of HamburgerMenuItem.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.AmPmComparer">
+             <summary>
+             Represents an hour comparison operation that ensures that 12 is smaller than 1.
+             This ensures that in the <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> control the first hour that is selectable is 12 (AM/PM). 
+             </summary>
+            <remarks>
+             This ensures that the first hour that is selectable is 12 (AM/PM). <br></br>
+             This comparer is used only if in the corresponding <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> the value for <see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime"/> is false.
+             </remarks>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ButtonHelper.GetPreserveTextCase(System.Windows.UIElement)">
+            <summary>
+            Overrides the text case behavior for certain buttons.
+            When set to <c>true</c>, the text case will be preserved and won't be changed to upper or lower case.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ButtonHelper.CornerRadiusProperty">
+            <summary>
+            DependencyProperty for <see cref="T:System.Windows.CornerRadius" /> property.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ButtonHelper.GetCornerRadius(System.Windows.UIElement)">
+            <summary> 
+            The CornerRadius property allows users to control the roundness of the button corners independently by 
+            setting a radius value for each corner. Radius values that are too large are scaled so that they
+            smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
+            Description taken from original Microsoft description :-D
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.ComboBoxHelper">
+            <summary>
+            A helper class that provides various attached properties for the ComboBox control.
+            <see cref="T:System.Windows.Controls.ComboBox"/>
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.GetMaxLength(System.Windows.UIElement)">
+            <summary>
+            Gets the Maximum number of characters the TextBox can accept.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.SetMaxLength(System.Windows.UIElement,System.Int32)">
+            <summary>
+            Sets the Maximum number of characters the TextBox can accept.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.GetCharacterCasing(System.Windows.UIElement)">
+            <summary>
+            Gets the Character casing of the TextBox.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ComboBoxHelper.SetCharacterCasing(System.Windows.UIElement,System.Windows.Controls.CharacterCasing)">
+            <summary>
+            Sets the Character casing of the TextBox.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.ControlsHelper">
+            <summary>
+            A helper class that provides various controls.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetDisabledVisualElementVisibility(System.Windows.UIElement)">
+            <summary>
+            Gets the value to handle the visibility of the DisabledVisualElement in the template.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetDisabledVisualElementVisibility(System.Windows.UIElement,System.Windows.Visibility)">
+            <summary>
+            Sets the value to handle the visibility of the DisabledVisualElement in the template.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ControlsHelper.ContentCharacterCasingProperty">
+            <summary>
+            The DependencyProperty for the CharacterCasing property.
+            Controls whether or not content is converted to upper or lower case
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetContentCharacterCasing(System.Windows.UIElement)">
+            <summary>
+            Gets the character casing of the control
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetContentCharacterCasing(System.Windows.UIElement,System.Windows.Controls.CharacterCasing)">
+            <summary>
+            Sets the character casing of the control
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ControlsHelper.ButtonWidthProperty">
+            <summary>
+            This property can be used to set the button width (PART_ClearText) of TextBox, PasswordBox, ComboBox, NumericUpDown
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetFocusBorderBrush(System.Windows.DependencyObject,System.Windows.Media.Brush)">
+            <summary>
+            Sets the brush used to draw the focus border.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetFocusBorderBrush(System.Windows.DependencyObject)">
+            <summary>
+            Gets the brush used to draw the focus border.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.SetMouseOverBorderBrush(System.Windows.DependencyObject,System.Windows.Media.Brush)">
+            <summary>
+            Sets the brush used to draw the mouse over brush.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetMouseOverBorderBrush(System.Windows.DependencyObject)">
+            <summary>
+            Gets the brush used to draw the mouse over brush.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ControlsHelper.CornerRadiusProperty">
+            <summary>
+            DependencyProperty for <see cref="T:System.Windows.CornerRadius" /> property.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ControlsHelper.GetCornerRadius(System.Windows.UIElement)">
+            <summary> 
+            The CornerRadius property allows users to control the roundness of the button corners independently by 
+            setting a radius value for each corner. Radius values that are too large are scaled so that they
+            smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
+            Description taken from original Microsoft description :-D
+            </summary>
+        </member>
         <member name="M:MahApps.Metro.Controls.DataGridCellHelper.GetSaveDataGrid(System.Windows.UIElement)">
             <summary>
             Save the DataGrid.
@@ -1511,6 +1781,11 @@
             Changes the value of the slider if the mouse pointer is over this element.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.ScrollBarHelper.VerticalScrollBarOnLeftSideProperty">
+            <summary>
+            This property can be used to set vertical scrollbar left side from the tabpanel (look at MetroAnimatedSingleRowTabControl)
+            </summary>
+        </member>
         <member name="M:MahApps.Metro.Controls.SliderHelper.GetChangeValueBy(System.Windows.Controls.Slider)">
             <summary>
             Gets/Sets the type how the value will be changed if the user rotates the mouse wheel.
@@ -1531,202 +1806,122 @@
             Gets/Sets the value when the slider will be changed. Possible values are if the slider is focused or if the mouse is over the slider.
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Controls.TimePicker">
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.IsUnderlinedProperty">
             <summary>
-                Represents a control that allows the user to select a time.
+            Defines whether the underline below the <see cref="T:System.Windows.Controls.TabControl"/> is shown or not.
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Controls.TimePickerBase">
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.TransitionProperty">
             <summary>
-                Represents a base-class for time picking.
+            This property can be used to set the Transition for animated TabControls
             </summary>
         </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.IsDatePickerVisiblePropertyKey">
+        <member name="T:MahApps.Metro.Controls.TextBoxHelper">
             <summary>
-            This readonly dependency property is to control whether to show the date-picker (in case of <see cref="T:MahApps.Metro.Controls.DateTimePicker"/>) or hide it (in case of <see cref="T:MahApps.Metro.Controls.TimePicker"/>.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.MinTimeOfDay">
-            <summary>
-            Represents the time 00:00:00; 12:00:00 AM respectively
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.MaxTimeOfDay">
-            <summary>
-            Represents the time 23:59:59.9999999; 11:59:59.9999999 PM respectively
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf5">
-            <summary>
-            This list contains values from 0 to 55 with an interval of 5. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
-            </summary>
-            <example>
-            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
-            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
-            </example>
-            <returns>
-            Returns a list containing {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}.
-            </returns>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf10">
-            <summary>
-            This list contains values from 0 to 50 with an interval of 10. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
-            </summary>
-            <example>
-            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
-            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
-            </example>
-            <returns>
-            Returns a list containing {0, 10, 20, 30, 40, 50}.
-            </returns>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf15">
-            <summary>
-            This list contains values from 0 to 45 with an interval of 15. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
-            </summary>
-            <example>
-            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
-            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
-            </example>
-            <returns>
-            Returns a list containing {0, 15, 30, 45}.
-            </returns>
-        </member>
-        <member name="E:MahApps.Metro.Controls.TimePickerBase.SelectedTimeChanged">
-            <summary>
-                Occurs when the <see cref="P:MahApps.Metro.Controls.TimePickerBase.SelectedTime" /> property is changed.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.Culture">
-            <summary>
-                Gets or sets a value indicating the culture to be used in string formatting operations.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.HandVisibility">
-            <summary>
-                Gets or sets a value indicating the visibility of the clock hands in the user interface (UI).
-            </summary>
-            <returns>
-                The visibility definition of the clock hands. The default is <see cref="F:MahApps.Metro.Controls.TimePartVisibility.All" />.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsDatePickerVisible">
-            <summary>
-            Gets or sets a value indicating whether the date can be selected or not. This property is read-only.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsClockVisible">
-            <summary>
-                Gets or sets a value indicating whether the clock of this control is visible in the user interface (UI). This is a
-                dependency property.
+            A helper class that provides various attached properties for the TextBox control.
             </summary>
             <remarks>
-                If this value is set to false then <see cref="T:System.Windows.Controls.Orientation" /> is set to
-                <see cref="F:System.Windows.Controls.Orientation.Vertical" />
+            Password watermarking code from: http://prabu-guru.blogspot.com/2010/06/how-to-add-watermark-text-to-textbox.html
             </remarks>
-            <returns>
-                true if the clock is visible; otherwise, false. The default value is true.
-            </returns>
         </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsDropDownOpen">
+        <member name="F:MahApps.Metro.Controls.TextBoxHelper.IsClearTextButtonBehaviorEnabledProperty">
             <summary>
-                Gets or sets a value indicating whether the drop-down for a <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> box is currently
-                    open.
-            </summary>
-            <returns>true if the drop-down is open; otherwise, false. The default is false.</returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsReadOnly">
-            <summary>
-                Gets or sets a value indicating whether the contents of the <see cref="T:MahApps.Metro.Controls.TimePickerBase" /> are not editable.
-            </summary>
-            <returns>
-                true if the <see cref="T:MahApps.Metro.Controls.TimePickerBase" /> is read-only; otherwise, false. The default is false.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.PickerVisibility">
-            <summary>
-                Gets or sets a value indicating the visibility of the selectable date-time-parts in the user interface (UI).
-            </summary>
-            <returns>
-                visibility definition of the selectable date-time-parts. The default is <see cref="F:MahApps.Metro.Controls.TimePartVisibility.All" />.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.SelectedTime">
-            <summary>
-                Gets or sets the currently selected time.
-            </summary>
-            <returns>
-                The time currently selected. The default is null.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceHours">
-            <summary>
-                Gets or sets a collection used to generate the content for selecting the hours.
-            </summary>
-            <returns>
-                A collection that is used to generate the content for selecting the hours. The default is a list of interger from 0
-                to 23 if <see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime" /> is false or a list of interger from
-                1 to 12 otherwise..
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes">
-            <summary>
-                Gets or sets a collection used to generate the content for selecting the minutes.
-            </summary>
-            <returns>
-                A collection that is used to generate the content for selecting the minutes. The default is a list of int from
-                0 to 59.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds">
-            <summary>
-                Gets or sets a collection used to generate the content for selecting the seconds.
-            </summary>
-            <returns>
-                A collection that is used to generate the content for selecting the minutes. The default is a list of int from
-                0 to 59.
-            </returns>
-        </member>
-        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime">
-            <summary>
-                Gets a value indicating whether the <see cref="P:System.Globalization.DateTimeFormatInfo.AMDesignator" /> that is specified by the
-                <see cref="T:System.Globalization.CultureInfo" />
-                set by the <see cref="P:MahApps.Metro.Controls.TimePickerBase.Culture" /> (<see cref="P:System.Windows.FrameworkElement.Language" /> if null) has not a value.
+            The clear text button behavior property. It sets a click event to the button if the value is true.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TimePickerBase.OnApplyTemplate">
+        <member name="F:MahApps.Metro.Controls.TextBoxHelper.ButtonWidthProperty">
             <summary>
-                When overridden in a derived class, is invoked whenever application code or internal processes call
-                <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+            This property can be used to set the button width (PART_ClearText) of TextBox, PasswordBox, ComboBox, NumericUpDown
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TimePickerBase.GetAmPmOffset(System.Int32)">
+        <member name="F:MahApps.Metro.Controls.TextBoxHelper.AutoWatermarkProperty">
             <summary>
-                Gets the offset from the selected <paramref name="currentHour" /> to use it in <see cref="T:System.TimeSpan" /> as hour
-                parameter.
+            This property can be used to retrieve the watermark using the <see cref="T:System.ComponentModel.DataAnnotations.DisplayAttribute"/> of bound property.
             </summary>
-            <param name="currentHour">The current hour.</param>
-            <returns>
-                An integer representing the offset to add to the hour that is selected in the hour-picker for setting the correct
-                <see cref="P:System.DateTime.TimeOfDay" />. The offset is determined as follows:
-                <list type="table">
-                    <listheader>
-                        <term>Condition</term><description>Offset</description>
-                    </listheader>
-                    <item>
-                        <term><see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime" /> is false</term><description>0</description>
-                    </item>
-                    <item>
-                        <term>Selected hour is between 1 AM and 11 AM</term><description>0</description>
-                    </item>
-                    <item>
-                        <term>Selected hour is 12 AM</term><description>-12h</description>
-                    </item>
-                    <item>
-                        <term>Selected hour is between 12 PM and 11 PM</term><description>+12h</description>
-                    </item>
-                </list>
-            </returns>
+            <remarks>
+            Setting this property to true will uses reflection.
+            </remarks>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetIsSpellCheckContextMenuEnabled(System.Windows.UIElement)">
+            <summary>
+            Indicates if a TextBox or RichTextBox should use SpellCheck context menu
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetAutoWatermark(System.Windows.DependencyObject,System.Boolean)">
+             <summary>
+             Indicates if the watermark is automatically retrieved by using the <see cref="T:System.ComponentModel.DataAnnotations.DisplayAttribute"/> of the bound property.
+             </summary>
+            <remarks>This attached property uses reflection; thus it might reduce the performance of the application.
+            The auto-watermak does work for the following controls:
+            In the following case no custom watermark is shown
+            <list type="bullet">
+            <item>There is no binding</item>
+            <item>Binding path errors</item>
+            <item>Binding to a element of a collection without using a property of that element <c>Binding Path=Collection[0]</c> use: <c>Binding Path=Collection[0].SubProperty</c></item>
+            <item>The bound property does not have a <see cref="T:System.ComponentModel.DataAnnotations.DisplayAttribute"/></item>
+            </list></remarks>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetHasText(System.Windows.DependencyObject)">
+            <summary>
+            Gets if the attached TextBox has text.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetClearTextButton(System.Windows.DependencyObject)">
+            <summary>
+            Gets the clear text button visibility / feature. Can be used to enable text deletion.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetClearTextButton(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the clear text button visibility / feature. Can be used to enable text deletion.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetTextButton(System.Windows.DependencyObject)">
+            <summary>
+            Gets the text button visibility.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetTextButton(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the text button visibility.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetButtonsAlignment(System.Windows.DependencyObject)">
+            <summary>
+            Gets the buttons placement variant.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetButtonsAlignment(System.Windows.DependencyObject,MahApps.Metro.Controls.ButtonsAlignment)">
+            <summary>
+            Sets the buttons placement variant.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetIsClearTextButtonBehaviorEnabled(System.Windows.Controls.Button)">
+            <summary>
+            Gets the clear text button behavior.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetIsClearTextButtonBehaviorEnabled(System.Windows.Controls.Button,System.Boolean)">
+            <summary>
+            Sets the clear text button behavior.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetButtonContentTemplate(System.Windows.DependencyObject)">
+            <summary> 
+            ButtonContentTemplate is the template used to display the content of the ClearText button. 
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ToggleButtonHelper.ContentDirectionProperty">
+            <summary>
+            This property can be used to handle the style for CheckBox and RadioButton
+            LeftToRight means content left and button right and RightToLeft vise versa
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ToggleButtonHelper.GetContentDirection(System.Windows.UIElement)">
+            <summary>
+            This property can be used to handle the style for CheckBox and RadioButton
+            LeftToRight means content left and button right and RightToLeft vise versa
+            </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.MetroAnimatedSingleRowTabControl">
             <summary>
@@ -1746,6 +1941,11 @@
         <member name="M:MahApps.Metro.Controls.MetroAnimatedTabControl.#ctor">
             <summary>
             Initializes a new instance of the MahApps.Metro.Controls.MetroAnimatedTabControl class.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.MetroContentControl">
+            <summary>
+            Originally from http://xamlcoder.com/blog/2010/11/04/creating-a-metro-ui-style-control/
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.MetroNavigationWindow">
@@ -1988,6 +2188,267 @@
             Gets/sets the command parameter which is passed to the close button command.
             </summary>
         </member>
+        <member name="T:MahApps.Metro.Controls.MetroThumbContentControl">
+            <summary>
+            The MetroThumbContentControl control can be used for titles or something else and enables basic drag movement functionality.
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragStarted">
+            <summary>
+            Adds or remove a DragStartedEvent handler
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragDelta">
+            <summary>
+            Adds or remove a DragDeltaEvent handler
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.MetroThumbContentControl.DragCompleted">
+            <summary>
+            Adds or remove a DragCompletedEvent handler
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.MetroThumbContentControl.IsDraggingProperty">
+            <summary>
+            DependencyProperty for the IsDragging property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroThumbContentControl.IsDragging">
+            <summary>
+            Indicates that the left mouse button is pressed and is over the MetroThumbContentControl.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.MetroWindow">
+            <summary>
+            An extended, metrofied Window class.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.OverrideDefaultWindowCommandsBrush">
+            <summary>
+            Allows easy handling of window commands brush. Theme is also applied based on this brush.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowTransitionsEnabled">
+            <summary>
+            Gets/sets whether the window's entrance transition animation is enabled.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.Flyouts">
+            <summary>
+            Gets/sets the FlyoutsControl that hosts the window's flyouts.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IconTemplate">
+            <summary>
+            Gets/sets the icon content template to show a custom icon.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleTemplate">
+            <summary>
+            Gets/sets the title content template to show a custom title.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.LeftWindowCommands">
+            <summary>
+            Gets/sets the left window commands that hosts the user commands.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.RightWindowCommands">
+            <summary>
+            Gets/sets the right window commands that hosts the user commands.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowButtonCommands">
+            <summary>
+            Gets/sets the window button commands that hosts the min/max/close commands.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IgnoreTaskbarOnMaximize">
+            <summary>
+            Gets/sets whether the window will ignore (and overlap) the taskbar when maximized.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleForeground">
+            <summary>
+            Gets/sets the brush used for the titlebar's foreground.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.SaveWindowPosition">
+            <summary>
+            Gets/sets whether the window will save it's position between loads.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.GetWindowPlacementSettings">
+            <summary>
+            Gets the window placement settings (can be overwritten).
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowIconOnTitleBar">
+            <summary>
+            Get/sets whether the titlebar icon is visible or not.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowDialogsOverTitleBar">
+            <summary>
+            Get/sets whether dialogs show over the title bar.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IconEdgeMode">
+            <summary>
+            Gets/sets edge mode of the titlebar icon.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IconBitmapScalingMode">
+            <summary>
+            Gets/sets bitmap scaling mode of the titlebar icon.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IconScalingMode">
+            <summary>
+            Gets/sets icon scaling mode of the titlebar.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowTitleBar">
+            <summary>
+            Gets/sets whether the TitleBar is visible or not.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.UseNoneWindowStyle">
+            <summary>
+            Gets/sets whether the WindowStyle is None or not.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowMinButton">
+            <summary>
+            Gets/sets if the minimize button is visible.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowMaxRestoreButton">
+            <summary>
+            Gets/sets if the Maximize/Restore button is visible.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowCloseButton">
+            <summary>
+            Gets/sets if the close button is visible.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IsMinButtonEnabled">
+            <summary>
+            Gets/sets if the min button is enabled.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IsMaxRestoreButtonEnabled">
+            <summary>
+            Gets/sets if the max/restore button is enabled.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.IsCloseButtonEnabled">
+            <summary>
+            Gets/sets if the close button is enabled.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowSystemMenuOnRightClick">
+            <summary>
+            Gets/sets if the the system menu should popup on right click.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitlebarHeight">
+            <summary>
+            Gets/sets the TitleBar's height.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleCaps">
+            <summary>
+            Gets/sets if the TitleBar's text is automatically capitalized.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleCharacterCasing">
+            <summary>
+            Character casing of the title
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleAlignment">
+            <summary>
+            Gets/sets the title horizontal alignment.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowTitleBrush">
+            <summary>
+            Gets/sets the brush used for the Window's title bar.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.GlowBrush">
+            <summary>
+            Gets/sets the brush used for the Window's glow.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveGlowBrush">
+            <summary>
+            Gets/sets the brush used for the Window's non-active glow.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveBorderBrush">
+            <summary>
+            Gets/sets the brush used for the Window's non-active border.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveWindowTitleBrush">
+            <summary>
+            Gets/sets the brush used for the Window's non-active title bar.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.OverlayBrush">
+            <summary>
+            Gets/sets the brush used for the dialog overlay.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.OverlayOpacity">
+            <summary>
+            Gets/sets the opacity used for the dialog overlay.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.ShowOverlayAsync">
+            <summary>
+            Begins to show the MetroWindow's overlay effect.
+            </summary>
+            <returns>A task representing the process.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.HideOverlayAsync">
+            <summary>
+            Begins to hide the MetroWindow's overlay effect.
+            </summary>
+            <returns>A task representing the process.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.StoreFocus(System.Windows.IInputElement)">
+            <summary>
+            Stores the given element, or the last focused element via FocusManager, for restoring the focus after closing a dialog.
+            </summary>
+            <param name="thisElement">The element which will be focused again.</param>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.ResetStoredFocus">
+            <summary>
+            Clears the stored element which would get the focus after closing a dialog.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.#ctor">
+            <summary>
+            Initializes a new instance of the MahApps.Metro.Controls.MetroWindow class.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.GetPart``1(System.String)">
+            <summary>
+            Gets the template child with the given name.
+            </summary>
+            <typeparam name="T">The interface type inheirted from DependencyObject.</typeparam>
+            <param name="name">The name of the template child.</param>
+        </member>
+        <member name="M:MahApps.Metro.Controls.MetroWindow.GetPart(System.String)">
+            <summary>
+            Gets the template child with the given name.
+            </summary>
+            <param name="name">The name of the template child.</param>
+        </member>
         <member name="T:MahApps.Metro.Controls.MetroWindowHelpers">
             <summary>
             This class eats little children.
@@ -2139,6 +2600,12 @@
                 New value of the <see cref="P:MahApps.Metro.Controls.NumericUpDown.Value" /> property
             </param>
         </member>
+        <member name="T:MahApps.Metro.Controls.Planerator">
+            <summary>
+              Based on Greg Schechter's Planerator
+              http://blogs.msdn.com/b/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx
+            </summary>
+        </member>
         <member name="T:MahApps.Metro.Controls.Position">
             <summary>
             An Enum representing different positions, such as Left or Right.
@@ -2169,188 +2636,6 @@
             Returns/sets the value of the property
             </summary>
             <seealso cref="F:MahApps.Metro.Controls.PropertyChangeNotifier.ValueProperty"/>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ScrollBarHelper.VerticalScrollBarOnLeftSideProperty">
-            <summary>
-            This property can be used to set vertical scrollbar left side from the tabpanel (look at MetroAnimatedSingleRowTabControl)
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.CommandParameter">
-            <summary>
-            Reflects the parameter to pass to the CommandProperty upon execution. 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.CommandTarget">
-            <summary>
-            Gets or sets the target element on which to fire the command.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.Command">
-            <summary>
-            Get or sets the Command property. 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.IsExpanded">
-            <summary> 
-            Indicates whether the Popup is visible. 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ExtraTag">
-            <summary>
-            Gets or sets an extra tag.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.Orientation">
-            <summary>
-            Gets or sets the dimension of children stacking.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.Icon">
-            <summary>
-             Gets or sets the Content used to generate the icon part.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.IconTemplate">
-            <summary> 
-            Gets or sets the ContentTemplate used to display the content of the icon part. 
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ButtonStyle">
-            <summary>
-            Gets/sets the button style.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ButtonArrowStyle">
-            <summary>
-            Gets/sets the button arrow style.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ListBoxStyle">
-            <summary>
-            Gets/sets the popup listbox style.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowBrush">
-            <summary>
-            Gets/sets the brush of the button arrow icon.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowMouseOverBrush">
-            <summary>
-            Gets/sets the brush of the button arrow icon if the mouse is over the split button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowPressedBrush">
-            <summary>
-            Gets/sets the brush of the button arrow icon if the arrow button is pressed.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.SplitButton.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
-            <summary>Updates the current selection when an item in the <see cref="T:System.Windows.Controls.Primitives.Selector" /> has changed</summary>
-            <param name="e">The event data.</param>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TabControlHelper.IsUnderlinedProperty">
-            <summary>
-            Defines whether the underline below the <see cref="T:System.Windows.Controls.TabControl"/> is shown or not.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.TabControlHelper.TransitionProperty">
-            <summary>
-            This property can be used to set the Transition for animated TabControls
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.ToggleButtonHelper.ContentDirectionProperty">
-            <summary>
-            This property can be used to handle the style for CheckBox and RadioButton
-            LeftToRight means content left and button right and RightToLeft vise versa
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.ToggleButtonHelper.GetContentDirection(System.Windows.UIElement)">
-            <summary>
-            This property can be used to handle the style for CheckBox and RadioButton
-            LeftToRight means content left and button right and RightToLeft vise versa
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.Theme">
-            <summary>
-            An Enum representing different themes for window commands.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightMinButtonStyle">
-            <summary>
-            Gets or sets the value indicating current light style for the minimize button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightMaxButtonStyle">
-            <summary>
-            Gets or sets the value indicating current light style for the maximize button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightCloseButtonStyle">
-            <summary>
-            Gets or sets the value indicating current light style for the close button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkMinButtonStyle">
-            <summary>
-            Gets or sets the value indicating current dark style for the minimize button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkMaxButtonStyle">
-            <summary>
-            Gets or sets the value indicating current dark style for the maximize button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkCloseButtonStyle">
-            <summary>
-            Gets or sets the value indicating current dark style for the close button.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Theme">
-            <summary>
-            Gets or sets the value indicating current theme.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Minimize">
-            <summary>
-            Gets or sets the minimize button tooltip.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Maximize">
-            <summary>
-            Gets or sets the maximize button tooltip.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Close">
-            <summary>
-            Gets or sets the close button tooltip.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Restore">
-            <summary>
-            Gets or sets the restore button tooltip.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.Never">
-            <summary>
-            Doesn't overlay flyouts nor a hidden TitleBar.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.Flyouts">
-            <summary>
-            Overlays opened <see cref="T:MahApps.Metro.Controls.Flyout"/> controls.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.HiddenTitleBar">
-            <summary>
-            Overlays a hidden TitleBar.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.Planerator">
-            <summary>
-              Based on Greg Schechter's Planerator
-              http://blogs.msdn.com/b/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx
-            </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.RangeSelectionChangedEventArgs">
             <summary>
@@ -2460,77 +2745,725 @@
             </summary>
             <param name="oldMaximum">The old value of the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Maximum"/> property.</param><param name="newMaximum">The new value of the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Maximum"/> property.</param>
         </member>
-        <member name="T:MahApps.Metro.Controls.TextBoxHelper">
+        <member name="T:MahApps.Metro.Controls.RevealImage">
             <summary>
-            A helper class that provides various attached properties for the TextBox control.
+            RevealImage
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.RevealImage.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.CommandParameter">
+            <summary>
+            Reflects the parameter to pass to the CommandProperty upon execution. 
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.CommandTarget">
+            <summary>
+            Gets or sets the target element on which to fire the command.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.Command">
+            <summary>
+            Get or sets the Command property. 
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.IsExpanded">
+            <summary> 
+            Indicates whether the Popup is visible. 
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ExtraTag">
+            <summary>
+            Gets or sets an extra tag.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.Orientation">
+            <summary>
+            Gets or sets the dimension of children stacking.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.Icon">
+            <summary>
+             Gets or sets the Content used to generate the icon part.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.IconTemplate">
+            <summary> 
+            Gets or sets the ContentTemplate used to display the content of the icon part. 
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ButtonStyle">
+            <summary>
+            Gets/sets the button style.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ButtonArrowStyle">
+            <summary>
+            Gets/sets the button arrow style.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ListBoxStyle">
+            <summary>
+            Gets/sets the popup listbox style.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowBrush">
+            <summary>
+            Gets/sets the brush of the button arrow icon.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowMouseOverBrush">
+            <summary>
+            Gets/sets the brush of the button arrow icon if the mouse is over the split button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitButton.ArrowPressedBrush">
+            <summary>
+            Gets/sets the brush of the button arrow icon if the arrow button is pressed.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.SplitButton.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>Updates the current selection when an item in the <see cref="T:System.Windows.Controls.Primitives.Selector" /> has changed</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="T:MahApps.Metro.Controls.GridLengthAnimation">
+            <summary>
+                A special animation used to animates the length of a <see cref="T:System.Windows.Controls.Grid" />.
+            </summary>
+            <seealso cref="T:System.Windows.Media.Animation.AnimationTimeline" />
+            <autogeneratedoc />
+        </member>
+        <member name="T:MahApps.Metro.Controls.SplitView">
+            <summary>
+                Represents a container with two views; one view for the main content and another view that is typically used for
+                navigation commands.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.CompactPaneLengthProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.CompactPaneLength">
+            <summary>
+                Gets or sets the width of the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane in its compact display mode.
+            </summary>
+            <returns>
+                The width of the pane in it's compact display mode. The default is 48 device-independent pixel (DIP) (defined
+                by the SplitViewCompactPaneThemeLength resource).
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.ContentProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.Content" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.Content" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.Content">
+            <summary>
+                Gets or sets the contents of the main panel of a <see cref="T:MahApps.Metro.Controls.SplitView" />.
+            </summary>
+            <returns>The contents of the main panel of a <see cref="T:MahApps.Metro.Controls.SplitView" />. The default is null.</returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.DisplayModeProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.DisplayMode" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.DisplayMode" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.DisplayMode">
+            <summary>
+                Gets of sets a value that specifies how the pane and content areas of a <see cref="T:MahApps.Metro.Controls.SplitView" /> are shown.
+            </summary>
+            <returns>
+                A value of the enumeration that specifies how the pane and content areas of a <see cref="T:MahApps.Metro.Controls.SplitView" /> are
+                shown. The default is <see cref="F:MahApps.Metro.Controls.SplitViewDisplayMode.Overlay" />.
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.IsPaneOpenProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.IsPaneOpen" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.IsPaneOpen" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.IsPaneOpen">
+            <summary>
+                Gets or sets a value that specifies whether the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane is expanded to its full width.
+            </summary>
+            <returns>true if the pane is expanded to its full width; otherwise, false. The default is true.</returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.OpenPaneLengthProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.OpenPaneLength">
+            <summary>
+                Gets or sets the width of the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane when it's fully expanded.
+            </summary>
+            <returns>
+                The width of the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane when it's fully expanded. The default is 320 device-independent
+                pixel (DIP).
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.PaneProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.Pane">
+            <summary>
+                Gets or sets the contents of the pane of a <see cref="T:MahApps.Metro.Controls.SplitView" />.
+            </summary>
+            <returns>The contents of the pane of a <see cref="T:MahApps.Metro.Controls.SplitView" />. The default is null.</returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.PaneBackgroundProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.PaneBackground" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.PaneBackground" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.PaneBackground">
+            <summary>
+                Gets or sets the Brush to apply to the background of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.
+            </summary>
+            <returns>The Brush to apply to the background of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.</returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.PanePlacementProperty">
+            <summary>
+                Identifies the PanePlacement dependency property.
+            </summary>
+            <returns>The identifier for the PanePlacement dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.PanePlacement">
+            <summary>
+                Gets or sets a value that specifies whether the pane is shown on the right or left side of the
+                <see cref="T:MahApps.Metro.Controls.SplitView" />.
+            </summary>
+            <returns>
+                A value of the enumeration that specifies whether the pane is shown on the right or left side of the
+                <see cref="T:MahApps.Metro.Controls.SplitView" />. The default is <see cref="F:MahApps.Metro.Controls.SplitViewPanePlacement.Left" />.
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.TemplateSettingsProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.TemplateSettings" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.TemplateSettings" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.TemplateSettings">
+            <summary>
+                Gets an object that provides calculated values that can be referenced as TemplateBinding sources when defining
+                templates for a <see cref="T:MahApps.Metro.Controls.SplitView" /> control.
+            </summary>
+            <returns>An object that provides calculated values for templates.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.SplitView.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:MahApps.Metro.Controls.SplitView" /> class.
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.SplitView.PaneClosed">
+            <summary>
+                Occurs when the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane is closed.
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.SplitView.PaneClosing">
+            <summary>
+                Occurs when the <see cref="T:MahApps.Metro.Controls.SplitView" /> pane is closing.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.SplitViewDisplayMode">
+            <summary>
+                Constants that specify how the pane is shown in a <see cref="T:MahApps.Metro.Controls.SplitView" />.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewDisplayMode.Overlay">
+            <summary>
+                The pane covers the content when it's open and does not take up space in the control layout.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewDisplayMode.Inline">
+            <summary>
+                The pane is shown side-by-side with the content and takes up space in the control layout.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewDisplayMode.CompactOverlay">
+            <summary>
+                The amount of the pane defined by the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> property is shown side-by-side
+                with the content and takes up space in the control layout.
+                The remaining part of the pane covers the content when it's open and does not take up space in the control layout.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewDisplayMode.CompactInline">
+            <summary>
+                The amount of the pane defined by the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> property is shown side-by-side
+                with the content and takes up space in the control layout.
+                The remaining part of the pane pushes the content to the side when it's open and takes up space in the control
+                layout.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.SplitViewPaneClosingEventArgs">
+            <summary>
+                Provides event data for the <see cref="E:MahApps.Metro.Controls.SplitView.PaneClosing" /> event.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewPaneClosingEventArgs.Cancel">
+            <summary>
+                Gets or sets a value that indicates whether the pane closing action should be canceled.
+            </summary>
+            <returns>true to cancel the pane closing action; otherwise, false.</returns>
+        </member>
+        <member name="T:MahApps.Metro.Controls.SplitViewPanePlacement">
+            <summary>
+                Constants that specify whether the pane is set to the left or to the right of the content in a
+                <see cref="T:MahApps.Metro.Controls.SplitView" />.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewPanePlacement.Left">
+            <summary>
+                The pane is shown to the left of the <see cref="T:MahApps.Metro.Controls.SplitView" /> content.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitViewPanePlacement.Right">
+            <summary>
+                The pane is shown to the right of the <see cref="T:MahApps.Metro.Controls.SplitView" /> content.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.SplitViewTemplateSettings">
+            <summary>
+                Provides calculated values that can be referenced as TemplatedParent sources when defining templates for a
+                <see cref="T:MahApps.Metro.Controls.SplitView" />.
+                Not intended for general use.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.CompactPaneGridLength">
+            <summary>
+                Gets the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> value as a GridLength.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.NegativeOpenPaneLength">
+            <summary>
+                Gets the negative of the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> value.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.NegativeOpenPaneLengthMinusCompactLength">
+            <summary>
+                Gets the negative of the value calculated by subtracting the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> value from
+                the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> value.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.OpenPaneGridLength">
+            <summary>
+                Gets the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> value as a GridLength.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.OpenPaneLength">
+            <summary>
+                Gets the <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> value.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitViewTemplateSettings.OpenPaneLengthMinusCompactLength">
+            <summary>
+                Gets a value calculated by subtracting the <see cref="P:MahApps.Metro.Controls.SplitView.CompactPaneLength" /> value from the
+                <see cref="P:MahApps.Metro.Controls.SplitView.OpenPaneLength" /> value.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Theme">
+            <summary>
+            An Enum representing different themes for window commands.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.Tile.HorizontalTitleAlignmentProperty">
+            <summary> 
+            HorizontalTitleAlignment Dependency Property.
+            Default Value: HorizontalAlignment.Left
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.Tile.HorizontalTitleAlignment">
+            <summary> 
+            Gets/Sets the horizontal alignment of the title.
+            </summary> 
+        </member>
+        <member name="F:MahApps.Metro.Controls.Tile.VerticalTitleAlignmentProperty">
+            <summary>
+            VerticalTitleAlignment Dependency Property. 
+            Default Value: VerticalAlignment.Bottom
+            </summary> 
+        </member>
+        <member name="P:MahApps.Metro.Controls.Tile.VerticalTitleAlignment">
+            <summary>
+            Gets/Sets the vertical alignment of the title.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.DateTimePicker">
+            <summary>
+                Represents a control that allows the user to select a date and a time.
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.DateTimePicker.SelectedDateChanged">
+            <summary>
+                Occurs when the <see cref="P:MahApps.Metro.Controls.DateTimePicker.SelectedDate" /> property is changed.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDate">
+            <summary>
+                Gets or sets the date to display
+            </summary>
+            <returns>
+                The date to display. The default is <see cref="P:System.DateTime.Today" />.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDateEnd">
+            <summary>
+                Gets or sets the last date to be displayed.
+            </summary>
+            <returns>The last date to display.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.DisplayDateStart">
+            <summary>
+                Gets or sets the first date to be displayed.
+            </summary>
+            <returns>The first date to display.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.FirstDayOfWeek">
+            <summary>
+                Gets or sets the day that is considered the beginning of the week.
+            </summary>
+            <returns>
+                A <see cref="T:System.DayOfWeek" /> that represents the beginning of the week. The default is the
+                <see cref="P:System.Globalization.DateTimeFormatInfo.FirstDayOfWeek" /> that is determined by the current culture.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.IsTodayHighlighted">
+            <summary>
+                Gets or sets a value that indicates whether the current date will be highlighted.
+            </summary>
+            <returns>true if the current date is highlighted; otherwise, false. The default is true. </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.Orientation">
+            <summary>
+                Gets or sets a value that indicates the dimension by which calendar and clock are stacked.
+            </summary>
+            <returns>
+                The <see cref="T:System.Windows.Controls.Orientation" /> of the calendar and clock. The default is
+                <see cref="F:System.Windows.Controls.Orientation.Horizontal" />.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.DateTimePicker.SelectedDate">
+            <summary>
+                Gets or sets the currently selected date.
+            </summary>
+            <returns>
+                The date currently selected. The default is null.
+            </returns>
+        </member>
+        <member name="T:MahApps.Metro.Controls.TimePartVisibility">
+            <summary>
+            Defines the visibility for time-parts that are visible for the <see cref="T:MahApps.Metro.Controls.DateTimePicker"/>. 
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.TimePicker">
+            <summary>
+                Represents a control that allows the user to select a time.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.TimePickerBase">
+            <summary>
+                Represents a base-class for time picking.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.IsDatePickerVisiblePropertyKey">
+            <summary>
+            This readonly dependency property is to control whether to show the date-picker (in case of <see cref="T:MahApps.Metro.Controls.DateTimePicker"/>) or hide it (in case of <see cref="T:MahApps.Metro.Controls.TimePicker"/>.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.MinTimeOfDay">
+            <summary>
+            Represents the time 00:00:00; 12:00:00 AM respectively
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.MaxTimeOfDay">
+            <summary>
+            Represents the time 23:59:59.9999999; 11:59:59.9999999 PM respectively
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf5">
+            <summary>
+            This list contains values from 0 to 55 with an interval of 5. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
+            </summary>
+            <example>
+            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
+            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
+            </example>
+            <returns>
+            Returns a list containing {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}.
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf10">
+            <summary>
+            This list contains values from 0 to 50 with an interval of 10. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
+            </summary>
+            <example>
+            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
+            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
+            </example>
+            <returns>
+            Returns a list containing {0, 10, 20, 30, 40, 50}.
+            </returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TimePickerBase.IntervalOf15">
+            <summary>
+            This list contains values from 0 to 45 with an interval of 15. It can be used to bind to <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes"/> and <see cref="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds"/>.
+            </summary>
+            <example>
+            <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
+            <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
+            </example>
+            <returns>
+            Returns a list containing {0, 15, 30, 45}.
+            </returns>
+        </member>
+        <member name="E:MahApps.Metro.Controls.TimePickerBase.SelectedTimeChanged">
+            <summary>
+                Occurs when the <see cref="P:MahApps.Metro.Controls.TimePickerBase.SelectedTime" /> property is changed.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.Culture">
+            <summary>
+                Gets or sets a value indicating the culture to be used in string formatting operations.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.HandVisibility">
+            <summary>
+                Gets or sets a value indicating the visibility of the clock hands in the user interface (UI).
+            </summary>
+            <returns>
+                The visibility definition of the clock hands. The default is <see cref="F:MahApps.Metro.Controls.TimePartVisibility.All" />.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsDatePickerVisible">
+            <summary>
+            Gets or sets a value indicating whether the date can be selected or not. This property is read-only.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsClockVisible">
+            <summary>
+                Gets or sets a value indicating whether the clock of this control is visible in the user interface (UI). This is a
+                dependency property.
             </summary>
             <remarks>
-            Password watermarking code from: http://prabu-guru.blogspot.com/2010/06/how-to-add-watermark-text-to-textbox.html
+                If this value is set to false then <see cref="T:System.Windows.Controls.Orientation" /> is set to
+                <see cref="F:System.Windows.Controls.Orientation.Vertical" />
             </remarks>
+            <returns>
+                true if the clock is visible; otherwise, false. The default value is true.
+            </returns>
         </member>
-        <member name="F:MahApps.Metro.Controls.TextBoxHelper.IsClearTextButtonBehaviorEnabledProperty">
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsDropDownOpen">
             <summary>
-            The clear text button behavior property. It sets a click event to the button if the value is true.
+                Gets or sets a value indicating whether the drop-down for a <see cref="T:MahApps.Metro.Controls.TimePickerBase"/> box is currently
+                    open.
+            </summary>
+            <returns>true if the drop-down is open; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsReadOnly">
+            <summary>
+                Gets or sets a value indicating whether the contents of the <see cref="T:MahApps.Metro.Controls.TimePickerBase" /> are not editable.
+            </summary>
+            <returns>
+                true if the <see cref="T:MahApps.Metro.Controls.TimePickerBase" /> is read-only; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.PickerVisibility">
+            <summary>
+                Gets or sets a value indicating the visibility of the selectable date-time-parts in the user interface (UI).
+            </summary>
+            <returns>
+                visibility definition of the selectable date-time-parts. The default is <see cref="F:MahApps.Metro.Controls.TimePartVisibility.All" />.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.SelectedTime">
+            <summary>
+                Gets or sets the currently selected time.
+            </summary>
+            <returns>
+                The time currently selected. The default is null.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceHours">
+            <summary>
+                Gets or sets a collection used to generate the content for selecting the hours.
+            </summary>
+            <returns>
+                A collection that is used to generate the content for selecting the hours. The default is a list of interger from 0
+                to 23 if <see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime" /> is false or a list of interger from
+                1 to 12 otherwise..
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceMinutes">
+            <summary>
+                Gets or sets a collection used to generate the content for selecting the minutes.
+            </summary>
+            <returns>
+                A collection that is used to generate the content for selecting the minutes. The default is a list of int from
+                0 to 59.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.SourceSeconds">
+            <summary>
+                Gets or sets a collection used to generate the content for selecting the seconds.
+            </summary>
+            <returns>
+                A collection that is used to generate the content for selecting the minutes. The default is a list of int from
+                0 to 59.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime">
+            <summary>
+                Gets a value indicating whether the <see cref="P:System.Globalization.DateTimeFormatInfo.AMDesignator" /> that is specified by the
+                <see cref="T:System.Globalization.CultureInfo" />
+                set by the <see cref="P:MahApps.Metro.Controls.TimePickerBase.Culture" /> (<see cref="P:System.Windows.FrameworkElement.Language" /> if null) has not a value.
             </summary>
         </member>
-        <member name="F:MahApps.Metro.Controls.TextBoxHelper.ButtonWidthProperty">
+        <member name="M:MahApps.Metro.Controls.TimePickerBase.OnApplyTemplate">
             <summary>
-            This property can be used to set the button width (PART_ClearText) of TextBox, PasswordBox, ComboBox, NumericUpDown
+                When overridden in a derived class, is invoked whenever application code or internal processes call
+                <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetIsSpellCheckContextMenuEnabled(System.Windows.UIElement)">
+        <member name="M:MahApps.Metro.Controls.TimePickerBase.GetAmPmOffset(System.Int32)">
             <summary>
-            Indicates if a TextBox or RichTextBox should use SpellCheck context menu
+                Gets the offset from the selected <paramref name="currentHour" /> to use it in <see cref="T:System.TimeSpan" /> as hour
+                parameter.
+            </summary>
+            <param name="currentHour">The current hour.</param>
+            <returns>
+                An integer representing the offset to add to the hour that is selected in the hour-picker for setting the correct
+                <see cref="P:System.DateTime.TimeOfDay" />. The offset is determined as follows:
+                <list type="table">
+                    <listheader>
+                        <term>Condition</term><description>Offset</description>
+                    </listheader>
+                    <item>
+                        <term><see cref="P:MahApps.Metro.Controls.TimePickerBase.IsMilitaryTime" /> is false</term><description>0</description>
+                    </item>
+                    <item>
+                        <term>Selected hour is between 1 AM and 11 AM</term><description>0</description>
+                    </item>
+                    <item>
+                        <term>Selected hour is 12 AM</term><description>-12h</description>
+                    </item>
+                    <item>
+                        <term>Selected hour is between 12 PM and 11 PM</term><description>+12h</description>
+                    </item>
+                </list>
+            </returns>
+        </member>
+        <member name="T:MahApps.Metro.Controls.ToggleSwitch">
+            <summary>
+            A control that allows the user to toggle between two states: One represents true; The other represents false.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetHasText(System.Windows.DependencyObject)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.HeaderFontFamily">
             <summary>
-            Gets if the attached TextBox has text.
+            Gets/sets the font family of the header.
+            </summary> 
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OnLabel">
+            <summary>
+            Gets/sets the text to display when the control is in it's On state.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetClearTextButton(System.Windows.DependencyObject)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OffLabel">
             <summary>
-            Gets the clear text button visibility / feature. Can be used to enable text deletion.
+            Gets/sets the text to display when the control is in it's Off state.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetClearTextButton(System.Windows.DependencyObject,System.Boolean)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.SwitchForeground">
             <summary>
-            Sets the clear text button visibility / feature. Can be used to enable text deletion.
+            Gets/sets the brush used for the switch's foreground.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetTextButton(System.Windows.DependencyObject)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OnSwitchBrush">
             <summary>
-            Gets the text button visibility.
+            Gets/sets the brush used for the on-switch's foreground.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetTextButton(System.Windows.DependencyObject,System.Boolean)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OffSwitchBrush">
             <summary>
-            Sets the text button visibility.
+            Gets/sets the brush used for the off-switch's foreground.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetButtonsAlignment(System.Windows.DependencyObject)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorBrush">
             <summary>
-            Gets the buttons placement variant.
+            Gets/sets the brush used for the thumb indicator.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetButtonsAlignment(System.Windows.DependencyObject,MahApps.Metro.Controls.ButtonsAlignment)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorDisabledBrush">
             <summary>
-            Sets the buttons placement variant.
+            Gets/sets the brush used for the thumb indicator.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetIsClearTextButtonBehaviorEnabled(System.Windows.Controls.Button)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorWidth">
             <summary>
-            Gets the clear text button behavior.
+            Gets/sets the width of the thumb indicator.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetIsClearTextButtonBehaviorEnabled(System.Windows.Controls.Button,System.Boolean)">
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ContentDirection">
             <summary>
-            Sets the clear text button behavior.
+            Gets/sets the control's content flow direction.
             </summary>
         </member>
-        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetButtonContentTemplate(System.Windows.DependencyObject)">
-            <summary> 
-            ButtonContentTemplate is the template used to display the content of the ClearText button. 
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ToggleSwitchButtonStyle">
+            <summary>
+            Gets/sets the control's toggle switch button style.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.IsChecked">
+            <summary>
+            Gets/sets whether the control is Checked (On) or not (Off).
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckChangedCommand">
+            <summary>
+            Gets/sets the command which will be executed if the IsChecked property was changed.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckedCommand">
+            <summary>
+            Gets/sets the command which will be executed if the checked event of the control is fired.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.UnCheckedCommand">
+            <summary>
+            Gets/sets the command which will be executed if the checked event of the control is fired.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckChangedCommandParameter">
+            <summary>
+            Gets/sets the command parameter which will be passed by the CheckChangedCommand.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckedCommandParameter">
+            <summary>
+            Gets/sets the command parameter which will be passed by the CheckedCommand.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ToggleSwitch.UnCheckedCommandParameter">
+            <summary>
+            Gets/sets the command parameter which will be passed by the UnCheckedCommand.
+            </summary>
+        </member>
+        <member name="E:MahApps.Metro.Controls.ToggleSwitch.IsCheckedChanged">
+            <summary>
+            An event that is raised when the value of IsChecked changes.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.ToggleSwitchButton">
@@ -2711,6 +3644,61 @@
             hit testing.</param>
             <param name="point">The position to be evaluated on the origin.</param>
         </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightMinButtonStyle">
+            <summary>
+            Gets or sets the value indicating current light style for the minimize button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightMaxButtonStyle">
+            <summary>
+            Gets or sets the value indicating current light style for the maximize button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightCloseButtonStyle">
+            <summary>
+            Gets or sets the value indicating current light style for the close button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkMinButtonStyle">
+            <summary>
+            Gets or sets the value indicating current dark style for the minimize button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkMaxButtonStyle">
+            <summary>
+            Gets or sets the value indicating current dark style for the maximize button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.DarkCloseButtonStyle">
+            <summary>
+            Gets or sets the value indicating current dark style for the close button.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Theme">
+            <summary>
+            Gets or sets the value indicating current theme.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Minimize">
+            <summary>
+            Gets or sets the minimize button tooltip.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Maximize">
+            <summary>
+            Gets or sets the maximize button tooltip.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Close">
+            <summary>
+            Gets or sets the close button tooltip.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.WindowButtonCommands.Restore">
+            <summary>
+            Gets or sets the restore button tooltip.
+            </summary>
+        </member>
         <member name="P:MahApps.Metro.Controls.WindowCommands.Theme">
             <summary>
             Gets or sets the value indicating current theme.
@@ -2746,6 +3734,21 @@
             Gets or sets the value indicating whether to show the separator.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.Never">
+            <summary>
+            Doesn't overlay flyouts nor a hidden TitleBar.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.Flyouts">
+            <summary>
+            Overlays opened <see cref="T:MahApps.Metro.Controls.Flyout"/> controls.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.WindowCommandsOverlayBehavior.HiddenTitleBar">
+            <summary>
+            Overlays a hidden TitleBar.
+            </summary>
+        </member>
         <member name="M:MahApps.Metro.Controls.IWindowPlacementSettings.Reload">
             <summary>
             Refreshes the application settings property values from persistent storage.
@@ -2776,364 +3779,6 @@
             Upgrades the application settings on loading.
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Controls.MetroContentControl">
-            <summary>
-            Originally from http://xamlcoder.com/blog/2010/11/04/creating-a-metro-ui-style-control/
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.MetroWindow">
-            <summary>
-            An extended, metrofied Window class.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.OverrideDefaultWindowCommandsBrush">
-            <summary>
-            Allows easy handling of window commands brush. Theme is also applied based on this brush.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowTransitionsEnabled">
-            <summary>
-            Gets/sets whether the window's entrance transition animation is enabled.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.Flyouts">
-            <summary>
-            Gets/sets the FlyoutsControl that hosts the window's flyouts.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IconTemplate">
-            <summary>
-            Gets/sets the icon content template to show a custom icon.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleTemplate">
-            <summary>
-            Gets/sets the title content template to show a custom title.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.LeftWindowCommands">
-            <summary>
-            Gets/sets the left window commands that hosts the user commands.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.RightWindowCommands">
-            <summary>
-            Gets/sets the right window commands that hosts the user commands.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowButtonCommands">
-            <summary>
-            Gets/sets the window button commands that hosts the min/max/close commands.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IgnoreTaskbarOnMaximize">
-            <summary>
-            Gets/sets whether the window will ignore (and overlap) the taskbar when maximized.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleForeground">
-            <summary>
-            Gets/sets the brush used for the titlebar's foreground.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.SaveWindowPosition">
-            <summary>
-            Gets/sets whether the window will save it's position between loads.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.GetWindowPlacementSettings">
-            <summary>
-            Gets the window placement settings (can be overwritten).
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowIconOnTitleBar">
-            <summary>
-            Get/sets whether the titlebar icon is visible or not.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowDialogsOverTitleBar">
-            <summary>
-            Get/sets whether dialogs show over the title bar.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IconEdgeMode">
-            <summary>
-            Gets/sets edge mode of the titlebar icon.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IconBitmapScalingMode">
-            <summary>
-            Gets/sets bitmap scaling mode of the titlebar icon.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowTitleBar">
-            <summary>
-            Gets/sets whether the TitleBar is visible or not.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.UseNoneWindowStyle">
-            <summary>
-            Gets/sets whether the WindowStyle is None or not.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowMinButton">
-            <summary>
-            Gets/sets if the minimize button is visible.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowMaxRestoreButton">
-            <summary>
-            Gets/sets if the Maximize/Restore button is visible.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowCloseButton">
-            <summary>
-            Gets/sets if the close button is visible.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IsMinButtonEnabled">
-            <summary>
-            Gets/sets if the min button is enabled.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IsMaxRestoreButtonEnabled">
-            <summary>
-            Gets/sets if the max/restore button is enabled.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.IsCloseButtonEnabled">
-            <summary>
-            Gets/sets if the close button is enabled.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.ShowSystemMenuOnRightClick">
-            <summary>
-            Gets/sets if the the system menu should popup on right click.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitlebarHeight">
-            <summary>
-            Gets/sets the TitleBar's height.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleCaps">
-            <summary>
-            Gets/sets if the TitleBar's text is automatically capitalized.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleCharacterCasing">
-            <summary> 
-            Character casing of the title
-            </summary> 
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.TitleAlignment">
-            <summary>
-            Gets/sets the title horizontal alignment.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.WindowTitleBrush">
-            <summary>
-            Gets/sets the brush used for the Window's title bar.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.GlowBrush">
-            <summary>
-            Gets/sets the brush used for the Window's glow.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveGlowBrush">
-            <summary>
-            Gets/sets the brush used for the Window's non-active glow.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveBorderBrush">
-            <summary>
-            Gets/sets the brush used for the Window's non-active border.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveWindowTitleBrush">
-            <summary>
-            Gets/sets the brush used for the Window's non-active title bar.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.ShowOverlayAsync">
-            <summary>
-            Begins to show the MetroWindow's overlay effect.
-            </summary>
-            <returns>A task representing the process.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.HideOverlayAsync">
-            <summary>
-            Begins to hide the MetroWindow's overlay effect.
-            </summary>
-            <returns>A task representing the process.</returns>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.StoreFocus(System.Windows.IInputElement)">
-            <summary>
-            Stores the given element, or the last focused element via FocusManager, for restoring the focus after closing a dialog.
-            </summary>
-            <param name="thisElement">The element which will be focused again.</param>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.ResetStoredFocus">
-            <summary>
-            Clears the stored element which would get the focus after closing a dialog.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.#ctor">
-            <summary>
-            Initializes a new instance of the MahApps.Metro.Controls.MetroWindow class.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.GetPart``1(System.String)">
-            <summary>
-            Gets the template child with the given name.
-            </summary>
-            <typeparam name="T">The interface type inheirted from DependencyObject.</typeparam>
-            <param name="name">The name of the template child.</param>
-        </member>
-        <member name="M:MahApps.Metro.Controls.MetroWindow.GetPart(System.String)">
-            <summary>
-            Gets the template child with the given name.
-            </summary>
-            <param name="name">The name of the template child.</param>
-        </member>
-        <member name="T:MahApps.Metro.Controls.RevealImage">
-            <summary>
-            RevealImage
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.RevealImage.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.Tile.HorizontalTitleAlignmentProperty">
-            <summary> 
-            HorizontalTitleAlignment Dependency Property.
-            Default Value: HorizontalAlignment.Left
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.Tile.HorizontalTitleAlignment">
-            <summary> 
-            Gets/Sets the horizontal alignment of the title.
-            </summary> 
-        </member>
-        <member name="F:MahApps.Metro.Controls.Tile.VerticalTitleAlignmentProperty">
-            <summary>
-            VerticalTitleAlignment Dependency Property. 
-            Default Value: VerticalAlignment.Bottom
-            </summary> 
-        </member>
-        <member name="P:MahApps.Metro.Controls.Tile.VerticalTitleAlignment">
-            <summary>
-            Gets/Sets the vertical alignment of the title.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.ToggleSwitch">
-            <summary>
-            A control that allows the user to toggle between two states: One represents true; The other represents false.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.HeaderFontFamily">
-            <summary>
-            Gets/sets the font family of the header.
-            </summary> 
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OnLabel">
-            <summary>
-            Gets/sets the text to display when the control is in it's On state.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OffLabel">
-            <summary>
-            Gets/sets the text to display when the control is in it's Off state.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.SwitchForeground">
-            <summary>
-            Gets/sets the brush used for the switch's foreground.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OnSwitchBrush">
-            <summary>
-            Gets/sets the brush used for the on-switch's foreground.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.OffSwitchBrush">
-            <summary>
-            Gets/sets the brush used for the off-switch's foreground.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorBrush">
-            <summary>
-            Gets/sets the brush used for the thumb indicator.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorDisabledBrush">
-            <summary>
-            Gets/sets the brush used for the thumb indicator.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ThumbIndicatorWidth">
-            <summary>
-            Gets/sets the width of the thumb indicator.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ContentDirection">
-            <summary>
-            Gets/sets the control's content flow direction.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.ToggleSwitchButtonStyle">
-            <summary>
-            Gets/sets the control's toggle switch button style.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.IsChecked">
-            <summary>
-            Gets/sets whether the control is Checked (On) or not (Off).
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckChangedCommand">
-            <summary>
-            Gets/sets the command which will be executed if the IsChecked property was changed.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckedCommand">
-            <summary>
-            Gets/sets the command which will be executed if the checked event of the control is fired.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.UnCheckedCommand">
-            <summary>
-            Gets/sets the command which will be executed if the checked event of the control is fired.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckChangedCommandParameter">
-            <summary>
-            Gets/sets the command parameter which will be passed by the CheckChangedCommand.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.CheckedCommandParameter">
-            <summary>
-            Gets/sets the command parameter which will be passed by the CheckedCommand.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.ToggleSwitch.UnCheckedCommandParameter">
-            <summary>
-            Gets/sets the command parameter which will be passed by the UnCheckedCommand.
-            </summary>
-        </member>
-        <member name="E:MahApps.Metro.Controls.ToggleSwitch.IsCheckedChanged">
-            <summary>
-            An event that is raised when the value of IsChecked changes.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Converters.ClockDegreeConverter">
-            <summary>
-            Converts a double representing either hour/minute/second to the corresponding angle.
-            </summary>
-        </member>
         <member name="M:MahApps.Metro.Converters.BackgroundToForegroundConverter.IdealTextColor(System.Windows.Media.Color)">
             <summary>
             Determining Ideal Text Color Based on Specified Background Color
@@ -3141,6 +3786,11 @@
             </summary>
             <param name = "bg">The bg.</param>
             <returns></returns>
+        </member>
+        <member name="T:MahApps.Metro.Converters.ClockDegreeConverter">
+            <summary>
+            Converts a double representing either hour/minute/second to the corresponding angle.
+            </summary>
         </member>
         <member name="T:MahApps.Metro.Converters.IsNullConverter">
             <summary>
@@ -4663,15 +5313,6 @@
         <member name="T:MahApps.Metro.Native.UnsafeNativeMethods">
             <devdoc>http://msdn.microsoft.com/en-us/library/ms182161.aspx</devdoc>
         </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.DwmIsCompositionEnabled">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/aa969518%28v=vs.85%29.aspx</devdoc>
-        </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.DwmExtendFrameIntoClientArea(System.IntPtr,MahApps.Metro.Native.MARGINS@)">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/aa969512%28v=vs.85%29.aspx</devdoc>
-        </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.DwmSetWindowAttribute(System.IntPtr,System.Int32,System.Int32@,System.Int32)">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/aa969524%28v=vs.85%29.aspx</devdoc>
-        </member>
         <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.DefWindowProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr)">
             <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633572%28v=vs.85%29.aspx</devdoc>
         </member>
@@ -4698,12 +5339,6 @@
         </member>
         <member name="M:MahApps.Metro.Native.UnsafeNativeMethods._PostMessage(System.IntPtr,System.UInt32,System.IntPtr,System.IntPtr)">
             <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644944(v=vs.85).aspx</devdoc>
-        </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.GetCursorPos(MahApps.Metro.Native.POINT@)">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms648390(v=vs.85).aspx</devdoc>
-        </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.GetDoubleClickTime">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms646258(v=vs.85).aspx</devdoc>
         </member>
         <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.LoadLibrary(System.String)">
             <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx</devdoc>
@@ -4751,8 +5386,47 @@
             </para>
             </returns>
         </member>
-        <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.EnableMenuItem(System.IntPtr,System.UInt32,System.UInt32)">
-            <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms647636(v=vs.85).aspx</devdoc>
+        <member name="T:MahApps.Metro.Accent">
+            <summary>
+            An object that represents the foreground color for a Metro <see cref="T:MahApps.Metro.AppTheme"/>.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Accent.Resources">
+            <summary>
+            The ResourceDictionary that represents this Accent.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Accent.Name">
+            <summary>
+            Gets/sets the name of the Accent.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Accent.#ctor">
+            <summary>
+            Initializes a new instance of the MahApps.Metro.Accent class.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Accent.#ctor(System.String,System.Uri)">
+            <summary>
+            Initializes a new instance of the MahApps.Metro.Accent class.
+            </summary>
+            <param name="name">The name of the new Accent.</param>
+            <param name="resourceAddress">The URI of the accent ResourceDictionary.</param>
+        </member>
+        <member name="T:MahApps.Metro.AppTheme">
+            <summary>
+            Represents the background theme of the application.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.AppTheme.Resources">
+            <summary>
+            The ResourceDictionary that represents this application theme.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.AppTheme.Name">
+            <summary>
+            Gets the name of the application theme.
+            </summary>
         </member>
         <member name="T:MahApps.Metro.ThemeManager">
             <summary>

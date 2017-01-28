@@ -114,3 +114,4 @@
 - Properties will not be changed if changed for the same value to save memory.
 - Improved performance slightly by removing unnecessary steps between commands.
 - Changed many operations to better suit the undo/redo framework.
+- Fixed a crash with localisations filters when changing tabs
