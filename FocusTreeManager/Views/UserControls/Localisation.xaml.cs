@@ -1,4 +1,5 @@
-﻿using FocusTreeManager.Model;
+﻿using FocusTreeManager.Helper;
+using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace FocusTreeManager.Views
 {
@@ -59,7 +62,8 @@ namespace FocusTreeManager.Views
             LocaleModel item = e.Item as LocaleModel;
             if (item != null)
             {
-                if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null)
+                if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null
+                    && !string.IsNullOrEmpty(FilterKeyTextBox.Text))
                 {
                     if (item.Key.ToLower().Contains(FilterKeyTextBox.Text.ToLower()))
                     {
@@ -70,7 +74,8 @@ namespace FocusTreeManager.Views
                         e.Accepted = false;
                     }
                 }
-                else if (FilterKey == ColumnToFilter.Value && FilterValueTextBox != null)
+                else if (FilterKey == ColumnToFilter.Value && FilterValueTextBox != null
+                    && !string.IsNullOrEmpty(FilterValueTextBox.Text))
                 {
                     if (item.Value.ToLower().Contains(FilterValueTextBox.Text.ToLower()))
                     {

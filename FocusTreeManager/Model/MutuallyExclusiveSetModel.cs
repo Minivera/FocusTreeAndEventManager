@@ -54,12 +54,12 @@ namespace FocusTreeManager.Model
         public MutuallyExclusiveSetModel(FocusModel focus1, FocusModel focus2)
         {
             //Set leftmost Focus as Focus 1 and rightmost focus as focus 2
-            if (Focus1.X < Focus2.X)
+            if (focus1.X < focus2.X)
             {
                 this.Focus1 = Focus1;
                 this.Focus2 = Focus2;
             }
-            else if (Focus1.X >= Focus2.X)
+            else if (focus1.X >= focus2.X)
             {
                 this.Focus2 = Focus1;
                 this.Focus1 = Focus2;

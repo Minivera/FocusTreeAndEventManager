@@ -199,6 +199,7 @@ namespace FocusTreeManager.ViewModel
                         return;
                     }
                     project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
+                    project.Filename = dialog.FileName;
                     RaisePropertyChanged("isProjectExist");
                     TabsModelList = new ObservableCollection<ObservableObject>();
                     RaisePropertyChanged("TabsModelList");
@@ -264,7 +265,7 @@ namespace FocusTreeManager.ViewModel
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    DataHolder.Instance.Project.filename = Path.Combine(Path.GetDirectoryName(dialog.FileName),
+                    Project.Filename = Path.Combine(Path.GetDirectoryName(dialog.FileName),
                         Path.GetFileNameWithoutExtension(dialog.FileName)) + ".xh4prj";
                     DataHolder.Instance.SaveContract(Project);
                 }

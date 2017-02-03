@@ -35,6 +35,12 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "script_containers", Order = 3)]
         public List<ScriptContainer> scriptList { get; set; }
 
+        [DataMember(Name = "mod_folder_list", Order = 4)]
+        public List<string> modFolderList { get; set; }
+
+        [DataMember(Name = "pre_load_content", Order = 5)]
+        public bool preloadGameContent { get; set; }
+
         public Project()
         {
             fociContainerList = new List<FociGridContainer>();
@@ -99,6 +105,9 @@ namespace FocusTreeManager.DataContract
 
         public void UpdateDataContract(ProjectModel model)
         {
+            filename = model.Filename;
+            modFolderList = model.ListModFolders.ToList();
+            preloadGameContent = model.PreloadGameContent;
             //Build foci list
             fociContainerList.Clear();
             foreach (FocusGridModel item in model.fociList)

@@ -1,20 +1,11 @@
 ﻿using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace FocusTreeManager.Views
@@ -85,6 +76,37 @@ namespace FocusTreeManager.Views
                             new Point(position.X, position.Y + (this.RenderSize.Height / 2)),
                             new Point(position.X + (this.RenderSize.Width), position.Y + (this.RenderSize.Height / 2)));
             ((FocusGridModel)((FrameworkElement)parent).DataContext).UpdateFocus(model);
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                TextBoxName.Visibility = Visibility.Hidden;
+                this.ReleaseMouseCapture();
+                e.Handled = true;
+            }
+        }
+
+        private void MenuRenameFocus_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxName.Visibility = Visibility.Visible;
+            this.CaptureMouse();
+        }
+
+        private void VisualFocus_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.IsMouseCaptured)
+            {
+                Point pos = e.GetPosition(MainWindow.GetWindow(this));
+                Rect rect = this.TransformToVisual(MainWindow.GetWindow(this))
+                                .TransformBounds(LayoutInformation.GetLayoutSlot(this));
+                if (!rect.Contains(pos))
+                {
+                    TextBoxName.Visibility = Visibility.Hidden;
+                    this.ReleaseMouseCapture();
+                }
+            }
         }
     }
 }

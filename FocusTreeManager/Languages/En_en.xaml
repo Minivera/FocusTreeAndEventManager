@@ -12,13 +12,13 @@
     <system:String x:Key="Load_Title">Select a project</system:String>
     <system:String x:Key="Add_Focus">Add a new Focus</system:String>
     <system:String x:Key="Edit_Focus">Edit Focus</system:String>
+    <system:String x:Key="Rename_Focus">Rename Focus</system:String>
     <system:String x:Key="Delete_Focus">Delete Focus</system:String>
     <system:String x:Key="Add_Mutually_Focus">Make Focus mutually exclusive with...</system:String>
     <system:String x:Key="Add_Prerequisite_Focus">Add an optional prerequisites to Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Add a required prerequisites to Focus</system:String>
     <system:String x:Key="Add_Game_File">Import a file from the game</system:String>
     <system:String x:Key="Add_Game_Element">New element</system:String>
-    <system:String x:Key="Delete_Game_Element">Delete element</system:String>
     <system:String x:Key="Project_New">Create a new project</system:String>
     <system:String x:Key="Project_Load">Load a project</system:String>
     <system:String x:Key="Project_Save">Save project</system:String>
@@ -118,6 +118,7 @@
     <system:String x:Key="Command_Quit">Quit without saving</system:String>
     <system:String x:Key="Command_Delete">Delete</system:String>
     <system:String x:Key="Command_Reset">Empty</system:String>
+    <system:String x:Key="Command_Rename">Rename</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>

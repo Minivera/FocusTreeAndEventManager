@@ -114,3 +114,11 @@
 - Properties will not be changed if changed for the same value to save memory.
 - Improved performance slightly by removing unnecessary steps between commands.
 - Changed many operations to better suit the undo/redo framework.
+- Fixed an issue with localizations and changing of tabs.
+
+***********************
+*       Beta_2e       *
+***********************
+- Added the ability to rename a focus without opening the edit panel.
+- Added a separator in the focus context menu.
+- Fixed a bug with mutualy exclusive caused by the undo changes.

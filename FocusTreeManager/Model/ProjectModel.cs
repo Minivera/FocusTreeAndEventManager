@@ -11,6 +11,46 @@ namespace FocusTreeManager.Model
 {
     public class ProjectModel : ObservableObject, ISupportsUndo
     {
+        private string filename;
+
+        public string Filename
+        {
+            get
+            {
+                return filename;
+            }
+            set
+            {
+                if (value == filename)
+                {
+                    return;
+                }
+                filename = value;
+                RaisePropertyChanged(() => Filename);
+            }
+        }
+
+        private bool preloadGameContent;
+
+        public bool PreloadGameContent
+        {
+            get
+            {
+                return preloadGameContent;
+            }
+            set
+            {
+                if (value == preloadGameContent)
+                {
+                    return;
+                }
+                preloadGameContent = value;
+                RaisePropertyChanged(() => PreloadGameContent);
+            }
+        }
+
+        public ObservableCollection<string> ListModFolders { get; set; }
+
         public ObservableCollection<FocusGridModel> fociList { get; set; }
         
         public ObservableCollection<LocalisationModel> localisationList { get; set; }

@@ -49,7 +49,8 @@
         </StackPanel>
         <DataGrid ItemsSource="{Binding Source={StaticResource LocalisationSource}}" Grid.Row="1"
                   AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
-                  AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
+                  AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush2}"
+                  RowBackground="{DynamicResource AccentColorBrush3}"
                   ColumnWidth="*" Width="{Binding Path=ActualWidth, 
                                     RelativeSource={RelativeSource Mode=FindAncestor,
                                     AncestorType=DockPanel, AncestorLevel=1}}"

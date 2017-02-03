@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views" 
+             xmlns:model="clr-namespace:FocusTreeManager.Model"
              mc:Ignorable="d" MinWidth="150"
              DataContext="{Binding ProjectView, Source={StaticResource Locator}}"
              x:Name="ProjectViewControl">
@@ -13,8 +14,63 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="TemplateLabel">
+                <Label DataContext="{Binding}">
+                    <Label.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+		                                         RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="{DynamicResource Command_Delete}" 
+                                                  Command="{Binding DeleteElementCommand}"/>
+                            <MenuItem Header="{DynamicResource Command_Edit}" 
+                                                  Command="{Binding EditElementCommand}"/>
+                            <MenuItem Header="{DynamicResource Command_Rename}" 
+                                      Click="MenuItem_Click"/>
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                    <Label.InputBindings>
+                        <MouseBinding Command="{Binding ElementName=ProjectViewControl,
+                                        Path=DataContext.OpenFileCommand}"
+                                        CommandParameter="{Binding}" 
+                                        MouseAction="LeftDoubleClick" />
+                    </Label.InputBindings>
+                    <TextBox Margin="4 0 0 0" Width="110"
+                             VerticalAlignment="Center"
+                             Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             BorderThickness="0" KeyDown="TextBox_KeyDown" 
+                             IsReadOnly="True"/>
+                </Label>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
+    <Grid>
+        <TreeView x:Name="CodeTreeView" ItemsSource="{Binding Project}">
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                              Command="{Binding AddElementCommand}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <TreeViewItem Header="{Binding Project.Filename}">
+                <TreeViewItem Header="{DynamicResource Manage_Focus}"
+                              ItemsSource="{Binding Project.fociList}"
+                              ItemTemplate="{StaticResource TemplateLabel}">
+                </TreeViewItem>
+                <TreeViewItem Header="{DynamicResource Manage_Localisation}"
+                              ItemsSource="{Binding Project.localisationList}"
+                              ItemTemplate="{StaticResource TemplateLabel}">
+                </TreeViewItem>
+                <TreeViewItem Header="{DynamicResource Manage_Event}"
+                              ItemsSource="{Binding Project.eventList}"
+                              ItemTemplate="{StaticResource TemplateLabel}">
+                </TreeViewItem>
+                <TreeViewItem Header="{DynamicResource Manage_Generic}"
+                              ItemsSource="{Binding Project.scriptList}"
+                              ItemTemplate="{StaticResource TemplateLabel}">
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+    </Grid>
+    <!--
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
             <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}" >
@@ -223,4 +279,5 @@
             </Expander>
         </StackPanel>
     </ScrollViewer>
+    -->
 </UserControl>

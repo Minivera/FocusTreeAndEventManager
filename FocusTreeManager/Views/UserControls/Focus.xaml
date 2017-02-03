@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:FocusTreeManager.Views"
              xmlns:m="clr-namespace:FocusTreeManager.Model"
              xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
-             mc:Ignorable="d" x:Name="VisualFocus">
+             mc:Ignorable="d" x:Name="VisualFocus"
+             MouseDown="VisualFocus_MouseDown">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,8 +19,11 @@
         <ContextMenu>
             <MenuItem x:Name="MenuEditFocus" Header="{DynamicResource Edit_Focus}" 
                                           Command="{Binding EditFocusCommand}"/>
+            <MenuItem x:Name="MenuRenameFocus" Header="{DynamicResource Rename_Focus}"
+                      Click="MenuRenameFocus_Click"/>
             <MenuItem x:Name="MenuDeleteFocus" Header="{DynamicResource Delete_Focus}" 
                                           Command="{Binding DeleteFocusCommand}"/>
+            <Separator />
             <MenuItem x:Name="MenuMutuallyFocus" Header="{DynamicResource Add_Mutually_Focus}" 
                                           Command="{Binding MutuallyFocusCommand}"/>
             <MenuItem x:Name="MenuPrerequisitesFocus" Header="{DynamicResource Add_Prerequisite_Focus}" 
@@ -62,10 +66,17 @@
                 <MouseBinding Gesture="LeftClick" Command="{Binding TestFinishCommand}" />
             </Image.InputBindings>
         </Image>
-        <Label x:Name="label" HorizontalAlignment="Left" Height="26" Margin="-28,72,-28,-18" 
-               VerticalAlignment="Top" Width="145" FontFamily="Calibri"
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-            <TextBlock Text="{Binding VisibleName}"/>
-        </Label>
+        <Grid Margin="-28,72,-28,-18">
+            <Label x:Name="label" HorizontalAlignment="Left" Height="26"  
+                   VerticalAlignment="Top" Width="145" FontFamily="Calibri"
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding VisibleName}" TextWrapping="WrapWithOverflow"/>
+            </Label>
+            <TextBox Width="110" x:Name="TextBoxName"
+                         VerticalAlignment="Center"
+                         Text="{Binding UniqueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0"  Visibility="Hidden"
+                         KeyDown="TextBox_KeyDown" />
+        </Grid>
     </Grid>
 </UserControl>

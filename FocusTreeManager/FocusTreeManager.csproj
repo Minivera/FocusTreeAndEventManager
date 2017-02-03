@@ -51,8 +51,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dragablz, Version=0.0.3.182, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dragablz.0.0.3.182\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.3.184, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.184\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -67,16 +67,16 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.4.1\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.4.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.4.2\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Entypo, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.Entypo.1.6.0\lib\net45\MahApps.Metro.IconPacks.Entypo.dll</HintPath>
+    <Reference Include="MahApps.Metro.IconPacks.Entypo, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.Entypo.1.7.0\lib\net45\MahApps.Metro.IconPacks.Entypo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -109,7 +109,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.4.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -245,6 +245,9 @@
     <Compile Include="Views\UserControls\EventList.xaml.cs">
       <DependentUpon>EventList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\FileEditor.xaml.cs">
+      <DependentUpon>FileEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\FocusEditor.xaml.cs">
       <DependentUpon>FocusEditor.xaml</DependentUpon>
     </Compile>
@@ -328,6 +331,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserControls\EventList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\FileEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

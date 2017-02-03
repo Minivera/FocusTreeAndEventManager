@@ -52,10 +52,6 @@ namespace FocusTreeManager.Model
         { 
             get
             {
-                if (string.IsNullOrEmpty(uniquename))
-                {
-                    return "unknown";
-                }
                 return uniquename;
             }
             set

@@ -83,6 +83,10 @@ namespace FocusTreeManager.Views
 
         private void Focus_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            if (e.OriginalSource is TextBox)
+            {
+                return;
+            }
             Focus element = sender as Focus;
             if (element != null && isDown && e.LeftButton == MouseButtonState.Pressed)
             {
