@@ -17,14 +17,16 @@
     <system:String x:Key="Add_Mutually_Focus">Rendre le focus mutuellement exclusif avec...</system:String>
     <system:String x:Key="Add_Prerequisite_Focus">Ajouter des prérequis optionnel au Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Ajouter un prérequis obligatoire au Focus</system:String>
-    <system:String x:Key="Add_Game_File">Importer un Fichier du jeu</system:String>
-    <system:String x:Key="Add_Game_Element">Nouvel élément</system:String>
+    <system:String x:Key="Add_New_File">Nouveau Fichier</system:String>
+    <system:String x:Key="Add_Game_File">Ajouter un fichier</system:String>
     <system:String x:Key="Project_New">Créer un nouveau projet</system:String>
     <system:String x:Key="Project_Load">Charger un projet</system:String>
     <system:String x:Key="Project_Save">Sauvegarder le projet</system:String>
     <system:String x:Key="Project_Export">Export project</system:String>
     <system:String x:Key="Project_Save_As">Sauvegarder le projet sous</system:String>
+    <system:String x:Key="Files_Filename">Filename</system:String>
     <system:String x:Key="Focus_TAG">Tag du pays (Voir le wiki)</system:String>
+    <system:String x:Key="Focus_Additional_Mods">Modificateurs additionnels pour la sélection du pays</system:String>
     <system:String x:Key="Focus_Unique_Name">Nom unique</system:String>
     <system:String x:Key="Focus_Visible_Name">Nom d'affichage</system:String>
     <system:String x:Key="Focus_Description">Description</system:String>
@@ -146,4 +148,6 @@
     <system:String x:Key="Application_Legacy_Loading">Le project chargé utilise l'ancien format de sauvegarde, 
         le projet est en cours de transfert vers le nouveau format.</system:String>
     <system:String x:Key="Application_Error_Transfer">Le projet n'a pas pu être transféré vers le nouveau format</system:String>
+    <system:String x:Key="Application_Invalid_File">Le fichier n'est pas un fichier de script valide.</system:String>
+    <system:String x:Key="Window_File">Fichiers</system:String>
 </ResourceDictionary>

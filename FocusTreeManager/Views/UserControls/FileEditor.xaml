@@ -5,22 +5,121 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusTreeManager.Views.UserControls"
              xmlns:model="clr-namespace:FocusTreeManager.Model"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ControlStyle" TargetType="Control">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
+                <Setter Property="Margin" Value="-4,0,5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
             <DataTemplate DataType="{x:Type model:FocusGridModel}">
-                <Border BorderBrush="Blue"
-                        BorderThickness="1"
-                        CornerRadius="5" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="TitleRow" Height="35" />
+                        <RowDefinition x:Name="FilenameRow" Height="35" />
+                        <RowDefinition x:Name="TagRow" Height="35" />
+                        <RowDefinition x:Name="AddModsRow" Height="170" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Content="{DynamicResource Manage_Focus}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           Background="{DynamicResource AccentColorBrush2}"
+                           Foreground="{DynamicResource AccentSelectedColorBrush}"
+                           FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center"/>
+                    <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Filename}" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="{DynamicResource Focus_TAG}" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox Text="{Binding TAG}" Grid.Row="2" Grid.Column="1"/>
+                    <Label Content="{DynamicResource Focus_Additional_Mods}" Grid.Row="3" Grid.Column="0"/>
+                    <TextBox Text="{Binding AdditionnalMods}" Grid.Row="3" Grid.Column="1" 
+                             TextWrapping="Wrap" AcceptsReturn="True" Height="170"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type model:LocalisationModel}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="TitleRow" Height="35" />
+                        <RowDefinition x:Name="FilenameRow" Height="35" />
+                        <RowDefinition x:Name="ShortnameRow" Height="35" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Content="{DynamicResource Manage_Localisation}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           Background="{DynamicResource AccentColorBrush2}"
+                           Foreground="{DynamicResource AccentSelectedColorBrush}"
+                           FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center"/>
+                    <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Filename}" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="{DynamicResource Localisation_Language}" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox Text="{Binding Shortname}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type model:EventTabModel}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="TitleRow" Height="35" />
+                        <RowDefinition x:Name="FilenameRow" Height="35" />
+                        <RowDefinition x:Name="NamespaceRow" Height="35" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Content="{DynamicResource Manage_Event}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           Background="{DynamicResource AccentColorBrush2}"
+                           Foreground="{DynamicResource AccentSelectedColorBrush}"
+                           FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center"/>
+                    <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Filename}" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="{DynamicResource Event_Namespace}" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox Text="{Binding EventNamespace}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type model:ScriptModel}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="TitleRow" Height="35" />
+                        <RowDefinition x:Name="FilenameRow" Height="35" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Content="{DynamicResource Manage_Generic}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           Background="{DynamicResource AccentColorBrush2}"
+                           Foreground="{DynamicResource AccentSelectedColorBrush}"
+                           FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center"/>
+                    <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Filename}" Grid.Row="1" Grid.Column="1"/>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="5,0,0,20">
         <ContentControl Content="{Binding File}"/>
     </Grid>
 </UserControl>

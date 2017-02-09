@@ -44,6 +44,10 @@ namespace FocusTreeManager.Parsers
             bool firstline = true;
             foreach (string line in lines)
             {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
                 if (firstline)
                 {
                     container.Shortname = line.Replace(":", "").Trim();

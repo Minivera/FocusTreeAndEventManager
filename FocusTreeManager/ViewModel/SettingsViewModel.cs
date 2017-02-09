@@ -124,6 +124,18 @@ namespace FocusTreeManager.ViewModel
             {
                 GamePath = dialog.FileName;
             }
+            Activate();
+        }
+
+        private void Activate()
+        {
+            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window.DataContext == this)
+                {
+                    window.Activate();
+                }
+            }
         }
     }
 }

@@ -43,6 +43,7 @@ namespace FocusTreeManager.DataContract
 
         public Project()
         {
+            modFolderList = new List<string>();
             fociContainerList = new List<FociGridContainer>();
             localisationList = new List<LocalisationContainer>();
             eventList = new List<EventContainer>();
@@ -76,7 +77,7 @@ namespace FocusTreeManager.DataContract
             foreach (KeyValuePair<string, string> item in
                 LocalisationParser.ParseEverything(localisationList))
             {
-                using (TextWriter tw = new StreamWriter(path + item.Key + ".yaml"))
+                using (TextWriter tw = new StreamWriter(path + item.Key + ".yml"))
                 {
                     tw.Write(item.Value);
                 }

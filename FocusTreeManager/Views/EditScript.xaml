@@ -30,9 +30,9 @@
                     VerticalAlignment="Bottom" Grid.Row="1"
                     DataContext="{Binding Scripter, Source={StaticResource Locator}}">
             <Button Content="{DynamicResource Command_Cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0"
-                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150" />
+                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150" IsCancel="True"/>
             <Button Content="{DynamicResource Command_Accept}" Command="{Binding SaveScriptCommand}"
-                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+                    Style="{DynamicResource SquareButtonStyle}" MinWidth="150" IsDefault="True"/>
         </StackPanel>
         <Grid HorizontalAlignment="Right" Width="70" Height="110" x:Name="GridErrors" Grid.Row="1"
               Margin="0,-170,15,0" Panel.ZIndex="1">

@@ -34,6 +34,12 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
+        public ICodeStruct Extract(string TagToFind)
+        {
+            //End of structure
+            return null;
+        }
+
         public ICodeStruct FindAssignation(string TagToFind)
         {
             //End of structure

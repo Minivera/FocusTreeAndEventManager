@@ -65,6 +65,8 @@ namespace FocusTreeManager.Model
 
         public RelayCommand DeleteElementCommand { get; private set; }
 
+        public RelayCommand EditElementCommand { get; private set; }
+
         public ScriptModel(string Filename)
         {
             filename = Filename;
@@ -74,6 +76,7 @@ namespace FocusTreeManager.Model
             //Commands
             SaveScriptCommand = new RelayCommand<FrameworkElement>(SaveScript);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
         }
 
         private void SaveScript(FrameworkElement obj)
@@ -99,6 +102,12 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
+        private void SendEditSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
         }
 
         #region Undo/Redo

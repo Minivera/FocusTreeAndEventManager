@@ -90,6 +90,10 @@ namespace FocusTreeManager.CodeStructures
 
         public string Parse(int StartLevel = -1)
         {
+            if(Code.Count == 0)
+            {
+                return "";
+            }
             int BasicLevel = StartLevel == -1 ? Level : StartLevel + 1;
             StringBuilder content = new StringBuilder();
             //Get the right amount of tabulations for the level
@@ -129,6 +133,21 @@ namespace FocusTreeManager.CodeStructures
                 found = item.FindValue(TagToFind);
                 if (found != null)
                 {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        public ICodeStruct Extract(string TagToFind)
+        {
+            ICodeStruct found;
+            foreach (ICodeStruct item in Code)
+            {
+                found = item.FindAssignation(TagToFind);
+                if (found != null)
+                {
+                    ((CodeBlock)item).Code.Remove(found);
                     return found;
                 }
             }

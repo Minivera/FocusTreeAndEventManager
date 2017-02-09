@@ -97,11 +97,6 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Target != null && msg.Target != this)
-            {
-                //Message not intended for here
-                return;
-            }
         }
     }
 }

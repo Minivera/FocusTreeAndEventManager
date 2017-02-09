@@ -36,6 +36,8 @@ namespace FocusTreeManager.Model
 
         private string tag;
 
+        private string additionnalMods;
+
         public RelayCommand<object> AddFocusCommand { get; private set; }
 
         public RelayCommand<object> RightClickCommand { get; private set; }
@@ -43,6 +45,8 @@ namespace FocusTreeManager.Model
         public RelayCommand<object> HoverCommand { get; private set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
+
+        public RelayCommand EditElementCommand { get; private set; }
 
         public bool isShown { get; set; }
 
@@ -123,10 +127,25 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
-                DefaultChangeFactory.Current.OnChanging(this,
-                         "TAG", tag, value, "TAG Changed");
                 tag = value;
                 RaisePropertyChanged(() => TAG);
+            }
+        }
+
+        public string AdditionnalMods
+        {
+            get
+            {
+                return additionnalMods;
+            }
+            set
+            {
+                if (value == additionnalMods)
+                {
+                    return;
+                }
+                additionnalMods = value;
+                RaisePropertyChanged(() => AdditionnalMods);
             }
         }
 
@@ -160,6 +179,7 @@ namespace FocusTreeManager.Model
             RightClickCommand = new RelayCommand<object>(RightClick);
             HoverCommand = new RelayCommand<object>(Hover);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -170,6 +190,7 @@ namespace FocusTreeManager.Model
             ID = container.IdentifierID;
             filename = container.ContainerID;
             tag = container.TAG;
+            additionnalMods = container.AdditionnalMods;
             FociList = new ObservableCollection<FocusModel>();
             foreach (Focus focus in container.FociList)
             {
@@ -193,6 +214,7 @@ namespace FocusTreeManager.Model
             RightClickCommand = new RelayCommand<object>(RightClick);
             HoverCommand = new RelayCommand<object>(Hover);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -280,6 +302,12 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
+        private void SendEditSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
         }
 
         public bool inRange(int Range1, int Range2, int Value)

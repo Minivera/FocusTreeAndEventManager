@@ -189,9 +189,15 @@
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
-    <DockPanel>
-        <v:ProjectView DockPanel.Dock="Left"/>
-        <DockPanel DockPanel.Dock="Right" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <v:ProjectView Grid.Column="0"/>
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+        <DockPanel Grid.Column="2">
             <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
                 <StatusBar>
                     <StatusBarItem>
@@ -220,5 +226,5 @@
                 </dragablz:TabablzControl>
             </dockablz:Layout>
         </DockPanel>
-    </DockPanel>
+    </Grid>
 </Controls:MetroWindow>

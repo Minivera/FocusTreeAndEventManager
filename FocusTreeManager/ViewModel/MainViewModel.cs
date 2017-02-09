@@ -185,14 +185,12 @@ namespace FocusTreeManager.ViewModel
                 {
                     if (Path.GetExtension(dialog.FileName) == ".h4prj")
                     {
-                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         string Title = resourceLocalization["Application_Loading"] as string;
                         string Message = resourceLocalization["Application_Legacy_Loading"] as string;
                         coordinator.ShowMessageAsync(this, Title, Message);
                     }
                     if (!DataHolder.LoadContract(dialog.FileName))
                     {
-                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         string Title = resourceLocalization["Application_Error"] as string;
                         string Message = resourceLocalization["Application_Error_Transfer"] as string;
                         coordinator.ShowMessageAsync(this, Title, Message);
@@ -362,6 +360,7 @@ namespace FocusTreeManager.ViewModel
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
+                DataHolder.Instance.Project.UpdateDataContract(Project);
                 DataHolder.Instance.Project.ExportProject(dialog.FileName);
             }
         }

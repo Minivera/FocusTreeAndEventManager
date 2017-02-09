@@ -58,8 +58,6 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
-                DefaultChangeFactory.Current.OnChanging(this,
-                         "Shortname", shortname, value, "Shortname Changed");
                 shortname = value;
                 RaisePropertyChanged(() => Shortname);
             }
@@ -68,6 +66,8 @@ namespace FocusTreeManager.Model
         public ObservableCollection<LocaleModel> LocalisationMap { get; set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
+
+        public RelayCommand EditElementCommand { get; private set; }
 
         public LocalisationModel(string Filename)
         {
@@ -79,6 +79,7 @@ namespace FocusTreeManager.Model
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Commands
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
         }
 
         public LocalisationModel(LocalisationContainer container)
@@ -96,6 +97,7 @@ namespace FocusTreeManager.Model
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Commands
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -112,7 +114,7 @@ namespace FocusTreeManager.Model
 
         public string translateKey(string key)
         {
-            LocaleModel locale = LocalisationMap.SingleOrDefault((l) => 
+            LocaleModel locale = LocalisationMap.FirstOrDefault((l) => 
                                     l.Key.ToLower() == key.ToLower());
             return locale != null ? locale.Value : null;
         }
@@ -121,6 +123,12 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+        }
+
+        private void SendEditSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
         }
 
         #region Undo/Redo

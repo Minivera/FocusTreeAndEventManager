@@ -39,6 +39,7 @@ namespace FocusTreeManager.ViewModel
             SimpleIoc.Default.Register<EditFocusViewModel>();
             SimpleIoc.Default.Register<ChangeImageViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<FileManagerViewModel>();
             SimpleIoc.Default.Register<ScripterViewModel>();
             SimpleIoc.Default.Register<ScripterControlsViewModel>();
             SimpleIoc.Default.Register<ErrorDawgViewModel>();
@@ -95,6 +96,14 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+            }
+        }
+
+        public FileManagerViewModel FileManager
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<FileManagerViewModel>();
             }
         }
 

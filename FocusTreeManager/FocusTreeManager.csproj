@@ -186,6 +186,7 @@
     <Compile Include="Model\PrerequisitesSetModel.cs" />
     <None Include="Model\Old\Project.cs" />
     <Compile Include="Model\ProjectModel.cs" />
+    <Compile Include="ViewModel\FileManagerViewModel.cs" />
     <Compile Include="Views\GriddedGrid.cs" />
     <Compile Include="Helper\ModelsToScriptHelper.cs" />
     <Compile Include="Helper\UiHelper.cs" />
@@ -232,6 +233,9 @@
     </Compile>
     <Compile Include="Views\EditScript.xaml.cs">
       <DependentUpon>EditScript.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileManager.xaml.cs">
+      <DependentUpon>FileManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\Assignation.xaml.cs">
       <DependentUpon>Assignation.xaml</DependentUpon>
@@ -313,6 +317,10 @@
     <Page Include="Views\EditScript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UserControls\Assignation.xaml">
       <SubType>Designer</SubType>

@@ -5,6 +5,7 @@ using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 
 namespace FocusTreeManager.Model
@@ -27,6 +28,18 @@ namespace FocusTreeManager.Model
                 }
                 filename = value;
                 RaisePropertyChanged(() => Filename);
+            }
+        }
+
+        public string ProjectName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Filename))
+                {
+                    return "New Project";
+                }
+                return Path.GetFileNameWithoutExtension(Filename);
             }
         }
 
@@ -61,6 +74,7 @@ namespace FocusTreeManager.Model
 
         public ProjectModel()
         {
+            ListModFolders = new ObservableCollection<string>();
             fociList = new ObservableCollection<FocusGridModel>();
             fociList.CollectionChanged += fociList_CollectionChanged;
             localisationList = new ObservableCollection<LocalisationModel>();

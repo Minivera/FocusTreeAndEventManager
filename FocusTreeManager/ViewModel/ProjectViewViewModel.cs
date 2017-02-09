@@ -1,19 +1,9 @@
-﻿using FocusTreeManager.Containers;
-using FocusTreeManager.Model;
+﻿using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Collections.ObjectModel;
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Windows;
-using System.IO;
-using FocusTreeManager.CodeStructures;
-using FocusTreeManager.Parsers;
-using FocusTreeManager.DataContract;
-using System.Collections.Generic;
+using FocusTreeManager.Views;
+using System.Windows.Controls;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -35,7 +25,13 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand AddElementCommand { get; private set; }
 
+        public RelayCommand DeleteElementMenuCommand { get; set; }
+
+        public RelayCommand EditElementMenuCommand { get; set; }
+
         public RelayCommand<ObservableObject> OpenFileCommand { get; private set; }
+
+        public object SelectedItem { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the ProjectViewModel class.
@@ -45,35 +41,40 @@ namespace FocusTreeManager.ViewModel
             //Commands
             AddElementCommand = new RelayCommand(AddElement);
             OpenFileCommand = new RelayCommand<ObservableObject>(OpenFile);
+            DeleteElementMenuCommand = new RelayCommand(DeleteFile, CanExecuteOnFile);
+            EditElementMenuCommand = new RelayCommand(EditFile, CanExecuteOnFile);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         private void AddElement()
         {
-            //switch(para)
-            //{
-            //    case "FocusTree" :
-            //        (new ViewModelLocator()).Main.Project.fociList.Add(
-            //            new FocusGridModel("FocusTree_" + Project.fociList.Count().ToString()));
-            //        RaisePropertyChanged("fociContainerList");
-            //        break;
-            //    case "Localisation":
-            //        (new ViewModelLocator()).Main.Project.localisationList.Add(
-            //            new LocalisationModel("Localisation_" + Project.localisationList.Count().ToString()));
-            //        RaisePropertyChanged("localisationList");
-            //        break;
-            //    case "Event":
-            //        (new ViewModelLocator()).Main.Project.eventList.Add(
-            //            new EventTabModel("Event_" + Project.eventList.Count().ToString()));
-            //        RaisePropertyChanged("eventList");
-            //        break;
-            //    case "Generic":
-            //        (new ViewModelLocator()).Main.Project.scriptList.Add(
-            //            new ScriptModel("Script" + Project.eventList.Count().ToString()));
-            //        RaisePropertyChanged("scriptList");
-            //        break;
-            //}
+            FileManager dialog = new FileManager(ModeType.Create);
+            dialog.ShowDialog();
+            ObservableObject File = (new ViewModelLocator()).FileManager.File;
+            if (File != null)
+            {
+                if (File is FocusGridModel)
+                {
+                    (new ViewModelLocator()).Main.Project.fociList.Add((FocusGridModel)File);
+                    RaisePropertyChanged("fociList");
+                }
+                else if (File is LocalisationModel)
+                {
+                    (new ViewModelLocator()).Main.Project.localisationList.Add((LocalisationModel)File);
+                    RaisePropertyChanged("localisationList");
+                }
+                else if (File is EventTabModel)
+                {
+                    (new ViewModelLocator()).Main.Project.eventList.Add((EventTabModel)File);
+                    RaisePropertyChanged("eventList");
+                }
+                else if(File is ScriptModel)
+                {
+                    (new ViewModelLocator()).Main.Project.scriptList.Add((ScriptModel)File);
+                    RaisePropertyChanged("scriptList");
+                }
+            }
         }
 
         private void DeleteElement(object item)
@@ -97,6 +98,69 @@ namespace FocusTreeManager.ViewModel
             {
                 (new ViewModelLocator()).Main.Project.scriptList.Remove((ScriptModel)item);
                 RaisePropertyChanged("scriptList");
+            }
+        }
+
+        private void EditElement(object obj)
+        {
+            FileManager dialog = new FileManager(ModeType.Edit);
+            if (obj is FocusGridModel)
+            {
+                var item = obj as FocusGridModel;
+                (new ViewModelLocator()).FileManager.File = new FocusGridModel(item.Filename)
+                {
+                    TAG = item.TAG,
+                    AdditionnalMods = item.AdditionnalMods
+                };
+                dialog.ShowDialog();
+                if ((new ViewModelLocator()).FileManager.File != null)
+                {
+                    var newItem = (new ViewModelLocator()).FileManager.File as FocusGridModel;
+                    item.Filename = newItem.Filename;
+                    item.TAG = newItem.TAG;
+                    item.AdditionnalMods = newItem.AdditionnalMods;
+                }
+            }
+            else if (obj is LocalisationModel)
+            {
+                var item = obj as LocalisationModel;
+                (new ViewModelLocator()).FileManager.File = new LocalisationModel(item.Filename)
+                {
+                    Shortname = item.Shortname
+                };
+                dialog.ShowDialog();
+                if ((new ViewModelLocator()).FileManager.File != null)
+                {
+                    var newItem = (new ViewModelLocator()).FileManager.File as LocalisationModel;
+                    item.Filename = newItem.Filename;
+                    item.Shortname = newItem.Shortname;
+                }
+            }
+            else if (obj is EventTabModel)
+            {
+                var item = obj as EventTabModel;
+                (new ViewModelLocator()).FileManager.File = new EventTabModel(item.Filename)
+                {
+                    EventNamespace = item.EventNamespace
+                };
+                dialog.ShowDialog();
+                if ((new ViewModelLocator()).FileManager.File != null)
+                {
+                    var newItem = (new ViewModelLocator()).FileManager.File as EventTabModel;
+                    item.Filename = newItem.Filename;
+                    item.EventNamespace = newItem.EventNamespace;
+                }
+            }
+            else if (obj is ScriptModel)
+            {
+                var item = obj as ScriptModel;
+                (new ViewModelLocator()).FileManager.File = new ScriptModel(item.Filename);
+                dialog.ShowDialog();
+                if ((new ViewModelLocator()).FileManager.File != null)
+                {
+                    var newItem = (new ViewModelLocator()).FileManager.File as ScriptModel;
+                    item.Filename = newItem.Filename;
+                }
             }
         }
 
@@ -124,16 +188,34 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
+        public void EditFile()
+        {
+            EditElement(SelectedItem);
+        }
+
+        public void DeleteFile()
+        {
+            DeleteElement(SelectedItem);
+        }
+
+        public bool CanExecuteOnFile()
+        {
+            if (SelectedItem != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Target != null && msg.Target != this)
-            {
-                //Message not itended for here
-                return;
-            }
             if (msg.Notification == "SendDeleteItemSignal")
             {
                 DeleteElement(msg.Sender);
+            }
+            if (msg.Notification == "SendEditItemSignal")
+            {
+                EditElement(msg.Sender);
             }
             if (msg.Notification == "RefreshProjectViewer")
             {

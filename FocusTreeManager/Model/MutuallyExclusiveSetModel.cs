@@ -2,12 +2,14 @@
 using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using MonitoredUndo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FocusTreeManager.Model
 {
-    public class MutuallyExclusiveSetModel : ObservableObject, ISupportsUndo, ISet
+    public class MutuallyExclusiveSetModel : ObservableObject, 
+        ISupportsUndo, ISet, IEquatable<MutuallyExclusiveSetModel>
     {
         private FocusModel focus1;
 
@@ -56,13 +58,13 @@ namespace FocusTreeManager.Model
             //Set leftmost Focus as Focus 1 and rightmost focus as focus 2
             if (focus1.X < focus2.X)
             {
-                this.Focus1 = Focus1;
-                this.Focus2 = Focus2;
+                this.Focus1 = focus1;
+                this.Focus2 = focus2;
             }
             else if (focus1.X >= focus2.X)
             {
-                this.Focus2 = Focus1;
-                this.Focus1 = Focus2;
+                this.Focus2 = focus1;
+                this.Focus1 = focus2;
             }
         }
 
@@ -72,6 +74,23 @@ namespace FocusTreeManager.Model
             Focus1 = null;
             Focus2.MutualyExclusive.Remove(this);
             Focus2 = null;
+        }
+
+        public bool Equals(MutuallyExclusiveSetModel obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (obj.Focus1 == Focus1 && obj.Focus2 == Focus2)
+            {
+                return true;
+            }
+            else if (obj.Focus2 == Focus1 && obj.Focus1 == Focus2)
+            {
+                return true;
+            }
+            return false;
         }
 
         #region Undo/Redo

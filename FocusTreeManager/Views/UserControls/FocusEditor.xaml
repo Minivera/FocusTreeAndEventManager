@@ -91,6 +91,7 @@
                 Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Height="25"/>
         <Button Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Margin="0,5,0,0"
                 Content="{DynamicResource Command_Accept}" Command="{Binding FocusCommand}" 
-                Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" />
+                Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" 
+                IsDefault="True"/>
     </Grid>
 </UserControl>

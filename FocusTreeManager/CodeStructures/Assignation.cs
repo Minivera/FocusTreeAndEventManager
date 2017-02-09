@@ -142,6 +142,25 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
+        public ICodeStruct Extract(string TagToFind)
+        {
+            if (Assignee == TagToFind)
+            {
+                return this;
+            }
+            ICodeStruct found;
+            if (Value is CodeBlock)
+            {
+                found = Value.FindAssignation(TagToFind);
+                if (found != null)
+                {
+                    ((CodeBlock)Value).Code.Remove(found);
+                    return found;
+                }
+            }
+            return null;
+        }
+
         public ICodeStruct FindAssignation(string TagToFind)
         {
             if (Assignee == TagToFind)

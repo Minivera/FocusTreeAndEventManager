@@ -57,8 +57,6 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
-                DefaultChangeFactory.Current.OnChanging(this,
-                         "EventNamespace", eventNamespace, value, "EventNamespace Changed");
                 eventNamespace = value;
                 RaisePropertyChanged(() => EventNamespace);
             }
@@ -90,6 +88,8 @@ namespace FocusTreeManager.Model
 
         public RelayCommand DeleteElementCommand { get; private set; }
 
+        public RelayCommand EditElementCommand { get; private set; }
+
         public EventTabModel(string Filename)
         {
             this.filename = Filename;
@@ -99,6 +99,7 @@ namespace FocusTreeManager.Model
             //Command
             AddEventCommand = new RelayCommand(AddEvent);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -117,6 +118,7 @@ namespace FocusTreeManager.Model
             //Command
             AddEventCommand = new RelayCommand(AddEvent);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
+            EditElementCommand = new RelayCommand(SendEditSignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -160,6 +162,13 @@ namespace FocusTreeManager.Model
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
         }
+
+        private void SendEditSignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+        }
+
         #region Undo/Redo
 
         void EventList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -15,42 +15,110 @@
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="TemplateLabel">
-                <Label DataContext="{Binding}">
-                    <Label.ContextMenu>
+                <StackPanel DataContext="{Binding}"
+                            MouseDown="CodeTreeView_MouseDown">
+                    <StackPanel.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
-		                                         RelativeSource={RelativeSource Self}}">
+		                             RelativeSource={RelativeSource Self}}">
                             <MenuItem Header="{DynamicResource Command_Delete}" 
-                                                  Command="{Binding DeleteElementCommand}"/>
+                                      Command="{Binding DeleteElementCommand}"/>
                             <MenuItem Header="{DynamicResource Command_Edit}" 
-                                                  Command="{Binding EditElementCommand}"/>
+                                      Command="{Binding EditElementCommand}"/>
                             <MenuItem Header="{DynamicResource Command_Rename}" 
                                       Click="MenuItem_Click"/>
                         </ContextMenu>
-                    </Label.ContextMenu>
-                    <Label.InputBindings>
+                    </StackPanel.ContextMenu>
+                    <StackPanel.InputBindings>
                         <MouseBinding Command="{Binding ElementName=ProjectViewControl,
                                         Path=DataContext.OpenFileCommand}"
                                         CommandParameter="{Binding}" 
                                         MouseAction="LeftDoubleClick" />
-                    </Label.InputBindings>
-                    <TextBox Margin="4 0 0 0" Width="110"
+                    </StackPanel.InputBindings>
+                    <Grid>
+                        <Label Margin="4 0 0 0" Content="{Binding Filename}"/>
+                        <TextBox Margin="4 0 0 0" Width="110"
                              VerticalAlignment="Center"
                              Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             BorderThickness="0" KeyDown="TextBox_KeyDown" 
-                             IsReadOnly="True"/>
-                </Label>
+                             KeyDown="TextBox_KeyDown" 
+                             Visibility="Hidden"/>
+
+                    </Grid>
+                </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TreeView x:Name="CodeTreeView" ItemsSource="{Binding Project}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="5,0,5,5">
+            <ToolBarTray>
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button ToolTip="{DynamicResource Add_New_File}"
+                                x:Name="AddButton" Command="{Binding AddElementCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_add}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button ToolTip="{DynamicResource Command_Delete}"
+                            x:Name="DeleteButton" Command="{Binding DeleteElementMenuCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTip="{DynamicResource Command_Edit}"
+                            x:Name="EditButton" Command="{Binding EditElementMenuCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_edit}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTip="{DynamicResource Command_Rename}"
+                            x:Name="RenameButton" Click="RenameButton_Click"
+                            IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="10"
+                               Height="10"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_interface_textbox}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </StackPanel>
+        <TreeView x:Name="CodeTreeView" ItemsSource="{Binding Project}" Grid.Row="1"
+                  SelectedItemChanged="CodeTreeView_SelectedItemChanged"
+                  TreeViewItem.Selected="CodeTreeView_Selected">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{DynamicResource Add_Game_Element}" 
+                    <MenuItem Header="{DynamicResource Add_New_File}" 
                               Command="{Binding AddElementCommand}"/>
                 </ContextMenu>
             </TreeView.ContextMenu>
-            <TreeViewItem Header="{Binding Project.Filename}">
+            <TreeViewItem Header="{Binding Project.ProjectName}">
                 <TreeViewItem Header="{DynamicResource Manage_Focus}"
                               ItemsSource="{Binding Project.fociList}"
                               ItemTemplate="{StaticResource TemplateLabel}">
@@ -70,214 +138,4 @@
             </TreeViewItem>
         </TreeView>
     </Grid>
-    <!--
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical">
-            <Expander x:Name="FocusExpander" Header="{DynamicResource Manage_Focus}" >
-                <Expander.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
-                                          Command="{Binding AddElementCommand}" CommandParameter="FocusTree"/>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="FocusTree"/>
-                    </ContextMenu>
-                </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding FociList, Mode=OneWay}" >
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Label DataContext="{Binding}">
-                                <Label.ContextMenu>
-                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
-		                                         RelativeSource={RelativeSource Self}}">
-                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
-                                                  Command="{Binding DeleteElementCommand}"/>
-                                    </ContextMenu>
-                                </Label.ContextMenu>
-                                <Label.InputBindings>
-                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
-                                        Path=DataContext.OpenFileTreeCommand}"
-                                        CommandParameter="{Binding}" 
-                                        MouseAction="LeftDoubleClick" />
-                                </Label.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="20"
-                                   Height="20"
-                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tree_leaf_three}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <TextBox Margin="4 0 0 0" Width="110"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             BorderThickness="0" 
-                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
-                                             KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </Label>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Expander>
-            <Expander x:Name="LocalisationExpander" Header="{DynamicResource Manage_Localisation}">
-                <Expander.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
-                                          Command="{Binding AddElementCommand}" CommandParameter="Localisation"/>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="Localisation"/>
-                    </ContextMenu>
-                </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding localisationList, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Label DataContext="{Binding}">
-                                <Label.ContextMenu>
-                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
-		                                         RelativeSource={RelativeSource Self}}">
-                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
-                                                  Command="{Binding DeleteElementCommand}"/>
-                                    </ContextMenu>
-                                </Label.ContextMenu>
-                                <Label.InputBindings>
-                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
-                                                  Path=DataContext.OpenFileLocaleCommand}"
-                                                  CommandParameter="{Binding}" 
-                                                  MouseAction="LeftDoubleClick" />
-                                </Label.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="20"
-                                   Height="20"
-                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book_list}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <TextBox Margin="4 0 0 0" Width="110"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             BorderThickness="0" 
-                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
-                                             KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </Label>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Expander>
-            <Expander x:Name="EventExpander" Header="{DynamicResource Manage_Event}">
-                <Expander.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
-                                          Command="{Binding AddElementCommand}" CommandParameter="Event"/>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="Event"/>
-                    </ContextMenu>
-                </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding eventList, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Label DataContext="{Binding}">
-                                <Label.ContextMenu>
-                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
-		                                         RelativeSource={RelativeSource Self}}">
-                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
-                                                  Command="{Binding DeleteElementCommand}"/>
-                                    </ContextMenu>
-                                </Label.ContextMenu>
-                                <Label.InputBindings>
-                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
-                                                  Path=DataContext.OpenFileEventCommand}"
-                                                  CommandParameter="{Binding}" 
-                                                  MouseAction="LeftDoubleClick" />
-                                </Label.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="20"
-                                   Height="20"
-                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <TextBox Margin="4 0 0 0" Width="110"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             BorderThickness="0" 
-                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
-                                             KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </Label>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Expander>
-            <Expander x:Name="GenericExpander" Header="{DynamicResource Manage_Generic}">
-                <Expander.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{DynamicResource Add_Game_Element}" 
-                                          Command="{Binding AddElementCommand}" CommandParameter="Generic"/>
-                        <MenuItem Header="{DynamicResource Add_Game_File}" 
-                                          Command="{Binding AddFileCommand}" CommandParameter="Generic"/>
-                    </ContextMenu>
-                </Expander.ContextMenu>
-                <ItemsControl ItemsSource="{Binding scriptList, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" MinHeight="40" Background="Transparent"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Label DataContext="{Binding}">
-                                <Label.ContextMenu>
-                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
-		                                         RelativeSource={RelativeSource Self}}">
-                                        <MenuItem Header="{DynamicResource Delete_Game_Element}" 
-                                                  Command="{Binding DeleteElementCommand}"/>
-                                    </ContextMenu>
-                                </Label.ContextMenu>
-                                <Label.InputBindings>
-                                    <MouseBinding Command="{Binding ElementName=ProjectViewControl,
-                                                  Path=DataContext.OpenFileGenericCommand}"
-                                                  CommandParameter="{Binding}" 
-                                                  MouseAction="LeftDoubleClick" />
-                                </Label.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="20"
-                                   Height="20"
-                                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Label}, Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_book}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <TextBox Margin="4 0 0 0" Width="110"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             BorderThickness="0" 
-                                             MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" 
-                                             KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </Label>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Expander>
-        </StackPanel>
-    </ScrollViewer>
-    -->
 </UserControl>

@@ -22,6 +22,9 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "foci", Order = 3)]
         public List<Focus> FociList { get; set; }
 
+        [DataMember(Name = "mods", Order = 4)]
+        public string AdditionnalMods { get; set; }
+
         public FociGridContainer()
         {
             IdentifierID = Guid.NewGuid();
@@ -48,6 +51,7 @@ namespace FocusTreeManager.DataContract
             IdentifierID = item.UniqueID;
             ContainerID = item.Filename;
             TAG = item.TAG;
+            AdditionnalMods = item.AdditionnalMods;
             FociList = new List<Focus>();
             foreach (FocusModel model in item.FociList)
             {

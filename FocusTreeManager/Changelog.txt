@@ -122,3 +122,16 @@
 - Added the ability to rename a focus without opening the edit panel.
 - Added a separator in the focus context menu.
 - Fixed a bug with mutualy exclusive caused by the undo changes.
+- Added a field for additionnal modifiers in a focus tree selection.
+- Pressing "Return" in the focus editor will now close and save the changes.
+- Pressing "Return" in the scripter will now close and save the changes, pressing "ESC" will only clsoe it.
+- Added a splitter between the file viewer and the main panel.
+- Revamped the file viewer (left panel).
+- Adding file will now be done using a dialog windows.
+- Adding focus trees will now create the prerequisites and mutually exclusives with more reliability.
+- Localisation files will now be exported in the right file format (yml files).
+- Importing a localization file will not crash on empty lines anymore.
+- Fixed a crash when opening a localized Focus Tree when more than one key exists for the same value.
+- Exporting your project will now properly export the working version, not the last saved version.
+- Mutually exclusive clauses will not multiply anymore when importing a focus tree.
+- Setting windows will now properly stay in front after chosing the game folder.
