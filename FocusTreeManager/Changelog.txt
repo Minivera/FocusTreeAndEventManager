@@ -135,3 +135,16 @@
 - Exporting your project will now properly export the working version, not the last saved version.
 - Mutually exclusive clauses will not multiply anymore when importing a focus tree.
 - Setting windows will now properly stay in front after chosing the game folder.
+
+***********************
+*       Beta_2f       *
+***********************
+- Undoing a prequesite removal will now fully restore the prerequisite.
+- Undoing a mutually exclusive will now fully restore the mutually exclusive.
+- Undoing the deletion of a focus will now restore its prerequisites and mutualy exclusives.
+- Loading a project will not allow for undoing all the loading anymore.
+- Undoing adding a new prerequiiste will now only take one click.
+- Undoing adding a new mutually exlcusive will now only take one click.
+- Fixed a crash with exporting projects from older versions.
+- Fixed a crash when deleting a prerequisite line.
+- The logging system should now properly log the errors rather than crash while attempting to do so.
