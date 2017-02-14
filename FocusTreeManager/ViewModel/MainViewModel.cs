@@ -160,6 +160,7 @@ namespace FocusTreeManager.ViewModel
             RaisePropertyChanged("isProjectExist");
             TabsModelList = new ObservableCollection<ObservableObject>();
             RaisePropertyChanged("TabsModelList");
+            UndoService.Current[this].Clear();
         }
 
         private void loadProject()
@@ -206,6 +207,7 @@ namespace FocusTreeManager.ViewModel
                         "RefreshProjectViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                    UndoService.Current[this].Clear();
                 }
             }
             catch (Exception)
@@ -411,6 +413,11 @@ namespace FocusTreeManager.ViewModel
         {
             var undoRoot = UndoService.Current[this];
             undoRoot.Undo();
+            //Refresh all focus gris if needed
+            foreach (FocusGridModel model in Project.fociList.Where(m => m.isShown))
+            {
+                model.RedrawGrid();
+            }
         }
 
         private bool UndoCanExecute()

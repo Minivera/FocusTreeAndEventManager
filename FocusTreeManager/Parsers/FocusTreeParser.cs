@@ -44,9 +44,12 @@ namespace FocusTreeManager.Parsers
             text.AppendLine("\t\tmodifier = {");
             text.AppendLine("\t\t\tadd = 10");
             text.AppendLine("\t\t\ttag = " + TAG);
-            foreach (string line in AdditionnalMods.Split('\n'))
+            if (!string.IsNullOrEmpty(AdditionnalMods))
             {
-                text.AppendLine("\t\t\t" + line);
+                foreach (string line in AdditionnalMods.Split('\n'))
+                {
+                    text.AppendLine("\t\t\t" + line);
+                }
             }
             text.AppendLine("\t\t}");
             text.AppendLine("\t}");

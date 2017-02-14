@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using MonitoredUndo;
 using System.Collections.Specialized;
 using FocusTreeManager.ViewModel;
+using System.Linq;
 
 namespace FocusTreeManager.Model
 {
@@ -38,7 +39,7 @@ namespace FocusTreeManager.Model
         {
             FociList = new ObservableCollection<FocusModel>();
             FociList.CollectionChanged += FociList_CollectionChanged;
-            Focus = linkedFocus;
+            focus = linkedFocus;
         }
 
         public bool isRequired()
@@ -55,7 +56,10 @@ namespace FocusTreeManager.Model
             }
             Focus.Prerequisite.Remove(this);
             Focus = null;
-            FociList.Clear();
+            foreach (FocusModel focus in FociList.ToList())
+            {
+                FociList.Remove(focus);
+            }
         }
 
         #region Undo/Redo
