@@ -155,17 +155,6 @@ namespace FocusTreeManager.ViewModel
 
         private void newProject()
         {
-<<<<<<< Updated upstream
-            Project = new ProjectModel();
-            IsProjectExist = true;
-            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
-                        "RefreshProjectViewer"));
-            Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-            Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
-            RaisePropertyChanged("isProjectExist");
-            TabsModelList = new ObservableCollection<ObservableObject>();
-            RaisePropertyChanged("TabsModelList");
-=======
             var Vm = (new ViewModelLocator()).ProjectEditor;
             ProjectEditor dialog = new ProjectEditor();
             Vm.Project = new ProjectModel();
@@ -191,7 +180,6 @@ namespace FocusTreeManager.ViewModel
             ProjectEditor dialog = new ProjectEditor();
             Vm.Project = Project;
             dialog.ShowDialog();
->>>>>>> Stashed changes
         }
 
         private void loadProject()
@@ -238,6 +226,7 @@ namespace FocusTreeManager.ViewModel
                         "RefreshProjectViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
                     Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                    UndoService.Current[this].Clear();
                 }
             }
             catch (Exception)
@@ -443,6 +432,11 @@ namespace FocusTreeManager.ViewModel
         {
             var undoRoot = UndoService.Current[this];
             undoRoot.Undo();
+            //Refresh all focus gris if needed
+            foreach (FocusGridModel model in Project.fociList.Where(m => m.isShown))
+            {
+                model.RedrawGrid();
+            }
         }
 
         private bool UndoCanExecute()

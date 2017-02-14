@@ -287,6 +287,7 @@ namespace FocusTreeManager.Model
 
         public void Delete()
         {
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("FullyDeleteFocus", false);
             //Kill the focus sets
             foreach (MutuallyExclusiveSetModel set in MutualyExclusive.ToList())
             {
@@ -398,13 +399,13 @@ namespace FocusTreeManager.Model
         void Prerequisite_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "Prerequisite",
-                this.Prerequisite, e, "Prerequisite Changed");
+                Prerequisite, e, "Prerequisite Changed");
         }
 
         void MutualyExclusive_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "MutualyExclusive",
-                this.MutualyExclusive, e, "MutualyExclusive Changed");
+                MutualyExclusive, e, "MutualyExclusive Changed");
         }
 
         public object GetUndoRoot()

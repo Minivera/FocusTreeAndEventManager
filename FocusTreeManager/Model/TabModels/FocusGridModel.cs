@@ -36,7 +36,7 @@ namespace FocusTreeManager.Model
 
         private string tag;
 
-        private string additionnalMods;
+        private string additionnalMods = "";
 
         public RelayCommand<object> AddFocusCommand { get; private set; }
 
@@ -62,8 +62,6 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
-                DefaultChangeFactory.Current.OnChanging(this, 
-                         "RowCount", rowCount, value, "RowCount Changed");
                 rowCount = value;
                 RaisePropertyChanged(() => RowCount);
             }
@@ -81,8 +79,6 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
-                DefaultChangeFactory.Current.OnChanging(this,
-                         "ColumnCount", columnCount, value, "ColumnCount Changed");
                 columnCount = value;
                 RaisePropertyChanged(() => ColumnCount);
             }
@@ -267,11 +263,13 @@ namespace FocusTreeManager.Model
                                             inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
                                             inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
             if (clickedElements.Any())
-            { 
+            {
+                UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("DeleteSetAny", false);
                 foreach (CanvasLine line in clickedElements)
                 {
                     line.InternalSet.DeleteSetRelations();
                 }
+                UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                 CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
                 DrawOnCanvas();
             }
@@ -372,11 +370,13 @@ namespace FocusTreeManager.Model
                     if (selectedFocus != null && selectedFocus != Model &&
                         FociList.Where((f) => f == Model).Any())
                     {
+                        UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddMutuallyExclusive", false);
                         System.Windows.Application.Current.Properties["Mode"] = null;
                         selectedFocus.IsSelected = false;
                         var tempo = new MutuallyExclusiveSetModel(selectedFocus, Model);
                         selectedFocus.MutualyExclusive.Add(tempo);
                         Model.MutualyExclusive.Add(tempo);
+                        UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
@@ -390,6 +390,7 @@ namespace FocusTreeManager.Model
                     if (selectedFocus != null && selectedFocus != Model &&
                         FociList.Where((f) => f == Model).Any())
                     {
+                        UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddPrerequisite", false);
                         System.Windows.Application.Current.Properties["Mode"] = null;
                         string Type = (string)System.Windows.Application.Current.Properties["ModeParam"];
                         System.Windows.Application.Current.Properties["ModeParam"] = null;
@@ -412,6 +413,7 @@ namespace FocusTreeManager.Model
                             //Add Model to last Set
                             selectedFocus.Prerequisite.Last().FociList.Add(Model);
                         }
+                        UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
@@ -450,6 +452,7 @@ namespace FocusTreeManager.Model
             }
             //Remove the focus
             FociList.Remove(Model);
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
             EditGridDefinition();
             DrawOnCanvas();
         }
@@ -530,8 +533,8 @@ namespace FocusTreeManager.Model
 
         void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            DefaultChangeFactory.Current.OnCollectionChanged(this, "FociList",
-                this.FociList, e, "FociList Changed");
+            DefaultChangeFactory.Current.OnCollectionChanged(this, 
+                "FociList", this.FociList, e, "FociList Changed");
         }
         
         public object GetUndoRoot()

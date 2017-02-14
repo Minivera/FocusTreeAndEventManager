@@ -134,9 +134,6 @@
 - Fixed a crash when opening a localized Focus Tree when more than one key exists for the same value.
 - Exporting your project will now properly export the working version, not the last saved version.
 - Mutually exclusive clauses will not multiply anymore when importing a focus tree.
-<<<<<<< Updated upstream
-- Setting windows will now properly stay in front after chosing the game folder.
-=======
 - Setting windows will now properly stay in front after chosing the game folder.
 
 ***********************
