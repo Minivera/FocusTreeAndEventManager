@@ -255,14 +255,8 @@ namespace FocusTreeManager
                     if (extension == ".h4prj" || extension == ".xh4prj")
                     {
                         //Load it
-                        try
-                        {
-                            DataHolder.LoadContract(fileName);
-                        }
-                        catch
-                        {
-                            //TODO: Show loading error 
-                        } 
+                        MainViewModel vm = this.DataContext as MainViewModel;
+                        vm.LoadProject(fileName);
                     }
                 }
             }

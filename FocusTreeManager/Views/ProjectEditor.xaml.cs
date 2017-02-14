@@ -50,6 +50,7 @@ namespace FocusTreeManager.Views
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 ((TextBox)sender).Text = dialog.FileName;
+                ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
             this.Activate();
         }

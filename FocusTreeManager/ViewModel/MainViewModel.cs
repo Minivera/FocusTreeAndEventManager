@@ -203,30 +203,7 @@ namespace FocusTreeManager.ViewModel
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    if (Path.GetExtension(dialog.FileName) == ".h4prj")
-                    {
-                        string Title = resourceLocalization["Application_Loading"] as string;
-                        string Message = resourceLocalization["Application_Legacy_Loading"] as string;
-                        coordinator.ShowMessageAsync(this, Title, Message);
-                    }
-                    if (!DataHolder.LoadContract(dialog.FileName))
-                    {
-                        string Title = resourceLocalization["Application_Error"] as string;
-                        string Message = resourceLocalization["Application_Error_Transfer"] as string;
-                        coordinator.ShowMessageAsync(this, Title, Message);
-                        return;
-                    }
-                    project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
-                    project.Filename = dialog.FileName;
-                    RaisePropertyChanged("isProjectExist");
-                    TabsModelList = new ObservableCollection<ObservableObject>();
-                    RaisePropertyChanged("TabsModelList");
-                    IsProjectExist = true;
-                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
-                        "RefreshProjectViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
-                    UndoService.Current[this].Clear();
+                    LoadProject(dialog.FileName);
                 }
             }
             catch (Exception)
@@ -237,6 +214,36 @@ namespace FocusTreeManager.ViewModel
                 string Message = resourceLocalization["Application_Error_Loading"] as string;
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
+        }
+
+        public void LoadProject(string path)
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            if (Path.GetExtension(path) == ".h4prj")
+            {
+                string Title = resourceLocalization["Application_Loading"] as string;
+                string Message = resourceLocalization["Application_Legacy_Loading"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
+            }
+            if (!DataHolder.LoadContract(path))
+            {
+                string Title = resourceLocalization["Application_Error"] as string;
+                string Message = resourceLocalization["Application_Error_Transfer"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
+                return;
+            }
+            project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
+            project.Filename = path;
+            RaisePropertyChanged("isProjectExist");
+            TabsModelList = new ObservableCollection<ObservableObject>();
+            RaisePropertyChanged("TabsModelList");
+            IsProjectExist = true;
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                "RefreshProjectViewer"));
+            Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+            Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+            UndoService.Current[this].Clear();
         }
 
         private void saveProject()

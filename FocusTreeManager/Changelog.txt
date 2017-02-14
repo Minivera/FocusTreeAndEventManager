@@ -157,6 +157,7 @@
 - Removed the option of changing the TAG, language name or namespace from the Focus Tree, Localization files or event files.
 - Syntax errors will now be checked for individual foci and events rather than the whole file.
 - Changing tabs while editing a localisation line will now cancel the changes rather than save them. This may not be final.
+- Double clicking a project file and opening it with the program will automatically load the project.
 
 ***********************
 *       Beta_2g       *
