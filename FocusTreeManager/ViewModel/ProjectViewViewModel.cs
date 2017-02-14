@@ -62,6 +62,11 @@ namespace FocusTreeManager.ViewModel
                 else if (File is LocalisationModel)
                 {
                     (new ViewModelLocator()).Main.Project.localisationList.Add((LocalisationModel)File);
+                    //Check if first, if yes, set as default
+                    if ((new ViewModelLocator()).Main.Project.DefaultLocale == null)
+                    {
+                        (new ViewModelLocator()).Main.Project.DefaultLocale = (LocalisationModel)File;
+                    }
                     RaisePropertyChanged("localisationList");
                 }
                 else if (File is EventTabModel)

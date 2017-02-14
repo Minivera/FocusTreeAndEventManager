@@ -35,7 +35,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(Name);
+                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
                 string translation = locales != null ? locales.translateKey(Name) : null;
                 return translation != null ? translation : Name;
             }

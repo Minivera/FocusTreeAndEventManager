@@ -24,6 +24,11 @@
     <system:String x:Key="Project_Save">Save project</system:String>
     <system:String x:Key="Project_Export">Export project</system:String>
     <system:String x:Key="Project_Save_As">Save project As</system:String>
+    <system:String x:Key="Project_Edit">Edit project</system:String>
+    <system:String x:Key="Project_Name">Project Name</system:String>
+    <system:String x:Key="Project_Default_Locale">Default localisation file</system:String>
+    <system:String x:Key="Project_Preload">Preload game content?</system:String>
+    <system:String x:Key="Project_Mods_Folders">Mods folders to load in addition to the game's content</system:String>
     <system:String x:Key="Files_Filename">Filename</system:String>
     <system:String x:Key="Focus_TAG">Country TAG (See the Wiki)</system:String>
     <system:String x:Key="Focus_Additional_Mods">Additionnal modifiers for country selection</system:String>
@@ -121,6 +126,7 @@
     <system:String x:Key="Command_Delete">Delete</system:String>
     <system:String x:Key="Command_Reset">Empty</system:String>
     <system:String x:Key="Command_Rename">Rename</system:String>
+    <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>
@@ -144,4 +150,5 @@
     <system:String x:Key="Application_Error_Transfer">The project could not be transfered to the new version.</system:String>
     <system:String x:Key="Application_Invalid_File">The file is not a valid HoI script file.</system:String>
     <system:String x:Key="Window_File">Files</system:String>
+    <system:String x:Key="Window_Project">Project</system:String>
 </ResourceDictionary>

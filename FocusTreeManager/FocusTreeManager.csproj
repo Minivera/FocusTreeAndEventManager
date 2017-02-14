@@ -186,7 +186,12 @@
     <Compile Include="Model\PrerequisitesSetModel.cs" />
     <None Include="Model\Old\Project.cs" />
     <Compile Include="Model\ProjectModel.cs" />
+    <Compile Include="ViewModel\LocalizatorViewModel.cs" />
+    <Compile Include="ViewModel\ProjectEditorViewModel.cs" />
     <Compile Include="ViewModel\FileManagerViewModel.cs" />
+    <Compile Include="Views\ProjectEditor.xaml.cs">
+      <DependentUpon>ProjectEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GriddedGrid.cs" />
     <Compile Include="Helper\ModelsToScriptHelper.cs" />
     <Compile Include="Helper\UiHelper.cs" />
@@ -236,6 +241,9 @@
     </Compile>
     <Compile Include="Views\FileManager.xaml.cs">
       <DependentUpon>FileManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\Localizator.xaml.cs">
+      <DependentUpon>Localizator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\Assignation.xaml.cs">
       <DependentUpon>Assignation.xaml</DependentUpon>
@@ -318,7 +326,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ProjectEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FileManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserControls\Localizator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -372,8 +388,7 @@
     <Compile Include="Model\LegacySerialization\Focus.cs" />
     <Compile Include="Model\LegacySerialization\MutuallyExclusiveSet.cs" />
     <Compile Include="Model\LegacySerialization\PrerequisitesSet.cs" />
-    <Compile Include="ViewModel\EditFocusViewModel.cs" />
-    <Compile Include="ViewModel\AddFocusViewModel.cs" />
+    <Compile Include="ViewModel\ManageFocusViewModel.cs" />
     <Compile Include="ViewModel\ChangeImageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

@@ -177,6 +177,10 @@
                             Content="{DynamicResource appbar_page_upload}" Width="100" Height="100"
                             Command="{Binding LoadProjectCommand}"/>
                     <Label Content="{DynamicResource Project_Load}" FontSize="20" HorizontalAlignment="Center"/>
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"  x:Name="EditButton"
+                            Content="{DynamicResource appbar_page_edit}" Width="100" Height="100"
+                            Command="{Binding EditProjectCommand}" IsEnabled="{Binding IsProjectExist}"/>
+                    <Label Content="{DynamicResource Project_Edit}" FontSize="20" HorizontalAlignment="Center"/>
                     <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="SaveButton"
                             Content="{DynamicResource appbar_page_download}" Width="100" Height="100"
                             Command="{Binding SaveProjectCommand}" IsEnabled="{Binding IsProjectExist}"/>
@@ -191,7 +195,7 @@
     </Controls:MetroWindow.Flyouts>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>

@@ -47,17 +47,8 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Margin="10" Orientation="Horizontal"  Grid.Row="0" Grid.ColumnSpan="3">
-            <Label Content="{DynamicResource Event_Namespace}" Padding="5"
-                   HorizontalAlignment="Left"/>
-            <TextBox Text="{Binding EventNamespace, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-        </StackPanel>
         <ListView x:Name="EventMasterList"
-            Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" 
+            Grid.Column="0" Grid.Row="1" 
             ItemsSource="{Binding EventList}" SelectionMode="Single"
             SelectedItem="{Binding SelectedNode}" AlternationCount="2">
             <ListView.ContextMenu>

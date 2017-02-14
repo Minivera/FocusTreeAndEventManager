@@ -1,24 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views
 {
-    /// <summary>
-    /// Logique d'interaction pour FocusEditor.xaml
-    /// </summary>
     public partial class FocusEditor : UserControl
     {
         public FocusEditor()
@@ -41,6 +27,24 @@ namespace FocusTreeManager.Views
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             this.Resources.MergedDictionaries.Add(resourceLocalization);
+        }
+
+        private void DescriptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas.SetRight(Localizator, -20);
+            Canvas.SetTop(Localizator, Canvas.GetTop(DescriptionButton) 
+                            - DescriptionButton.Height);
+            DescriptionButton.Command.Execute(DescriptionButton.CommandParameter);
+            Localizator.Show();
+        }
+
+        private void VisibleNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas.SetRight(Localizator, -20);
+            Canvas.SetTop(Localizator, Canvas.GetTop(VisibleNameButton)
+                            - VisibleNameButton.Height);
+            VisibleNameButton.Command.Execute(VisibleNameButton.CommandParameter);
+            Localizator.Show();
         }
     }
 }

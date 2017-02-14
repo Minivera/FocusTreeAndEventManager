@@ -29,10 +29,6 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Label Content="{DynamicResource Focus_TAG}"/>
-            <TextBox Text="{Binding Path=TAG}"/>
-        </StackPanel>
         <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
             <Grid Margin="45,0,45,0" x:Name="ListGrid" 
                   Tag="{Binding RelativeSource={RelativeSource Self}}">

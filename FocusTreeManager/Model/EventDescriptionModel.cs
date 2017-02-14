@@ -22,7 +22,7 @@ namespace FocusTreeManager.Model
                     Id = "eventid.d_descriptioname";
                 }
 
-                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(Id);
+                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
                 string translation = locales != null ? locales.translateKey(Id) : null;
                 return translation != null ? translation : Id;
             }

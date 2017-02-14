@@ -346,16 +346,19 @@ namespace FocusTreeManager.Model
             FocusModel Model = msg.Sender as FocusModel;
             switch (msg.Notification)
             {
-                case "HideAddFocus":
+                case "CloseEditFocus":
+                    if ((string)System.Windows.Application.Current.Properties["Mode"] == "Add")
+                    {
+                        ManageFocusViewModel viewModel = msg.Sender as ManageFocusViewModel;
+                        addFocusToList(viewModel.Focus);
+                        DrawOnCanvas();
+                    }
+                    else if((string)System.Windows.Application.Current.Properties["Mode"] == "Edit")
+                    { 
+                        EditGridDefinition();
+                        DrawOnCanvas();
+                    }
                     System.Windows.Application.Current.Properties["Mode"] = null;
-                    AddFocusViewModel viewModel = msg.Sender as AddFocusViewModel;
-                    addFocusToList(viewModel.Focus);
-                    DrawOnCanvas();
-                    break;
-                case "HideEditFocus":
-                    System.Windows.Application.Current.Properties["Mode"] = null;
-                    EditGridDefinition();
-                    DrawOnCanvas();
                     break;
                 case "DeleteFocus":
                     DeleteFocus(Model);

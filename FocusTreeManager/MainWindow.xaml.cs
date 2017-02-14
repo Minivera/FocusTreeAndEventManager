@@ -47,13 +47,8 @@ namespace FocusTreeManager
                         ResourceDictionary resourceLocalization = new ResourceDictionary();
                         resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
-                        FocusFlyout.DataContext = (new ViewModelLocator()).AddFocus_Flyout.SetupFlyout(msg.Sender);
+                        (new ViewModelLocator()).EditFocus.SetupFlyout(msg.Sender, ModeType.Create);
                         FocusFlyout.IsOpen = true;
-                        break;
-                    }
-                case "HideAddFocus":
-                    {
-                        FocusFlyout.IsOpen = false;
                         break;
                     }
                 case "ShowEditFocus":
@@ -61,12 +56,11 @@ namespace FocusTreeManager
                         ResourceDictionary resourceLocalization = new ResourceDictionary();
                         resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                         FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
-                        FocusFlyout.DataContext = (new ViewModelLocator()).EditFocus_Flyout;
-                        ((EditFocusViewModel)FocusFlyout.DataContext).Focus = (Model.FocusModel)msg.Sender;
+                        (new ViewModelLocator()).EditFocus.SetupFlyout(msg.Sender, ModeType.Edit);
                         FocusFlyout.IsOpen = true;
                         break;
                     }
-                case "HideEditFocus":
+                case "CloseEditFocus":
                     {
                         FocusFlyout.IsOpen = false;
                         break;

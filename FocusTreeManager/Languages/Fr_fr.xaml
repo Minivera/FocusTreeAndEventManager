@@ -24,7 +24,12 @@
     <system:String x:Key="Project_Save">Sauvegarder le projet</system:String>
     <system:String x:Key="Project_Export">Export project</system:String>
     <system:String x:Key="Project_Save_As">Sauvegarder le projet sous</system:String>
-    <system:String x:Key="Files_Filename">Filename</system:String>
+    <system:String x:Key="Project_Edit">Editer le project</system:String>
+    <system:String x:Key="Project_Name">Nom du project</system:String>
+    <system:String x:Key="Project_Default_Locale">Fichier de localisation par défaut</system:String>
+    <system:String x:Key="Project_Preload">Précharger les fichiers du jeu?</system:String>
+    <system:String x:Key="Project_Mods_Folders">Dossiers de mods à charger en plus des fichiers de base</system:String>
+    <system:String x:Key="Files_Filename">Nom du fichier</system:String>
     <system:String x:Key="Focus_TAG">Tag du pays (Voir le wiki)</system:String>
     <system:String x:Key="Focus_Additional_Mods">Modificateurs additionnels pour la sélection du pays</system:String>
     <system:String x:Key="Focus_Unique_Name">Nom unique</system:String>
@@ -124,6 +129,7 @@
     <system:String x:Key="Command_Delete">Supprimer</system:String>
     <system:String x:Key="Command_Reset">Vider</system:String>
     <system:String x:Key="Command_Rename">Renommer</system:String>
+    <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Menu_Settings">Paramètres</system:String>
     <system:String x:Key="Menu_Project">Projet</system:String>
     <system:String x:Key="Menu_Export">Exporter</system:String>
@@ -150,4 +156,5 @@
     <system:String x:Key="Application_Error_Transfer">Le projet n'a pas pu être transféré vers le nouveau format</system:String>
     <system:String x:Key="Application_Invalid_File">Le fichier n'est pas un fichier de script valide.</system:String>
     <system:String x:Key="Window_File">Fichiers</system:String>
+    <system:String x:Key="Window_Project">Projet</system:String>
 </ResourceDictionary>

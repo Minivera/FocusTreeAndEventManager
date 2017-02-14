@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views"
+             xmlns:local="clr-namespace:FocusTreeManager.Views" 
+             xmlns:uc="clr-namespace:FocusTreeManager.Views.UserControls"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="1000" d:DesignWidth="400"
+             DataContext="{Binding EditFocus, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style x:Key="ControlStyle" TargetType="Control">
@@ -31,7 +33,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid HorizontalAlignment="Center">
+    <Grid HorizontalAlignment="Center" DataContext="{Binding Focus}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="50*"/>
@@ -49,49 +51,84 @@
         </Grid.RowDefinitions>
         <Label Content="{DynamicResource Focus_Unique_Name}" 
                            Grid.Column="0" Grid.Row="0"/>
-        <TextBox Text="{Binding Focus.UniqueName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" 
+        <TextBox Text="{Binding UniqueName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
         <Label Content="{DynamicResource Focus_Visible_Name}" 
                            Grid.Column="0" Grid.Row="1"/>
-        <TextBox Text="{Binding Focus.VisibleName, Mode=OneWay}" Grid.Row="1" Grid.Column="1" 
+        <TextBox Text="{Binding VisibleName, Mode=OneWay}" Grid.Row="1" Grid.Column="1" 
                              Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"
                              IsReadOnly="True"/>
         <Label Content="{DynamicResource Focus_Description}" 
                            Grid.Column="0" Grid.Row="2"/>
         <ScrollViewer Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="{Binding Focus.Description, Mode=OneWay}"  
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Description}"
-                             TextWrapping="Wrap" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Description, Mode=OneWay}"  
+                       Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Description}"
+                       TextWrapping="Wrap" VerticalAlignment="Center"/>
         </ScrollViewer>
         <Label Content="{DynamicResource Focus_X}" 
                            Grid.Column="0" Grid.Row="3"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                Grid.Row="3" Grid.Column="1" Value="{Binding Path=Focus.X}" 
+                                Grid.Row="3" Grid.Column="1" Value="{Binding Path=X}" 
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Y}" 
                            Grid.Column="0" Grid.Row="4"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
-                                Grid.Row="4" Grid.Column="1" Value="{Binding Path=Focus.Y}"
+                                Grid.Row="4" Grid.Column="1" Value="{Binding Path=Y}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Cost}" 
                            Grid.Column="0" Grid.Row="5"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="0.1" InterceptArrowKeys="True"
-                                Grid.Row="5" Grid.Column="1" Value="{Binding Path=Focus.Cost}"
+                                Grid.Row="5" Grid.Column="1" Value="{Binding Path=Cost}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="True"/>
         <Label Content="{DynamicResource Focus_Image}" 
                            Grid.Column="0" Grid.Row="6"/>
-        <Image Grid.Column="1" Grid.Row="6" Source="{Binding Focus.Image}"/>
+        <Image Grid.Column="1" Grid.Row="6" Source="{Binding Image}"/>
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
                 Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" 
-                Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+                Style="{DynamicResource SquareButtonStyle}" MinWidth="150"
+                DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
+                    AncestorType={x:Type UserControl}}, Path=DataContext}"/>
         <Label Content="{DynamicResource Focus_Script}" 
                            Grid.Column="0" Grid.Row="7"/>
         <Button Content="{DynamicResource Command_Edit}" 
                 Grid.Row="7" Grid.Column="1" Command="{Binding EditScriptCommand}" 
-                Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Height="25"/>
+                Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Height="25"
+                DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
+                    AncestorType={x:Type UserControl}}, Path=DataContext}"/>
         <Button Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Margin="0,5,0,0"
                 Content="{DynamicResource Command_Accept}" Command="{Binding FocusCommand}" 
+                DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
+                    AncestorType={x:Type UserControl}}, Path=DataContext}"
                 Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" 
                 IsDefault="True"/>
+        <Canvas Grid.ColumnSpan="2" Grid.RowSpan="9">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}"
+                    Width="36" x:Name="VisibleNameButton"
+                    Height="35" Canvas.Left="328" Canvas.Top="37"
+                    Click="VisibleNameButton_Click"
+                    Command="{Binding EditLocaleCommand}"
+                    CommandParameter="VisibleName">
+                <Rectangle Width="15" Height="15"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_message}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}"
+                    Width="36" x:Name="DescriptionButton"
+                    Height="35" Canvas.Left="328" Canvas.Top="115"
+                    Click="DescriptionButton_Click"
+                    Command="{Binding EditLocaleCommand}"
+                    CommandParameter="Description">
+                <Rectangle Width="15" Height="15"
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_message}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <local:Localizator x:Name="Localizator" Visibility="Hidden"></local:Localizator>
+        </Canvas>
     </Grid>
 </UserControl>

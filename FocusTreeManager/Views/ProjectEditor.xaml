@@ -1,0 +1,74 @@
+﻿<Controls:MetroWindow x:Class="FocusTreeManager.Views.ProjectEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FocusTreeManager.Views"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="{DynamicResource Window_Project}" 
+        MinHeight="400" Width="500" 
+        ResizeMode="NoResize" SizeToContent="Height"
+        DataContext="{Binding ProjectEditor, Source={StaticResource Locator}}"
+        WindowStartupLocation="CenterScreen"
+        Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png" 
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        Dialog:DialogParticipation.Register="{Binding}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ControlStyle" TargetType="Control">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
+                <Setter Property="Margin" Value="-4,0,5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition x:Name="ControlsRow" Height="30" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" DataContext="{Binding Project}" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="60*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="FilenameRow" Height="35" />
+                    <RowDefinition x:Name="NameRow" Height="35" />
+                    <RowDefinition x:Name="DefaultRow" Height="35" />
+                    <RowDefinition x:Name="PreloadRow" Height="35" />
+                    <RowDefinition x:Name="AddModsRow" Height="170" />
+                </Grid.RowDefinitions>
+                <Label Content="{DynamicResource Files_Filename}" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Text="{Binding Filename}" Grid.Row="0" Grid.Column="1" GotFocus="TextBox_GotFocus"/>
+                <Label Content="{DynamicResource Project_Name}" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Text="{Binding ProjectName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="1" Grid.Column="1" IsReadOnly="True"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="{DynamicResource Project_Default_Locale}" />
+                <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding localisationList}"
+                  DisplayMemberPath="Filename"
+                  SelectedValue="{Binding DefaultLocale}" />
+            </Grid>
+            <WrapPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button Content="{DynamicResource Command_Accept}" Command="{Binding AcceptCommand}" 
+                    IsDefault="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+                <Button Content="{DynamicResource Command_Cancel}" Command="{Binding CancelCommand}" 
+                    IsCancel="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>

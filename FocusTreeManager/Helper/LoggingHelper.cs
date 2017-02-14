@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,27 +25,70 @@ namespace FocusTreeManager.Helper
 
         private static void WriteResult(string result, string logfile)
         {
-            Writer writer = new Writer() { Filepath = LOG_FOLDER + logfile + ".log" };
-            writer.WriteToFile(new StringBuilder(result));
+            ConcurrentFile.WriteAllText(LOG_FOLDER + logfile + ".log", "\n\n" + result);
         }
     }
 
-    internal class Writer
+    internal static class ConcurrentFile
     {
-        public string Filepath { get; set; }
-        private static object locker = new Object();
 
-        public void WriteToFile(StringBuilder text)
+        public static void WriteAllText(string path, string contents, int timeoutMs = 1000,
+            FileMode mode = FileMode.Append)
         {
-            lock (locker)
+            using (FileStream stream = GetStream(path, mode, FileAccess.Write, timeoutMs))
             {
-                using (FileStream file = new FileStream(Filepath, FileMode.Append, FileAccess.Write, FileShare.Read))
-                using (StreamWriter writer = new StreamWriter(file, Encoding.Unicode))
+                StreamWriter writer = new StreamWriter(stream);
+                writer.Write(contents);
+            }
+        }
+
+        private static FileStream GetStream(string path, FileMode mode, FileAccess access, int timeoutMs = 1000)
+        {
+            var time = Stopwatch.StartNew();
+            while (time.ElapsedMilliseconds < timeoutMs)
+            {
+                try
                 {
-                    writer.Write(text.ToString());
+                    return new FileStream(path, mode, access);
+                }
+                catch (IOException e)
+                {
+                    // access error
+                    if (e.HResult != -2147024864)
+                    {
+                        throw;
+                    }
                 }
             }
+            throw new TimeoutException($"Failed to get a access to {path} within {timeoutMs}ms.");
+        }
 
+        /// <summary>Deletes te file if it exists</summary>
+        /// <returns>True if the file was deleted</returns>
+        public static bool Delete(string filename, int timeoutMs = 1000)
+        {
+            var time = Stopwatch.StartNew();
+            while (time.ElapsedMilliseconds < timeoutMs)
+            {
+                try
+                {
+                    if (!File.Exists(filename))
+                    {
+                        return false;
+                    }
+                    File.Delete(filename);
+                    return true;
+                }
+                catch (IOException e)
+                {
+                    // access error
+                    if (e.HResult != -2147024864)
+                    {
+                        throw;
+                    }
+                }
+            }
+            throw new TimeoutException($"Failed to get a access to {filename} within {timeoutMs}ms.");
         }
     }
 }

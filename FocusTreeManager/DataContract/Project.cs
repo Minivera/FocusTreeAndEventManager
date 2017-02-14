@@ -41,6 +41,9 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "pre_load_content", Order = 5)]
         public bool preloadGameContent { get; set; }
 
+        [DataMember(Name = "default_locale", Order = 6)]
+        public LocalisationContainer defaultLocale { get; set; }
+
         public Project()
         {
             modFolderList = new List<string>();
@@ -137,6 +140,11 @@ namespace FocusTreeManager.DataContract
                     ContainerID = item.Filename,
                     InternalScript = item.InternalScript
                 });
+            }
+            if (localisationList.Any() && model.DefaultLocale != null)
+            {
+                defaultLocale = localisationList.FirstOrDefault(l => l.IdentifierID
+                                    == model.DefaultLocale.UniqueID);
             }
         }
     }

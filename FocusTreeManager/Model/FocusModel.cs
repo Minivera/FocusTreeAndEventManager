@@ -73,7 +73,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(UniqueName);
+                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
                 string translation = locales != null ? locales.translateKey(UniqueName) : null;
                 return translation != null ? translation : UniqueName;
             }
@@ -83,7 +83,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.getLocalisationWithKey(UniqueName);
+                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
                 string translation = locales != null ? locales.translateKey(UniqueName + "_desc") : null;
                 return translation != null ? translation : UniqueName + "_desc";
             }
@@ -209,6 +209,8 @@ namespace FocusTreeManager.Model
         
         public RelayCommand TestFinishCommand { get; private set; }
 
+        public RelayCommand<string> EditLocaleCommand { get; private set; }
+
         public FocusModel()
         {
             Prerequisite = new ObservableCollection<PrerequisitesSetModel>();
@@ -221,6 +223,7 @@ namespace FocusTreeManager.Model
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale);
         }
 
         public FocusModel(Focus focus)
@@ -241,6 +244,7 @@ namespace FocusTreeManager.Model
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale);
         }
 
         public void RepairSets(Focus focus, List<FocusModel> fociList)
@@ -310,6 +314,68 @@ namespace FocusTreeManager.Model
             {
                 Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusPrerequisite"));
             }
+        }
+
+        public void EditLocale(string param)
+        {
+            switch (param)
+            {
+                case "VisibleName":
+                    LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
+                    var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                    LocaleModel model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == this.UniqueName);
+                    if (model != null)
+                    {
+                        vm.Locale = model;
+                    }
+                    else
+                    {
+                        vm.Locale = new LocaleModel()
+                        {
+                            Key = this.UniqueName,
+                            Value = this.VisibleName
+                        };
+                    }
+                    vm.AddOrUpdateCommand = AddOrUpdateLocale;
+                    vm.RaisePropertyChanged("Locale");
+                    break;
+                case "Description":
+                    vm = (new ViewModelLocator()).Localizator;
+                    locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                    model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == this.UniqueName + "_desc");
+                    if (model != null)
+                    {
+                        vm.Locale = model;
+                    }
+                    else
+                    {
+                        vm.Locale = new LocaleModel()
+                        {
+                            Key = this.UniqueName,
+                            Value = this.Description
+                        };
+                    }
+                    vm.AddOrUpdateCommand = AddOrUpdateLocale;
+                    vm.RaisePropertyChanged("Locale");
+                    break;
+            }
+        }
+
+        public void AddOrUpdateLocale()
+        {
+            LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
+            var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+            LocaleModel model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == vm.Locale.Key);
+            if (model == null)
+            {
+                locales.LocalisationMap.Add(vm.Locale);
+            }
+            RaisePropertyChanged("LocalisationMap");
+            RaisePropertyChanged(() => VisibleName);
+            RaisePropertyChanged(() => Description);
         }
 
         public void AddPrerequisite(string Type)

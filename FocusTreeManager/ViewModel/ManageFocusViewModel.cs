@@ -7,7 +7,6 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace FocusTreeManager.ViewModel
@@ -18,7 +17,7 @@ namespace FocusTreeManager.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class AddFocusViewModel : ViewModelBase
+    public class ManageFocusViewModel : ViewModelBase
     {
         private FocusModel focus;
 
@@ -42,19 +41,19 @@ namespace FocusTreeManager.ViewModel
         public RelayCommand EditScriptCommand { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the AddFocusViewModel class.
+        /// Initializes a new instance of the EditFocusViewModel class.
         /// </summary>
-        public AddFocusViewModel()
+        public ManageFocusViewModel()
         {
-            FocusCommand = new RelayCommand(AddFocus);
+            FocusCommand = new RelayCommand(CloseEditFocus);
             ChangeImageCommand = new RelayCommand(ChangeImage);
             EditScriptCommand = new RelayCommand(EditScript);
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        public AddFocusViewModel SetupFlyout(object sender)
+        public ManageFocusViewModel SetupFlyout(object sender, ModeType Mode)
         {
-            try
+            if (Mode == ModeType.Create)
             {
                 Point mousePos = Mouse.GetPosition((IInputElement)sender);
                 FocusModel focus = new FocusModel();
@@ -65,17 +64,18 @@ namespace FocusTreeManager.ViewModel
                 //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
                 Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
                 Focus.Y = (int)Math.Floor(mousePos.Y / 140);
-                RaisePropertyChanged("Focus");
             }
-            catch (Exception)
+            else
             {
+                Focus = (Model.FocusModel)sender;
             }
+            RaisePropertyChanged("Focus");
             return this;
         }
 
-        public void AddFocus()
+        public void CloseEditFocus()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "HideAddFocus"));
+            Messenger.Default.Send(new NotificationMessage(this, "CloseEditFocus"));
         }
 
         public void ChangeImage()

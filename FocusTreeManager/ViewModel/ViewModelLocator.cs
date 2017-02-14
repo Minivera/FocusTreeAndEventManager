@@ -35,11 +35,12 @@ namespace FocusTreeManager.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ProjectViewViewModel>();
-            SimpleIoc.Default.Register<AddFocusViewModel>();
-            SimpleIoc.Default.Register<EditFocusViewModel>();
+            SimpleIoc.Default.Register<ManageFocusViewModel>();
             SimpleIoc.Default.Register<ChangeImageViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<FileManagerViewModel>();
+            SimpleIoc.Default.Register<ProjectEditorViewModel>();
+            SimpleIoc.Default.Register<LocalizatorViewModel>();
             SimpleIoc.Default.Register<ScripterViewModel>();
             SimpleIoc.Default.Register<ScripterControlsViewModel>();
             SimpleIoc.Default.Register<ErrorDawgViewModel>();
@@ -59,19 +60,11 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public AddFocusViewModel AddFocus_Flyout
+        public ManageFocusViewModel EditFocus
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<AddFocusViewModel>();
-            }
-        }
-
-        public EditFocusViewModel EditFocus_Flyout
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<EditFocusViewModel>();
+                return ServiceLocator.Current.GetInstance<ManageFocusViewModel>();
             }
         }
 
@@ -104,6 +97,22 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<FileManagerViewModel>();
+            }
+        }
+
+        public ProjectEditorViewModel ProjectEditor
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ProjectEditorViewModel>();
+            }
+        }
+
+        public LocalizatorViewModel Localizator
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<LocalizatorViewModel>();
             }
         }
 

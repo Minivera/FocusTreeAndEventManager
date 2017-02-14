@@ -28,6 +28,7 @@ namespace FocusTreeManager.Model
                 }
                 filename = value;
                 RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => ProjectName);
             }
         }
 
@@ -59,6 +60,25 @@ namespace FocusTreeManager.Model
                 }
                 preloadGameContent = value;
                 RaisePropertyChanged(() => PreloadGameContent);
+            }
+        }
+
+        private LocalisationModel defaultLocale;
+
+        public LocalisationModel DefaultLocale
+        {
+            get
+            {
+                return defaultLocale;
+            }
+            set
+            {
+                if (value == defaultLocale)
+                {
+                    return;
+                }
+                defaultLocale = value;
+                RaisePropertyChanged(() => DefaultLocale);
             }
         }
 
@@ -113,16 +133,6 @@ namespace FocusTreeManager.Model
             return container;
         }
 
-        public LocalisationModel getLocalisationWithKey(string key)
-        {
-            if (key == null)
-            {
-                return null;
-            }
-            return localisationList.FirstOrDefault((l) => l.LocalisationMap.
-                    Where((x) => x.Key != null && x.Key.ToLower() == key.ToLower()).Any());
-        }
-
         static public ProjectModel createFromDataContract(Project dataContract)
         {
             ProjectModel newproject = new ProjectModel();
@@ -149,6 +159,11 @@ namespace FocusTreeManager.Model
                     Filename = container.ContainerID,
                     InternalScript = container.InternalScript
                 });
+            }
+            if (newproject.localisationList.Any() && dataContract.defaultLocale != null)
+            {
+                newproject.DefaultLocale = newproject.localisationList.FirstOrDefault(
+                    l => l.UniqueID == dataContract.defaultLocale.IdentifierID);
             }
             return newproject;
         }

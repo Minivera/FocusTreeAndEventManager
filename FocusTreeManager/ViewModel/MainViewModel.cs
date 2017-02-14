@@ -1,5 +1,6 @@
 using FocusTreeManager.DataContract;
 using FocusTreeManager.Model;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -76,6 +77,8 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand SaveProjectAsCommand { get; private set; }
 
+        public RelayCommand EditProjectCommand { get; private set; }
+
         public RelayCommand ExportProjectCommand { get; private set; }
 
         public RelayCommand UndoCommand { get; private set; }
@@ -91,6 +94,7 @@ namespace FocusTreeManager.ViewModel
             LoadProjectCommand = new RelayCommand(() => checkBeforeContinuing("Load"));
             SaveProjectCommand = new RelayCommand(saveProject);
             SaveProjectAsCommand = new RelayCommand(saveProjectAs);
+            EditProjectCommand = new RelayCommand(editProject);
             ExportProjectCommand = new RelayCommand(ExportProject);
             UndoCommand = new RelayCommand(UndoExecute, UndoCanExecute);
             RedoCommand = new RelayCommand(RedoExecute, RedoCanExecute);
@@ -151,6 +155,7 @@ namespace FocusTreeManager.ViewModel
 
         private void newProject()
         {
+<<<<<<< Updated upstream
             Project = new ProjectModel();
             IsProjectExist = true;
             Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
@@ -160,6 +165,33 @@ namespace FocusTreeManager.ViewModel
             RaisePropertyChanged("isProjectExist");
             TabsModelList = new ObservableCollection<ObservableObject>();
             RaisePropertyChanged("TabsModelList");
+=======
+            var Vm = (new ViewModelLocator()).ProjectEditor;
+            ProjectEditor dialog = new ProjectEditor();
+            Vm.Project = new ProjectModel();
+            dialog.ShowDialog();
+            if (Vm.Project != null)
+            {
+                Project = Vm.Project;
+                IsProjectExist = true;
+                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                            "RefreshProjectViewer"));
+                Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+                Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                RaisePropertyChanged("isProjectExist");
+                TabsModelList = new ObservableCollection<ObservableObject>();
+                RaisePropertyChanged("TabsModelList");
+                UndoService.Current[this].Clear();
+            }
+        }
+
+        public void editProject()
+        {
+            var Vm = (new ViewModelLocator()).ProjectEditor;
+            ProjectEditor dialog = new ProjectEditor();
+            Vm.Project = Project;
+            dialog.ShowDialog();
+>>>>>>> Stashed changes
         }
 
         private void loadProject()
