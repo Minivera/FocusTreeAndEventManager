@@ -113,6 +113,10 @@ namespace FocusTreeManager.ViewModel
                         }
                         catch (Exception)
                         {
+                            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                            string Title = resourceLocalization["Application_Error"] as string;
+                            string Message = resourceLocalization["Application_Script_Fallback"] as string;
+                            coordinator.ShowMessageAsync(this, Title, Message);
                             //If it crashed, it is possible it was a generic file
                             File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
                             ((ScriptModel)File).Filename =

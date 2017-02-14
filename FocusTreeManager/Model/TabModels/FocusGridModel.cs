@@ -253,6 +253,7 @@ namespace FocusTreeManager.Model
         public void AddFocus(object sender)
         {
             System.Windows.Application.Current.Properties["Mode"] = "Add";
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddFocus", false);
             Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
 
@@ -460,6 +461,7 @@ namespace FocusTreeManager.Model
         public void addFocusToList(FocusModel FocusToAdd)
         {
             FociList.Add(FocusToAdd);
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
             RowCount = FocusToAdd.Y >= RowCount ? FocusToAdd.Y + 1 : RowCount;
             ColumnCount = FocusToAdd.X >= ColumnCount ? FocusToAdd.X + 1 : ColumnCount;
             DrawOnCanvas();

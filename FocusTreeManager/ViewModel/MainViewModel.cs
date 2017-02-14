@@ -432,7 +432,7 @@ namespace FocusTreeManager.ViewModel
         {
             var undoRoot = UndoService.Current[this];
             undoRoot.Undo();
-            //Refresh all focus gris if needed
+            //Refresh all focus grids if needed
             foreach (FocusGridModel model in Project.fociList.Where(m => m.isShown))
             {
                 model.RedrawGrid();

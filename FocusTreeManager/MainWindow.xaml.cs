@@ -215,7 +215,7 @@ namespace FocusTreeManager
                 foreach (DataGrid grid
                     in UiHelper.FindVisualChildren<DataGrid>((TabControl)e.Source))
                 {
-                    grid.CommitEdit();
+                    grid.CancelEdit();
                 }
             }
             if (e.AddedItems.Count > 0)

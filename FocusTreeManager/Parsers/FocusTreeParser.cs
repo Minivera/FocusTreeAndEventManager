@@ -214,31 +214,45 @@ namespace FocusTreeManager.Parsers
             //Run through all foci
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
-                //Create the focus
-                FocusModel newFocus = new FocusModel();
-                newFocus.UniqueName = block.FindValue("id").Parse();
-                newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
-                newFocus.X = int.Parse(block.FindValue("x").Parse());
-                newFocus.Y = int.Parse(block.FindValue("y").Parse());
-                newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);
-                //Get all core scripting elements
-                Script InternalFocusScript = new Script();
-                for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
+                try
                 {
-                    ICodeStruct found = block.FindAssignation(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
-                    if (found != null)
+                    //Create the focus
+                    FocusModel newFocus = new FocusModel();
+                    newFocus.UniqueName = block.FindValue("id").Parse();
+                    newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
+                    newFocus.X = int.Parse(block.FindValue("x").Parse());
+                    newFocus.Y = int.Parse(block.FindValue("y").Parse());
+                    newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);
+                    //Get all core scripting elements
+                    Script InternalFocusScript = new Script();
+                    for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
                     {
-                        InternalFocusScript.Code.Add(found);
+                        ICodeStruct found = block.FindAssignation(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
+                        if (found != null)
+                        {
+                            InternalFocusScript.Code.Add(found);
+                        }
                     }
+                    newFocus.InternalScript = InternalFocusScript;
+                    container.FociList.Add(newFocus);
                 }
-                newFocus.InternalScript = InternalFocusScript;
-                container.FociList.Add(newFocus);
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for focus " 
+                        + block.FindValue("id").Parse() + ", please double-check the syntax.");
+                }
             }
             //Run through all foci again for mutually exclusives and prerequisites
-            int current = 0;
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
-                FocusModel newFocus = container.FociList[current];
+                string id = block.FindValue("id") != null ? block.FindValue("id").Parse() : "";
+                FocusModel newFocus = container.FociList.FirstOrDefault(f => f.UniqueName == id);
+                if (newFocus == null)
+                {
+                    //Check if we removed this focus because of a syntax error
+                    continue;
+                } 
                 foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>("mutually_exclusive"))
                 {
                     foreach (ICodeStruct focuses in exclusives
@@ -286,7 +300,6 @@ namespace FocusTreeManager.Parsers
                         newFocus.Prerequisite.Add(set);
                     }
                 }
-                current++;
             }
             return container;
         }

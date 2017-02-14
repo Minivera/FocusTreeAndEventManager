@@ -11,3 +11,13 @@ System.InvalidOperationException: Une liaison TwoWay ou OneWayToSource ne peut p
    à MS.Internal.Data.DataBindEngine.Task.Run(Boolean lastChance)
    à MS.Internal.Data.DataBindEngine.Run(Object arg)
    à MS.Internal.Data.DataBindEngine.OnLayoutUpdated(Object
+
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_generic_occupy_start_war.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
+   à System.Windows.Media.Imaging.Bit

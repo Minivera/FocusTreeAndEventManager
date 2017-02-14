@@ -97,44 +97,53 @@ namespace FocusTreeManager.Parsers
                     break;
                 }
                 EventModel newEvent = new EventModel();
-                newEvent.Type = Event.EventType.news_event;
-                newEvent.Id = block.FindValue("id").Parse();
-                newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
-                newEvent.IsMajor = block.FindValue("major") != null ? 
-                    YesToBool(block.FindValue("major").Parse()) : false;
-                newEvent.IsHidden = block.FindValue("hidden") != null ?
-                    YesToBool(block.FindValue("hidden").Parse()) : false;
-                newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                    YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
-                newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                    YesToBool(block.FindValue("fire_only_once").Parse()) : false;
-                foreach (ICodeStruct desc in block.FindAllValuesOfType<ICodeStruct>("desc"))
+                try
                 {
-                    newEvent.Descriptions.Add(new EventDescriptionModel
+                    newEvent.Type = Event.EventType.news_event;
+                    newEvent.Id = block.FindValue("id").Parse();
+                    newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
+                    newEvent.IsMajor = block.FindValue("major") != null ?
+                        YesToBool(block.FindValue("major").Parse()) : false;
+                    newEvent.IsHidden = block.FindValue("hidden") != null ?
+                        YesToBool(block.FindValue("hidden").Parse()) : false;
+                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
+                        YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
+                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
+                        YesToBool(block.FindValue("fire_only_once").Parse()) : false;
+                    foreach (ICodeStruct desc in block.FindAllValuesOfType<ICodeStruct>("desc"))
                     {
-                        InternalScript = desc.GetContentAsScript(new string[0])
-                    });
-                }
-                foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
-                {
-                    newEvent.Options.Add(new EventOptionModel
-                    {
-                        Name = option.FindValue("name").Parse(),
-                        InternalScript = option.GetContentAsScript(new string[1] { "name" })
-                    });
-                }
-                //Get all core scripting elements
-                Script InternalEventScript = new Script();
-                for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
-                {
-                    ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
-                    if (found != null)
-                    {
-                        InternalEventScript.Code.Add(found);
+                        newEvent.Descriptions.Add(new EventDescriptionModel
+                        {
+                            InternalScript = desc.GetContentAsScript(new string[0])
+                        });
                     }
+                    foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
+                    {
+                        newEvent.Options.Add(new EventOptionModel
+                        {
+                            Name = option.FindValue("name").Parse(),
+                            InternalScript = option.GetContentAsScript(new string[1] { "name" })
+                        });
+                    }
+                    //Get all core scripting elements
+                    Script InternalEventScript = new Script();
+                    for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
+                    {
+                        ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
+                        if (found != null)
+                        {
+                            InternalEventScript.Code.Add(found);
+                        }
+                    }
+                    newEvent.InternalScript = InternalEventScript;
+                    container.EventList.Add(newEvent);
                 }
-                newEvent.InternalScript = InternalEventScript;
-                container.EventList.Add(newEvent);
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for event "
+                        + block.FindValue("id").Parse() + ", please double-check the syntax.");
+                }
             }
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("country_event"))
             {
@@ -144,37 +153,46 @@ namespace FocusTreeManager.Parsers
                     break;
                 }
                 EventModel newEvent = new EventModel();
-                newEvent.Type = Event.EventType.country_event;
-                newEvent.Id = block.FindValue("id").Parse();
-                newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
-                newEvent.IsMajor = block.FindValue("major") != null ?
-                    YesToBool(block.FindValue("major").Parse()) : false;
-                newEvent.IsHidden = block.FindValue("hidden") != null ?
-                    YesToBool(block.FindValue("hidden").Parse()) : false;
-                newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                    YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
-                newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                    YesToBool(block.FindValue("fire_only_once").Parse()) : false;
-                foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
-                {
-                    newEvent.Options.Add(new EventOptionModel
+                try
+                { 
+                    newEvent.Type = Event.EventType.country_event;
+                    newEvent.Id = block.FindValue("id").Parse();
+                    newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
+                    newEvent.IsMajor = block.FindValue("major") != null ?
+                        YesToBool(block.FindValue("major").Parse()) : false;
+                    newEvent.IsHidden = block.FindValue("hidden") != null ?
+                        YesToBool(block.FindValue("hidden").Parse()) : false;
+                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
+                        YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
+                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
+                        YesToBool(block.FindValue("fire_only_once").Parse()) : false;
+                    foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                     {
-                        Name = option.FindValue("name").Parse(),
-                        InternalScript = option.GetContentAsScript(new string[1] { "name" })
-                    });
-                }
-                //Get all core scripting elements
-                Script InternalEventScript = new Script();
-                for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
-                {
-                    ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
-                    if (found != null)
-                    {
-                        InternalEventScript.Code.Add(found);
+                        newEvent.Options.Add(new EventOptionModel
+                        {
+                            Name = option.FindValue("name").Parse(),
+                            InternalScript = option.GetContentAsScript(new string[1] { "name" })
+                        });
                     }
+                    //Get all core scripting elements
+                    Script InternalEventScript = new Script();
+                    for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
+                    {
+                        ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
+                        if (found != null)
+                        {
+                            InternalEventScript.Code.Add(found);
+                        }
+                    }
+                    newEvent.InternalScript = InternalEventScript;
+                    container.EventList.Add(newEvent);
                 }
-                newEvent.InternalScript = InternalEventScript;
-                container.EventList.Add(newEvent);
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for event "
+                        + block.FindValue("id").Parse() + ", please double-check the syntax.");
+                }
             }
             return container;
         }

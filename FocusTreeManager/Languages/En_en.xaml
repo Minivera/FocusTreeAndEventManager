@@ -148,6 +148,9 @@
     <system:String x:Key="Application_Legacy_Loading">The selected project is saved using an old version, 
         the project is now being transfered in the new version.</system:String>
     <system:String x:Key="Application_Error_Transfer">The project could not be transfered to the new version.</system:String>
+    <system:String x:Key="Application_Error_Script">An unknown error occurred during the script's loading</system:String>
+    <system:String x:Key="Application_Script_Fallback">A major syntax error prevented the system from loading the script as a focus tree or event file, 
+        the generic script type will be used instead.</system:String>
     <system:String x:Key="Application_Invalid_File">The file is not a valid HoI script file.</system:String>
     <system:String x:Key="Window_File">Files</system:String>
     <system:String x:Key="Window_Project">Project</system:String>

@@ -121,10 +121,10 @@
 ***********************
 - Added the ability to rename a focus without opening the edit panel.
 - Added a separator in the focus context menu.
-- Fixed a bug with mutualy exclusive caused by the undo changes.
-- Added a field for additionnal modifiers in a focus tree selection.
+- Fixed a bug with mutually exclusive caused by the undo changes.
+- Added a field for additional modifiers in a focus tree selection.
 - Pressing "Return" in the focus editor will now close and save the changes.
-- Pressing "Return" in the scripter will now close and save the changes, pressing "ESC" will only clsoe it.
+- Pressing "Return" in the scripter will now close and save the changes, pressing "ESC" will only close it.
 - Added a splitter between the file viewer and the main panel.
 - Revamped the file viewer (left panel).
 - Adding file will now be done using a dialog windows.
@@ -134,27 +134,30 @@
 - Fixed a crash when opening a localized Focus Tree when more than one key exists for the same value.
 - Exporting your project will now properly export the working version, not the last saved version.
 - Mutually exclusive clauses will not multiply anymore when importing a focus tree.
-- Setting windows will now properly stay in front after chosing the game folder.
+- Setting windows will now properly stay in front after choosing the game folder.
 
 ***********************
 *       Beta_2f       *
 ***********************
-- Undoing a prequesite removal will now fully restore the prerequisite.
+- Undoing a prerequisite removal will now fully restore the prerequisite.
 - Undoing a mutually exclusive will now fully restore the mutually exclusive.
-- Undoing the deletion of a focus will now restore its prerequisites and mutualy exclusives.
+- Undoing the deletion of a focus will now restore its prerequisites and mutually exclusives.
 - Loading a project will not allow for undoing all the loading anymore.
-- Undoing adding a new prerequiiste will now only take one click.
-- Undoing adding a new mutually exlcusive will now only take one click.
+- Undoing adding a new prerequisite will now only take one click.
+- Undoing adding a new mutually exclusive will now only take one click.
+- Undoing adding a new focus whose properties were changed will now only take one click.
 - Fixed a crash with exporting projects from older versions.
 - Fixed a crash when deleting a prerequisite line.
 - The logging system should now properly log the errors rather than crash while attempting to do so.
-
-***********************
-*       Beta_2g       *
-***********************
 - Creating a new project will now prompt a new windows for more control over its parameters.
 - Added the ability to set a localisation file as "default" in the project for visual purposes.
 - The first localisation file created or imported will always be the default file for the project.
 - Changed the size of the file viewer (right panel) by 1/4 bigger.
 - Clicking the little message icon next to fields that can be localized will prompt a localization window. (Focus only for now)
 - Removed the option of changing the TAG, language name or namespace from the Focus Tree, Localization files or event files.
+- Syntax errors will now be checked for individual foci and events rather than the whole file.
+- Changing tabs while editing a localisation line will now cancel the changes rather than save them. This may not be final.
+
+***********************
+*       Beta_2g       *
+***********************

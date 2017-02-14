@@ -154,6 +154,9 @@
     <system:String x:Key="Application_Legacy_Loading">Le project chargé utilise l'ancien format de sauvegarde, 
         le projet est en cours de transfert vers le nouveau format.</system:String>
     <system:String x:Key="Application_Error_Transfer">Le projet n'a pas pu être transféré vers le nouveau format</system:String>
+    <system:String x:Key="Application_Error_Script">Une erreur inconnue à empêchée le chargement du script.</system:String>
+    <system:String x:Key="Application_Script_Fallback">Une erreur de syntaxe majeure existe dans ce fichier et empêche le chargement comme 
+        arbre de focus ou fichier d'évènements, le type génrique sera utilisé.</system:String>
     <system:String x:Key="Application_Invalid_File">Le fichier n'est pas un fichier de script valide.</system:String>
     <system:String x:Key="Window_File">Fichiers</system:String>
     <system:String x:Key="Window_Project">Projet</system:String>
