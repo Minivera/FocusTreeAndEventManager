@@ -144,15 +144,16 @@ namespace FocusTreeManager.ViewModel
             {
                 return;
             }
+            //TODO: Add language support
             switch (item.Tag as string)
             {
                 case "FocusTreeItem":
                     File = new FocusGridModel("New file");
                     break;
-                case "EventItem":
+                case "LocalisationItem":
                     File = new LocalisationModel("New file");
                     break;
-                case "LocalisationItem":
+                case "EventItem":
                     File = new EventTabModel("New file");
                     break;
                 case "GenericItem":

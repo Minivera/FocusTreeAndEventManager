@@ -70,6 +70,7 @@ namespace FocusTreeManager.ViewModel
                 Focus = (Model.FocusModel)sender;
             }
             RaisePropertyChanged("Focus");
+            focus.EditLocaleCommand.RaiseCanExecuteChanged();
             return this;
         }
 

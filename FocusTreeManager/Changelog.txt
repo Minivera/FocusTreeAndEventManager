@@ -158,6 +158,7 @@
 - Syntax errors will now be checked for individual foci and events rather than the whole file.
 - Changing tabs while editing a localisation line will now cancel the changes rather than save them. This may not be final.
 - Double clicking a project file and opening it with the program will automatically load the project.
+- Switched the Event and Localization options in the file creator menu so they match the actual functionality.
 
 ***********************
 *       Beta_2g       *
