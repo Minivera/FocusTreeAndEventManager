@@ -156,7 +156,7 @@ namespace FocusTreeManager.Model
             {
                 newproject.scriptList.Add(new ScriptModel(container.ContainerID)
                 {
-                    Filename = container.ContainerID,
+                    VisibleName = container.ContainerID,
                     InternalScript = container.InternalScript
                 });
             }

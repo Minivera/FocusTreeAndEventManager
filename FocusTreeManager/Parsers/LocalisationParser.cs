@@ -19,8 +19,8 @@ namespace FocusTreeManager.Parsers
             foreach (LocalisationContainer container in Containers)
             {
                 string ID = container.ContainerID.Replace(" ", "_");
-                ID += "_" + container.ShortName;
-                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.ShortName);
+                ID += "_" + container.LanguageName;
+                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.LanguageName);
             }
             return fileList;
         }
@@ -50,7 +50,7 @@ namespace FocusTreeManager.Parsers
                 }
                 if (firstline)
                 {
-                    container.Shortname = line.Replace(":", "").Trim();
+                    container.LanguageName = line.Replace(":", "").Trim();
                     firstline = false;
                 }
                 else

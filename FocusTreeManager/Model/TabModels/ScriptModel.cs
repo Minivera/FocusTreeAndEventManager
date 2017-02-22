@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
+using FocusTreeManager.DataContract;
 using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -21,24 +22,24 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string filename;
+        private string visibleName;
 
-        public string Filename
+        public string VisibleName
         {
             get
             {
-                return filename;
+                return visibleName;
             }
             set
             {
-                if (value == filename)
+                if (value == visibleName)
                 {
                     return;
                 }
                 DefaultChangeFactory.Current.OnChanging(this,
-                         "Filename", filename, value, "Filename Changed");
-                filename = value;
-                RaisePropertyChanged(() => Filename);
+                         "VisibleName", visibleName, value, "VisibleName Changed");
+                visibleName = value;
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 
@@ -61,6 +62,25 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private FileInfo fileInfo;
+
+        public FileInfo FileInfo
+        {
+            get
+            {
+                return fileInfo;
+            }
+            set
+            {
+                if (value == fileInfo)
+                {
+                    return;
+                }
+                fileInfo = value;
+                RaisePropertyChanged(() => FileInfo);
+            }
+        }
+
         public RelayCommand<FrameworkElement> SaveScriptCommand { get; set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
@@ -69,7 +89,7 @@ namespace FocusTreeManager.Model
 
         public ScriptModel(string Filename)
         {
-            filename = Filename;
+            visibleName = Filename;
             this.ID = Guid.NewGuid();
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
@@ -87,14 +107,14 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.Filename == null)
+            if (this.VisibleName == null)
             {
                 return;
             }
             //Always manage container renamed
             if (msg.Notification == "ContainerRenamed")
             {
-                RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 

@@ -22,24 +22,24 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string filename;
+        private string visbleName;
 
-        public string Filename
+        public string VisibleName
         {
             get
             {
-                return filename;
+                return visbleName;
             }
             set
             {
-                if (value == filename)
+                if (value == visbleName)
                 {
                     return;
                 }
                 DefaultChangeFactory.Current.OnChanging(this,
-                         "Filename", filename, value, "Filename Changed");
-                filename = value;
-                RaisePropertyChanged(() => Filename);
+                         "VisibleName", visbleName, value, "VisibleName Changed");
+                visbleName = value;
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 
@@ -59,6 +59,25 @@ namespace FocusTreeManager.Model
                 }
                 eventNamespace = value;
                 RaisePropertyChanged(() => EventNamespace);
+            }
+        }
+
+        private FileInfo fileInfo;
+
+        public FileInfo FileInfo
+        {
+            get
+            {
+                return fileInfo;
+            }
+            set
+            {
+                if (value == fileInfo)
+                {
+                    return;
+                }
+                fileInfo = value;
+                RaisePropertyChanged(() => FileInfo);
             }
         }
 
@@ -92,7 +111,7 @@ namespace FocusTreeManager.Model
 
         public EventTabModel(string Filename)
         {
-            this.filename = Filename;
+            this.visbleName = Filename;
             this.ID = Guid.NewGuid();
             EventList = new ObservableCollection<EventModel>();
             EventList.CollectionChanged += EventList_CollectionChanged;
@@ -107,7 +126,7 @@ namespace FocusTreeManager.Model
         public EventTabModel(EventContainer container)
         {
             this.ID = container.IdentifierID;
-            this.filename = container.ContainerID;
+            this.visbleName = container.ContainerID;
             this.eventNamespace = container.EventNamespace;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
@@ -133,14 +152,14 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.Filename == null)
+            if (this.VisibleName == null)
             {
                 return;
             }
             //Always manage container renamed
             if (msg.Notification == "ContainerRenamed")
             {
-                RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => VisibleName);
             }
             if (!this.isShown)
             {

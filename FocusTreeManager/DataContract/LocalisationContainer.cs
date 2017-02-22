@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 namespace FocusTreeManager.DataContract
 {
     [KnownType(typeof(LocaleContent))]
+    [KnownType(typeof(FileInfo))]
     [DataContract(Name = "locale_container")]
     public class LocalisationContainer
     {
@@ -21,10 +22,13 @@ namespace FocusTreeManager.DataContract
         public string ContainerID { get; set; }
 
         [DataMember(Name = "name", Order = 3)]
-        public string ShortName { get; set; }
+        public string LanguageName { get; set; }
 
         [DataMember(Name = "locales", Order = 4)]
         public List<LocaleContent> LocalisationMap { get; set; }
+
+        [DataMember(Name = "file", Order = 5)]
+        public FileInfo FileInfo { get; set; }
 
         public LocalisationContainer()
         {
@@ -43,15 +47,16 @@ namespace FocusTreeManager.DataContract
         {
             IdentifierID = legacyItem.IdentifierID;
             ContainerID = legacyItem.ContainerID;
-            ShortName = legacyItem­.ShortName;
+            LanguageName = legacyItem­.ShortName;
             LocalisationMap = LocaleContent.PopulateFromLegacy(legacyItem.LocalisationMap.ToList());
         }
 
         public LocalisationContainer(LocalisationModel item)
         {
             IdentifierID = item.UniqueID;
-            ContainerID = item.Filename;
-            ShortName = item.Shortname;
+            ContainerID = item.VisibleName;
+            LanguageName = item.LanguageName;
+            FileInfo = item.FileInfo;
             LocalisationMap = new List<LocaleContent>();
             foreach (LocaleModel model in item.LocalisationMap)
             {

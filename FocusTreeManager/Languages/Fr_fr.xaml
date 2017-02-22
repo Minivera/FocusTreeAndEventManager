@@ -130,6 +130,8 @@
     <system:String x:Key="Command_Reset">Vider</system:String>
     <system:String x:Key="Command_Rename">Renommer</system:String>
     <system:String x:Key="Command_OK">OK</system:String>
+    <system:String x:Key="Command_Yes">Oui</system:String>
+    <system:String x:Key="Command_No">Non</system:String>
     <system:String x:Key="Menu_Settings">Paramètres</system:String>
     <system:String x:Key="Menu_Project">Projet</system:String>
     <system:String x:Key="Menu_Export">Exporter</system:String>
@@ -158,6 +160,10 @@
     <system:String x:Key="Application_Script_Fallback">Une erreur de syntaxe majeure existe dans ce fichier et empêche le chargement comme 
         arbre de focus ou fichier d'évènements, le type génrique sera utilisé.</system:String>
     <system:String x:Key="Application_Invalid_File">Le fichier n'est pas un fichier de script valide.</system:String>
+    <system:String x:Key="Application_Project_Exists">Un projet au nom spécifié existe déjà, souhaitez-vous le remplacer?</system:String>
+    <system:String x:Key="Application_Project_Exists_Header">Information</system:String>
+    <system:String x:Key="Application_File_Changed">Le fichier original a été modifié, souhaitez-vous comparer les changements?</system:String>
+    <system:String x:Key="Application_File_Changed_Header">Fichier de script modifié</system:String>
     <system:String x:Key="Window_File">Fichiers</system:String>
     <system:String x:Key="Window_Project">Projet</system:String>
 </ResourceDictionary>

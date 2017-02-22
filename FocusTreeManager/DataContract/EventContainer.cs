@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 namespace FocusTreeManager.DataContract
 {
     [KnownType(typeof(Event))]
+    [KnownType(typeof(FileInfo))]
     [DataContract(Name = "event_container")]
     public class EventContainer
     {
@@ -21,6 +22,9 @@ namespace FocusTreeManager.DataContract
 
         [DataMember(Name = "events", Order = 3)]
         public List<Event> EventList { get; set; }
+
+        [DataMember(Name = "file", Order = 4)]
+        public FileInfo FileInfo { get; set; }
 
         public EventContainer()
         {
@@ -46,8 +50,9 @@ namespace FocusTreeManager.DataContract
         public EventContainer(EventTabModel item)
         {
             IdentifierID = item.UniqueID;
-            ContainerID = item.Filename;
+            ContainerID = item.VisibleName;
             EventNamespace = item.EventNamespace;
+            FileInfo = item.FileInfo;
             EventList = new List<Event>();
             foreach (EventModel model in item.EventList)
             {

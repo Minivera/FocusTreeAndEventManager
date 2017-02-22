@@ -21,3 +21,13 @@ System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_generi
    à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
    à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
    à System.Windows.Media.Imaging.Bit
+
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/hoi4tgw_navalcanons.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
+   à System.Windows.Media.Imaging.BitmapFrame.C

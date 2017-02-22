@@ -10,6 +10,7 @@ using FocusTreeManager.CodeStructures;
 using System.IO;
 using System.Globalization;
 using FocusTreeManager.DataContract;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.Parsers
 {
@@ -204,11 +205,10 @@ namespace FocusTreeManager.Parsers
 
         public static FocusGridModel CreateTreeFromScript(string fileName, Script script)
         {
-            FocusGridModel container = new FocusGridModel(
-                Path.GetFileNameWithoutExtension(fileName));
+            FocusGridModel container = new FocusGridModel(Script.TryParse(script, "id"));
             //Get content of Modifier block
             Assignation modifier = script.FindAssignation("modifier") as Assignation;
-            container.TAG = modifier.FindValue("tag").Parse();
+            container.TAG = Script.TryParse(modifier, "tag");
             container.AdditionnalMods = modifier.GetContentAsScript(new string[] { "add", "tag" })
                                                 .Parse(0);
             //Run through all foci
@@ -218,11 +218,11 @@ namespace FocusTreeManager.Parsers
                 {
                     //Create the focus
                     FocusModel newFocus = new FocusModel();
-                    newFocus.UniqueName = block.FindValue("id").Parse();
-                    newFocus.Image = block.FindValue("icon").Parse().Replace("GFX_", "");
-                    newFocus.X = int.Parse(block.FindValue("x").Parse());
-                    newFocus.Y = int.Parse(block.FindValue("y").Parse());
-                    newFocus.Cost = GetDouble(block.FindValue("cost").Parse(), 10);
+                    newFocus.UniqueName = Script.TryParse(block, "id");
+                    newFocus.Image = Script.TryParse(block, "icon").Replace("GFX_", "");
+                    newFocus.X = int.Parse(Script.TryParse(block, "x"));
+                    newFocus.Y = int.Parse(Script.TryParse(block, "y"));
+                    newFocus.Cost = GetDouble(Script.TryParse(block, "cost"), 10);
                     //Get all core scripting elements
                     Script InternalFocusScript = new Script();
                     for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
@@ -236,11 +236,18 @@ namespace FocusTreeManager.Parsers
                     newFocus.InternalScript = InternalFocusScript;
                     container.FociList.Add(newFocus);
                 }
+                catch (SyntaxException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for focus "
+                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
+                }
                 catch (Exception)
                 {
                     //TODO: Add language support
                     ErrorLogger.Instance.AddLogLine("Invalid syntax for focus " 
-                        + block.FindValue("id").Parse() + ", please double-check the syntax.");
+                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
                 }
             }
             //Run through all foci again for mutually exclusives and prerequisites

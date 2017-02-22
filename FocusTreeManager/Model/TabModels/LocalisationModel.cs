@@ -23,43 +23,62 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string filename;
+        private string visibleName;
 
-        public string Filename
+        public string VisibleName
         {
             get
             {
-                return filename;
+                return visibleName;
             }
             set
             {
-                if (value == filename)
+                if (value == visibleName)
                 {
                     return;
                 }
                 DefaultChangeFactory.Current.OnChanging(this,
-                         "Filename", filename, value, "Filename Changed");
-                filename = value;
-                RaisePropertyChanged(() => Filename);
+                         "VisibleName", visibleName, value, "VisibleName Changed");
+                visibleName = value;
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 
-        private string shortname;
+        private string languageName;
 
-        public string Shortname
+        public string LanguageName
         {
             get
             {
-                return shortname;
+                return languageName;
             }
             set
             {
-                if (value == shortname)
+                if (value == languageName)
                 {
                     return;
                 }
-                shortname = value;
-                RaisePropertyChanged(() => Shortname);
+                languageName = value;
+                RaisePropertyChanged(() => LanguageName);
+            }
+        }
+
+        private FileInfo fileInfo;
+
+        public FileInfo FileInfo
+        {
+            get
+            {
+                return fileInfo;
+            }
+            set
+            {
+                if (value == fileInfo)
+                {
+                    return;
+                }
+                fileInfo = value;
+                RaisePropertyChanged(() => FileInfo);
             }
         }
 
@@ -71,7 +90,7 @@ namespace FocusTreeManager.Model
 
         public LocalisationModel(string Filename)
         {
-            filename = Filename;
+            visibleName = Filename;
             this.ID = Guid.NewGuid();
             LocalisationMap = new ObservableCollection<LocaleModel>();
             LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
@@ -85,8 +104,8 @@ namespace FocusTreeManager.Model
         public LocalisationModel(LocalisationContainer container)
         {
             this.ID = container.IdentifierID;
-            filename = container.ContainerID;
-            shortname = container.ShortName;
+            visibleName = container.ContainerID;
+            languageName = container.LanguageName;
             LocalisationMap = new ObservableCollection<LocaleModel>();
             foreach (LocaleContent content in container.LocalisationMap)
             {
@@ -102,13 +121,13 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.Filename == null)
+            if (this.visibleName == null)
             {
                 return;
             }
             if (msg.Notification == "ContainerRenamed")
             {
-                RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => visibleName);
             }
         }
 

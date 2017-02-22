@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace FocusTreeManager.DataContract
 {
     [KnownType(typeof(Script))]
+    [KnownType(typeof(FileInfo))]
     [DataContract(Name = "script_container")]
     public class ScriptContainer
     {
@@ -17,6 +18,9 @@ namespace FocusTreeManager.DataContract
 
         [DataMember(Name = "script", Order = 2)]
         public Script InternalScript { get; set; }
+
+        [DataMember(Name = "file", Order = 4)]
+        public FileInfo FileInfo { get; set; }
 
         public ScriptContainer()
         {

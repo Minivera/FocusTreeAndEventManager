@@ -39,46 +39,44 @@ namespace FocusTreeManager.CodeStructures
             this.Level = level;
         }
 
-        public void Analyse(string code, int line = -1)
+        internal void Analyse(SyntaxGroup code)
         {
-            Regex regex = new Regex(Script.REGEX_BRACKETS);
-            Match match = regex.Match(code);
-            string text = match.Groups[1].Value;
-            //Kill comments if possible
-            text = Regex.Replace(text, @"(#.*)", String.Empty);
-            Assignee = Regex.Replace(text, @"\t|\n|\r|\s", "");
-            Operator = Regex.Replace(match.Groups[2].Value, @"\t|\n|\r|\s", "");
-            Line = line;
+            Assignee = code.Component.text;
+            Operator = code.Operator.text;
+            Line = code.Component.line;
             //If we can detect at least one code block
-            if (!String.IsNullOrWhiteSpace(match.Groups[3].Value))
+            if (code.Operand is List<SyntaxGroup>)
             {
                 try
                 {
-                    string text2 = match.Groups[3].Value;
-                    //Kill comments if possible
-                    text2 = Regex.Replace(text2, @"(#.*)", String.Empty);
                     CodeBlock block = new CodeBlock(Level + 1);
-                    block.Analyse(text2, Line);
+                    block.Analyse(code.Operand as List<SyntaxGroup>);
                     Value = block;
                 }
                 catch (RecursiveCodeException e)
                 {
                     //TODO: Add language support
-                    throw e.AddToRecursiveChain("Error during analysis chain", Assignee, Line.ToString());
+                    throw e.AddToRecursiveChain("Error during analysis chain", 
+                        Assignee, Line.ToString());
                 }
                 catch (Exception)
                 {
                     //TODO: Add language support
                     RecursiveCodeException e = new RecursiveCodeException();
-                    throw e.AddToRecursiveChain("Impossible to analyse associated code", Assignee, Line.ToString());
+                    throw e.AddToRecursiveChain("Impossible to analyze associated code", 
+                        Assignee, Line.ToString());
                 }
             }
-            else if (!String.IsNullOrWhiteSpace(match.Groups[4].Value))
+            //If we get pure text
+            else if (code.Operand is Token)
             {
-                string text2 = match.Groups[4].Value;
-                //Kill comments if possible
-                text2 = Regex.Replace(text2, @"(#.*)", String.Empty);
-                Value = new CodeValue(text2);
+                Value = new CodeValue(((Token)code.Operand).text);
+            }
+            //If we got a list of tokens, a chain of pure text
+            else if (code.Operand is List<Token>)
+            {
+                Value = new CodeBlock();
+                ((CodeBlock)Value).Analyse(code.Operand as List<Token>);
             }
             else
             {
@@ -124,13 +122,13 @@ namespace FocusTreeManager.CodeStructures
             return content.ToString();
         }
 
-        public ICodeStruct FindValue(string TagToFind)
+        public CodeValue FindValue(string TagToFind)
         {
             if (Assignee == TagToFind)
             {
-                return Value;
+                return Value as CodeValue;
             }
-            ICodeStruct found;
+            CodeValue found;
             if (Value is CodeBlock)
             {
                 found = Value.FindValue(TagToFind);
@@ -161,13 +159,13 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public ICodeStruct FindAssignation(string TagToFind)
+        public Assignation FindAssignation(string TagToFind)
         {
             if (Assignee == TagToFind)
             {
                 return this;
             }
-            ICodeStruct found;
+            Assignation found;
             if (Value is CodeBlock)
             {
                 found = Value.FindAssignation(TagToFind);

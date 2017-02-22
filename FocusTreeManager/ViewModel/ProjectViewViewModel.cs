@@ -112,7 +112,7 @@ namespace FocusTreeManager.ViewModel
             if (obj is FocusGridModel)
             {
                 var item = obj as FocusGridModel;
-                (new ViewModelLocator()).FileManager.File = new FocusGridModel(item.Filename)
+                (new ViewModelLocator()).FileManager.File = new FocusGridModel(item.VisibleName)
                 {
                     TAG = item.TAG,
                     AdditionnalMods = item.AdditionnalMods
@@ -121,7 +121,7 @@ namespace FocusTreeManager.ViewModel
                 if ((new ViewModelLocator()).FileManager.File != null)
                 {
                     var newItem = (new ViewModelLocator()).FileManager.File as FocusGridModel;
-                    item.Filename = newItem.Filename;
+                    item.VisibleName = newItem.VisibleName;
                     item.TAG = newItem.TAG;
                     item.AdditionnalMods = newItem.AdditionnalMods;
                 }
@@ -129,22 +129,22 @@ namespace FocusTreeManager.ViewModel
             else if (obj is LocalisationModel)
             {
                 var item = obj as LocalisationModel;
-                (new ViewModelLocator()).FileManager.File = new LocalisationModel(item.Filename)
+                (new ViewModelLocator()).FileManager.File = new LocalisationModel(item.VisibleName)
                 {
-                    Shortname = item.Shortname
+                    LanguageName = item.LanguageName
                 };
                 dialog.ShowDialog();
                 if ((new ViewModelLocator()).FileManager.File != null)
                 {
                     var newItem = (new ViewModelLocator()).FileManager.File as LocalisationModel;
-                    item.Filename = newItem.Filename;
-                    item.Shortname = newItem.Shortname;
+                    item.VisibleName = newItem.VisibleName;
+                    item.LanguageName = newItem.LanguageName;
                 }
             }
             else if (obj is EventTabModel)
             {
                 var item = obj as EventTabModel;
-                (new ViewModelLocator()).FileManager.File = new EventTabModel(item.Filename)
+                (new ViewModelLocator()).FileManager.File = new EventTabModel(item.VisibleName)
                 {
                     EventNamespace = item.EventNamespace
                 };
@@ -152,19 +152,19 @@ namespace FocusTreeManager.ViewModel
                 if ((new ViewModelLocator()).FileManager.File != null)
                 {
                     var newItem = (new ViewModelLocator()).FileManager.File as EventTabModel;
-                    item.Filename = newItem.Filename;
+                    item.VisibleName = newItem.VisibleName;
                     item.EventNamespace = newItem.EventNamespace;
                 }
             }
             else if (obj is ScriptModel)
             {
                 var item = obj as ScriptModel;
-                (new ViewModelLocator()).FileManager.File = new ScriptModel(item.Filename);
+                (new ViewModelLocator()).FileManager.File = new ScriptModel(item.VisibleName);
                 dialog.ShowDialog();
                 if ((new ViewModelLocator()).FileManager.File != null)
                 {
                     var newItem = (new ViewModelLocator()).FileManager.File as ScriptModel;
-                    item.Filename = newItem.Filename;
+                    item.VisibleName = newItem.VisibleName;
                 }
             }
         }

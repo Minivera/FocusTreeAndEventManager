@@ -162,3 +162,11 @@
 ***********************
 *       Beta_2g       *
 ***********************
+- By using tokens rather than regexes, the script interpreter will now be ore precise and cause less syntax errors.
+- Syntax errors will now give more information on the line and column that caused the error.
+- ErrorDawg will now show up in the file manager when a script importation failed.
+- The major error message in the file manager will now show the right message.
+- The new project windows will now asks to replace the file if it already exists.
+- Creating a new project will now save it automatically.
+- Files will now consider the file name and the object name in the application as different entities.
+- If an imported text file is modified, the application will inform the user, prompting a comparison dialog.
