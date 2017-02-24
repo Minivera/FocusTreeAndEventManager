@@ -91,13 +91,17 @@ namespace FocusTreeManager.CodeStructures
             int x = 1;
             foreach (string line in text.Split('\n'))
             {
-                if (!string.IsNullOrWhiteSpace(line) && 
-                    !line.Contains(comment_char))
+                if (!string.IsNullOrWhiteSpace(line))
                 {
                     //Split by spaces
                     int y = 1;
                     foreach (string item in line.Split(' '))
                     {
+                        if (item.Contains(comment_char))
+                        {
+                            //Start of a comment, continue with next line
+                            break;
+                        }
                         if (!string.IsNullOrWhiteSpace(item))
                         {
                             //Sub tokenize the string, will cut by delimiters.

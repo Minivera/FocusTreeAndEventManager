@@ -11,6 +11,9 @@ using static FocusTreeManager.DataContract.Event;
 using FocusTreeManager.DataContract;
 using MonitoredUndo;
 using System.Collections.Specialized;
+using System.IO;
+using System.Windows.Media;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Model
 {
@@ -104,11 +107,11 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public string ImagePath
+        public ImageSource ImagePath
         {
             get
             {
-                return IMAGE_PATH + Picture + ".png";
+                return ImageHelper.getImageFromGame(picture, ImageType.Event);
             }
         }
 

@@ -29,6 +29,7 @@
             </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PhotoLoader;component/Resources.xaml"/>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -82,7 +83,8 @@
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="True"/>
         <Label Content="{DynamicResource Focus_Image}" 
                            Grid.Column="0" Grid.Row="6"/>
-        <Image Grid.Column="1" Grid.Row="6" Source="{Binding Image}"/>
+        <Image Grid.Column="1" Grid.Row="6" 
+               Source="{Binding Icon, TargetNullValue={StaticResource ImageError}}"/>
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
                 Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" 
                 Style="{DynamicResource SquareButtonStyle}" MinWidth="150"

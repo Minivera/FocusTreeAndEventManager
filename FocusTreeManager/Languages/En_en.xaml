@@ -158,6 +158,8 @@
     <system:String x:Key="Application_Project_Exists_Header">Information</system:String>
     <system:String x:Key="Application_File_Changed">The original script file was changed recently, do you want to compare the changes?</system:String>
     <system:String x:Key="Application_File_Changed_Header">Script file updated</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set">The game folder for images and code loading is not set correctly, please set it now.</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set_Header">Wrong game folder</system:String>
     <system:String x:Key="Window_File">Files</system:String>
     <system:String x:Key="Window_Project">Project</system:String>
 </ResourceDictionary>

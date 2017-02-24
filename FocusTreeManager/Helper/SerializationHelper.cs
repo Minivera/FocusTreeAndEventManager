@@ -52,6 +52,10 @@ namespace FocusTreeManager.Helper
 
         static public void Serialize(string filename, Project project)
         {
+            if (filename == null)
+            {
+                return;
+            }
             var serializer = new DataContractSerializer(project.GetType(), null, int.MaxValue, false, true, null);
             using (Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
             {

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,6 +48,32 @@ namespace FocusTreeManager.Helper
                 return FindVisualParent<T>(parent, HighestParent);
             }
             return null;
+        }
+
+        public static bool RessourceExists(string ressourceName)
+        {
+            foreach (string item in GetResourceNames())
+            {
+                if (item.Contains(ressourceName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static string[] GetResourceNames()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string resName = assembly.GetName().Name + ".g.resources";
+            using (var stream = assembly.GetManifestResourceStream(resName))
+            {
+                using (var reader = new System.Resources.ResourceReader(stream))
+                {
+                    return reader.Cast<DictionaryEntry>().Select(entry =>
+                             (string)entry.Key).ToArray();
+                }
+            }
         }
     }
 }

@@ -10,20 +10,21 @@ using FocusTreeManager.DataContract;
 using MonitoredUndo;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Media;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Model
 {
     public class FocusModel : ObservableObject, ISupportsUndo
     {
-        const string IMAGE_PATH = "pack://application:,,,/FocusTreeManager;component/GFX/Focus/";
-
         private string image;
 
         public string Image
         {
             get
             {
-                return IMAGE_PATH + image + ".png";
+                return image;
             }
             set
             {
@@ -38,11 +39,11 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public string Icon
+        public ImageSource Icon
         {
             get
             {
-                return image;
+                return ImageHelper.getImageFromGame(image, ImageType.Goal);
             }
         }
         

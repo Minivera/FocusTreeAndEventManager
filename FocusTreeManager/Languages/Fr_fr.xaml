@@ -164,6 +164,8 @@
     <system:String x:Key="Application_Project_Exists_Header">Information</system:String>
     <system:String x:Key="Application_File_Changed">Le fichier original a été modifié, souhaitez-vous comparer les changements?</system:String>
     <system:String x:Key="Application_File_Changed_Header">Fichier de script modifié</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set">The dossier du jeu pour le chargement des images et du code n'est pas configuré, veuillez le configurer maintenant.</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set_Header">Mauvais dossier</system:String>
     <system:String x:Key="Window_File">Fichiers</system:String>
     <system:String x:Key="Window_Project">Projet</system:String>
 </ResourceDictionary>

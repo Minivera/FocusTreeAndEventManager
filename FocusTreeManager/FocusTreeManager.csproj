@@ -134,14 +134,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AsyncImageLoader\ImageLoaders\ExternalLoader.cs" />
-    <Compile Include="AsyncImageLoader\ImageLoaders\Iload.cs" />
-    <Compile Include="AsyncImageLoader\ImageLoaders\ILoader.cs" />
-    <Compile Include="AsyncImageLoader\ImageLoaders\LoaderFactory.cs" />
-    <Compile Include="AsyncImageLoader\ImageLoaders\LocalDiskLoader.cs" />
-    <Compile Include="AsyncImageLoader\Loader.cs" />
-    <Compile Include="AsyncImageLoader\Manager.cs" />
-    <Compile Include="AsyncImageLoader\Types.cs" />
+    <Compile Include="AsyncImageLoader\DDSImage.cs" />
+    <None Include="AsyncImageLoader\Old\ImageLoaders\ExternalLoader.cs" />
+    <None Include="AsyncImageLoader\Old\ImageLoaders\Iload.cs" />
+    <None Include="AsyncImageLoader\Old\ImageLoaders\ILoader.cs" />
+    <None Include="AsyncImageLoader\Old\ImageLoaders\LoaderFactory.cs" />
+    <None Include="AsyncImageLoader\Old\ImageLoaders\LocalDiskLoader.cs" />
+    <None Include="AsyncImageLoader\Old\Loader.cs" />
+    <None Include="AsyncImageLoader\Old\Manager.cs" />
+    <None Include="AsyncImageLoader\Old\Types.cs" />
     <Compile Include="CodeStructures\Assignation.cs" />
     <Compile Include="CodeStructures\CodeBlock.cs" />
     <Compile Include="CodeStructures\CodeEditor\CodeEditorContent.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="DataContract\FileInfo.cs" />
     <Compile Include="DataContract\FociGridContainer.cs" />
     <Compile Include="DataContract\Focus.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="DataContract\LocaleContent.cs" />
     <Compile Include="DataContract\LocalisationContainer.cs" />

@@ -7,11 +7,13 @@
              xmlns:m="clr-namespace:FocusTreeManager.Model"
              xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
              mc:Ignorable="d" x:Name="VisualFocus"
-             MouseDown="VisualFocus_MouseDown">
+             MouseDown="VisualFocus_MouseDown"
+             Loaded="VisualFocus_Loaded">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PhotoLoader;component/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -58,9 +60,9 @@
             </Style>
         </Grid.Style>
         <Image Source="/FocusTreeManager;component/GFX/Interface/Focus_under.png" Margin="-38,42,-35,-42" Stretch="None" />
-        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" 
-               l:Loader.DisplayOption="FullResolution"
-               l:Loader.Source="{Binding Path=Image}">
+        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" >
+            <!--:Loader.DisplayOption="FullResolution"
+               l:Loader.Source="">-->
             <Image.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditFocusCommand}" />
                 <MouseBinding Gesture="LeftClick" Command="{Binding TestFinishCommand}" />
