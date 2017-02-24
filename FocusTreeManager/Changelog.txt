@@ -166,7 +166,7 @@
 - Syntax errors will now give more information on the line and column that caused the error.
 - ErrorDawg will now show up in the file manager when a script importation failed.
 - The major error message in the file manager will now show the right message.
-- The new project windows will now asks to replace the file if it already exists.
+- The new project window will now asks to replace the file if it already exists.
 - Creating a new project will now save it automatically.
 - Files will now consider the file name and the object name in the application as different entities.
 - If an imported text file is modified, the application will inform the user, prompting a comparison dialog.
@@ -174,4 +174,4 @@
 - Fixed a crash when creating a project with an empty name.
 - Image will now load from the game's .DDS files rather than converted png files.
 - Loading from .dds file may worsen the performance of the focus tree, some work has already been done.
-- Starting the app with a badly configured game path will now prompt an warning.
+- Starting the app with a badly configured game path will now prompt a warning.
