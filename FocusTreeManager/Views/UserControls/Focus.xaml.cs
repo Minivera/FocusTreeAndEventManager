@@ -1,6 +1,7 @@
 ﻿using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -29,6 +30,17 @@ namespace FocusTreeManager.Views
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             dispatcherTimer.Start();
+        }
+
+        private void StartImageDispatcher()
+        {
+            FocusModel model = this.DataContext as FocusModel;
+            ImageSource source = model.Icon;
+            ThreadPool.QueueUserWorkItem(
+            o =>
+            {
+                Dispatcher.BeginInvoke((Action)(() => FocusIcon.Source = source));
+            });
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -107,6 +119,12 @@ namespace FocusTreeManager.Views
                     this.ReleaseMouseCapture();
                 }
             }
+        }
+
+        private void VisualFocus_Loaded(object sender, RoutedEventArgs e)
+        {            
+            //Image loading async
+            StartImageDispatcher();
         }
     }
 }

@@ -28,9 +28,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="10">
-                        <Image ToolTip="{Binding Image}" x:Name="ImageToChose"
-                               l:Loader.DisplayOption="FullResolution"
-                               l:Loader.Source="{Binding Image}" MaxWidth="{Binding MaxWidth}"/>
+                        <Image x:Name="ImageToChose"
+                               Source="{Binding Image}" MaxWidth="{Binding MaxWidth}" />
+                        <!--:Loader.DisplayOption="FullResolution"
+                               l:Loader. />-->
                         <Button Content="{DynamicResource Command_Select}" 
                                 Command="{Binding ChangeImage.SelectCommand, Source={StaticResource Locator}}" 
                                 CommandParameter="{Binding Image}" 
