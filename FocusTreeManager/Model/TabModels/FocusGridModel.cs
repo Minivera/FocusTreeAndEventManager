@@ -206,6 +206,7 @@ namespace FocusTreeManager.Model
             visibleName = container.ContainerID;
             tag = container.TAG;
             additionnalMods = container.AdditionnalMods;
+            fileInfo = container.FileInfo;
             FociList = new ObservableCollection<FocusModel>();
             foreach (Focus focus in container.FociList)
             {

@@ -1,5 +1,9 @@
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.Model;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -413,22 +417,44 @@ namespace FocusTreeManager.ViewModel
         async private void CheckForChanges(ObservableObject container)
         {
             DataContract.FileInfo info = null;
+            string newText = "";
+            string oldText = "";
             //Find the fileinfo if possible
             if (container is FocusGridModel)
             {
                 info = ((FocusGridModel)container).FileInfo;
+                if (info != null)
+                {
+                    oldText = FocusTreeParser.ParseTreeForCompare((FocusGridModel)container);
+                    newText = FocusTreeParser.ParseTreeScriptForCompare(info.Filename);
+                }
             }
             else if (container is LocalisationModel)
             {
                 info = ((LocalisationModel)container).FileInfo;
+                if (info != null)
+                {
+                    oldText = LocalisationParser.ParseLocalizationForCompare((LocalisationModel)container);
+                    newText = LocalisationParser.ParseLocalizationFileForCompare(info.Filename);
+                }
             }
             else if (container is EventTabModel)
             {
                 info = ((EventTabModel)container).FileInfo;
+                if (info != null)
+                {
+                    oldText = EventParser.ParseEventForCompare((EventTabModel)container);
+                    newText = EventParser.ParseEventScriptForCompare(info.Filename);
+                }
             }
             else if (container is ScriptModel)
             {
                 info = ((ScriptModel)container).FileInfo;
+                if (info != null)
+                {
+                    oldText = ScriptParser.ParseScriptForCompare((ScriptModel)container);
+                    newText = ScriptParser.ParseScriptFileForCompare(info.Filename);
+                }
             }
             //check the fileinfo data
             if (info != null)
@@ -443,7 +469,10 @@ namespace FocusTreeManager.ViewModel
                         MessageDialogResult Result = await ShowFileChangedDialog();
                         if (Result == MessageDialogResult.Affirmative)
                         {
-
+                            SideBySideDiffModel model = new SideBySideDiffBuilder(
+                                new Differ()).BuildDiffModel(oldText, newText);
+                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                            new CompareCode().ShowDialog();
                         }
                     }
                 }

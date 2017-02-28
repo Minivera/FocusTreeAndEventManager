@@ -31,162 +31,193 @@ namespace FocusTreeManager.CodeStructures
 
         static private char comment_char = '#';
 
-        static public object GroupTokensByBlocks(List<Token> tokens)
+        private static bool ContainsDelimiters(List<Token> tokens)
         {
-            List<SyntaxGroup> list = new List<SyntaxGroup>();
-            //Check if the list contains any delimiters
-            if (!ContainsDelimiters(tokens))
+            using (List<Token>.Enumerator enumerator = tokens.GetEnumerator())
             {
-                //if not, return the list as the operand, it is a list of text
-                return tokens;
-            }
-            while (tokens.Any())
-            {
-                SyntaxGroup group = new SyntaxGroup();
-                //First token should be the component
-                group.Component = tokens.First();
-                tokens.Remove(tokens.First());
-                //second token should be the operator
-                if (tokens.First().text == "=" ||
-                    tokens.First().text == "<" ||
-                    tokens.First().text == ">")
+                while (enumerator.MoveNext())
                 {
-                    group.Operator = tokens.First();
-                    tokens.RemoveAt(0);
-                }
-                else
-                {
-                    throw new SyntaxException(group.Component.text, 
-                        tokens.First().line, tokens.First().column);
-                }
-                //Third token should be the operand
-                if (tokens.First().text == "{")
-                {
-                    tokens.RemoveAt(0);
-                    int closePos = getIndexOfClosingBracket(tokens) - 1;
-                    group.Operand = GroupTokensByBlocks(tokens.GetRange(0,
-                                    closePos));
-                    tokens.RemoveRange(0, closePos + 1);
-                }
-                else if (tokens.First().text == "}")
-                {
-                    throw new SyntaxException(group.Component.text, 
-                        tokens.First().line, tokens.First().column);
-                }
-                //Pure text
-                else
-                {
-                    group.Operand = tokens.First();
-                    tokens.RemoveAt(0);
-                }
-                list.Add(group);
-            }
-            return list;
-        }
-
-        static public List<Token> Tokenize(string text)
-        {
-            List<Token> list = new List<Token>();
-            //Split by new lines
-            int x = 1;
-            foreach (string line in text.Split('\n'))
-            {
-                if (!string.IsNullOrWhiteSpace(line))
-                {
-                    //Split by spaces
-                    int y = 1;
-                    foreach (string item in line.Split(' '))
+                    if (enumerator.Current.text.IndexOfAny(delimiters_array) != -1)
                     {
-                        if (item.Contains(comment_char))
-                        {
-                            //Start of a comment, continue with next line
-                            break;
-                        }
-                        if (!string.IsNullOrWhiteSpace(item))
-                        {
-                            //Sub tokenize the string, will cut by delimiters.
-                            list.AddRange(SubTokenize(item, x, y));
-                        }
-                        y += item.Length + 1;
+                        return true;
                     }
-                }
-                x++;
-            }
-            return list;
-        }
-
-        static private List<Token> SubTokenize(string text, int line, int column)
-        {
-            List<Token> list = new List<Token>();
-            //If the text contains any delimiters
-            if (text.IndexOfAny(delimiters_array) != -1)
-            {
-                int y = column;
-                string item = text.Substring(0, text.IndexOfAny(delimiters_array));
-                //Sub tokenize the string before the delimiter.
-                list.AddRange(SubTokenize(item, line, y));
-                //Remove the added tokens from the string
-                text = text.Substring(text.IndexOfAny(delimiters_array));
-                y += item.Length;
-                //Add the delimiter to the list
-                list.Add(new Token()
-                {
-                    text = text.Substring(0, 1).Trim(),
-                    line = line,
-                    column = y
-                });
-                //Remove the delimiter from the string
-                text = text.Substring(1);
-                y++;
-                //Sub tokenize the string after the delimiter.
-                list.AddRange(SubTokenize(text, line, y));
-            }
-            //Otherwise, clean text
-            else if(!string.IsNullOrWhiteSpace(text))
-            {
-                list.Add(new Token() {
-                    text = text.Trim(),
-                    line = line,
-                    column = column
-                });
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Gets the position of the closing bracket in a list where the first bracket do not exist
-        /// </summary>
-        /// <param name="tokens">List of tokens to loop through</param>
-        /// <returns>Position of the corresponding closing bracket, -1 if not found.</returns>
-        static private int getIndexOfClosingBracket(List<Token> tokens)
-        {
-            int noBrackets = 1;
-            int i = 0;
-            while (noBrackets > 0 && i < tokens.Count)
-            {
-                if (tokens[i].text == "{")
-                {
-                    noBrackets++;
-                }
-                else if (tokens[i].text == "}")
-                {
-                    noBrackets--;
-                }
-                i++;
-            }
-            return i >= 1 ? i : -1;
-        }
-
-        static private bool ContainsDelimiters(List<Token> tokens)
-        {
-            foreach (Token item in tokens)
-            {
-                if (item.text.IndexOfAny(delimiters_array) != -1)
-                {
-                    return true;
                 }
             }
             return false;
+        }
+
+        private static int getIndexOfClosingBracket(List<Token> tokens)
+        {
+            int num = 1;
+            int num2 = 0;
+            while ((num > 0) && (num2 < tokens.Count))
+            {
+                if (tokens[num2].text == "{")
+                {
+                    num++;
+                }
+                else if (tokens[num2].text == "}")
+                {
+                    num--;
+                }
+                num2++;
+            }
+            if (num2 < 1)
+            {
+                return -1;
+            }
+            return num2;
+        }
+
+        public static object GroupTokensByBlocks(List<Token> tokens)
+        {
+            List<SyntaxGroup> list = new List<SyntaxGroup>();
+            if (ContainsDelimiters(tokens))
+            {
+                while (tokens.Any<Token>())
+                {
+                    SyntaxGroup item = new SyntaxGroup
+                    {
+                        Component = tokens.First<Token>()
+                    };
+                    tokens.Remove(tokens.First<Token>());
+                    if (((tokens.First<Token>().text != "=") && 
+                        (tokens.First<Token>().text != "<")) && 
+                        (tokens.First<Token>().text != ">"))
+                    {
+                        throw new SyntaxException(item.Component.text, 
+                            new int?(tokens.First<Token>().line), new int?(tokens.First<Token>().column));
+                    }
+                    item.Operator = tokens.First<Token>();
+                    tokens.RemoveAt(0);
+                    if (tokens.First<Token>().text == "{")
+                    {
+                        tokens.RemoveAt(0);
+                        int count = getIndexOfClosingBracket(tokens) - 1;
+                        item.Operand = GroupTokensByBlocks(tokens.GetRange(0, count));
+                        tokens.RemoveRange(0, count + 1);
+                    }
+                    else
+                    {
+                        if (tokens.First<Token>().text == "}")
+                        {
+                            throw new SyntaxException(item.Component.text, 
+                                new int?(tokens.First<Token>().line), 
+                                new int?(tokens.First<Token>().column));
+                        }
+                        item.Operand = tokens.First<Token>();
+                        tokens.RemoveAt(0);
+                    }
+                    list.Add(item);
+                }
+                return list;
+            }
+            return tokens;
+        }
+
+        private static List<Token> SubTokenize(string text, int line, int column)
+        {
+            List<Token> list = new List<Token>();
+            if (text.IndexOfAny(delimiters_array) != -1)
+            {
+                int num = column;
+                string str = text.Substring(0, text.IndexOfAny(delimiters_array));
+                list.AddRange(SubTokenize(str, line, num));
+                text = text.Substring(text.IndexOfAny(delimiters_array));
+                num += str.Length;
+                Token item = new Token
+                {
+                    text = text.Substring(0, 1).Trim(),
+                    line = line,
+                    column = num
+                };
+                list.Add(item);
+                text = text.Substring(1);
+                num++;
+                list.AddRange(SubTokenize(text, line, num));
+                return list;
+            }
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                Token token2 = new Token
+                {
+                    text = text.Trim(),
+                    line = line,
+                    column = column
+                };
+                list.Add(token2);
+            }
+            return list;
+        }
+
+        public static List<Token> Tokenize(string text)
+        {
+            List<Token> list = new List<Token>();
+            int line = 1;
+            char[] separator = new char[] { '\n' };
+            foreach (string str in text.Split(separator))
+            {
+                if (!string.IsNullOrWhiteSpace(str))
+                {
+                    int column = 1;
+                    bool flag = false;
+                    string str2 = "";
+                    bool flag2 = false;
+                    char[] chArray2 = new char[] { ' ', '\t' };
+                    foreach (string str3 in str.Split(chArray2))
+                    {
+                        string word = str3.Substring(0, str3.IndexOf(comment_char));
+                        if (word.Contains<char>(comment_char))
+                        {
+                            flag2 = true;
+                        }
+                        if (word.Contains<char>('"') && !word.Contains<char>('\\'))
+                        {
+                            if (flag || (word.Count<char>(f => (f == '"')) > 1))
+                            {
+                                flag = false;
+                                str2 = str2 + word.TrimEnd(new char[0]);
+                                Token item = new Token
+                                {
+                                    text = str2,
+                                    line = line,
+                                    column = column
+                                };
+                                list.Add(item);
+                                str2 = "";
+                                continue;
+                            }
+                            flag = true;
+                        }
+                        if (!string.IsNullOrWhiteSpace(word) && !flag)
+                        {
+                            list.AddRange(SubTokenize(word, line, column));
+                        }
+                        else if (flag)
+                        {
+                            str2 = str2 + str3 + " ";
+                        }
+                        column += word.Length + 1;
+                        if (flag2)
+                        {
+                            break;
+                        }
+                    }
+                    if (flag)
+                    {
+                        str2 = str2.TrimEnd(new char[0]);
+                        Token token2 = new Token
+                        {
+                            text = str2,
+                            line = line,
+                            column = column
+                        };
+                        list.Add(token2);
+                    }
+                }
+                line++;
+            }
+            return list;
         }
     }
 }

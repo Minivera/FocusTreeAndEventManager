@@ -43,7 +43,6 @@ namespace FocusTreeManager.ViewModel
             SimpleIoc.Default.Register<LocalizatorViewModel>();
             SimpleIoc.Default.Register<ScripterViewModel>();
             SimpleIoc.Default.Register<ScripterControlsViewModel>();
-            SimpleIoc.Default.Register<CodeComparatorViewModel>();
             SimpleIoc.Default.Register<ErrorDawgViewModel>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
         }
@@ -130,14 +129,6 @@ namespace FocusTreeManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ScripterControlsViewModel>();
-            }
-        }
-
-        public CodeComparatorViewModel CodeComparator
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<CodeComparatorViewModel>();
             }
         }
 

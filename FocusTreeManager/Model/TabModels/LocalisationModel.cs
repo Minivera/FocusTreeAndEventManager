@@ -106,6 +106,7 @@ namespace FocusTreeManager.Model
             this.ID = container.IdentifierID;
             visibleName = container.ContainerID;
             languageName = container.LanguageName;
+            fileInfo = container.FileInfo;
             LocalisationMap = new ObservableCollection<LocaleModel>();
             foreach (LocaleContent content in container.LocalisationMap)
             {

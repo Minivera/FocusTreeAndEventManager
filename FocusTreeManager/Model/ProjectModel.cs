@@ -157,7 +157,8 @@ namespace FocusTreeManager.Model
                 newproject.scriptList.Add(new ScriptModel(container.ContainerID)
                 {
                     VisibleName = container.ContainerID,
-                    InternalScript = container.InternalScript
+                    InternalScript = container.InternalScript,
+                    FileInfo = container.FileInfo
                 });
             }
             if (newproject.localisationList.Any() && dataContract.defaultLocale != null)

@@ -20,6 +20,24 @@ namespace FocusTreeManager.Parsers
             "immediate", "mean_time_to_happen", "trigger"
         };
 
+        public static string ParseEventForCompare(EventTabModel model)
+        {
+            EventContainer container = new EventContainer(model);
+            container.ContainerID.Replace(" ", "_");
+            return Parse(container.EventList.ToList<Event>(), container.EventNamespace);
+        }
+
+        public static string ParseEventScriptForCompare(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return "";
+            }
+            Script script = new Script();
+            script.Analyse(File.ReadAllText(filename), -1);
+            return ParseEventForCompare(CreateEventFromScript(filename, script));
+        }
+
         public static Dictionary<string, string> ParseAllEvents(List<EventContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();

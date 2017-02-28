@@ -21,6 +21,24 @@ namespace FocusTreeManager.Parsers
             "ai_will_do", "completion_reward", "available", "bypass", "cancel"
         };
 
+        public static string ParseTreeForCompare(FocusGridModel model)
+        {
+            FociGridContainer container = new FociGridContainer(model);
+            string focusTreeId = container.ContainerID.Replace(" ", "_");
+            return Parse(container.FociList.ToList<Focus>(), focusTreeId, container.TAG, container.AdditionnalMods);
+        }
+
+        public static string ParseTreeScriptForCompare(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return "";
+            }
+            Script script = new Script();
+            script.Analyse(File.ReadAllText(filename), -1);
+            return ParseTreeForCompare(CreateTreeFromScript(filename, script));
+        }
+
         public static Dictionary<string, string> ParseAllTrees(List<FociGridContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();

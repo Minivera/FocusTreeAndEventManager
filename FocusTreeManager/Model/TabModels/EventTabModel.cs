@@ -128,6 +128,7 @@ namespace FocusTreeManager.Model
             this.ID = container.IdentifierID;
             this.visbleName = container.ContainerID;
             this.eventNamespace = container.EventNamespace;
+            fileInfo = container.FileInfo;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
             {

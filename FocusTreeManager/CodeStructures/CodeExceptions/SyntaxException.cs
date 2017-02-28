@@ -26,7 +26,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
                 }
                 if (column != null)
                 {
-                    message += " at character " + line;
+                    message += " at character " + column;
                 }
                 return message;
             }

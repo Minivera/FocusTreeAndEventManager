@@ -90,68 +90,64 @@ namespace FocusTreeManager.Helper
             return errorThumbnail;
         }
 
-        public static List<ImageSource> findAllGameImages(ImageType source)
+        public static Dictionary<string, ImageSource> findAllGameImages(ImageType source)
         {
-            List<ImageSource> list = new List<ImageSource>();
-            string rightFolder = "";
-            switch (source)
+            Dictionary<string, ImageSource> dictionary = new Dictionary<string, ImageSource>();
+            string str = "";
+            if (source != ImageType.Goal)
             {
-                case ImageType.Goal:
-                    rightFolder = GFX_GOAL_FOLDER;
-                    break;
-                case ImageType.Event:
-                    rightFolder = GFX_EVENT_FOLDER;
-                    break;
-            }
-            string fullpath = Configurator.getGamePath() + rightFolder;
-            //For each file in the normal folder
-            foreach (string fileName in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION, 
-                                                           SearchOption.TopDirectoryOnly))
-            {
-                if (IMAGE_DO_NOT_LOAD.Any(fileName.Contains))
+                if (source == ImageType.Event)
                 {
-                    continue;
-                }
-                try
-                {
-                    using (FileStream stream = new FileStream(fileName, FileMode.Open))
-                    {
-                        DDSImage image = new DDSImage(stream);
-                        list.Add(ImageSourceForBitmap(image.BitmapImage));
-                    }
-                }
-                catch (Exception)
-                {
-                    continue;
+                    str = @"\gfx\interface\goals\";
                 }
             }
-            //For each file in add mod folders
-            ProjectModel model = (new ViewModelLocator()).Main.Project;
-            foreach (string modpath in model.ListModFolders)
+            else
             {
-                fullpath = modpath + rightFolder;
-                foreach (string fileName in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION,
-                                                                   SearchOption.TopDirectoryOnly))
+                str = @"\gfx\interface\goals\";
+            }
+            foreach (string str2 in Directory.GetFiles(Configurator.getGamePath() + 
+                str, "*.dds", SearchOption.TopDirectoryOnly))
+            {
+                if (!IMAGE_DO_NOT_LOAD.Any<string>(new Func<string, bool>(str2.Contains)))
                 {
-                    if (IMAGE_DO_NOT_LOAD.Any(fileName.Contains))
-                    {
-                        continue;
-                    }
                     try
                     {
-                        using (FileStream stream = new FileStream(fileName, FileMode.Open))
+                        using (FileStream stream = new FileStream(str2, FileMode.Open))
                         {
                             DDSImage image = new DDSImage(stream);
-                            list.Add(ImageSourceForBitmap(image.BitmapImage));
+                            dictionary[str2] = ImageSourceForBitmap(image.BitmapImage);
                         }
                     }
                     catch (Exception)
                     {
-                        continue;
                     }
-                } 
+                }
             }
-            return list;
+            using (IEnumerator<string> enumerator = new ViewModelLocator().Main.
+                Project.ListModFolders.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    foreach (string str3 in Directory.GetFiles(enumerator.Current + str, "*.dds", SearchOption.TopDirectoryOnly))
+                    {
+                        if (!IMAGE_DO_NOT_LOAD.Any<string>(new Func<string, bool>(str3.Contains)))
+                        {
+                            try
+                            {
+                                using (FileStream stream2 = new FileStream(str3, FileMode.Open))
+                                {
+                                    DDSImage image2 = new DDSImage(stream2);
+                                    dictionary[str3] = ImageSourceForBitmap(image2.BitmapImage);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                    }
+                }
+            }
+            return dictionary;
         }
 
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
