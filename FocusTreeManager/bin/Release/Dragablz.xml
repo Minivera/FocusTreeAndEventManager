@@ -807,6 +807,27 @@
             Items control which typically uses a canvas and 
             </summary>
         </member>
+        <member name="M:Dragablz.DragablzItemsControl.AddToSource(System.Object,Dragablz.AddLocationHint)">
+            <summary>
+            Adds an item to the underlying source, displaying in a specific position in rendered control.
+            </summary>
+            <param name="item"></param>
+            <param name="addLocationHint"></param>
+        </member>
+        <member name="M:Dragablz.DragablzItemsControl.AddToSource(System.Object,System.Object,Dragablz.AddLocationHint)">
+            <summary>
+            Adds an item to the underlying source, displaying in a specific position in rendered control.
+            </summary>
+            <param name="item"></param>
+            <param name="nearItem"></param>
+            <param name="addLocationHint"></param>
+        </member>
+        <member name="M:Dragablz.DragablzItemsControl.MoveItem(Dragablz.MoveItemRequest)">
+            <summary>
+            Move an item in the rendered layout.
+            </summary>
+            <param name="moveItemRequest"></param>
+        </member>
         <member name="T:Dragablz.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

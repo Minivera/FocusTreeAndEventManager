@@ -30,10 +30,6 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Notification == "HideChangeImage")
-            {
-                this.Hide();
-            }
             if (msg.Notification == "ChangeLanguage")
             {
                 loadLocales();

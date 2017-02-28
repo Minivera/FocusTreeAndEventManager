@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
@@ -20,6 +21,7 @@ namespace FocusTreeManager.ViewModel
         public class ImageData
         {
             public ImageSource Image { get; set; }
+            public string Filename { get; set; }
             public int MaxWidth { get; set; }
         }
 
@@ -74,10 +76,11 @@ namespace FocusTreeManager.ViewModel
             ImageList.Clear();
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 GFX_FOLDER + SubFolder + "\\");
-            foreach (ImageSource source in ImageHelper.findAllGameImages(type))
+            foreach (KeyValuePair<string, ImageSource> source in ImageHelper.findAllGameImages(type))
             {
                 ImageList.Add(new ImageData() {
-                    Image = source,
+                    Image = source.Value,
+                    Filename = source.Key,
                     MaxWidth = MaxWidth
                 });
             }
@@ -89,6 +92,18 @@ namespace FocusTreeManager.ViewModel
         {
             FocusImage = Path.GetFileNameWithoutExtension(path);
             Messenger.Default.Send(new NotificationMessage(this, "HideChangeImage"));
+            Close();
+        }
+
+        private void Close()
+        {
+            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window.DataContext == this)
+                {
+                    window.Close();
+                }
+            }
         }
     }
 }

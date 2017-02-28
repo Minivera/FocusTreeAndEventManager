@@ -90,9 +90,9 @@ namespace FocusTreeManager.Helper
             return errorThumbnail;
         }
 
-        public static List<ImageSource> findAllGameImages(ImageType source)
+        public static Dictionary<string, ImageSource> findAllGameImages(ImageType source)
         {
-            List<ImageSource> list = new List<ImageSource>();
+            Dictionary<string, ImageSource> list = new Dictionary<string, ImageSource>();
             string rightFolder = "";
             switch (source)
             {
@@ -117,7 +117,7 @@ namespace FocusTreeManager.Helper
                     using (FileStream stream = new FileStream(fileName, FileMode.Open))
                     {
                         DDSImage image = new DDSImage(stream);
-                        list.Add(ImageSourceForBitmap(image.BitmapImage));
+                        list[fileName] = (ImageSourceForBitmap(image.BitmapImage));
                     }
                 }
                 catch (Exception)
@@ -142,7 +142,7 @@ namespace FocusTreeManager.Helper
                         using (FileStream stream = new FileStream(fileName, FileMode.Open))
                         {
                             DDSImage image = new DDSImage(stream);
-                            list.Add(ImageSourceForBitmap(image.BitmapImage));
+                            list[fileName] = (ImageSourceForBitmap(image.BitmapImage));
                         }
                     }
                     catch (Exception)
