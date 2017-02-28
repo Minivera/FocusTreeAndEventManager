@@ -12,9 +12,9 @@ namespace FocusTreeManager
     {
         public App()
         {
-            //AppDomain currentDomain = AppDomain.CurrentDomain;
-            //currentDomain.FirstChanceException += HandleFirstChance;
-            //currentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleCrashes);
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.FirstChanceException += HandleFirstChance;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleCrashes);
         }
 
         static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
