@@ -13,18 +13,18 @@ namespace FocusTreeManager
         public App()
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(App.HandleFirstChance);
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(App.HandleCrashes);
+            currentDomain.FirstChanceException += HandleFirstChance;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleCrashes);
         }
 
-        private static void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
-        {
-            LoggingHelper.LogCrash((Exception)e.ExceptionObject);
-        }
-
-        private static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
+        static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
         {
             LoggingHelper.LogException(e.Exception);
+        }
+
+        static void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
+        {
+            LoggingHelper.LogCrash((Exception)e.ExceptionObject);
         }
     }
 }
