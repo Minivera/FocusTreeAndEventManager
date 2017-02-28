@@ -93,6 +93,7 @@
     <system:String x:Key="Scripter_Block_Trigger">Bloc trigger</system:String>
     <system:String x:Key="Scripter_Block_Immediate">Bloc effet</system:String>
     <system:String x:Key="Scripter_Block_MTTH">Bloc fréquence d'effet</system:String>
+    <system:String x:Key="Scripter_Block_Tooltip">Block tooltip complet</system:String>
     <system:String x:Key="Scripter_Block_Custom">Bloc de code</system:String>
     <system:String x:Key="Editor_Structure">Structure du document</system:String>
     <system:String x:Key="Editor_Navigation">Aperçu</system:String>
@@ -117,6 +118,9 @@
     <system:String x:Key="Editor_Replace_Desc">Remplacer...</system:String>
     <system:String x:Key="Editor_Show_Struc_Desc">Afficher la structure du document.</system:String>
     <system:String x:Key="Editor_Show_Plan_Desc">Afficher l'aperçu du document.</system:String>
+    <system:String x:Key="Comparator_Old_File">Fichier actuel</system:String>
+    <system:String x:Key="Comparator_New_File">Nouveau fichier</system:String>
+    <system:String x:Key="Comparator_Title">Comparateur de code</system:String>
     <system:String x:Key="Command_Accept">Accepter</system:String>
     <system:String x:Key="Command_Change">Changer</system:String>
     <system:String x:Key="Command_Edit">Modifier</system:String>

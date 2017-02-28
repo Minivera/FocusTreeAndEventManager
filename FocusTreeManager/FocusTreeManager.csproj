@@ -195,9 +195,17 @@
     <Compile Include="Model\PrerequisitesSetModel.cs" />
     <None Include="Model\Old\Project.cs" />
     <Compile Include="Model\ProjectModel.cs" />
+    <Compile Include="ViewModel\CodeComparatorViewModel.cs" />
     <Compile Include="ViewModel\LocalizatorViewModel.cs" />
     <Compile Include="ViewModel\ProjectEditorViewModel.cs" />
     <Compile Include="ViewModel\FileManagerViewModel.cs" />
+    <Compile Include="Views\CompareCode.xaml.cs">
+      <DependentUpon>CompareCode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodeComparator\CodeComparator.xaml.cs">
+      <DependentUpon>CodeComparator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodeComparator\CodeComparatorTextBox.cs" />
     <Compile Include="Views\ProjectEditor.xaml.cs">
       <DependentUpon>ProjectEditor.xaml</DependentUpon>
     </Compile>
@@ -306,6 +314,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="Views\CompareCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CodeComparator\CodeComparator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CodeEditor\CodeEditor.xaml">
       <Generator>MSBuild:Compile</Generator>

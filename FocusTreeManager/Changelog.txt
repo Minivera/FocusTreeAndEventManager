@@ -175,3 +175,21 @@
 - Image will now load from the game's .DDS files rather than converted png files.
 - Loading from .dds file may worsen the performance of the focus tree, some work has already been done.
 - Starting the app with a badly configured game path will now prompt a warning.
+
+***********************
+*       Beta_2h       *
+***********************
+- When a file is changed, a new dialog with the changed file and old file to compare will appear. (WIP)
+- Fixed an error with text written in quotation being considered separate words in script files.
+- Fixed an error with the generic tree being considered a normal tree and crashing due to lack of tag.
+- The generic tree will now export as a generic tree rather than a tagged tree.
+- Fixed an issue with comments in localization files making the importation crash.
+- Fixed an issue with localization values in localization files being ignored when they contained ":".
+- Added the complete_tooltip block to the list of known blocks.
+- The focus tree parser will not ignore all non-managed code anymore (Things "like available_if_capitulated").
+- Fixed a bug when trying to modify scripts for foci that have empty block (Like bypass = {})
+- Added cancel_if_invalid, continue_if_invalid and available_if_capitulated to the list of keywords.
+- Added complete_tooltip to the list of keywords.
+- Syntax exceptions will now show the right character where the error happened.
+- Error dawg will now properly appear in the script import windows when a syntax error prevented the loading.
+- The script interpreter will now be far less picky about where it accepts comments

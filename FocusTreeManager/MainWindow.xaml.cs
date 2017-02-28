@@ -16,6 +16,8 @@ using System.IO;
 using FocusTreeManager.Helper;
 using Dragablz;
 using FocusTreeManager.DataContract;
+using DiffPlex.DiffBuilder;
+using DiffPlex;
 
 namespace FocusTreeManager
 {
