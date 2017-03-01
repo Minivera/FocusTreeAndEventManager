@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
 using FocusTreeManager.DataContract;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.Parsers
 {
@@ -18,6 +19,24 @@ namespace FocusTreeManager.Parsers
         {
             "immediate", "mean_time_to_happen", "trigger"
         };
+
+        public static string ParseEventForCompare(EventTabModel model)
+        {
+            EventContainer container = new EventContainer(model);
+            container.ContainerID.Replace(" ", "_");
+            return Parse(container.EventList.ToList<Event>(), container.EventNamespace);
+        }
+
+        public static string ParseEventScriptForCompare(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return "";
+            }
+            Script script = new Script();
+            script.Analyse(File.ReadAllText(filename), -1);
+            return ParseEventForCompare(CreateEventFromScript(filename, script));
+        }
 
         public static Dictionary<string, string> ParseAllEvents(List<EventContainer> Containers)
         {
@@ -100,16 +119,16 @@ namespace FocusTreeManager.Parsers
                 try
                 {
                     newEvent.Type = Event.EventType.news_event;
-                    newEvent.Id = block.FindValue("id").Parse();
-                    newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
+                    newEvent.Id = Script.TryParse(block, "id");
+                    newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
                     newEvent.IsMajor = block.FindValue("major") != null ?
-                        YesToBool(block.FindValue("major").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "major")) : false;
                     newEvent.IsHidden = block.FindValue("hidden") != null ?
-                        YesToBool(block.FindValue("hidden").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "hidden")) : false;
                     newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                        YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "is_triggered_only")) : false;
                     newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                        YesToBool(block.FindValue("fire_only_once").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "fire_only_once")) : false;
                     foreach (ICodeStruct desc in block.FindAllValuesOfType<ICodeStruct>("desc"))
                     {
                         newEvent.Descriptions.Add(new EventDescriptionModel
@@ -121,7 +140,7 @@ namespace FocusTreeManager.Parsers
                     {
                         newEvent.Options.Add(new EventOptionModel
                         {
-                            Name = option.FindValue("name").Parse(),
+                            Name = Script.TryParse(block, "name"),
                             InternalScript = option.GetContentAsScript(new string[1] { "name" })
                         });
                     }
@@ -137,6 +156,13 @@ namespace FocusTreeManager.Parsers
                     }
                     newEvent.InternalScript = InternalEventScript;
                     container.EventList.Add(newEvent);
+                }
+                catch (SyntaxException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for event "
+                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
                 }
                 catch (Exception)
                 {
@@ -156,21 +182,21 @@ namespace FocusTreeManager.Parsers
                 try
                 { 
                     newEvent.Type = Event.EventType.country_event;
-                    newEvent.Id = block.FindValue("id").Parse();
-                    newEvent.Picture = block.FindValue("picture").Parse().Replace("GFX_", "");
+                    newEvent.Id = Script.TryParse(block, "id");
+                    newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
                     newEvent.IsMajor = block.FindValue("major") != null ?
-                        YesToBool(block.FindValue("major").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "major")) : false;
                     newEvent.IsHidden = block.FindValue("hidden") != null ?
-                        YesToBool(block.FindValue("hidden").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "hidden")) : false;
                     newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                        YesToBool(block.FindValue("is_triggered_only").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "is_triggered_only")) : false;
                     newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                        YesToBool(block.FindValue("fire_only_once").Parse()) : false;
+                        YesToBool(Script.TryParse(block, "fire_only_once")) : false;
                     foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                     {
                         newEvent.Options.Add(new EventOptionModel
                         {
-                            Name = option.FindValue("name").Parse(),
+                            Name = Script.TryParse(block, "name"),
                             InternalScript = option.GetContentAsScript(new string[1] { "name" })
                         });
                     }
@@ -186,6 +212,13 @@ namespace FocusTreeManager.Parsers
                     }
                     newEvent.InternalScript = InternalEventScript;
                     container.EventList.Add(newEvent);
+                }
+                catch (SyntaxException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Invalid syntax for event "
+                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
                 }
                 catch (Exception)
                 {

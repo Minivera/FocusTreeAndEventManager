@@ -22,13 +22,13 @@ namespace FocusTreeManager.CodeStructures
             this.Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
         }
 
-        public void Analyse(string code, int line = -1)
+        internal void Analyse(SyntaxGroup code, int line = -1)
         {
             //Can't analyse
             return;
         }
 
-        public ICodeStruct FindValue(string TagToFind)
+        public CodeValue FindValue(string TagToFind)
         {
             //End of structure
             return null;
@@ -40,7 +40,7 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public ICodeStruct FindAssignation(string TagToFind)
+        public Assignation FindAssignation(string TagToFind)
         {
             //End of structure
             return null;

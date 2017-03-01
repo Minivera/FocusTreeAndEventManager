@@ -16,16 +16,6 @@ namespace FocusTreeManager.CodeStructures
     [DataContract(Name = "script_struct")]
     public class Script : ICodeStruct
     {
-        /// <summary>
-        /// Regex that check for either an assignation with a code block (text = {...})
-        /// or a simple assignation (text = text)
-        /// </summary>
-        internal const string REGEX_BRACKETS =
-            @"([^=<>]+)[ \t]+([=<>])[ \t]+(?:\{((?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!)))\}|(.*))";
-
-        //Check for inline assignation (Paradox loves these)
-        internal const string REGEX_INLINE_ASSIGNATIONS = @"[^=<>\{]+[ \t]+[=<>][ \t]+[^=<>\s\}]+";
-        
         [DataMember(Name = "code", Order = 0)]
         public List<ICodeStruct> Code { get; set; }
 
@@ -37,17 +27,16 @@ namespace FocusTreeManager.CodeStructures
         public void Analyse(string code, int line = -1)
         {
             Code.Clear();
-            Regex regex = new Regex(REGEX_BRACKETS);
-            //For each block of text = brackets
-            int currentLine = 1;
-            foreach (Match ItemMatch in regex.Matches(code))
+            List<SyntaxGroup> list = 
+                Tokenizer.GroupTokensByBlocks(Tokenizer.Tokenize(code)) 
+                as List<SyntaxGroup>;
+            foreach (SyntaxGroup group in list)
             {
                 try
                 {
                     Assignation tempo = new Assignation(1);
-                    tempo.Analyse(ItemMatch.Value, currentLine);
+                    tempo.Analyse(group);
                     Code.Add(tempo);
-                    currentLine += ItemMatch.Value.Count(s => s == '\n') + 1;
                 }
                 catch (RecursiveCodeException e)
                 {
@@ -93,9 +82,9 @@ namespace FocusTreeManager.CodeStructures
             return content;
         }
 
-        public ICodeStruct FindValue(string TagToFind)
+        public CodeValue FindValue(string TagToFind)
         {
-            ICodeStruct found;
+            CodeValue found;
             foreach (ICodeStruct item in Code)
             {
                 found = item.FindValue(TagToFind);
@@ -122,9 +111,9 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public ICodeStruct FindAssignation(string TagToFind)
+        public Assignation FindAssignation(string TagToFind)
         {
-            ICodeStruct found;
+            Assignation found;
             foreach (ICodeStruct item in Code)
             {
                 found = item.FindAssignation(TagToFind);
@@ -157,6 +146,28 @@ namespace FocusTreeManager.CodeStructures
                 }
             }
             return newScript;
+        }
+
+        static public string TryParse(ICodeStruct block, string tag, bool isMandatory = true)
+        {
+            Assignation found = block.FindAssignation(tag);
+            if (found != null)
+            {
+                try
+                {
+                    return found.Value.Parse();
+                }
+                catch (Exception)
+                {
+                    throw new SyntaxException(tag, found.Line);
+                }
+            }
+            if (isMandatory)
+            {
+                int? line = null;
+                throw new SyntaxException(tag, line, null);
+            }
+            return null;
         }
     }
 }

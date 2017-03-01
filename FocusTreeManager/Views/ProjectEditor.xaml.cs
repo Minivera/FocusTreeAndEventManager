@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -49,7 +50,12 @@ namespace FocusTreeManager.Views
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                ((TextBox)sender).Text = dialog.FileName;
+                string filename = dialog.FileName;
+                if (string.IsNullOrEmpty(Path.GetExtension(filename)))
+                {
+                    filename += ".xh4prj";
+                }
+                ((TextBox)sender).Text = filename;
                 ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
             this.Activate();

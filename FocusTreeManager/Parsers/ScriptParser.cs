@@ -14,6 +14,26 @@ namespace FocusTreeManager.Parsers
 {
     public class ScriptParser
     {
+        public static string ParseScriptFileForCompare(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return "";
+            }
+            return ParseScriptForCompare(CreateScriptFromFile(filename));
+        }
+
+        public static string ParseScriptForCompare(ScriptModel model)
+        {
+            ScriptContainer container1 = new ScriptContainer(model.VisibleName)
+            {
+                FileInfo = model.FileInfo,
+                InternalScript = model.InternalScript
+            };
+            string iD = container1.ContainerID.Replace(" ", "_");
+            return Parse(container1.InternalScript, iD);
+        }
+
         public static Dictionary<string, string> ParseEverything(List<ScriptContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();

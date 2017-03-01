@@ -137,8 +137,9 @@ namespace FocusTreeManager.DataContract
                 scriptList.Add(new ScriptContainer()
                 {
                     IdentifierID = item.UniqueID,
-                    ContainerID = item.Filename,
-                    InternalScript = item.InternalScript
+                    ContainerID = item.VisibleName,
+                    InternalScript = item.InternalScript,
+                    FileInfo = item.FileInfo
                 });
             }
             if (localisationList.Any() && model.DefaultLocale != null)

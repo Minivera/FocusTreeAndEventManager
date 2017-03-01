@@ -35,10 +35,11 @@
                                         MouseAction="LeftDoubleClick" />
                     </StackPanel.InputBindings>
                     <Grid>
-                        <Label Margin="4 0 0 0" Content="{Binding Filename}"/>
+                        <TextBlock Margin="4 0 0 0" Text="{Binding VisibleName}" 
+                                   VerticalAlignment="Center"/>
                         <TextBox Margin="4 0 0 0" Width="110"
                              VerticalAlignment="Center"
-                             Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding VisibleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              KeyDown="TextBox_KeyDown" 
                              Visibility="Hidden"/>
 

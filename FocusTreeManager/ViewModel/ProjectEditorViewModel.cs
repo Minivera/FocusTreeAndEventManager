@@ -2,6 +2,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.IO;
+using System.Windows;
 
 namespace FocusTreeManager.ViewModel
 {

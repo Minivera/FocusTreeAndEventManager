@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -78,8 +79,11 @@ namespace FocusTreeManager.ViewModel
                     if (Path.GetExtension(dialog.FileName) == ".yml")
                     {
                         File = Parsers.LocalisationParser.CreateLocaleFromFile(dialog.FileName);
-                        ((LocalisationModel)File).Filename = 
-                            Path.GetFileNameWithoutExtension(dialog.FileName);
+                        ((LocalisationModel)File).FileInfo = new DataContract.FileInfo()
+                        {
+                            Filename = dialog.FileName,
+                            LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
+                        };
                     }
                     else
                     { 
@@ -92,23 +96,32 @@ namespace FocusTreeManager.ViewModel
                             if (script.FindAssignation("focus_tree") != null)
                             {
                                 File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName, script);
-                                ((FocusGridModel)File).Filename =
-                                    Path.GetFileNameWithoutExtension(dialog.FileName);
+                                ((FocusGridModel)File).FileInfo = new DataContract.FileInfo()
+                                {
+                                    Filename = dialog.FileName,
+                                    LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
+                                };
                             }
                             //If an event file
                             else if (script.FindAssignation("country_event") != null ||
                                      script.FindAssignation("news_event") != null)
                             {
                                 File = Parsers.EventParser.CreateEventFromScript(dialog.FileName, script);
-                                ((EventTabModel)File).Filename =
-                                    Path.GetFileNameWithoutExtension(dialog.FileName);
+                                ((EventTabModel)File).FileInfo = new DataContract.FileInfo()
+                                {
+                                    Filename = dialog.FileName,
+                                    LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
+                                };
                             }
                             //If an generic file
                             else
                             {
                                 File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
-                                ((ScriptModel)File).Filename =
-                                    Path.GetFileNameWithoutExtension(dialog.FileName);
+                                ((ScriptModel)File).FileInfo = new DataContract.FileInfo()
+                                {
+                                    Filename = dialog.FileName,
+                                    LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
+                                };
                             }
                         }
                         catch (Exception)
@@ -119,18 +132,27 @@ namespace FocusTreeManager.ViewModel
                             coordinator.ShowMessageAsync(this, Title, Message);
                             //If it crashed, it is possible it was a generic file
                             File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
-                            ((ScriptModel)File).Filename =
+                            ((ScriptModel)File).VisibleName =
                                 Path.GetFileNameWithoutExtension(dialog.FileName);
                         }
                     }
                 }
+            }
+            catch (SyntaxException e)
+            {
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                string Title = resourceLocalization["Application_Error"] as string;
+                string Message = resourceLocalization["Application_Error_Script"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
+                ErrorLogger.Instance.AddLogLine(e.Message);
             }
             catch (Exception)
             {
                 ResourceDictionary resourceLocalization = new ResourceDictionary();
                 resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
                 string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Loading"] as string;
+                string Message = resourceLocalization["Application_Error_Script"] as string;
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
             Activate();

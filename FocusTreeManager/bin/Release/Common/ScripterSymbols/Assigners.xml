@@ -5,5 +5,7 @@
   <assigner>y</assigner>
   <assigner>cost</assigner>
   <assigner>custom_effect_tooltip</assigner>
-  <assigner>level</assigner>
+  <assigner>cancel_if_invalid</assigner>
+  <assigner>continue_if_invalid</assigner>
+  <assigner>available_if_capitulated</assigner>
 </assigners>

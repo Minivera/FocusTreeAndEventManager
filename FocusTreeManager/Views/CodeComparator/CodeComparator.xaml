@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.CodeComparator.CodeComparator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusTreeManager.Views.CodeComparator"
+             mc:Ignorable="d" 
+             DataContext="{Binding CodeComparator, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" 
+                                    Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Background="{DynamicResource AccentBaseColorBrush}" >
+            <TextBlock Text="{DynamicResource Comparator_Old_File}" 
+                       Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontWeight="Bold"/>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Background="{DynamicResource AccentBaseColorBrush}" >
+            <TextBlock Text="{DynamicResource Comparator_New_File}" 
+                       Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontWeight="Bold"/>
+        </StackPanel>
+        <ScrollViewer Grid.Column="0" Grid.Row="1">
+            <local:CodeComparatorTextBox DiffModel="{Binding OldFileDiff}" />
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="1" Grid.Row="1">
+            <local:CodeComparatorTextBox DiffModel="{Binding NewFileDiff}" />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

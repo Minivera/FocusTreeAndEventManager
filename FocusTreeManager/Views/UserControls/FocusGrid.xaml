@@ -32,6 +32,9 @@
         <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
             <Grid Margin="45,0,45,0" x:Name="ListGrid" 
                   Tag="{Binding RelativeSource={RelativeSource Self}}">
+                <Grid.CacheMode>
+                    <BitmapCache />
+                </Grid.CacheMode>
                 <Grid.ContextMenu>
                     <ContextMenu >
                         <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}"

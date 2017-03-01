@@ -71,5 +71,9 @@
                     IsCancel="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
             </WrapPanel>
         </Grid>
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Width="70" Height="110" Margin="0,0,9.6,33.4" x:Name="GridErrors" Grid.Column="2">
+            <local:ErrorDawg />
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

@@ -1,12 +1,19 @@
-﻿using FocusTreeManager.DataContract;
+﻿using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using FocusTreeManager.DataContract;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.ViewModel;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 
 namespace FocusTreeManager.Model
 {
@@ -22,24 +29,24 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string filename;
+        private string visbleName;
 
-        public string Filename
+        public string VisibleName
         {
             get
             {
-                return filename;
+                return visbleName;
             }
             set
             {
-                if (value == filename)
+                if (value == visbleName)
                 {
                     return;
                 }
                 DefaultChangeFactory.Current.OnChanging(this,
-                         "Filename", filename, value, "Filename Changed");
-                filename = value;
-                RaisePropertyChanged(() => Filename);
+                         "VisibleName", visbleName, value, "VisibleName Changed");
+                visbleName = value;
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 
@@ -59,6 +66,25 @@ namespace FocusTreeManager.Model
                 }
                 eventNamespace = value;
                 RaisePropertyChanged(() => EventNamespace);
+            }
+        }
+
+        private DataContract.FileInfo fileInfo;
+
+        public DataContract.FileInfo FileInfo
+        {
+            get
+            {
+                return fileInfo;
+            }
+            set
+            {
+                if (value == fileInfo)
+                {
+                    return;
+                }
+                fileInfo = value;
+                RaisePropertyChanged(() => FileInfo);
             }
         }
 
@@ -92,7 +118,7 @@ namespace FocusTreeManager.Model
 
         public EventTabModel(string Filename)
         {
-            this.filename = Filename;
+            this.visbleName = Filename;
             this.ID = Guid.NewGuid();
             EventList = new ObservableCollection<EventModel>();
             EventList.CollectionChanged += EventList_CollectionChanged;
@@ -107,8 +133,9 @@ namespace FocusTreeManager.Model
         public EventTabModel(EventContainer container)
         {
             this.ID = container.IdentifierID;
-            this.filename = container.ContainerID;
+            this.visbleName = container.ContainerID;
             this.eventNamespace = container.EventNamespace;
+            FileInfo = container.FileInfo;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
             {
@@ -133,14 +160,14 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.Filename == null)
+            if (this.VisibleName == null)
             {
                 return;
             }
             //Always manage container renamed
             if (msg.Notification == "ContainerRenamed")
             {
-                RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => VisibleName);
             }
             if (!this.isShown)
             {
@@ -167,6 +194,35 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+        }
+
+        async public void CheckForChanges()
+        {
+            DataContract.FileInfo info = this.FileInfo;
+            //check the fileinfo data
+            if (info != null)
+            {
+                //If the file exists
+                if (File.Exists(info.Filename))
+                {
+                    //If the file was modified after the last modification date
+                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
+                    {
+                        //Then we can show a message
+                        MessageDialogResult Result = await (new ViewModelLocator())
+                            .Main.ShowFileChangedDialog();
+                        if (Result == MessageDialogResult.Affirmative)
+                        {
+                            string oldText = EventParser.ParseEventForCompare(this);
+                            string newText = EventParser.ParseEventScriptForCompare(info.Filename);
+                            SideBySideDiffModel model = new SideBySideDiffBuilder(
+                                new Differ()).BuildDiffModel(oldText, newText);
+                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                            new CompareCode().ShowDialog();
+                        }
+                    }
+                }
+            }
         }
 
         #region Undo/Redo

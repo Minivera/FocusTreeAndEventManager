@@ -1,12 +1,19 @@
-﻿using FocusTreeManager.DataContract;
+﻿using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using FocusTreeManager.DataContract;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.ViewModel;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 
 namespace FocusTreeManager.Model
@@ -23,43 +30,62 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private string filename;
+        private string visibleName;
 
-        public string Filename
+        public string VisibleName
         {
             get
             {
-                return filename;
+                return visibleName;
             }
             set
             {
-                if (value == filename)
+                if (value == visibleName)
                 {
                     return;
                 }
                 DefaultChangeFactory.Current.OnChanging(this,
-                         "Filename", filename, value, "Filename Changed");
-                filename = value;
-                RaisePropertyChanged(() => Filename);
+                         "VisibleName", visibleName, value, "VisibleName Changed");
+                visibleName = value;
+                RaisePropertyChanged(() => VisibleName);
             }
         }
 
-        private string shortname;
+        private string languageName;
 
-        public string Shortname
+        public string LanguageName
         {
             get
             {
-                return shortname;
+                return languageName;
             }
             set
             {
-                if (value == shortname)
+                if (value == languageName)
                 {
                     return;
                 }
-                shortname = value;
-                RaisePropertyChanged(() => Shortname);
+                languageName = value;
+                RaisePropertyChanged(() => LanguageName);
+            }
+        }
+
+        private DataContract.FileInfo fileInfo;
+
+        public DataContract.FileInfo FileInfo
+        {
+            get
+            {
+                return fileInfo;
+            }
+            set
+            {
+                if (value == fileInfo)
+                {
+                    return;
+                }
+                fileInfo = value;
+                RaisePropertyChanged(() => FileInfo);
             }
         }
 
@@ -71,7 +97,7 @@ namespace FocusTreeManager.Model
 
         public LocalisationModel(string Filename)
         {
-            filename = Filename;
+            visibleName = Filename;
             this.ID = Guid.NewGuid();
             LocalisationMap = new ObservableCollection<LocaleModel>();
             LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
@@ -85,8 +111,9 @@ namespace FocusTreeManager.Model
         public LocalisationModel(LocalisationContainer container)
         {
             this.ID = container.IdentifierID;
-            filename = container.ContainerID;
-            shortname = container.ShortName;
+            visibleName = container.ContainerID;
+            languageName = container.LanguageName;
+            FileInfo = container.FileInfo;
             LocalisationMap = new ObservableCollection<LocaleModel>();
             foreach (LocaleContent content in container.LocalisationMap)
             {
@@ -102,13 +129,13 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.Filename == null)
+            if (this.visibleName == null)
             {
                 return;
             }
             if (msg.Notification == "ContainerRenamed")
             {
-                RaisePropertyChanged(() => Filename);
+                RaisePropertyChanged(() => visibleName);
             }
         }
 
@@ -129,6 +156,37 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+        }
+
+        async public void CheckForChanges()
+        {
+            DataContract.FileInfo info = this.FileInfo;
+            //check the fileinfo data
+            if (info != null)
+            {
+                //If the file exists
+                if (File.Exists(info.Filename))
+                {
+                    //If the file was modified after the last modification date
+                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
+                    {
+                        //Then we can show a message
+                        MessageDialogResult Result = await (new ViewModelLocator())
+                            .Main.ShowFileChangedDialog();
+                        if (Result == MessageDialogResult.Affirmative)
+                        {
+                            string oldText = LocalisationParser
+                                .ParseLocalizationForCompare(this);
+                            string newText = LocalisationParser.
+                                ParseLocalizationFileForCompare(info.Filename);
+                            SideBySideDiffModel model = new SideBySideDiffBuilder(
+                                new Differ()).BuildDiffModel(oldText, newText);
+                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                            new CompareCode().ShowDialog();
+                        }
+                    }
+                }
+            }
         }
 
         #region Undo/Redo

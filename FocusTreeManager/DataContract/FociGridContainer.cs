@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 namespace FocusTreeManager.DataContract
 {
     [KnownType(typeof(Focus))]
+    [KnownType(typeof(FileInfo))]
     [DataContract(Name = "foci_container", Namespace = "focusesNs")]
     public class FociGridContainer
     {
@@ -24,6 +25,9 @@ namespace FocusTreeManager.DataContract
 
         [DataMember(Name = "mods", Order = 4)]
         public string AdditionnalMods { get; set; }
+
+        [DataMember(Name = "file", Order = 5)]
+        public FileInfo FileInfo { get; set; }
 
         public FociGridContainer()
         {
@@ -49,16 +53,17 @@ namespace FocusTreeManager.DataContract
         public FociGridContainer(FocusGridModel item)
         {
             IdentifierID = item.UniqueID;
-            ContainerID = item.Filename;
+            ContainerID = item.VisibleName;
             TAG = item.TAG;
             AdditionnalMods = item.AdditionnalMods;
+            FileInfo = item.FileInfo;
             FociList = new List<Focus>();
             foreach (FocusModel model in item.FociList)
             {
                 FociList.Add(new Focus()
                 {
                     UniqueName = model.UniqueName,
-                    Image = model.Icon,
+                    Image = model.Image,
                     X = model.X,
                     Y = model.Y,
                     Cost = model.Cost,

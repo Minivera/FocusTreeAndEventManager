@@ -13,14 +13,31 @@ namespace FocusTreeManager.Parsers
 {
     public class LocalisationParser
     {
+        public static string ParseLocalizationFileForCompare(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return "";
+            }
+            return ParseLocalizationForCompare(CreateLocaleFromFile(filename));
+        }
+
+        public static string ParseLocalizationForCompare(LocalisationModel model)
+        {
+            LocalisationContainer container = new LocalisationContainer(model);
+            string iD = container.ContainerID.Replace(" ", "_") + "_" + container.LanguageName;
+            return Parse(container.LocalisationMap.ToList<LocaleContent>(), 
+                iD, container.LanguageName);
+        }
+
         public static Dictionary<string, string> ParseEverything(List<LocalisationContainer> Containers)
         {
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (LocalisationContainer container in Containers)
             {
                 string ID = container.ContainerID.Replace(" ", "_");
-                ID += "_" + container.ShortName;
-                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.ShortName);
+                ID += "_" + container.LanguageName;
+                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.LanguageName);
             }
             return fileList;
         }
@@ -50,7 +67,7 @@ namespace FocusTreeManager.Parsers
                 }
                 if (firstline)
                 {
-                    container.Shortname = line.Replace(":", "").Trim();
+                    container.LanguageName = line.Replace(":", "").Trim();
                     firstline = false;
                 }
                 else

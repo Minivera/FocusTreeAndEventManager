@@ -127,6 +127,8 @@
     <system:String x:Key="Command_Reset">Empty</system:String>
     <system:String x:Key="Command_Rename">Rename</system:String>
     <system:String x:Key="Command_OK">OK</system:String>
+    <system:String x:Key="Command_Yes">Yes</system:String>
+    <system:String x:Key="Command_No">No</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>
@@ -152,6 +154,12 @@
     <system:String x:Key="Application_Script_Fallback">A major syntax error prevented the system from loading the script as a focus tree or event file, 
         the generic script type will be used instead.</system:String>
     <system:String x:Key="Application_Invalid_File">The file is not a valid HoI script file.</system:String>
+    <system:String x:Key="Application_Project_Exists">A file with the same name already exists, do you want to replace it?</system:String>
+    <system:String x:Key="Application_Project_Exists_Header">Information</system:String>
+    <system:String x:Key="Application_File_Changed">The original script file was changed recently, do you want to compare the changes?</system:String>
+    <system:String x:Key="Application_File_Changed_Header">Script file updated</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set">The game folder for images and code loading is not set correctly, please set it now.</system:String>
+    <system:String x:Key="Application_Game_Folder_Not_Set_Header">Wrong game folder</system:String>
     <system:String x:Key="Window_File">Files</system:String>
     <system:String x:Key="Window_Project">Project</system:String>
 </ResourceDictionary>

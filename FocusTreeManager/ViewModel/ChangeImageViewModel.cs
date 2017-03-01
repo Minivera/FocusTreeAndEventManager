@@ -1,12 +1,12 @@
-﻿using FocusTreeManager.Model;
+﻿using FocusTreeManager.Helper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
+using System.Windows.Media;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -20,7 +20,8 @@ namespace FocusTreeManager.ViewModel
     {
         public class ImageData
         {
-            public string Image { get; set; }
+            public ImageSource Image { get; set; }
+            public string Filename { get;  set; }
             public int MaxWidth { get; set; }
         }
 
@@ -58,14 +59,28 @@ namespace FocusTreeManager.ViewModel
 
         public void LoadImages(string SubFolder, string CurrentImage)
         {
-            int MaxWidth = SubFolder == "Focus" ? 100 : 250;
+            int MaxWidth = 250;
+            ImageType type = ImageType.Event;
+            switch (SubFolder)
+            {
+                case "Focus":
+                    MaxWidth = 100;
+                    type = ImageType.Goal;
+                    break;
+                case "Event":
+                    MaxWidth = 250;
+                    type = ImageType.Event;
+                    break;
+            }
+            
             ImageList.Clear();
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 GFX_FOLDER + SubFolder + "\\");
-            foreach (string fileName in Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly))
+            foreach (KeyValuePair<string, ImageSource> source in ImageHelper.findAllGameImages(type))
             {
                 ImageList.Add(new ImageData() {
-                    Image = IMAGE_PATH + SubFolder + "/" + Path.GetFileName(fileName),
+                    Image = source.Value,
+                    Filename = source.Key,
                     MaxWidth = MaxWidth
                 });
             }

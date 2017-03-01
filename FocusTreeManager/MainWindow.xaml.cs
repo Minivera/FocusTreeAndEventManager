@@ -129,10 +129,30 @@ namespace FocusTreeManager
                             MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
         }
 
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        async private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Settings view = new Settings();
-            view.ShowDialog();
+            if (!Directory.Exists(Configurator.getGamePath() + @"\gfx\interface\"))
+            {
+                MessageDialogResult result = await ShowWrongGameFolderDialog();
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    view.ShowDialog();
+                }
+            }
+            else
+            {
+                view.ShowDialog();
+            }
+        }
+
+        async private Task<MessageDialogResult> ShowWrongGameFolderDialog()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            string Title = resourceLocalization["Application_Game_Folder_Not_Set_Header"] as string;
+            string Message = resourceLocalization["Application_Game_Folder_Not_Set"] as string;
+            return await this.ShowMessageAsync(Title, Message, MessageDialogStyle.Affirmative);
         }
 
         private void loadLocales()
@@ -259,6 +279,10 @@ namespace FocusTreeManager
                         vm.LoadProject(fileName);
                     }
                 }
+            }
+            if (!Directory.Exists(Configurator.getGamePath() + @"\gfx\interface\"))
+            {
+                SettingsButton_Click(this, new RoutedEventArgs());
             }
         }
 

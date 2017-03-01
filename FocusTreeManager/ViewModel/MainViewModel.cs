@@ -1,5 +1,9 @@
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.Model;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -8,12 +12,11 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MonitoredUndo;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace FocusTreeManager.ViewModel
@@ -153,7 +156,7 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        private void newProject()
+        async private void newProject()
         {
             var Vm = (new ViewModelLocator()).ProjectEditor;
             ProjectEditor dialog = new ProjectEditor();
@@ -161,17 +164,52 @@ namespace FocusTreeManager.ViewModel
             dialog.ShowDialog();
             if (Vm.Project != null)
             {
-                Project = Vm.Project;
-                IsProjectExist = true;
-                Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
-                            "RefreshProjectViewer"));
-                Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-                Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
-                RaisePropertyChanged("isProjectExist");
-                TabsModelList = new ObservableCollection<ObservableObject>();
-                RaisePropertyChanged("TabsModelList");
-                UndoService.Current[this].Clear();
+                if (File.Exists(Vm.Project.Filename))
+                {
+                    MessageDialogResult Result = await ShowProjectExistDialog();
+                    if (Result == MessageDialogResult.Affirmative)
+                    {
+                        Project = Vm.Project;
+                        IsProjectExist = true;
+                        Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                                    "RefreshProjectViewer"));
+                        Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+                        Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                        RaisePropertyChanged("isProjectExist");
+                        TabsModelList = new ObservableCollection<ObservableObject>();
+                        RaisePropertyChanged("TabsModelList");
+                        UndoService.Current[this].Clear();
+                        DataHolder.Instance.SaveContract(Project);
+                    }
+                }
+                else
+                {
+                    Project = Vm.Project;
+                    IsProjectExist = true;
+                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                                "RefreshProjectViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+                    Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+                    RaisePropertyChanged("isProjectExist");
+                    TabsModelList = new ObservableCollection<ObservableObject>();
+                    RaisePropertyChanged("TabsModelList");
+                    UndoService.Current[this].Clear();
+                    DataHolder.Instance.SaveContract(Project);
+                }
             }
+        }
+
+        async private Task<MessageDialogResult> ShowProjectExistDialog()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            string Title = resourceLocalization["Application_Project_Exists_Header"] as string;
+            string Message = resourceLocalization["Application_Project_Exists"] as string;
+            MetroDialogSettings settings = new MetroDialogSettings();
+            settings.AffirmativeButtonText = resourceLocalization["Command_Yes"] as string;
+            settings.NegativeButtonText = resourceLocalization["Command_No"] as string;
+            return await coordinator.ShowMessageAsync(this, Title, Message,
+                MessageDialogStyle.AffirmativeAndNegative, settings);
         }
 
         public void editProject()
@@ -312,24 +350,28 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenFocusTree")
             {
                 FocusGridModel container = msg.Sender as FocusGridModel;
+                CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenLocalisation")
             {
                 LocalisationModel container = msg.Sender as LocalisationModel;
+                CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenEventList")
             {
                 EventTabModel container = msg.Sender as EventTabModel;
+                CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
             if (msg.Notification == "OpenScriptList")
             {
                 ScriptModel container = msg.Sender as ScriptModel;
+                CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
             }
@@ -368,6 +410,39 @@ namespace FocusTreeManager.ViewModel
                 TabsModelList.Remove(Model);
                 RaisePropertyChanged("TabsModelList");
             }
+        }
+
+        private void CheckForChanges(ObservableObject container)
+        {
+            if (container is FocusGridModel)
+            {
+                ((FocusGridModel)container).CheckForChanges();
+            }
+            else if (container is LocalisationModel)
+            {
+                ((LocalisationModel)container).CheckForChanges();
+            }
+            else if (container is EventTabModel)
+            {
+                ((EventTabModel)container).CheckForChanges();
+            }
+            else if (container is ScriptModel)
+            {
+                ((ScriptModel)container).CheckForChanges();
+            }
+        }
+
+        async public Task<MessageDialogResult> ShowFileChangedDialog()
+        {
+            ResourceDictionary resourceLocalization = new ResourceDictionary();
+            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            string Title = resourceLocalization["Application_File_Changed_Header"] as string;
+            string Message = resourceLocalization["Application_File_Changed"] as string;
+            MetroDialogSettings settings = new MetroDialogSettings();
+            settings.AffirmativeButtonText = resourceLocalization["Command_Yes"] as string;
+            settings.NegativeButtonText = resourceLocalization["Command_No"] as string;
+            return await coordinator.ShowMessageAsync(this, Title, Message, 
+                MessageDialogStyle.AffirmativeAndNegative, settings);
         }
 
         public void ExportProject()

@@ -219,7 +219,7 @@
                     SelectionChanged="CentralTabControl_SelectionChanged" >
                     <dragablz:TabablzControl.HeaderItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Filename}"  />
+                            <TextBlock Text="{Binding VisibleName}"  />
                         </DataTemplate>
                     </dragablz:TabablzControl.HeaderItemTemplate>
                     <TabControl.ItemTemplate>
