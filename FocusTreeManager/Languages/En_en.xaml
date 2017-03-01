@@ -90,6 +90,7 @@
     <system:String x:Key="Scripter_Block_Trigger">Trigger block</system:String>
     <system:String x:Key="Scripter_Block_Immediate">Immediate block</system:String>
     <system:String x:Key="Scripter_Block_MTTH">Mean time to happen block</system:String>
+    <system:String x:Key="Scripter_Block_Tooltip">Complete tooltip</system:String>
     <system:String x:Key="Scripter_Block_Custom">Code block</system:String>
     <system:String x:Key="Editor_Structure">Document structure</system:String>
     <system:String x:Key="Editor_Navigation">Preview</system:String>
@@ -114,6 +115,9 @@
     <system:String x:Key="Editor_Replace_Desc">Replace...</system:String>
     <system:String x:Key="Editor_Show_Struc_Desc">Show document structure.</system:String>
     <system:String x:Key="Editor_Show_Plan_Desc">Show document preview.</system:String>
+    <system:String x:Key="Comparator_Title">Compare the new and old file</system:String>
+    <system:String x:Key="Comparator_Old_File">Old file</system:String>
+    <system:String x:Key="Comparator_New_File">New file</system:String>
     <system:String x:Key="Command_Accept">Accept</system:String>
     <system:String x:Key="Command_Change">Change</system:String>
     <system:String x:Key="Command_Edit">Edit</system:String>
