@@ -65,6 +65,9 @@
     <system:String x:Key="Event_Option_Script">Script</system:String>
     <system:String x:Key="Event_Add_Event">Ajouter un événement</system:String>
     <system:String x:Key="Event_Delete_Event">Supprimer l'événement</system:String>
+    <system:String x:Key="Comparator_Title">Comparer les deux fichiers de script</system:String>
+    <system:String x:Key="Comparator_Old_File">Vieux fichier</system:String>
+    <system:String x:Key="Comparator_New_File">Nouveau fichier</system:String>
     <system:String x:Key="Localisation_Language">Langue définie dans les defines</system:String>
     <system:String x:Key="Localisation_Key">Clef</system:String>
     <system:String x:Key="Localisation_Value">Valeur associée</system:String>
@@ -93,6 +96,7 @@
     <system:String x:Key="Scripter_Block_Trigger">Bloc trigger</system:String>
     <system:String x:Key="Scripter_Block_Immediate">Bloc effet</system:String>
     <system:String x:Key="Scripter_Block_MTTH">Bloc fréquence d'effet</system:String>
+    <system:String x:Key="Scripter_Block_Tooltip">Tooltip complet</system:String>
     <system:String x:Key="Scripter_Block_Custom">Bloc de code</system:String>
     <system:String x:Key="Editor_Structure">Structure du document</system:String>
     <system:String x:Key="Editor_Navigation">Aperçu</system:String>
