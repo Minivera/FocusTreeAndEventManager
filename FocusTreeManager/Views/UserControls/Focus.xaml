@@ -60,8 +60,7 @@
             </Style>
         </Grid.Style>
         <Image Source="/FocusTreeManager;component/GFX/Interface/Focus_under.png" Margin="-38,42,-35,-42" Stretch="None" />
-        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" 
-               Source="{Binding Icon}">
+        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" >
             <!--:Loader.DisplayOption="FullResolution"
                l:Loader.Source="">-->
             <Image.InputBindings>

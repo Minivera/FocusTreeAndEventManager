@@ -1,19 +1,12 @@
-﻿using DiffPlex;
-using DiffPlex.DiffBuilder;
-using DiffPlex.DiffBuilder.Model;
-using FocusTreeManager.DataContract;
-using FocusTreeManager.Parsers;
+﻿using FocusTreeManager.DataContract;
 using FocusTreeManager.ViewModel;
-using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 
 namespace FocusTreeManager.Model
 {
@@ -69,9 +62,9 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private DataContract.FileInfo fileInfo;
+        private FileInfo fileInfo;
 
-        public DataContract.FileInfo FileInfo
+        public FileInfo FileInfo
         {
             get
             {
@@ -135,7 +128,7 @@ namespace FocusTreeManager.Model
             this.ID = container.IdentifierID;
             this.visbleName = container.ContainerID;
             this.eventNamespace = container.EventNamespace;
-            FileInfo = container.FileInfo;
+            fileInfo = container.FileInfo;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
             {
@@ -194,35 +187,6 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
-        }
-
-        async public void CheckForChanges()
-        {
-            DataContract.FileInfo info = this.FileInfo;
-            //check the fileinfo data
-            if (info != null)
-            {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await (new ViewModelLocator())
-                            .Main.ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            string oldText = EventParser.ParseEventForCompare(this);
-                            string newText = EventParser.ParseEventScriptForCompare(info.Filename);
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
-            }
         }
 
         #region Undo/Redo

@@ -9,7 +9,6 @@
     <Control Text="Scripter_Block_Available" Code="available = {}" IsNotEditable="true" CanHaveChild="true"/>
     <Control Text="Scripter_Block_Bypass" Code="bypass = {}" IsNotEditable="true" CanHaveChild="true"/>
     <Control Text="Scripter_Block_Cancel" Code="cancel = {}" IsNotEditable="true" CanHaveChild="true"/>
-    <Control Text="Scripter_Block_Tooltip" Code="complete_tooltip = {}" IsNotEditable="true" CanHaveChild="true"/>
     <Control Text="Scripter_Block_Custom" Code="block_name = {}" IsNotEditable="false" CanHaveChild="true"/>
   </Blocks>
   <Conditions>

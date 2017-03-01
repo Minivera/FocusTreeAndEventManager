@@ -29,13 +29,12 @@
                 <DataTemplate>
                     <Grid Margin="10">
                         <Image x:Name="ImageToChose"
-                               Source="{Binding Image}" MaxWidth="{Binding MaxWidth}" 
-                               ToolTip="{Binding Filename}"/>
+                               Source="{Binding Image}" MaxWidth="{Binding MaxWidth}" />
                         <!--:Loader.DisplayOption="FullResolution"
                                l:Loader. />-->
                         <Button Content="{DynamicResource Command_Select}" 
                                 Command="{Binding ChangeImage.SelectCommand, Source={StaticResource Locator}}" 
-                                CommandParameter="{Binding Filename}" 
+                                CommandParameter="{Binding Image}" 
                                 Height="25" Width="150" VerticalAlignment="Bottom"
                                 Style="{DynamicResource SquareButtonStyle}" />
                     </Grid>
