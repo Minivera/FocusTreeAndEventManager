@@ -97,7 +97,9 @@ namespace FocusTreeManager.CodeStructures
             try
             {
                 // If the value is nothing but it has an operator
-                if (Value == null && Operator != null)
+                if (((this.Value == null) || ((this.Value is CodeBlock)
+                    && !((CodeBlock)this.Value).Code.Any<ICodeStruct>()))
+                    && (this.Operator != null))
                 {
                     //Empty block
                     content.Append(tabulations + Assignee + " " + Operator + " {\n\n}");

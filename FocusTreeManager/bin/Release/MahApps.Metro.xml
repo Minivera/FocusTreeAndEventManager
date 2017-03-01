@@ -3650,6 +3650,12 @@
             </summary>
             <param name="hWnd">The handle for this method.</param>
         </member>
+        <member name="M:MahApps.Metro.Controls.WinApiHelper.TryGetRelativeMousePosition(System.IntPtr,System.Windows.Point@)">
+            <summary>
+            Try to get the relative mouse position to the given handle in client coordinates.
+            </summary>
+            <param name="hWnd">The handle for this method.</param>
+        </member>
         <member name="P:MahApps.Metro.Controls.WindowButtonCommands.LightMinButtonStyle">
             <summary>
             Gets or sets the value indicating current light style for the minimize button.

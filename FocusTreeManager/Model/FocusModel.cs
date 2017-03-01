@@ -36,6 +36,7 @@ namespace FocusTreeManager.Model
                          "Image", image, value, "Image Changed");
                 image = value;
                 RaisePropertyChanged(() => Image);
+                RaisePropertyChanged(() => Icon);
             }
         }
 

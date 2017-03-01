@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -136,6 +137,15 @@ namespace FocusTreeManager.ViewModel
                         }
                     }
                 }
+            }
+            catch (SyntaxException e)
+            {
+                ResourceDictionary resourceLocalization = new ResourceDictionary();
+                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                string Title = resourceLocalization["Application_Error"] as string;
+                string Message = resourceLocalization["Application_Error_Script"] as string;
+                coordinator.ShowMessageAsync(this, Title, Message);
+                ErrorLogger.Instance.AddLogLine(e.Message);
             }
             catch (Exception)
             {

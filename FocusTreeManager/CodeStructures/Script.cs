@@ -148,7 +148,7 @@ namespace FocusTreeManager.CodeStructures
             return newScript;
         }
 
-        static public string TryParse(ICodeStruct block, string tag)
+        static public string TryParse(ICodeStruct block, string tag, bool isMandatory = true)
         {
             Assignation found = block.FindAssignation(tag);
             if (found != null)
@@ -162,10 +162,12 @@ namespace FocusTreeManager.CodeStructures
                     throw new SyntaxException(tag, found.Line);
                 }
             }
-            else
+            if (isMandatory)
             {
-                throw new SyntaxException(tag);
+                int? line = null;
+                throw new SyntaxException(tag, line, null);
             }
+            return null;
         }
     }
 }

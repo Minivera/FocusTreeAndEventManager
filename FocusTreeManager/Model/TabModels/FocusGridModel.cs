@@ -1,13 +1,20 @@
-﻿using FocusTreeManager.DataContract;
+﻿using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using FocusTreeManager.DataContract;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.ViewModel;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,7 +45,7 @@ namespace FocusTreeManager.Model
 
         private string additionnalMods = "";
 
-        private FileInfo fileInfo;
+        private DataContract.FileInfo fileInfo;
 
         public RelayCommand<object> AddFocusCommand { get; private set; }
 
@@ -147,7 +154,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public FileInfo FileInfo
+        public DataContract.FileInfo FileInfo
         {
             get
             {
@@ -206,8 +213,9 @@ namespace FocusTreeManager.Model
             visibleName = container.ContainerID;
             tag = container.TAG;
             additionnalMods = container.AdditionnalMods;
+            FileInfo = container.FileInfo;
             FociList = new ObservableCollection<FocusModel>();
-            foreach (Focus focus in container.FociList)
+            foreach (DataContract.Focus focus in container.FociList)
             {
                 FociList.Add(new FocusModel(focus));
             }
@@ -548,6 +556,35 @@ namespace FocusTreeManager.Model
             }
             RaisePropertyChanged(() => CanvasLines);
             Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
+        }
+
+        async public void CheckForChanges()
+        {
+            DataContract.FileInfo info = this.FileInfo;
+            //check the fileinfo data
+            if (info != null)
+            {
+                //If the file exists
+                if (File.Exists(info.Filename))
+                {
+                    //If the file was modified after the last modification date
+                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
+                    {
+                        //Then we can show a message
+                        MessageDialogResult Result = await (new ViewModelLocator())
+                            .Main.ShowFileChangedDialog();
+                        if (Result == MessageDialogResult.Affirmative)
+                        {
+                            string oldText = FocusTreeParser.ParseTreeForCompare(this);
+                            string newText = FocusTreeParser.ParseTreeScriptForCompare(info.Filename);
+                            SideBySideDiffModel model = new SideBySideDiffBuilder(
+                                new Differ()).BuildDiffModel(oldText, newText);
+                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                            new CompareCode().ShowDialog();
+                        }
+                    }
+                }
+            }
         }
 
         #region Undo/Redo

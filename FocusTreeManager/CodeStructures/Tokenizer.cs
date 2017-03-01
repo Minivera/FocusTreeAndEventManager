@@ -95,19 +95,67 @@ namespace FocusTreeManager.CodeStructures
                 {
                     //Split by spaces
                     int y = 1;
-                    foreach (string item in line.Split(' '))
+                    bool isFullyStringed = false;
+                    bool isStartedComment = false;
+                    string fullString = "";
+                    foreach (string item in line.Split(new char[] { ' ', '\t' }))
                     {
+                        string word = item;
                         if (item.Contains(comment_char))
                         {
-                            //Start of a comment, continue with next line
-                            break;
+                            word = item.Substring(0, item.IndexOf(comment_char));
+                            //Start of a comment, continue, but end line afterwards
+                            isStartedComment = true;
                         }
-                        if (!string.IsNullOrWhiteSpace(item))
+                        //Check if the current word if the start of a full string between quotes
+                        if (word.Contains('"') && !word.Contains('\\'))
+                        {
+                            //If it is also the end
+                            if (isFullyStringed || (word.Count(f => (f == '"')) > 1))
+                            {
+                                //Create the token and skip to the next work
+                                isFullyStringed = false;
+                                fullString = fullString + word.TrimEnd(new char[0]);
+                                Token token = new Token
+                                {
+                                    text = fullString,
+                                    line = x,
+                                    column = y
+                                };
+                                list.Add(token);
+                                fullString = "";
+                                continue;
+                            }
+                            //Otherwise, it is fully stringed
+                            isFullyStringed = true;
+                        }
+                        if (isFullyStringed)
+                        {
+                            fullString += word + " ";
+                        }
+                        else if (!string.IsNullOrWhiteSpace(word))
                         {
                             //Sub tokenize the string, will cut by delimiters.
-                            list.AddRange(SubTokenize(item, x, y));
+                            list.AddRange(SubTokenize(word, x, y));
                         }
                         y += item.Length + 1;
+                        //If we started a comment during this line, kill
+                        if (isStartedComment)
+                        {
+                            break;
+                        }
+                    }
+                    //If still fully string, but the line has ended
+                    if (isFullyStringed)
+                    {
+                        fullString = fullString.TrimEnd(new char[0]);
+                        Token token = new Token
+                        {
+                            text = fullString,
+                            line = x,
+                            column = y
+                        };
+                        list.Add(token);
                     }
                 }
                 x++;
