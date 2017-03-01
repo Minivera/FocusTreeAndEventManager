@@ -175,3 +175,19 @@
 - Image will now load from the game's .DDS files rather than converted png files.
 - Loading from .dds file may worsen the performance of the focus tree, some work has already been done.
 - Starting the app with a badly configured game path will now prompt a warning.
+
+***********************
+*       Beta_2h       *
+***********************
+- Opening a file that is changed will now prompt a compare dialog (WIP)
+- The script interpreter will now accept string in quotations as full words.
+- The script interpreter will now be more lenient with spaces and tabulations.
+- The script interpreter will now see words and comments without space and separate entities.
+- Fixed a crash with the generic focus tree being considered a normal tree and not having a tag.
+- The generic focus tree will now be exported as a generic focus rather than a tagged tree.
+- Added complete_tooltip to the list of possible blocks in the editor and interpreter.
+- Added cancel_if_invalid, continue_if_invalid and available_if_capitulated as keywords.
+- Editing a focus script will now allow the added keywords to be modified.
+- The focus icon will now refresh properly when changed.
+- Error dawg will now properly show itself when importing a syntax incorrect script.
+(The original changelog was longer, but major git issues caused it to disappear.)

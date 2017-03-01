@@ -31,3 +31,71 @@ System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/hoi4tgw_nav
    à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
    à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
    à System.Windows.Media.Imaging.BitmapFrame.C
+
+System.ArgumentOutOfRangeException: La longueur ne peut pas être inférieure à zéro.
+Nom du paramètre : length
+   à System.String.Substring(Int32 startIndex, Int32 length)
+   à FocusTreeManager.CodeStructures.Tokenizer.Tokenize(String text) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 103
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 30
+   à FocusTreeManager.Parsers.FocusTreeParser.ParseTreeScriptForCompare(String filename) dans G:\Travail\Git\HoiProject\FocusTreeManager\Parsers\FocusTreeParser.cs:ligne 45
+   à FocusTreeManager.ViewModel.MainViewModel.<CheckForChanges>d__59.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\MainViewModel.cs:ligne 429
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.AsyncMethodBuilderCore.<>c.<ThrowAsync>b__
+
+System.ArgumentOutOfRangeException: La longueur ne peut pas être inférieure à zéro.
+Nom du paramètre : length
+   à System.String.Substring(Int32 startIndex, Int32 length)
+   à FocusTreeManager.CodeStructures.Tokenizer.Tokenize(String text) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 103
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 30
+   à FocusTreeManager.Parsers.FocusTreeParser.ParseTreeScriptForCompare(String filename) dans G:\Travail\Git\HoiProject\FocusTreeManager\Parsers\FocusTreeParser.cs:ligne 45
+   à FocusTreeManager.ViewModel.MainViewModel.<CheckForChanges>d__59.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\MainViewModel.cs:ligne 429
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.AsyncMethodBuilderCore.<>c.<ThrowAsync>b__
+
+System.ArgumentOutOfRangeException: La longueur ne peut pas être inférieure à zéro.
+Nom du paramètre : length
+   à System.String.Substring(Int32 startIndex, Int32 length)
+   à FocusTreeManager.CodeStructures.Tokenizer.Tokenize(String text) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 103
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 30
+   à FocusTreeManager.Parsers.FocusTreeParser.ParseTreeScriptForCompare(String filename) dans G:\Travail\Git\HoiProject\FocusTreeManager\Parsers\FocusTreeParser.cs:ligne 45
+   à FocusTreeManager.ViewModel.MainViewModel.<CheckForChanges>d__59.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\MainViewModel.cs:ligne 429
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.AsyncMethodBuilderCore.<>c.<ThrowAsync>b__
+
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_unknown.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
+   à System.Windows.Media.Imaging.BitmapFrame.CreateFr
+
+System.Xaml.XamlObjectWriterException: 'La valeur fournie sur 'System.Windows.Baml2006.TypeConverterMarkupExtension' a levé une exception.' numéro de ligne '18' et position de ligne '9'. ---> System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_unknown.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream st
+
+System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_unknown.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
+   à System.Windows.Media.Imaging.BitmapFrame.CreateFr
+
+System.Xaml.XamlObjectWriterException: 'La valeur fournie sur 'System.Windows.Baml2006.TypeConverterMarkupExtension' a levé une exception.' numéro de ligne '18' et position de ligne '9'. ---> System.IO.IOException: Impossible de trouver la ressource 'gfx/focus/goal_unknown.png'.
+   à MS.Internal.AppModel.ResourcePart.GetStreamCore(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackagePart.GetStream(FileMode mode, FileAccess access)
+   à System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.GetResponseStream()
+   à System.IO.Packaging.PackWebResponse.get_ContentType()
+   à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream st

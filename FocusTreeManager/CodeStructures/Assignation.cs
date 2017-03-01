@@ -2,21 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
 {
-
-    [KnownType(typeof(Assignation)), 
-     KnownType(typeof(CodeBlock)), 
-     KnownType(typeof(CodeValue)), 
-     DataContract(Name = "assignation")]
+    [KnownType(typeof(Assignation))]
+    [KnownType(typeof(CodeBlock))]
+    [KnownType(typeof(CodeValue))]
+    [DataContract(Name = "assignation")]
     public class Assignation : ICodeStruct
     {
-
         [DataMember(Name = "assignee", Order = 0)]
         public string Assignee { get; set; }
 
@@ -44,54 +41,139 @@ namespace FocusTreeManager.CodeStructures
 
         internal void Analyse(SyntaxGroup code)
         {
-            this.Assignee = code.Component.text;
-            this.Operator = code.Operator.text;
-            this.Line = code.Component.line;
+            Assignee = code.Component.text;
+            Operator = code.Operator.text;
+            Line = code.Component.line;
+            //If we can detect at least one code block
             if (code.Operand is List<SyntaxGroup>)
             {
                 try
                 {
-                    CodeBlock block = new CodeBlock(this.Level + 1);
+                    CodeBlock block = new CodeBlock(Level + 1);
                     block.Analyse(code.Operand as List<SyntaxGroup>);
-                    this.Value = block;
-                    return;
+                    Value = block;
                 }
-                catch (RecursiveCodeException exception1)
+                catch (RecursiveCodeException e)
                 {
-                    throw exception1.AddToRecursiveChain("Error during analysis chain", 
-                        this.Assignee, this.Line.ToString());
+                    //TODO: Add language support
+                    throw e.AddToRecursiveChain("Error during analysis chain", 
+                        Assignee, Line.ToString());
                 }
                 catch (Exception)
                 {
-                    throw new RecursiveCodeException().
-                        AddToRecursiveChain("Impossible to analyze associated code", 
-                        this.Assignee, this.Line.ToString());
+                    //TODO: Add language support
+                    RecursiveCodeException e = new RecursiveCodeException();
+                    throw e.AddToRecursiveChain("Impossible to analyze associated code", 
+                        Assignee, Line.ToString());
                 }
             }
-            if (code.Operand is Token)
+            //If we get pure text
+            else if (code.Operand is Token)
             {
-                this.Value = new CodeValue(((Token)code.Operand).text);
+                Value = new CodeValue(((Token)code.Operand).text);
             }
+            //If we got a list of tokens, a chain of pure text
             else if (code.Operand is List<Token>)
             {
-                this.Value = new CodeBlock();
-                ((CodeBlock)this.Value).Analyse(code.Operand as List<Token>);
+                Value = new CodeBlock();
+                ((CodeBlock)Value).Analyse(code.Operand as List<Token>);
             }
+            else
+            {
+                //Empty, kill
+                return;
+            }
+        }
+
+        public string Parse(int StartLevel = -1)
+        {
+            int BasicLevel = StartLevel == -1 ? Level : StartLevel + 1;
+            string tabulations = "";
+            for (int i = 1; i < BasicLevel; i++)
+            {
+                tabulations += "\t";
+            }
+            StringBuilder content = new StringBuilder();
+            try
+            {
+                // If the value is nothing but it has an operator
+                if (((this.Value == null) || ((this.Value is CodeBlock)
+                    && !((CodeBlock)this.Value).Code.Any<ICodeStruct>()))
+                    && (this.Operator != null))
+                {
+                    //Empty block
+                    content.Append(tabulations + Assignee + " " + Operator + " {\n\n}");
+                }
+                //Otherwise, print as usual
+                else
+                {
+                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse(BasicLevel));
+                }
+            }
+            catch (RecursiveCodeException e)
+            {
+                //TODO: Add language support
+                throw e.AddToRecursiveChain("Error during parsing chain", Assignee, Line.ToString());
+            }
+            catch (Exception)
+            {
+                //TODO: Add language support
+                RecursiveCodeException e = new RecursiveCodeException();
+                throw e.AddToRecursiveChain("Impossible to parse associated code", Assignee, Line.ToString());
+            }
+            return content.ToString();
+        }
+
+        public CodeValue FindValue(string TagToFind)
+        {
+            if (Assignee == TagToFind)
+            {
+                return Value as CodeValue;
+            }
+            CodeValue found;
+            if (Value is CodeBlock)
+            {
+                found = Value.FindValue(TagToFind);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
         }
 
         public ICodeStruct Extract(string TagToFind)
         {
-            if (this.Assignee == TagToFind)
+            if (Assignee == TagToFind)
             {
                 return this;
             }
-            if (this.Value is CodeBlock)
+            ICodeStruct found;
+            if (Value is CodeBlock)
             {
-                ICodeStruct item = this.Value.FindAssignation(TagToFind);
-                if (item != null)
+                found = Value.FindAssignation(TagToFind);
+                if (found != null)
                 {
-                    ((CodeBlock)this.Value).Code.Remove(item);
-                    return item;
+                    ((CodeBlock)Value).Code.Remove(found);
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        public Assignation FindAssignation(string TagToFind)
+        {
+            if (Assignee == TagToFind)
+            {
+                return this;
+            }
+            Assignation found;
+            if (Value is CodeBlock)
+            {
+                found = Value.FindAssignation(TagToFind);
+                if (found != null)
+                {
+                    return found;
                 }
             }
             return null;
@@ -99,111 +181,48 @@ namespace FocusTreeManager.CodeStructures
 
         public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
-            List<ICodeStruct> list = new List<ICodeStruct>();
-            if (this.Value != null)
+            List<ICodeStruct> founds = new List<ICodeStruct>();
+            if (Value == null)
             {
-                if ((this.Assignee == TagToFind) && ((this.Value.GetType() == typeof(T)) 
-                    || typeof(T).IsAssignableFrom(this.Value.GetType())))
-                {
-                    list.Add(this.Value);
-                    return list;
-                }
-                if (this.Value is CodeBlock)
-                {
-                    list.AddRange(this.Value.FindAllValuesOfType<T>(TagToFind));
-                }
+                //Empty block (Paradox loves these....)
+                return founds;
             }
-            return list;
-        }
-
-        public Assignation FindAssignation(string TagToFind)
-        {
-            if (this.Assignee == TagToFind)
+            if (Assignee == TagToFind 
+                && (Value.GetType() == typeof(T) ||
+                typeof(T).IsAssignableFrom(Value.GetType())))
             {
-                return this;
+                founds.Add(Value);
+                return founds;
             }
-            if (this.Value is CodeBlock)
+            //If we haven't found this element as our tag, search in childs
+            if (Value is CodeBlock)
             {
-                Assignation assignation = this.Value.FindAssignation(TagToFind);
-                if (assignation != null)
-                {
-                    return assignation;
-                }
+                founds.AddRange(Value.FindAllValuesOfType<T>(TagToFind));
             }
-            return null;
-        }
-
-        public CodeValue FindValue(string TagToFind)
-        {
-            if (this.Assignee == TagToFind)
-            {
-                return (this.Value as CodeValue);
-            }
-            if (this.Value is CodeBlock)
-            {
-                CodeValue value2 = this.Value.FindValue(TagToFind);
-                if (value2 != null)
-                {
-                    return value2;
-                }
-            }
-            return null;
+            return founds;
         }
 
         public Script GetContentAsScript(string[] except)
         {
-            Script script = new Script();
-            if (!(this.Value is CodeBlock))
+            Script newScript = new Script();
+            if (Value is CodeBlock)
             {
-                throw new RecursiveCodeException().
-                    AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
-                    this.Assignee, this.Line.ToString());
-            }
-            foreach (Assignation assignation in ((CodeBlock)this.Value).Code)
-            {
-                if (!except.Contains<string>(assignation.Assignee))
+                foreach (Assignation item in ((CodeBlock)Value).Code)
                 {
-                    script.Code.Add(assignation);
+                    if (!except.Contains(item.Assignee))
+                    {
+                        newScript.Code.Add(item);
+                    }
                 }
             }
-            return script;
-        }
-
-        public string Parse(int StartLevel = -1)
-        {
-            int startLevel = (StartLevel == -1) ? this.Level : (StartLevel + 1);
-            string str = "";
-            for (int i = 1; i < startLevel; i++)
+            else
             {
-                str = str + "\t";
+                //TODO: Add language support
+                RecursiveCodeException e = new RecursiveCodeException();
+                throw e.AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
+                                             Assignee, Line.ToString());
             }
-            StringBuilder builder = new StringBuilder();
-            try
-            {
-                if (((this.Value == null) || ((this.Value is CodeBlock) 
-                    && !((CodeBlock)this.Value).Code.Any<ICodeStruct>())) 
-                    && (this.Operator != null))
-                {
-                    builder.Append(str + this.Assignee + " " + this.Operator + " {\n\n}");
-                }
-                else
-                {
-                    builder.Append(str + this.Assignee + " " + this.Operator + " " +
-                        this.Value.Parse(startLevel));
-                }
-            }
-            catch (RecursiveCodeException exception1)
-            {
-                throw exception1.AddToRecursiveChain("Error during parsing chain", 
-                    this.Assignee, this.Line.ToString());
-            }
-            catch (Exception)
-            {
-                throw new RecursiveCodeException()
-                    .AddToRecursiveChain("Impossible to parse associated code", 
-                    this.Assignee, this.Line.ToString());
-            }
-            return builder.ToString();
+            return newScript;
         }
     }
 }

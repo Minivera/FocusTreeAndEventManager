@@ -1,0 +1,25 @@
+﻿<Controls:MetroWindow x:Class="FocusTreeManager.Views.CompareCode"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
+        xmlns:local="clr-namespace:FocusTreeManager.Views"
+        xmlns:c="clr-namespace:FocusTreeManager.Views.CodeComparator"
+        mc:Ignorable="d ignore" GlowBrush="{DynamicResource AccentColorBrush}"
+        ResizeMode="CanResize" SizeToContent="WidthAndHeight" Title="{DynamicResource Comparator_Title}" 
+        WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <c:CodeComparator></c:CodeComparator>
+    </Grid>
+</Controls:MetroWindow>

@@ -124,7 +124,7 @@ namespace FocusTreeManager.Views
         private void VisualFocus_Loaded(object sender, RoutedEventArgs e)
         {            
             //Image loading async
-            StartImageDispatcher();
+            //StartImageDispatcher();
         }
     }
 }

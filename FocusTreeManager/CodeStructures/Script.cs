@@ -53,31 +53,33 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-
-
         public string Parse(int StartLevel = -1)
         {
-            string str = "";
-            if (this.Code != null)
+            string content = "";
+            if (Code == null)
             {
-                foreach (ICodeStruct struct2 in this.Code)
+                return content;
+            }
+            foreach (ICodeStruct item in Code)
+            {
+                try
                 {
-                    try
-                    {
-                        str = str + struct2.Parse(StartLevel) + "\n";
-                    }
-                    catch (RecursiveCodeException exception)
-                    {
-                        ErrorLogger.Instance.AddLogLine("Error during script Parsing");
-                        ErrorLogger.Instance.AddLogLine("\t" + exception.Message);
-                    }
-                    catch (Exception)
-                    {
-                        ErrorLogger.Instance.AddLogLine("Unknown error in script");
-                    }
+                    content += item.Parse(StartLevel) + "\n";
+                }
+                catch (RecursiveCodeException e)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Error during script Parsing");
+                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
+                }
+                catch (Exception)
+                {
+                    //TODO: Add language support
+                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
+                    continue;
                 }
             }
-            return str;
+            return content;
         }
 
         public CodeValue FindValue(string TagToFind)
@@ -146,18 +148,18 @@ namespace FocusTreeManager.CodeStructures
             return newScript;
         }
 
-        public static string TryParse(ICodeStruct block, string tag, bool isMandatory = true)
+        static public string TryParse(ICodeStruct block, string tag, bool isMandatory = true)
         {
-            Assignation assignation = block.FindAssignation(tag);
-            if (assignation != null)
+            Assignation found = block.FindAssignation(tag);
+            if (found != null)
             {
                 try
                 {
-                    return assignation.Value.Parse(-1);
+                    return found.Value.Parse();
                 }
                 catch (Exception)
                 {
-                    throw new SyntaxException(tag, new int?(assignation.Line), null);
+                    throw new SyntaxException(tag, found.Line);
                 }
             }
             if (isMandatory)

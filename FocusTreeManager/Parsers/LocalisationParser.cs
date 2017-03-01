@@ -26,7 +26,8 @@ namespace FocusTreeManager.Parsers
         {
             LocalisationContainer container = new LocalisationContainer(model);
             string iD = container.ContainerID.Replace(" ", "_") + "_" + container.LanguageName;
-            return Parse(container.LocalisationMap.ToList<LocaleContent>(), iD, container.LanguageName);
+            return Parse(container.LocalisationMap.ToList<LocaleContent>(), 
+                iD, container.LanguageName);
         }
 
         public static Dictionary<string, string> ParseEverything(List<LocalisationContainer> Containers)
