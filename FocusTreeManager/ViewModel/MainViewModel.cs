@@ -12,13 +12,11 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MonitoredUndo;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace FocusTreeManager.ViewModel
@@ -414,72 +412,27 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        async private void CheckForChanges(ObservableObject container)
+        private void CheckForChanges(ObservableObject container)
         {
-            DataContract.FileInfo info = null;
-            string newText = "";
-            string oldText = "";
-            //Find the fileinfo if possible
             if (container is FocusGridModel)
             {
-                info = ((FocusGridModel)container).FileInfo;
-                if (info != null)
-                {
-                    oldText = FocusTreeParser.ParseTreeForCompare((FocusGridModel)container);
-                    newText = FocusTreeParser.ParseTreeScriptForCompare(info.Filename);
-                }
+                ((FocusGridModel)container).CheckForChanges();
             }
             else if (container is LocalisationModel)
             {
-                info = ((LocalisationModel)container).FileInfo;
-                if (info != null)
-                {
-                    oldText = LocalisationParser.ParseLocalizationForCompare((LocalisationModel)container);
-                    newText = LocalisationParser.ParseLocalizationFileForCompare(info.Filename);
-                }
+                ((LocalisationModel)container).CheckForChanges();
             }
             else if (container is EventTabModel)
             {
-                info = ((EventTabModel)container).FileInfo;
-                if (info != null)
-                {
-                    oldText = EventParser.ParseEventForCompare((EventTabModel)container);
-                    newText = EventParser.ParseEventScriptForCompare(info.Filename);
-                }
+                ((EventTabModel)container).CheckForChanges();
             }
             else if (container is ScriptModel)
             {
-                info = ((ScriptModel)container).FileInfo;
-                if (info != null)
-                {
-                    oldText = ScriptParser.ParseScriptForCompare((ScriptModel)container);
-                    newText = ScriptParser.ParseScriptFileForCompare(info.Filename);
-                }
-            }
-            //check the fileinfo data
-            if (info != null)
-            {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
+                ((ScriptModel)container).CheckForChanges();
             }
         }
 
-        async private Task<MessageDialogResult> ShowFileChangedDialog()
+        async public Task<MessageDialogResult> ShowFileChangedDialog()
         {
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);

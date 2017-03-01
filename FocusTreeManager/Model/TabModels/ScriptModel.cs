@@ -1,11 +1,18 @@
-﻿using FocusTreeManager.CodeStructures;
+﻿using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using FocusTreeManager.CodeStructures;
 using FocusTreeManager.DataContract;
+using FocusTreeManager.Parsers;
 using FocusTreeManager.ViewModel;
+using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace FocusTreeManager.Model
@@ -62,9 +69,9 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private FileInfo fileInfo;
+        private DataContract.FileInfo fileInfo;
 
-        public FileInfo FileInfo
+        public DataContract.FileInfo FileInfo
         {
             get
             {
@@ -128,6 +135,35 @@ namespace FocusTreeManager.Model
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+        }
+
+        async public void CheckForChanges()
+        {
+            DataContract.FileInfo info = this.FileInfo;
+            //check the fileinfo data
+            if (info != null)
+            {
+                //If the file exists
+                if (File.Exists(info.Filename))
+                {
+                    //If the file was modified after the last modification date
+                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
+                    {
+                        //Then we can show a message
+                        MessageDialogResult Result = await (new ViewModelLocator())
+                            .Main.ShowFileChangedDialog();
+                        if (Result == MessageDialogResult.Affirmative)
+                        {
+                            string oldText = ScriptParser.ParseScriptForCompare(this);
+                            string newText = ScriptParser.ParseScriptFileForCompare(info.Filename);
+                            SideBySideDiffModel model = new SideBySideDiffBuilder(
+                                new Differ()).BuildDiffModel(oldText, newText);
+                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                            new CompareCode().ShowDialog();
+                        }
+                    }
+                }
+            }
         }
 
         #region Undo/Redo

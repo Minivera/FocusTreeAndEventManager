@@ -18,14 +18,21 @@ namespace FocusTreeManager.Parsers
     {
         private static readonly string[] CORE_FOCUS_SCRIPTS_ELEMENTS =
         {
-            "ai_will_do", "completion_reward", "available", "bypass", "cancel"
+            "ai_will_do", "completion_reward", "available", "bypass", "cancel", "complete_tooltip"
         };
+
+        private static readonly string[] ALL_PASED_ELEMENTS = 
+        {
+            "id", "x", "y", "icon", "prerequisite", "relative_position_id", "cost", "mutually_exclusive"
+        };
+
 
         public static string ParseTreeForCompare(FocusGridModel model)
         {
             FociGridContainer container = new FociGridContainer(model);
             string focusTreeId = container.ContainerID.Replace(" ", "_");
-            return Parse(container.FociList.ToList<Focus>(), focusTreeId, container.TAG, container.AdditionnalMods);
+            return Parse(container.FociList.ToList<Focus>(), focusTreeId, 
+                container.TAG, container.AdditionnalMods);
         }
 
         public static string ParseTreeScriptForCompare(string filename)
@@ -59,20 +66,30 @@ namespace FocusTreeManager.Parsers
             text.AppendLine("focus_tree = {");
             text.AppendLine("\tid = " + FocusTreeId);
             text.AppendLine("\tcountry = {");
-            text.AppendLine("\t\tfactor = 0");
-            text.AppendLine("\t\tmodifier = {");
-            text.AppendLine("\t\t\tadd = 10");
-            text.AppendLine("\t\t\ttag = " + TAG);
-            if (!string.IsNullOrEmpty(AdditionnalMods))
+            if (!string.IsNullOrEmpty(TAG))
             {
-                foreach (string line in AdditionnalMods.Split('\n'))
+                text.AppendLine("\t\tfactor = 0");
+                text.AppendLine("\t\tmodifier = {");
+                text.AppendLine("\t\t\tadd = 10");
+                text.AppendLine("\t\t\ttag = " + TAG);
+                if (!string.IsNullOrEmpty(AdditionnalMods))
                 {
-                    text.AppendLine("\t\t\t" + line);
+                    foreach (string line in AdditionnalMods.Split('\n'))
+                    {
+                        text.AppendLine("\t\t\t" + line);
+                    }
                 }
+                text.AppendLine("\t\t}");
+                text.AppendLine("\t}");
+                text.AppendLine("\tdefault = no");
             }
-            text.AppendLine("\t\t}");
-            text.AppendLine("\t}");
-            text.AppendLine("\tdefault = no");
+            //It is generic, make it default
+            else
+            {
+                text.AppendLine("\t\tfactor = 1");
+                text.AppendLine("\t}");
+                text.AppendLine("\tdefault = yes");
+            }
             foreach (var focus in listFoci)
             {
                 text.AppendLine("\tfocus = {");
@@ -226,9 +243,12 @@ namespace FocusTreeManager.Parsers
             FocusGridModel container = new FocusGridModel(Script.TryParse(script, "id"));
             //Get content of Modifier block
             Assignation modifier = script.FindAssignation("modifier") as Assignation;
-            container.TAG = Script.TryParse(modifier, "tag");
-            container.AdditionnalMods = modifier.GetContentAsScript(new string[] { "add", "tag" })
-                                                .Parse(0);
+            container.TAG = Script.TryParse(modifier, "tag", false);
+            if (container.TAG != null)
+            {
+                container.AdditionnalMods = modifier.GetContentAsScript(new string[] { "add", "tag" })
+                                                    .Parse(0);
+            }
             //Run through all foci
             foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
@@ -251,6 +271,9 @@ namespace FocusTreeManager.Parsers
                             InternalFocusScript.Code.Add(found);
                         }
                     }
+                    InternalFocusScript.Code.AddRange(block.
+                        GetContentAsScript(CORE_FOCUS_SCRIPTS_ELEMENTS.
+                            Concat<string>(ALL_PASED_ELEMENTS).ToArray<string>()).Code);
                     newFocus.InternalScript = InternalFocusScript;
                     container.FociList.Add(newFocus);
                 }
