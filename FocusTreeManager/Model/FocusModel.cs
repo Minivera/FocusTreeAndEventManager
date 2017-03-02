@@ -225,7 +225,7 @@ namespace FocusTreeManager.Model
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
-            EditLocaleCommand = new RelayCommand<string>(EditLocale);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public FocusModel(Focus focus)
@@ -246,7 +246,7 @@ namespace FocusTreeManager.Model
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
-            EditLocaleCommand = new RelayCommand<string>(EditLocale);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public void RepairSets(Focus focus, List<FocusModel> fociList)
@@ -321,6 +321,10 @@ namespace FocusTreeManager.Model
 
         public void EditLocale(string param)
         {
+            if (!CanEditLocale(param))
+            {
+                return;
+            }
             switch (param)
             {
                 case "VisibleName":
@@ -364,6 +368,13 @@ namespace FocusTreeManager.Model
                     vm.RaisePropertyChanged("Locale");
                     break;
             }
+        }
+
+        public bool CanEditLocale(string param)
+        {
+            LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
+            var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+            return locales != null;
         }
 
         public void AddOrUpdateLocale()

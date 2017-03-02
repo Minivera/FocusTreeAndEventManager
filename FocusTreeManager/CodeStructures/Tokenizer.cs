@@ -31,9 +31,14 @@ namespace FocusTreeManager.CodeStructures
 
         static private char comment_char = '#';
 
-        static public object GroupTokensByBlocks(List<Token> tokens)
+        static public object GroupTokensByBlocks(List<Token> tokens, bool first = true)
         {
             List<SyntaxGroup> list = new List<SyntaxGroup>();
+            //Check if the list contains anything and is the first recursive call
+            if (!tokens.Any() && first)
+            {
+                return list;
+            }
             //Check if the list contains any delimiters
             if (!ContainsDelimiters(tokens))
             {
@@ -65,7 +70,7 @@ namespace FocusTreeManager.CodeStructures
                     tokens.RemoveAt(0);
                     int closePos = getIndexOfClosingBracket(tokens) - 1;
                     group.Operand = GroupTokensByBlocks(tokens.GetRange(0,
-                                    closePos));
+                                    closePos), false);
                     tokens.RemoveRange(0, closePos + 1);
                 }
                 else if (tokens.First().text == "}")
