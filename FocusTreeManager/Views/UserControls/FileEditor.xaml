@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views.UserControls"
-             xmlns:model="clr-namespace:FocusTreeManager.Model"
+             xmlns:tabModels="clr-namespace:FocusTreeManager.Model.TabModels"
              mc:Ignorable="d" >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary x:Name="LocalizationStrings" 
+                                    Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="ControlStyle" TargetType="Control">
                 <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -24,7 +24,7 @@
                 <Setter Property="Width" Value="200"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
-            <DataTemplate DataType="{x:Type model:FocusGridModel}">
+            <DataTemplate DataType="{x:Type tabModels:FocusGridModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
@@ -51,7 +51,7 @@
                              TextWrapping="Wrap" AcceptsReturn="True" Height="170"/>
                 </Grid>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type model:LocalisationModel}">
+            <DataTemplate DataType="{x:Type tabModels:LocalisationModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
@@ -74,7 +74,7 @@
                     <TextBox Text="{Binding LanguageName}" Grid.Row="2" Grid.Column="1"/>
                 </Grid>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type model:EventTabModel}">
+            <DataTemplate DataType="{x:Type tabModels:EventTabModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
@@ -97,7 +97,7 @@
                     <TextBox Text="{Binding EventNamespace}" Grid.Row="2" Grid.Column="1"/>
                 </Grid>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type model:ScriptModel}">
+            <DataTemplate DataType="{x:Type tabModels:ScriptModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>

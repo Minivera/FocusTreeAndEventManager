@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:FocusTreeManager.Resources"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="First_Start">Veuillez configurer l'application au premier démarrage.</system:String>
     <system:String x:Key="Main_Title">Gestionnaire de Focus Tree et Event</system:String>

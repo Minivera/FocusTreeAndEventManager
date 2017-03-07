@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -241,7 +242,9 @@ namespace FocusTreeManager.ViewModel
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
+                    Mouse.OverrideCursor = Cursors.Wait;
                     LoadProject(dialog.FileName);
+                    Mouse.OverrideCursor = null;
                 }
             }
             catch (Exception)
@@ -286,6 +289,7 @@ namespace FocusTreeManager.ViewModel
 
         private void saveProject()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             if (isProjectExist && !string.IsNullOrEmpty(DataHolder.Instance.Project.filename))
             {
                 try
@@ -305,6 +309,7 @@ namespace FocusTreeManager.ViewModel
             {
                 saveProjectAs();
             }
+            Mouse.OverrideCursor = null;
             Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
         }
 

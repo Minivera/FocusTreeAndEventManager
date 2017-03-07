@@ -5,17 +5,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Threading;
 using FocusTreeManager.Helper;
 using FocusTreeManager.CodeStructures.CodeEditor;
-using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
-using FocusTreeManager.Containers;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -69,14 +65,12 @@ namespace FocusTreeManager.Views.CodeEditor
             }
 			set
             {
-				if (value != lineHeight)
-                {
-					lineHeight = value;
-					blockHeight = MaxLineCountInBlock * value;
-					TextBlock.SetLineStackingStrategy(this, LineStackingStrategy.BlockLineHeight);
-					TextBlock.SetLineHeight(this, lineHeight);
-				}
-			}
+                if (value == lineHeight) return;
+                lineHeight = value;
+                blockHeight = MaxLineCountInBlock * value;
+                TextBlock.SetLineStackingStrategy(this, LineStackingStrategy.BlockLineHeight);
+                TextBlock.SetLineHeight(this, lineHeight);
+            }
 		}
 
 		public int MaxLineCountInBlock
@@ -112,13 +106,13 @@ namespace FocusTreeManager.Views.CodeEditor
 
 		private int totalLineCount;
 
-		private List<InnerTextBlock> blocks;
+		private readonly List<InnerTextBlock> blocks;
 
 		private double blockHeight;
 
 		private int maxLineCountInBlock;
 
-        private bool WaitingForClosingBracket = false;
+        private bool WaitingForClosingBracket;
 
         private Regex TextToHighlight;
 
@@ -138,8 +132,7 @@ namespace FocusTreeManager.Views.CodeEditor
                 renderCanvas = (DrawingControl)Template.FindName("PART_RenderCanvas", this);
                 lineNumbersCanvas = (DrawingControl)Template.FindName("PART_LineNumbersCanvas", this);
 				scrollViewer = (ScrollViewer)Template.FindName("PART_ContentHost", this);
-                lineNumbersCanvas.Width = GetFormattedTextWidth(string.Format("{0:0000}", 
-                    totalLineCount)) + 5;
+                lineNumbersCanvas.Width = GetFormattedTextWidth($"{totalLineCount:0000}") + 5;
 				scrollViewer.ScrollChanged += OnScrollChanged;
 				InvalidateBlocks(0);
 				InvalidateVisual();
@@ -157,15 +150,13 @@ namespace FocusTreeManager.Views.CodeEditor
 				InvalidateBlocks(e.Changes.First().Offset);
 				InvalidateVisual();
                 //If navigator exists
-                if (navigator != null)
-                {
-                    navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
-                    navigator.UpdateText(GetFormattedText(Text),
-                        new Point(2 - HorizontalOffset, VerticalOffset),
-                        scrollViewer.VerticalOffset);
-                    TextUpdated(Text);
-                }
-            };
+			    if (navigator == null) return;
+			    navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
+			    navigator.UpdateText(GetFormattedText(Text),
+			        new Point(2 - HorizontalOffset, VerticalOffset),
+			        scrollViewer.VerticalOffset);
+			    TextUpdated(Text);
+			};
             PreviewTextInput += (s, e) => {
                 if (e.Text.Contains("{"))
                 {
@@ -176,9 +167,9 @@ namespace FocusTreeManager.Views.CodeEditor
                     WaitingForClosingBracket = false;
                 }
             };
-            PreviewKeyDown += new KeyEventHandler(CodeEditor_OnPreviewKeyDown);
-            SelectionChanged += new RoutedEventHandler(CodeEditor_SelectionChanged);
-            PreviewMouseDoubleClick += new MouseButtonEventHandler(CodeEditor_MouseDoubleClick);
+            PreviewKeyDown += CodeEditor_OnPreviewKeyDown;
+            SelectionChanged += CodeEditor_SelectionChanged;
+            PreviewMouseDoubleClick += CodeEditor_MouseDoubleClick;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -186,14 +177,14 @@ namespace FocusTreeManager.Views.CodeEditor
 			DrawBlocks();
 			base.OnRender(drawingContext);
             //Render the navigator once the editor is ready
-            if (navigator == null && scrollViewer != null && scrollViewer.ViewportHeight != 0)
+            if (navigator != null || scrollViewer == null || scrollViewer.ViewportHeight == 0) return;
+            navigator = new CodeNavigator(GetFormattedText(Text),
+                new Point(2 - HorizontalOffset, VerticalOffset))
             {
-                navigator = new CodeNavigator(GetFormattedText(Text),
-                    new Point(2 - HorizontalOffset, VerticalOffset));
-                navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
-                navigator.ScrollMethod = new CodeNavigator.ScrollDelegate(Scroll);
-                RenderMethod();
-            }
+                LinkedScrollViewerHeight = scrollViewer.ViewportHeight,
+                ScrollMethod = Scroll
+            };
+            RenderMethod();
         }
 
 		private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -204,11 +195,8 @@ namespace FocusTreeManager.Views.CodeEditor
             }
 			InvalidateVisual();
             //If a navigator exists
-            if (navigator != null)
-            {
-                navigator.setScrolling(scrollViewer.VerticalOffset);
-            }
-		}
+            navigator?.setScrolling(scrollViewer.VerticalOffset);
+        }
 
         private void CodeEditor_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -218,7 +206,7 @@ namespace FocusTreeManager.Views.CodeEditor
                 (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == 
                 (ModifierKeys.Control | ModifierKeys.Alt))
             {
-                this.Redo();
+                Redo();
             }
         }
 
@@ -226,15 +214,7 @@ namespace FocusTreeManager.Views.CodeEditor
         {
             int nextSpace = Text.IndexOf(' ', CaretIndex);
             int selectionStart = 0;
-            string trimmedString = string.Empty;
-            if (nextSpace != -1)
-            {
-                trimmedString = Text.Substring(0, nextSpace);
-            }
-            else
-            {
-                trimmedString = Text;
-            }
+            string trimmedString = nextSpace != -1 ? Text.Substring(0, nextSpace) : Text;
             if (trimmedString.LastIndexOf(' ') != -1)
             {
                 selectionStart = 1 + trimmedString.LastIndexOf(' ');
@@ -312,15 +292,17 @@ namespace FocusTreeManager.Views.CodeEditor
                 if (!string.IsNullOrEmpty(SelectedText))
                 {
                     StringBuilder builder = new StringBuilder(Text);
-                    int caretStart = Text.IndexOf(SelectedText);
-                    int Start = Text.Substring(0, Text.IndexOf(SelectedText)).LastIndexOf("\n");
+                    int caretStart = Text.IndexOf(SelectedText, StringComparison.Ordinal);
+                    int Start = Text.Substring(0, Text.IndexOf(SelectedText, 
+                        StringComparison.Ordinal)).LastIndexOf("\n", StringComparison.Ordinal);
                     //To calculate the real length from first \n to last \n with the selected text in the middle
                     //Extract the selected text from \n to end of selected text
                     string subtext = Text.Substring(Start, SelectedText.Length);
                     //Remove everything until the end of selected text
                     builder.Remove(0, Start + subtext.Length);
                     //Real length is equal to the subtext length plus distance to fist \n in cleaned builder
-                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n");
+                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n",
+                        StringComparison.Ordinal);
                     int pos = Start;
                     //if yes, add a tab at the beginning of the line;
                     foreach (string line in Text.Substring(Start, RealLength).Split('\n'))
@@ -353,7 +335,8 @@ namespace FocusTreeManager.Views.CodeEditor
                 //Handle the event
                 e.Handled = true;
             }
-            else if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            else if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == 
+                ModifierKeys.Shift)
             {
                 //Handle the event
                 e.Handled = true;
@@ -361,31 +344,35 @@ namespace FocusTreeManager.Views.CodeEditor
                 if (!string.IsNullOrEmpty(SelectedText))
                 {
                     StringBuilder builder = new StringBuilder(Text);
-                    int Start = Text.Substring(0, Text.IndexOf(SelectedText)).LastIndexOf("\n");
+                    int Start = Text.Substring(0, Text.IndexOf(SelectedText, 
+                        StringComparison.Ordinal)).LastIndexOf("\n", StringComparison.Ordinal);
                     //Check if the first line has space to be moved without killing characters
                     if (!string.IsNullOrWhiteSpace(Text.Substring(Start, TabSize)))
                     {
                         //If there are chars, kill the event
                         return;
                     }
-                    int caretStart = Text.IndexOf(SelectedText);
+                    int caretStart = Text.IndexOf(SelectedText, StringComparison.Ordinal);
                     //To calculate the real length from first \n to last \n with the selected text in the middle
                     //Extract the selected text from \n to end of selected text
                     string subtext = Text.Substring(Start, SelectedText.Length);
                     //Remove everything until the end of selected text
                     builder.Remove(0, Start + subtext.Length);
                     //Real length is equal to the subtext length plus distance to fist \n in cleaned builder
-                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n");
+                    int RealLength = subtext.Length + builder.ToString().IndexOf("\n", 
+                        StringComparison.Ordinal);
                     int pos = Start;
                     //if yes, add a tab at the beginning of the line;
                     foreach (string line in Text.Substring(Start, RealLength).Split('\n'))
                     {
-                        if (string.IsNullOrWhiteSpace(line) && line.Length <= TabSize)
+                        if (line != null && (string.IsNullOrWhiteSpace(line) && 
+                            line.Length <= TabSize))
                         {
                             continue;
                         }
                         builder = new StringBuilder(Text);
                         //For each line selected
+                        if (line == null) continue;
                         builder.Remove(pos, line.Length + 1);
                         //Remove the tab at the start of the line plus repair the breakline
                         builder.Insert(pos, "\n" + line.Substring(TabSize));
@@ -403,7 +390,8 @@ namespace FocusTreeManager.Views.CodeEditor
                     //Remove a tab 
                     StringBuilder builder = new StringBuilder(Text);
                     //Get the position of line start with spaces
-                    int Start = Text.Substring(0, CaretIndex).LastIndexOf("\n") + 1;
+                    int Start = Text.Substring(0, CaretIndex).LastIndexOf("\n", 
+                        StringComparison.Ordinal) + 1;
                     //Check if the first line has space to be moved without killing characters
                     if (!string.IsNullOrWhiteSpace(Text.Substring(Start, TabSize)))
                     {
@@ -411,7 +399,8 @@ namespace FocusTreeManager.Views.CodeEditor
                         return;
                     }
                     //Get the whole line
-                    string subtext = Text.Substring(Start, Text.Substring(Start).IndexOf("\n"));
+                    string subtext = Text.Substring(Start, Text.Substring(Start).IndexOf("\n", 
+                        StringComparison.Ordinal));
                     //Remove the line from the builder
                     builder.Remove(Start, subtext.Length);
                     //Add it again without the tab
@@ -425,25 +414,24 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void ManageFormatting(KeyEventArgs e)
         {
-            if (e.Key == Key.Return && Keyboard.Modifiers == ModifierKeys.None)
+            //If the key isn't return
+            if (e.Key != Key.Return || Keyboard.Modifiers != ModifierKeys.None) return;
+            int caret = CaretIndex;
+            //Handle the event
+            e.Handled = true;
+            //Get the indent level
+            int indent = CodeHelper.getLevelOfIndent(Text.Substring(0, caret));
+            //If needed, add a closing bracket
+            if (WaitingForClosingBracket)
             {
-                int caret = CaretIndex;
-                //Handle the event
-                e.Handled = true;
-                //Get the indent level
-                int indent = CodeHelper.getLevelOfIndent(Text.Substring(0, caret));
-                //If needed, add a closing bracket
-                if (WaitingForClosingBracket)
-                {
-                    Text = Text.Insert(caret, "\n" + new string(' ', TabSize * (indent - 1)) + "}");
-                    WaitingForClosingBracket = false;
-                }
-                //Insert a number of tab equals to the indent level + 1 after the \n
-                string tab = new string(' ', TabSize * (indent));
-                Text = Text.Insert(caret, "\n" + tab);
-                //Place the caret to the new position
-                CaretIndex = caret + (TabSize * (indent)) + 1;
+                Text = Text.Insert(caret, "\n" + new string(' ', TabSize * (indent - 1)) + "}");
+                WaitingForClosingBracket = false;
             }
+            //Insert a number of tab equals to the indent level + 1 after the \n
+            string tab = new string(' ', TabSize * indent);
+            Text = Text.Insert(caret, "\n" + tab);
+            //Place the caret to the new position
+            CaretIndex = caret + TabSize * indent + 1;
         }
 
         #region PublicMethods
@@ -508,7 +496,7 @@ namespace FocusTreeManager.Views.CodeEditor
             {
                 if (i == Occurence)
                 {
-                    Dispatcher.BeginInvoke(new ThreadStart(delegate ()
+                    Dispatcher.BeginInvoke(new ThreadStart(delegate
                     {
                         Select(word.Index, word.Length);
                         Focus();
@@ -556,32 +544,26 @@ namespace FocusTreeManager.Views.CodeEditor
 				block.RawText = block.GetSubString(Text);
 				block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, block.LineEndIndex);
 				blocks.Add(block);
-				FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
+				FormatBlock(block);
             }
         }
 
 		private void InvalidateBlocks(int changeOffset)
         {
-			InnerTextBlock blockChanged = null;
-			for (int i = 0; i < blocks.Count; i++)
-            {
-				if (blocks[i].CharStartIndex <= changeOffset && changeOffset <= blocks[i].CharEndIndex + 1)
-                {
-					blockChanged = blocks[i];
-					break;
-				}
-			}
-			if (blockChanged == null && changeOffset > 0)
+			InnerTextBlock blockChanged = blocks.FirstOrDefault(t => t.CharStartIndex <= 
+                    changeOffset && changeOffset <= t.CharEndIndex + 1);
+            if (blockChanged == null && changeOffset > 0)
             {
                 blockChanged = blocks.Last();
             }
-			int fvline = blockChanged != null ? blockChanged.LineStartIndex : 0;
+			int fvline = blockChanged?.LineStartIndex ?? 0;
 			int lvline = GetIndexOfLastVisibleLine();
-			int fvchar = blockChanged != null ? blockChanged.CharStartIndex : 0;
+			int fvchar = blockChanged?.CharStartIndex ?? 0;
 			int lvchar = CodeHelper.GetLastCharIndexFromLineIndex(Text, lvline);
 			if (blockChanged != null)
             {
-                blocks.RemoveRange(blocks.IndexOf(blockChanged), blocks.Count - blocks.IndexOf(blockChanged));
+                blocks.RemoveRange(blocks.IndexOf(blockChanged), blocks.Count - 
+                    blocks.IndexOf(blockChanged));
             }
 			int localLineCount = 1;
 			int charStart = fvchar;
@@ -601,47 +583,42 @@ namespace FocusTreeManager.Views.CodeEditor
 						lineStart + CodeHelper.GetLineCount(blockText) - 1,
 						LineHeight);
 					block.RawText = block.GetSubString(Text);
-					block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, block.LineEndIndex);
+					block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, 
+                        block.LineEndIndex);
 					block.IsLast = true;
-					foreach (InnerTextBlock b in blocks)
-                    {
-                        if (b.LineStartIndex == block.LineStartIndex)
-                        {
-                            throw new Exception();
-                        }
-                    }
+					if (blocks.Any(b => b.LineStartIndex == block.LineStartIndex))
+					{
+					    throw new Exception();
+					}
 					blocks.Add(block);
-					FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
+					FormatBlock(block);
                     break;
 				}
-				if (localLineCount > maxLineCountInBlock)
+                if (localLineCount <= maxLineCountInBlock) continue;
                 {
-					InnerTextBlock block = new InnerTextBlock(
-						charStart,
-						i,
-						lineStart,
-						lineStart + maxLineCountInBlock - 1,
-						LineHeight);
-					block.RawText = block.GetSubString(Text);
-					block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, block.LineEndIndex);
-                    foreach (InnerTextBlock b in blocks)
+                    InnerTextBlock block = new InnerTextBlock(
+                        charStart,
+                        i,
+                        lineStart,
+                        lineStart + maxLineCountInBlock - 1,
+                        LineHeight);
+                    block.RawText = block.GetSubString(Text);
+                    block.LineNumbers = GetFormattedLineNumbers(block.LineStartIndex, block.LineEndIndex);
+                    if (blocks.Any(b => b.LineStartIndex == block.LineStartIndex))
                     {
-                        if (b.LineStartIndex == block.LineStartIndex)
-                        {
-                            throw new Exception();
-                        }
+                        throw new Exception();
                     }
                     blocks.Add(block);
-					FormatBlock(block, blocks.Count > 1 ? blocks[blocks.Count - 2] : null);
+                    FormatBlock(block);
                     charStart = i + 1;
-					lineStart += maxLineCountInBlock;
-					localLineCount = 1;
-					if (i > lvchar)
+                    lineStart += maxLineCountInBlock;
+                    localLineCount = 1;
+                    if (i > lvchar)
                     {
                         break;
                     }
-				}
-			}
+                }
+            }
         }
 
 		private void DrawBlocks()
@@ -650,60 +627,52 @@ namespace FocusTreeManager.Views.CodeEditor
             {
                 return;
             }
-			var dc = renderCanvas.GetContext();
-			var dc2 = lineNumbersCanvas.GetContext();
-			for (int i = 0; i < blocks.Count; i++)
-            {
-				InnerTextBlock block = blocks[i];
-				Point blockPos = block.Position;
-				double top = blockPos.Y - VerticalOffset;
-				double bottom = top + blockHeight;
-				if (top < ActualHeight && bottom > 0)
-                {
-                    try
-                    {
-                        if (TextToHighlight != null)
-                        {
-                            foreach (Match m in TextToHighlight.Matches(block.FormattedText.Text))
-                            {
-                                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
-                                        new Point(2 - HorizontalOffset, block.Position.Y - this.VerticalOffset),
-                                        m.Index, m.Length);
-                                if (highlight != null)
-                                {
-                                    Brush brush = HighlightTextBrush.Clone();
-                                    brush.Opacity = 0.5;
-                                    dc.DrawGeometry(brush, null, highlight);
-                                }
-                            }
-                        }
-                        if (FoundText != null)
-                        {
-                            foreach (Match m in FoundText.Matches(block.FormattedText.Text))
-                            {
-                                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
-                                        new Point(2 - HorizontalOffset, block.Position.Y - this.VerticalOffset),
-                                        m.Index, m.Length);
-                                if (highlight != null)
-                                {
-                                    Brush brush = FoundTextBrush.Clone();
-                                    brush.Opacity = 0.5;
-                                    dc.DrawGeometry(brush, null, highlight);
-                                }
-                            }
-                        }
-                        dc.DrawText(block.FormattedText, new Point(2 -
-                            HorizontalOffset, block.Position.Y - VerticalOffset));
-                        lineNumbersCanvas.Width = GetFormattedTextWidth(string.Format("{0:0000}", 
-                            totalLineCount)) + 5;
-						dc2.DrawText(block.LineNumbers, new Point(lineNumbersCanvas.ActualWidth, 1 + 
-                            block.Position.Y - VerticalOffset));
-					}
-                    catch
-                    {
-                        //Strange exception with large Copy
-					}
-				}
+			DrawingContext dc = renderCanvas.GetContext();
+			DrawingContext dc2 = lineNumbersCanvas.GetContext();
+			foreach (InnerTextBlock block in blocks)
+			{
+			    Point blockPos = block.Position;
+			    double top = blockPos.Y - VerticalOffset;
+			    double bottom = top + blockHeight;
+			    if (!(top < ActualHeight) || !(bottom > 0)) continue;
+			    try
+			    {
+			        if (TextToHighlight != null)
+			        {
+			            foreach (Match m in TextToHighlight.Matches(block.FormattedText.Text))
+			            {
+			                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
+			                    new Point(2 - HorizontalOffset, block.Position.Y - VerticalOffset),
+			                    m.Index, m.Length);
+			                if (highlight == null) continue;
+			                Brush brush = HighlightTextBrush.Clone();
+			                brush.Opacity = 0.5;
+			                dc.DrawGeometry(brush, null, highlight);
+			            }
+			        }
+			        if (FoundText != null)
+			        {
+			            foreach (Match m in FoundText.Matches(block.FormattedText.Text))
+			            {
+			                Geometry highlight = block.FormattedText.BuildHighlightGeometry(
+			                    new Point(2 - HorizontalOffset, block.Position.Y - VerticalOffset),
+			                    m.Index, m.Length);
+			                if (highlight == null) continue;
+			                Brush brush = FoundTextBrush.Clone();
+			                brush.Opacity = 0.5;
+			                dc.DrawGeometry(brush, null, highlight);
+			            }
+			        }
+			        dc.DrawText(block.FormattedText, new Point(2 -
+			                    HorizontalOffset, block.Position.Y - VerticalOffset));
+			        lineNumbersCanvas.Width = GetFormattedTextWidth($"{totalLineCount:0000}") + 5;
+			        dc2.DrawText(block.LineNumbers, new Point(lineNumbersCanvas.ActualWidth, 1 + 
+			                     block.Position.Y - VerticalOffset));
+			    }
+			    catch
+			    {
+			        //Strange exception with large Copy
+			    }
 			}
 			dc.Close();
 		    dc2.Close();
@@ -731,7 +700,7 @@ namespace FocusTreeManager.Views.CodeEditor
 		/// <summary>
 		/// Formats and Highlights the text of a block.
 		/// </summary>
-		private void FormatBlock(InnerTextBlock currentBlock, InnerTextBlock previousBlock)
+		private void FormatBlock(InnerTextBlock currentBlock)
         {
 			currentBlock.FormattedText = GetFormattedText(currentBlock.RawText);
             Dispatcher.Invoke(() => {
@@ -746,16 +715,18 @@ namespace FocusTreeManager.Views.CodeEditor
         /// </summary>
         private FormattedText GetFormattedText(string text)
         {
-			FormattedText ft = new FormattedText(
-				text,
-				System.Globalization.CultureInfo.InvariantCulture,
-				FlowDirection.LeftToRight,
-				new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
-				FontSize,
-				Brushes.White);
-			ft.Trimming = TextTrimming.None;
-			ft.LineHeight = lineHeight;
-			return ft;
+            FormattedText ft = new FormattedText(
+                text,
+                System.Globalization.CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                FontSize,
+                Brushes.White)
+            {
+                Trimming = TextTrimming.None,
+                LineHeight = lineHeight
+            };
+            return ft;
 		}
 
 		/// <summary>
@@ -766,20 +737,22 @@ namespace FocusTreeManager.Views.CodeEditor
 			string text = "";
 			for (int i = firstIndex + 1; i <= lastIndex + 1; i++)
             {
-                text += i.ToString() + "\n";
+                text += i + "\n";
             }
 			text = text.Trim();
-			FormattedText ft = new FormattedText(
-				text,
-				System.Globalization.CultureInfo.InvariantCulture,
-				FlowDirection.LeftToRight,
-				new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
-				FontSize,
-				new SolidColorBrush(Color.FromRgb(0x21, 0xA1, 0xD8)));
-			ft.Trimming = TextTrimming.None;
-			ft.LineHeight = lineHeight;
-			ft.TextAlignment = TextAlignment.Right;
-			return ft;
+            FormattedText ft = new FormattedText(
+                text,
+                System.Globalization.CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                FontSize,
+                new SolidColorBrush(Color.FromRgb(0x21, 0xA1, 0xD8)))
+            {
+                Trimming = TextTrimming.None,
+                LineHeight = lineHeight,
+                TextAlignment = TextAlignment.Right
+            };
+            return ft;
 		}
 
 		/// <summary>
@@ -787,16 +760,18 @@ namespace FocusTreeManager.Views.CodeEditor
 		/// </summary>
 		private double GetFormattedTextWidth(string text)
         {
-			FormattedText ft = new FormattedText(
-				text,
-				System.Globalization.CultureInfo.InvariantCulture,
-				FlowDirection.LeftToRight,
-				new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
-				FontSize,
-				Brushes.White);
-			ft.Trimming = TextTrimming.None;
-			ft.LineHeight = lineHeight;
-			return ft.Width;
+            FormattedText ft = new FormattedText(
+                text,
+                System.Globalization.CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                FontSize,
+                Brushes.White)
+            {
+                Trimming = TextTrimming.None,
+                LineHeight = lineHeight
+            };
+            return ft.Width;
 		}
 
         #endregion

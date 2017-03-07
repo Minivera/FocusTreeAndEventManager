@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
@@ -31,12 +30,12 @@ namespace FocusTreeManager.CodeStructures
 
         public Assignation()
         {
-            this.Level = 0;
+            Level = 0;
         }
 
         public Assignation(int level)
         {
-            this.Level = level;
+            Level = level;
         }
 
         internal void Analyse(SyntaxGroup code)
@@ -45,12 +44,13 @@ namespace FocusTreeManager.CodeStructures
             Operator = code.Operator.text;
             Line = code.Component.line;
             //If we can detect at least one code block
-            if (code.Operand is List<SyntaxGroup>)
+            List<SyntaxGroup> list = code.Operand as List<SyntaxGroup>;
+            if (list != null)
             {
                 try
                 {
                     CodeBlock block = new CodeBlock(Level + 1);
-                    block.Analyse(code.Operand as List<SyntaxGroup>);
+                    block.Analyse(list);
                     Value = block;
                 }
                 catch (RecursiveCodeException e)
@@ -76,12 +76,11 @@ namespace FocusTreeManager.CodeStructures
             else if (code.Operand is List<Token>)
             {
                 Value = new CodeBlock();
-                ((CodeBlock)Value).Analyse(code.Operand as List<Token>);
+                ((CodeBlock)Value).Analyse((List<Token>)code.Operand);
             }
             else
             {
                 //Empty, kill
-                return;
             }
         }
 
@@ -97,17 +96,18 @@ namespace FocusTreeManager.CodeStructures
             try
             {
                 // If the value is nothing but it has an operator
-                if (((this.Value == null) || ((this.Value is CodeBlock)
-                    && !((CodeBlock)this.Value).Code.Any<ICodeStruct>()))
-                    && (this.Operator != null))
+                if ((Value == null || Value is CodeBlock
+                    && !((CodeBlock)Value).Code.Any())
+                    && Operator != null)
                 {
                     //Empty block
                     content.Append(tabulations + Assignee + " " + Operator + " {\n\n}");
                 }
                 //Otherwise, print as usual
-                else
+                else if (Value != null)
                 {
-                    content.Append(tabulations + Assignee + " " + Operator + " " + Value.Parse(BasicLevel));
+                    content.Append(tabulations + Assignee + " " + Operator + " " + 
+                        Value.Parse(BasicLevel));
                 }
             }
             catch (RecursiveCodeException e)
@@ -130,16 +130,10 @@ namespace FocusTreeManager.CodeStructures
             {
                 return Value as CodeValue;
             }
-            CodeValue found;
-            if (Value is CodeBlock)
-            {
-                found = Value.FindValue(TagToFind);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-            return null;
+            //If we can,t run through the value, return unfound
+            if (!(Value is CodeBlock)) return null;
+            CodeValue found = Value.FindValue(TagToFind);
+            return found;
         }
 
         public ICodeStruct Extract(string TagToFind)
@@ -148,17 +142,12 @@ namespace FocusTreeManager.CodeStructures
             {
                 return this;
             }
-            ICodeStruct found;
-            if (Value is CodeBlock)
-            {
-                found = Value.FindAssignation(TagToFind);
-                if (found != null)
-                {
-                    ((CodeBlock)Value).Code.Remove(found);
-                    return found;
-                }
-            }
-            return null;
+            //If value cannot be ran through, return unfound
+            if (!(Value is CodeBlock)) return null;
+            ICodeStruct found = Value.Extract(TagToFind);
+            //Return what was found, cannot extract from an assignation, 
+            //should extract in parent container
+            return found;
         }
 
         public Assignation FindAssignation(string TagToFind)
@@ -167,16 +156,10 @@ namespace FocusTreeManager.CodeStructures
             {
                 return this;
             }
-            Assignation found;
-            if (Value is CodeBlock)
-            {
-                found = Value.FindAssignation(TagToFind);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-            return null;
+            //If value cannot be ran through, return unfound.
+            if (!(Value is CodeBlock)) return null;
+            Assignation found = Value.FindAssignation(TagToFind);
+            return found;
         }
 
         public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
@@ -189,7 +172,7 @@ namespace FocusTreeManager.CodeStructures
             }
             if (Assignee == TagToFind 
                 && (Value.GetType() == typeof(T) ||
-                typeof(T).IsAssignableFrom(Value.GetType())))
+                Value is T))
             {
                 founds.Add(Value);
                 return founds;
@@ -207,8 +190,9 @@ namespace FocusTreeManager.CodeStructures
             Script newScript = new Script();
             if (Value is CodeBlock)
             {
-                foreach (Assignation item in ((CodeBlock)Value).Code)
+                foreach (ICodeStruct codeStruct in ((CodeBlock)Value).Code)
                 {
+                    Assignation item = (Assignation)codeStruct;
                     if (!except.Contains(item.Assignee))
                     {
                         newScript.Code.Add(item);

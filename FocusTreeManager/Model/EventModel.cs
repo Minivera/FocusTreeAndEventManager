@@ -4,23 +4,19 @@ using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System.Collections.Generic;
-using System;
 using System.Collections.ObjectModel;
 using static FocusTreeManager.DataContract.Event;
 using FocusTreeManager.DataContract;
 using MonitoredUndo;
 using System.Collections.Specialized;
-using System.IO;
 using System.Windows.Media;
 using FocusTreeManager.Helper;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Model
 {
     public class EventModel : ObservableObject, ISupportsUndo
     {
-        const string IMAGE_PATH = "/FocusTreeManager;component/GFX/Events/";
-
         private string id;
 
         public string Id
@@ -49,9 +45,9 @@ namespace FocusTreeManager.Model
             get
             {
                 
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(Id + ".t") : null;
-                return translation != null ? translation : Id + ".t";
+                LocalisationModel locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(Id + ".t");
+                return translation ?? Id + ".t";
             }
         }
 
@@ -59,9 +55,9 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(Id + ".d") : null;
-                return translation != null ? translation : Id + ".d";
+                LocalisationModel locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(Id + ".d");
+                return translation ?? Id + ".d";
             }
         }
 
@@ -107,13 +103,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public ImageSource ImagePath
-        {
-            get
-            {
-                return ImageHelper.getImageFromGame(picture, ImageType.Event);
-            }
-        }
+        public ImageSource ImagePath => ImageHelper.getImageFromGame(picture, ImageType.Event);
 
         private bool isMajor;
 
@@ -226,25 +216,11 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                if (Type == EventType.country_event)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return Type != EventType.country_event;
             }
             set
             {
-                if (value)
-                {
-                    Type = EventType.news_event;
-                }
-                else
-                {
-                    Type = EventType.country_event;
-                }
+                Type = value ? EventType.news_event : EventType.country_event;
                 RaisePropertyChanged(() => SwitchIsChecked);
             }
         }
@@ -319,23 +295,19 @@ namespace FocusTreeManager.Model
             InternalScript = ViewModel.ManagedScript;
         }
 
-        private void EditOptionScript(object option)
+        private static void EditOptionScript(object option)
         {
-            if (option is EventOptionModel)
-            {
-                ((EventOptionModel)option).EditOptionScript();
-            }
+            EventOptionModel model = option as EventOptionModel;
+            model?.EditOptionScript();
         }
 
-        private void EditDescriptionScript(object description)
+        private static void EditDescriptionScript(object description)
         {
-            if (description is EventDescriptionModel)
-            {
-                ((EventDescriptionModel)description).EditDescScript();
-            }
+            EventDescriptionModel model = description as EventDescriptionModel;
+            model?.EditDescScript();
         }
 
-        private bool CanExecuteEdit(object arg)
+        private static bool CanExecuteEdit(object arg)
         {
             return arg is EventDescriptionModel || arg is EventOptionModel;
         }
@@ -373,16 +345,16 @@ namespace FocusTreeManager.Model
 
         #region Undo/Redo
 
-        void Descriptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Descriptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "Descriptions",
-                this.Descriptions, e, "Descriptions Changed");
+                Descriptions, e, "Descriptions Changed");
         }
 
-        void Options_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Options_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "Options",
-                this.Options, e, "Options Changed");
+                Options, e, "Options Changed");
         }
 
         public object GetUndoRoot()

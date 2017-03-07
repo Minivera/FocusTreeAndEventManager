@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -30,15 +20,13 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private double relativeScrollingY;
 
-        private DrawingVisual drawing = new DrawingVisual();
+        private readonly DrawingVisual drawing = new DrawingVisual();
 
         private double TextHeight;
 
-        private bool drag = false;
+        private bool drag;
 
         private Point startPt;
-
-        private int hei;
 
         private double lastTop;
 
@@ -50,14 +38,12 @@ namespace FocusTreeManager.Views.CodeEditor
             DrawingContext dc = drawing.RenderOpen();
             dc.DrawText(formattedText, textPos);
             dc.Close();
-            if (!drawing.ContentBounds.IsEmpty)
-            { 
-                TextHeight = formattedText.Height;
-                VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
-                //Set properties to make them exist
-                NavigatorRectangle.SetValue(Canvas.TopProperty, 0.0);
-                NavigatorRectangle.SetValue(Canvas.LeftProperty, 0.0);
-            }
+            if (drawing.ContentBounds.IsEmpty) return;
+            TextHeight = formattedText.Height;
+            VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
+            //Set properties to make them exist
+            NavigatorRectangle.SetValue(Canvas.TopProperty, 0.0);
+            NavigatorRectangle.SetValue(Canvas.LeftProperty, 0.0);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -92,13 +78,15 @@ namespace FocusTreeManager.Views.CodeEditor
             //Transform and add the visuals
             ScaleTransform transform = new ScaleTransform(Math.Round(relativeWidthTransform, 2),
                                                           Math.Round(relativeHeightTransform, 2));
-            VisualBrush brush = new VisualBrush(drawing);
-            brush.Transform = transform;
-            brush.AlignmentX = AlignmentX.Left;
-            brush.AlignmentY = AlignmentY.Top;
-            brush.TileMode = TileMode.None;
-            brush.Viewport = new Rect(0, 0, NavigatorCanvas.Width, VisualRectangle.Height);
-            brush.Stretch = Stretch.None;
+            VisualBrush brush = new VisualBrush(drawing)
+            {
+                Transform = transform,
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                TileMode = TileMode.None,
+                Viewport = new Rect(0, 0, NavigatorCanvas.Width, VisualRectangle.Height),
+                Stretch = Stretch.None
+            };
             VisualRectangle.Fill = brush;
             //Set the current scrolling
             CanvasTop = (double)NavigatorRectangle.GetValue(Canvas.TopProperty);
@@ -111,13 +99,11 @@ namespace FocusTreeManager.Views.CodeEditor
             DrawingContext dc = drawing.RenderOpen();
             dc.DrawText(formattedText, textPos);
             dc.Close();
-            if (!drawing.ContentBounds.IsEmpty)
-            {
-                TextHeight = formattedText.Height;
-                VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
-                NavigatorRectangle.SetValue(Canvas.TopProperty, verticalOffset);
-                setVisuals();
-            }
+            if (drawing.ContentBounds.IsEmpty) return;
+            TextHeight = formattedText.Height;
+            VisualRealSize = new Size(formattedText.Width, drawing.ContentBounds.Height);
+            NavigatorRectangle.SetValue(Canvas.TopProperty, verticalOffset);
+            setVisuals();
         }
 
         public void setScrolling(double verticalOffset)
@@ -131,21 +117,19 @@ namespace FocusTreeManager.Views.CodeEditor
             drag = true;
             Cursor = Cursors.Hand;
             startPt = e.GetPosition(NavigatorCanvas);
-            hei = (int)NavigatorRectangle.Height;
             lastTop = CanvasTop;
             Mouse.Capture(NavigatorRectangle);
         }
 
         private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (drag)
-            {
-                var newY = e.GetPosition(NavigatorCanvas).Y;
-                double offset = startPt.Y - lastTop;
-                CanvasTop = Math.Max(0, Math.Min(newY - offset, NavigatorCanvas.Height - NavigatorRectangle.Height));
-                NavigatorRectangle.SetValue(Canvas.TopProperty, CanvasTop);
-                ScrollMethod(CanvasTop / relativeScrollingY);
-            }
+            if (!drag) return;
+            double newY = e.GetPosition(NavigatorCanvas).Y;
+            double offset = startPt.Y - lastTop;
+            CanvasTop = Math.Max(0, Math.Min(newY - offset, NavigatorCanvas.Height 
+                - NavigatorRectangle.Height));
+            NavigatorRectangle.SetValue(Canvas.TopProperty, CanvasTop);
+            ScrollMethod(CanvasTop / relativeScrollingY);
         }
 
         private void Border_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -157,9 +141,9 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void VisualRectangle_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var MouseY = e.GetPosition(NavigatorCanvas).Y;
-            double plannedPos = MouseY - (NavigatorRectangle.Height / 2);
-            CanvasTop = Math.Max(0, Math.Min(MouseY, NavigatorCanvas.Height - NavigatorRectangle.Height));
+            double MouseY = e.GetPosition(NavigatorCanvas).Y;
+            CanvasTop = Math.Max(0, Math.Min(MouseY, NavigatorCanvas.Height 
+                - NavigatorRectangle.Height));
             NavigatorRectangle.SetValue(Canvas.TopProperty, CanvasTop);
             ScrollMethod(CanvasTop / relativeScrollingY);
         }

@@ -136,6 +136,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncImageLoader\AsyncImageLoader.cs" />
     <Compile Include="AsyncImageLoader\DDSImage.cs" />
     <None Include="AsyncImageLoader\Old\ImageLoaders\ExternalLoader.cs" />
     <None Include="AsyncImageLoader\Old\ImageLoaders\Iload.cs" />
@@ -498,7 +499,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="GFX\Focus\goal_unknown.png" />
+    <Resource Include="GFX\Focus\goal_unknown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -537,7 +540,9 @@
     <Resource Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GFX\Interface\thisisdog.png" />
+    <Resource Include="GFX\Interface\thisisdog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Common\ScripterSymbols\Snippets.xml">

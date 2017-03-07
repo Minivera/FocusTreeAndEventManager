@@ -20,7 +20,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Focus>(() => this.Focus, ref this.focus, value);
+                Set<Focus>(() => Focus, ref focus, value);
             }
         }
 
@@ -35,13 +35,13 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<List<Focus>>(() => this.FociList, ref this.fociList, value);
+                Set<List<Focus>>(() => FociList, ref fociList, value);
             }
         }
 
         public PrerequisitesSet(Focus focus)
         {
-            this.Focus = focus;
+            Focus = focus;
             FociList = new List<Focus>();
         }
 
@@ -56,11 +56,11 @@ namespace FocusTreeManager.Model.LegacySerialization
             Focus = fociList.FirstOrDefault((f) => f.X == Focus.X && f.Y == Focus.Y);
             //Repair its parents
             List<Focus> realList = new List<Focus>();
-            foreach (Focus item in this.FociList)
+            foreach (Focus item in FociList)
             {
                 realList.Add(fociList.FirstOrDefault((f) => f.X == item.X && f.Y == item.Y));
             }
-            this.FociList = realList;
+            FociList = realList;
         }
     }
 }

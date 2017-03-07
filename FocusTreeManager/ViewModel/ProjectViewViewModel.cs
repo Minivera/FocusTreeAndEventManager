@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using FocusTreeManager.Views;
-using System.Windows.Controls;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -15,13 +15,7 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ProjectViewViewModel : ViewModelBase
     {
-        public ProjectModel Project
-        {
-            get
-            {
-                return (new ViewModelLocator()).Main.Project;
-            }
-        }
+        public ProjectModel Project => new ViewModelLocator().Main.Project;
 
         public RelayCommand AddElementCommand { get; private set; }
 
@@ -52,144 +46,143 @@ namespace FocusTreeManager.ViewModel
             FileManager dialog = new FileManager(ModeType.Create);
             dialog.ShowDialog();
             ObservableObject File = (new ViewModelLocator()).FileManager.File;
-            if (File != null)
+            if (File == null) return;
+            FocusGridModel file = File as FocusGridModel;
+            if (file != null)
             {
-                if (File is FocusGridModel)
+                ProjectModel project = new ViewModelLocator().Main.Project;
+                project.fociList.Add(file);
+                RaisePropertyChanged(() => project.fociList);
+            }
+            else if (File is LocalisationModel)
+            {
+                ProjectModel project = new ViewModelLocator().Main.Project;
+                project.localisationList.Add((LocalisationModel)File);
+                //Check if first, if yes, set as default
+                if (project.DefaultLocale == null)
                 {
-                    (new ViewModelLocator()).Main.Project.fociList.Add((FocusGridModel)File);
-                    RaisePropertyChanged("fociList");
+                    project.DefaultLocale = (LocalisationModel)File;
                 }
-                else if (File is LocalisationModel)
-                {
-                    (new ViewModelLocator()).Main.Project.localisationList.Add((LocalisationModel)File);
-                    //Check if first, if yes, set as default
-                    if ((new ViewModelLocator()).Main.Project.DefaultLocale == null)
-                    {
-                        (new ViewModelLocator()).Main.Project.DefaultLocale = (LocalisationModel)File;
-                    }
-                    RaisePropertyChanged("localisationList");
-                }
-                else if (File is EventTabModel)
-                {
-                    (new ViewModelLocator()).Main.Project.eventList.Add((EventTabModel)File);
-                    RaisePropertyChanged("eventList");
-                }
-                else if(File is ScriptModel)
-                {
-                    (new ViewModelLocator()).Main.Project.scriptList.Add((ScriptModel)File);
-                    RaisePropertyChanged("scriptList");
-                }
+                RaisePropertyChanged(() => project.localisationList);
+            }
+            else if (File is EventTabModel)
+            {
+                ProjectModel project = new ViewModelLocator().Main.Project;
+                project.eventList.Add((EventTabModel)File);
+                RaisePropertyChanged(() => project.eventList);
+            }
+            else if(File is ScriptModel)
+            {
+                ProjectModel project = new ViewModelLocator().Main.Project;
+                project.scriptList.Add((ScriptModel)File);
+                RaisePropertyChanged(() => project.scriptList);
             }
         }
 
         private void DeleteElement(object item)
         {
+            ProjectModel project = new ViewModelLocator().Main.Project;
             if (item is FocusGridModel)
             {
-                (new ViewModelLocator()).Main.Project.fociList.Remove((FocusGridModel)item);
-                RaisePropertyChanged("fociContainerList");
+                project.fociList.Remove((FocusGridModel)item);
+                RaisePropertyChanged(() => project.fociList);
             }
             else if (item is LocalisationModel)
             {
-                (new ViewModelLocator()).Main.Project.localisationList.Remove((LocalisationModel)item);
-                RaisePropertyChanged("localisationList");
+                project.localisationList.Remove((LocalisationModel)item);
+                RaisePropertyChanged(() => project.localisationList);
             }
             else if (item is EventTabModel)
             {
-                (new ViewModelLocator()).Main.Project.eventList.Remove((EventTabModel)item);
-                RaisePropertyChanged("eventList");
+                project.eventList.Remove((EventTabModel)item);
+                RaisePropertyChanged(() => project.eventList);
             }
             else if (item is ScriptModel)
             {
-                (new ViewModelLocator()).Main.Project.scriptList.Remove((ScriptModel)item);
-                RaisePropertyChanged("scriptList");
+                project.scriptList.Remove((ScriptModel)item);
+                RaisePropertyChanged(() => project.scriptList);
             }
         }
 
-        private void EditElement(object obj)
+        private static void EditElement(object obj)
         {
             FileManager dialog = new FileManager(ModeType.Edit);
             if (obj is FocusGridModel)
             {
-                var item = obj as FocusGridModel;
-                (new ViewModelLocator()).FileManager.File = new FocusGridModel(item.VisibleName)
+                FocusGridModel item = (FocusGridModel)obj;
+                new ViewModelLocator().FileManager.File = new FocusGridModel(item.VisibleName)
                 {
                     TAG = item.TAG,
                     AdditionnalMods = item.AdditionnalMods
                 };
                 dialog.ShowDialog();
-                if ((new ViewModelLocator()).FileManager.File != null)
-                {
-                    var newItem = (new ViewModelLocator()).FileManager.File as FocusGridModel;
-                    item.VisibleName = newItem.VisibleName;
-                    item.TAG = newItem.TAG;
-                    item.AdditionnalMods = newItem.AdditionnalMods;
-                }
+                if (new ViewModelLocator().FileManager.File == null) return;
+                FocusGridModel newItem = new ViewModelLocator().FileManager.File as FocusGridModel;
+                if (newItem == null) return;
+                item.VisibleName = newItem.VisibleName;
+                item.TAG = newItem.TAG;
+                item.AdditionnalMods = newItem.AdditionnalMods;
             }
             else if (obj is LocalisationModel)
             {
-                var item = obj as LocalisationModel;
-                (new ViewModelLocator()).FileManager.File = new LocalisationModel(item.VisibleName)
+                LocalisationModel item = (LocalisationModel) obj;
+                new ViewModelLocator().FileManager.File = new LocalisationModel(item.VisibleName)
                 {
                     LanguageName = item.LanguageName
                 };
                 dialog.ShowDialog();
-                if ((new ViewModelLocator()).FileManager.File != null)
-                {
-                    var newItem = (new ViewModelLocator()).FileManager.File as LocalisationModel;
-                    item.VisibleName = newItem.VisibleName;
-                    item.LanguageName = newItem.LanguageName;
-                }
+                if (new ViewModelLocator().FileManager.File == null) return;
+                LocalisationModel newItem = new ViewModelLocator().FileManager.File as LocalisationModel;
+                if (newItem == null) return;
+                item.VisibleName = newItem.VisibleName;
+                item.LanguageName = newItem.LanguageName;
             }
             else if (obj is EventTabModel)
             {
-                var item = obj as EventTabModel;
-                (new ViewModelLocator()).FileManager.File = new EventTabModel(item.VisibleName)
+                EventTabModel item = (EventTabModel) obj;
+                new ViewModelLocator().FileManager.File = new EventTabModel(item.VisibleName)
                 {
                     EventNamespace = item.EventNamespace
                 };
                 dialog.ShowDialog();
-                if ((new ViewModelLocator()).FileManager.File != null)
-                {
-                    var newItem = (new ViewModelLocator()).FileManager.File as EventTabModel;
-                    item.VisibleName = newItem.VisibleName;
-                    item.EventNamespace = newItem.EventNamespace;
-                }
+                if (new ViewModelLocator().FileManager.File == null) return;
+                EventTabModel newItem = (new ViewModelLocator()).FileManager.File as EventTabModel;
+                if (newItem == null) return;
+                item.VisibleName = newItem.VisibleName;
+                item.EventNamespace = newItem.EventNamespace;
             }
             else if (obj is ScriptModel)
             {
-                var item = obj as ScriptModel;
-                (new ViewModelLocator()).FileManager.File = new ScriptModel(item.VisibleName);
+                ScriptModel item = (ScriptModel) obj;
+                new ViewModelLocator().FileManager.File = new ScriptModel(item.VisibleName);
                 dialog.ShowDialog();
-                if ((new ViewModelLocator()).FileManager.File != null)
-                {
-                    var newItem = (new ViewModelLocator()).FileManager.File as ScriptModel;
-                    item.VisibleName = newItem.VisibleName;
-                }
+                if (new ViewModelLocator().FileManager.File == null) return;
+                ScriptModel newItem = new ViewModelLocator().FileManager.File as ScriptModel;
+                if (newItem != null) item.VisibleName = newItem.VisibleName;
             }
         }
 
-        private void OpenFile(ObservableObject item)
+        private static void OpenFile(ObservableObject item)
         {
             if (item is FocusGridModel)
             {
                 Messenger.Default.Send(new NotificationMessage(
-                    item, (new ViewModelLocator()).Main, "OpenFocusTree"));
+                    item, new ViewModelLocator().Main, "OpenFocusTree"));
             }
             else if (item is LocalisationModel)
             {
                 Messenger.Default.Send(new NotificationMessage(
-                    item, (new ViewModelLocator()).Main, "OpenLocalisation"));
+                    item, new ViewModelLocator().Main, "OpenLocalisation"));
             }
             else if (item is EventTabModel)
             {
                 Messenger.Default.Send(new NotificationMessage(
-                    item, (new ViewModelLocator()).Main, "OpenEventList"));
+                    item, new ViewModelLocator().Main, "OpenEventList"));
             }
             else if (item is ScriptModel)
             {
                 Messenger.Default.Send(new NotificationMessage(
-                    item, (new ViewModelLocator()).Main, "OpenScriptList"));
+                    item, new ViewModelLocator().Main, "OpenScriptList"));
             }
         }
 
@@ -205,11 +198,7 @@ namespace FocusTreeManager.ViewModel
 
         public bool CanExecuteOnFile()
         {
-            if (SelectedItem != null)
-            {
-                return true;
-            }
-            return false;
+            return SelectedItem != null;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

@@ -30,7 +30,7 @@ namespace FocusTreeManager.Containers.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.ContainerID, ref this.containerID, value);
+                Set<string>(() => ContainerID, ref containerID, value);
                 Messenger.Default.Send(new NotificationMessage("ContainerRenamed"));
             }
         }

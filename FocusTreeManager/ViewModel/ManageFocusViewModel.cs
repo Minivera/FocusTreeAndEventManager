@@ -1,5 +1,4 @@
-﻿using FocusTreeManager.CodeStructures;
-using FocusTreeManager.Model;
+﻿using FocusTreeManager.Model;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -8,6 +7,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -30,7 +30,7 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 focus = value;
-                RaisePropertyChanged("Focus");
+                RaisePropertyChanged(() => Focus);
             }
         }
 
@@ -56,20 +56,24 @@ namespace FocusTreeManager.ViewModel
             if (Mode == ModeType.Create)
             {
                 Point mousePos = Mouse.GetPosition((IInputElement)sender);
-                FocusModel focus = new FocusModel();
-                focus.setDefaults(((FocusGridModel)(new ViewModelLocator()).Main.TabsModelList
-                                    .FirstOrDefault((t) => t is FocusGridModel && ((FocusGridModel)t).isShown))
-                                    .FociList.Count());
-                Focus = focus;
-                //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
-                Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
-                Focus.Y = (int)Math.Floor(mousePos.Y / 140);
+                FocusModel localFocus = new FocusModel();
+                FocusGridModel firstOrDefault = (FocusGridModel)new ViewModelLocator().Main.TabsModelList
+                    .FirstOrDefault(t => t is FocusGridModel && ((FocusGridModel)t).isShown);
+                if (firstOrDefault != null)
+                {
+                    localFocus.setDefaults(firstOrDefault
+                        .FociList.Count);
+                    Focus = localFocus;
+                    //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
+                    Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
+                    Focus.Y = (int)Math.Floor(mousePos.Y / 140);
+                }
             }
             else
             {
-                Focus = (Model.FocusModel)sender;
+                Focus = (FocusModel)sender;
             }
-            RaisePropertyChanged("Focus");
+            RaisePropertyChanged(() => Focus);
             return this;
         }
 
@@ -95,7 +99,7 @@ namespace FocusTreeManager.ViewModel
             focus.InternalScript = ViewModel.ManagedScript;
         }
 
-        private void NotificationMessageReceived(NotificationMessage msg)
+        private static void NotificationMessageReceived(NotificationMessage msg)
         {
         }
     }

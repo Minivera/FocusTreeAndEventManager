@@ -1,20 +1,18 @@
-﻿using FocusTreeManager.Containers;
-using FocusTreeManager.Model;
+﻿using FocusTreeManager.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
 using System.Globalization;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.CodeStructures.CodeExceptions;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Parsers
 {
-    static class FocusTreeParser
+    public static class FocusTreeParser
     {
         private static readonly string[] CORE_FOCUS_SCRIPTS_ELEMENTS =
         {
@@ -31,7 +29,7 @@ namespace FocusTreeManager.Parsers
         {
             FociGridContainer container = new FociGridContainer(model);
             string focusTreeId = container.ContainerID.Replace(" ", "_");
-            return Parse(container.FociList.ToList<Focus>(), focusTreeId, 
+            return Parse(container.FociList.ToList(), focusTreeId, 
                 container.TAG, container.AdditionnalMods);
         }
 
@@ -42,7 +40,7 @@ namespace FocusTreeManager.Parsers
                 return "";
             }
             Script script = new Script();
-            script.Analyse(File.ReadAllText(filename), -1);
+            script.Analyse(File.ReadAllText(filename));
             return ParseTreeForCompare(CreateTreeFromScript(filename, script));
         }
 
@@ -90,12 +88,12 @@ namespace FocusTreeManager.Parsers
                 text.AppendLine("\t}");
                 text.AppendLine("\tdefault = yes");
             }
-            foreach (var focus in listFoci)
+            foreach (Focus focus in listFoci)
             {
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
                 text.AppendLine("\t\ticon = GFX_" + focus.Image);
-                text.AppendLine("\t\tcost = " + string.Format("{0:0.00}", focus.Cost));
+                text.AppendLine("\t\tcost = " + $"{focus.Cost:0.00}");
                 if (focus.Prerequisite.Any())
                 {
                     foreach (PrerequisitesSet prereqisite in focus.Prerequisite)
@@ -201,21 +199,14 @@ namespace FocusTreeManager.Parsers
             return SortedList;
         }
 
-        private static bool CheckPrerequisite(Focus focus, List<Focus> SortedList)
+        private static bool CheckPrerequisite(Focus focus, ICollection<Focus> SortedList)
         {
-            foreach (PrerequisitesSet set in focus.Prerequisite)
-            {
-                //Check if all the prerequisites are added
-                if (!set.FociList.All(value => SortedList.Contains(value)))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return focus.Prerequisite.All(set => set.FociList.All(
+                SortedList.Contains));
         }
 
-        private static void AddBackwardsPrerequisite(List<Focus> HoldedList, 
-                                                     List<Focus> SortedList)
+        private static void AddBackwardsPrerequisite(ICollection<Focus> HoldedList, 
+                                                     ICollection<Focus> SortedList)
         {
             bool wasAdded = false;
             List<Focus> TempoList = HoldedList.ToList();
@@ -242,30 +233,33 @@ namespace FocusTreeManager.Parsers
         {
             FocusGridModel container = new FocusGridModel(Script.TryParse(script, "id"));
             //Get content of Modifier block
-            Assignation modifier = script.FindAssignation("modifier") as Assignation;
+            Assignation modifier = script.FindAssignation("modifier");
             container.TAG = Script.TryParse(modifier, "tag", false);
             if (container.TAG != null)
             {
-                container.AdditionnalMods = modifier.GetContentAsScript(new string[] { "add", "tag" })
+                container.AdditionnalMods = modifier.GetContentAsScript(new[] { "add", "tag" })
                                                     .Parse(0);
             }
             //Run through all foci
-            foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
+            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
+                CodeBlock block = (CodeBlock)codeStruct;
                 try
                 {
                     //Create the focus
-                    FocusModel newFocus = new FocusModel();
-                    newFocus.UniqueName = Script.TryParse(block, "id");
-                    newFocus.Image = Script.TryParse(block, "icon").Replace("GFX_", "");
-                    newFocus.X = int.Parse(Script.TryParse(block, "x"));
-                    newFocus.Y = int.Parse(Script.TryParse(block, "y"));
-                    newFocus.Cost = GetDouble(Script.TryParse(block, "cost"), 10);
+                    FocusModel newFocus = new FocusModel
+                    {
+                        UniqueName = Script.TryParse(block, "id"),
+                        Image = Script.TryParse(block, "icon").Replace("GFX_", ""),
+                        X = int.Parse(Script.TryParse(block, "x")),
+                        Y = int.Parse(Script.TryParse(block, "y")),
+                        Cost = GetDouble(Script.TryParse(block, "cost"), 10)
+                    };
                     //Get all core scripting elements
                     Script InternalFocusScript = new Script();
-                    for (int i = 0; i < CORE_FOCUS_SCRIPTS_ELEMENTS.Length; i++)
+                    foreach (string element in CORE_FOCUS_SCRIPTS_ELEMENTS)
                     {
-                        ICodeStruct found = block.FindAssignation(CORE_FOCUS_SCRIPTS_ELEMENTS[i]);
+                        ICodeStruct found = block.FindAssignation(element);
                         if (found != null)
                         {
                             InternalFocusScript.Code.Add(found);
@@ -273,7 +267,7 @@ namespace FocusTreeManager.Parsers
                     }
                     InternalFocusScript.Code.AddRange(block.
                         GetContentAsScript(CORE_FOCUS_SCRIPTS_ELEMENTS.
-                            Concat<string>(ALL_PASED_ELEMENTS).ToArray<string>()).Code);
+                            Concat(ALL_PASED_ELEMENTS).ToArray()).Code);
                     newFocus.InternalScript = InternalFocusScript;
                     container.FociList.Add(newFocus);
                 }
@@ -292,8 +286,9 @@ namespace FocusTreeManager.Parsers
                 }
             }
             //Run through all foci again for mutually exclusives and prerequisites
-            foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("focus"))
+            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("focus"))
             {
+                CodeBlock block = (CodeBlock)codeStruct;
                 string id = block.FindValue("id") != null ? block.FindValue("id").Parse() : "";
                 FocusModel newFocus = container.FociList.FirstOrDefault(f => f.UniqueName == id);
                 if (newFocus == null)
@@ -301,7 +296,8 @@ namespace FocusTreeManager.Parsers
                     //Check if we removed this focus because of a syntax error
                     continue;
                 } 
-                foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>("mutually_exclusive"))
+                foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>
+                    ("mutually_exclusive"))
                 {
                     foreach (ICodeStruct focuses in exclusives
                         .FindAllValuesOfType<ICodeStruct>("focus"))
@@ -309,19 +305,18 @@ namespace FocusTreeManager.Parsers
                         //Check if focus exists in list
                         FocusModel found = container.FociList.FirstOrDefault((f) =>
                             f.UniqueName == focuses.Parse());
-                        if (found != null)
+                        //If we have found something
+                        if (found == null) continue;
+                        MutuallyExclusiveSetModel set = 
+                            new MutuallyExclusiveSetModel(newFocus, found);
+                        //Check if the set already exists in this focus
+                        if (newFocus.MutualyExclusive.Contains(set) ||
+                            found.MutualyExclusive.Contains(set))
                         {
-                            MutuallyExclusiveSetModel set = 
-                                new MutuallyExclusiveSetModel(newFocus, found);
-                            //Check if the set already exists in this focus
-                            if (newFocus.MutualyExclusive.Contains(set) ||
-                                found.MutualyExclusive.Contains(set))
-                            {
-                                continue;
-                            }
-                            newFocus.MutualyExclusive.Add(set);
-                            found.MutualyExclusive.Add(set);
+                            continue;
                         }
+                        newFocus.MutualyExclusive.Add(set);
+                        found.MutualyExclusive.Add(set);
                     }
                 }
                 foreach (ICodeStruct prerequistes in block
@@ -332,7 +327,8 @@ namespace FocusTreeManager.Parsers
                         break;
                     }
                     PrerequisitesSetModel set = new PrerequisitesSetModel(newFocus);
-                    foreach (ICodeStruct focuses in prerequistes.FindAllValuesOfType<ICodeStruct>("focus"))
+                    foreach (ICodeStruct focuses in prerequistes.FindAllValuesOfType<ICodeStruct>
+                        ("focus"))
                     {
                         //Add the focus as a prerequisites in the current existing focuses
                         FocusModel search = container.FociList.FirstOrDefault((f) =>
@@ -356,14 +352,14 @@ namespace FocusTreeManager.Parsers
         {
             double result;
             //Try parsing in the current culture
-            if (!double.TryParse(value, System.Globalization.NumberStyles.Any, 
-                CultureInfo.CurrentCulture, out result) &&
+            if (!double.TryParse(value, NumberStyles.Any, 
+                    CultureInfo.CurrentCulture, out result) &&
                 //Then try in US english
-                !double.TryParse(value, System.Globalization.NumberStyles.Any, 
-                CultureInfo.GetCultureInfo("en-US"), out result) &&
+                !double.TryParse(value, NumberStyles.Any, 
+                    CultureInfo.GetCultureInfo("en-US"), out result) &&
                 //Then in neutral language
-                !double.TryParse(value, System.Globalization.NumberStyles.Any, 
-                CultureInfo.InvariantCulture, out result))
+                !double.TryParse(value, NumberStyles.Any, 
+                    CultureInfo.InvariantCulture, out result))
             {
                 result = defaultValue;
             }

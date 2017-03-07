@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
     class SyntaxException : Exception
     {
-        private string tag;
+        private readonly string tag;
 
-        private int? line;
+        private readonly int? line;
 
-        private int? column;
+        private readonly int? column;
 
         public override string Message
         {

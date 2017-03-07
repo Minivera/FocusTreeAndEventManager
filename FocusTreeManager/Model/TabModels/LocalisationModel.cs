@@ -1,4 +1,9 @@
-﻿using DiffPlex;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
+using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
@@ -10,25 +15,12 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
-using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
 
-namespace FocusTreeManager.Model
+namespace FocusTreeManager.Model.TabModels
 {
     public class LocalisationModel : ObservableObject, ISupportsUndo
     {
-        private Guid ID;
-
-        public Guid UniqueID
-        {
-            get
-            {
-                return ID;
-            }
-        }
+        public Guid UniqueID { get; }
 
         private string visibleName;
 
@@ -98,7 +90,7 @@ namespace FocusTreeManager.Model
         public LocalisationModel(string Filename)
         {
             visibleName = Filename;
-            this.ID = Guid.NewGuid();
+            UniqueID = Guid.NewGuid();
             LocalisationMap = new ObservableCollection<LocaleModel>();
             LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
             //Messenger
@@ -110,7 +102,7 @@ namespace FocusTreeManager.Model
 
         public LocalisationModel(LocalisationContainer container)
         {
-            this.ID = container.IdentifierID;
+            UniqueID = container.IdentifierID;
             visibleName = container.ContainerID;
             languageName = container.LanguageName;
             FileInfo = container.FileInfo;
@@ -129,7 +121,7 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.visibleName == null)
+            if (visibleName == null)
             {
                 return;
             }
@@ -141,65 +133,60 @@ namespace FocusTreeManager.Model
 
         public string translateKey(string key)
         {
-            LocaleModel locale = LocalisationMap.FirstOrDefault((l) => 
-                                    l.Key.ToLower() == key.ToLower());
-            return locale != null ? locale.Value : null;
+            LocaleModel locale = LocalisationMap.FirstOrDefault(l => 
+                                    string.Equals(l.Key, key, 
+                                    StringComparison.CurrentCultureIgnoreCase));
+            return locale?.Value;
         }
 
         private void SendDeleteSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+                new ViewModelLocator().ProjectView, "SendDeleteItemSignal"));
         }
 
         private void SendEditSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+                new ViewModelLocator().ProjectView, "SendEditItemSignal"));
         }
 
-        async public void CheckForChanges()
+        public async void CheckForChanges()
         {
-            DataContract.FileInfo info = this.FileInfo;
+            DataContract.FileInfo info = FileInfo;
             //check the fileinfo data
-            if (info != null)
+            if (info == null) return;
+            //If the file exists
+            if (!File.Exists(info.Filename)) return;
+            //If the file was modified after the last modification date
+            if (File.GetLastWriteTime(info.Filename) <= info.LastModifiedDate) return;
+            //Then we can show a message
+            MessageDialogResult Result = await new ViewModelLocator()
+                .Main.ShowFileChangedDialog();
+            if (Result == MessageDialogResult.Affirmative)
             {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await (new ViewModelLocator())
-                            .Main.ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            string oldText = LocalisationParser
-                                .ParseLocalizationForCompare(this);
-                            string newText = LocalisationParser.
-                                ParseLocalizationFileForCompare(info.Filename);
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
+                string oldText = LocalisationParser
+                    .ParseLocalizationForCompare(this);
+                string newText = LocalisationParser.
+                    ParseLocalizationFileForCompare(info.Filename);
+                SideBySideDiffModel model = new SideBySideDiffBuilder(
+                    new Differ()).BuildDiffModel(oldText, newText);
+                new ViewModelLocator().CodeComparator.DiffModel = model;
+                new CompareCode().ShowDialog();
             }
         }
 
         #region Undo/Redo
 
-        void LocalisationMap_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void LocalisationMap_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "LocalisationMap",
-                this.LocalisationMap, e, "LocalisationMap Changed");
+                LocalisationMap, e, "LocalisationMap Changed");
         }
 
         public object GetUndoRoot()
         {
-            return (new ViewModelLocator()).Main;
+            return new ViewModelLocator().Main;
         }
 
         #endregion

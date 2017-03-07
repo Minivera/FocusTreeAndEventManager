@@ -36,42 +36,37 @@ namespace FocusTreeManager.Views
         
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void FileChoiceList_SelectionChanged(object sender, 
             System.Windows.Controls.SelectionChangedEventArgs e)
         {
             //If new file
-            if (FileChoiceList.SelectedIndex == 0)
+            switch (FileChoiceList.SelectedIndex)
             {
-                FileTypeList.Visibility = Visibility.Visible;
-            }
-            //If open file
-            else if (FileChoiceList.SelectedIndex == 1)
-            {
-                FileEditor.Visibility = Visibility.Visible;
-                FileTypeList.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                FileTypeList.Visibility = Visibility.Hidden;
+                case 0:
+                    FileTypeList.Visibility = Visibility.Visible;
+                    break;
+                case 1:
+                    FileEditor.Visibility = Visibility.Visible;
+                    FileTypeList.Visibility = Visibility.Hidden;
+                    break;
+                default:
+                    FileTypeList.Visibility = Visibility.Hidden;
+                    break;
             }
         }
 
         private void FileTypeList_SelectionChanged(object sender, 
             System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (FileTypeList.SelectedIndex != -1)
-            {
-                FileEditor.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                FileEditor.Visibility = Visibility.Hidden;
-            }
+            FileEditor.Visibility = FileTypeList.SelectedIndex != -1 ? 
+                Visibility.Visible : Visibility.Hidden;
         }
     }
 }

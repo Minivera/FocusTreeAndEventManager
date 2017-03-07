@@ -18,8 +18,8 @@ namespace FocusTreeManager.Views
             InitializeComponent();
             loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
-            this.MaxHeight = (System.Windows.SystemParameters.PrimaryScreenHeight * 0.90);
-            this.MaxWidth = (System.Windows.SystemParameters.PrimaryScreenWidth * 0.90);
+            MaxHeight = SystemParameters.PrimaryScreenHeight * 0.90;
+            MaxWidth = SystemParameters.PrimaryScreenWidth * 0.90;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -32,9 +32,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

@@ -2,17 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -50,8 +41,8 @@ namespace FocusTreeManager.Views.CodeEditor
         public CodeEditorPanel()
         {
             InitializeComponent();
-            Editor.RenderMethod = new CodeEditor.RenderedDelegate(UserControlRendered);
-            Editor.TextUpdated = new CodeEditor.TextUpdateDelegate(UserControlTextUpdated);
+            Editor.RenderMethod = UserControlRendered;
+            Editor.TextUpdated = UserControlTextUpdated;
             loadLocales();
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
@@ -102,22 +93,18 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void UserControlRendered()
         {
             //Remove if editor already exists
-            List<UIElement> itemstoremove = new List<UIElement>();
-            foreach (UIElement children in NavigatorGrid.Children)
-            {
-                if (children is CodeNavigator)
-                {
-                    itemstoremove.Add(children);
-                }
-            }
+            List<UIElement> itemstoremove = NavigatorGrid.Children.
+                OfType<CodeNavigator>().Cast<UIElement>().ToList();
             foreach (UIElement children in itemstoremove)
             {
                 NavigatorGrid.Children.Remove(children);
@@ -155,6 +142,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void ShowStructButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ShowStructButton.IsChecked == null) return;
             ShowStruct = (bool)ShowStructButton.IsChecked;
             if (!(bool)ShowStructButton.IsChecked)
             {
@@ -172,6 +160,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void ShowPlanButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ShowPlanButton.IsChecked == null) return;
             ShowPlan = (bool)ShowPlanButton.IsChecked;
             if (!(bool)ShowPlanButton.IsChecked)
             {
@@ -188,6 +177,7 @@ namespace FocusTreeManager.Views.CodeEditor
         private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             UIElement thumb = e.Source as UIElement;
+            if (thumb == null) return;
             Canvas.SetRight(thumb, Canvas.GetRight(thumb) - e.HorizontalChange);
             Canvas.SetTop(thumb, Canvas.GetTop(thumb) + e.VerticalChange);
         }

@@ -99,3 +99,129 @@ System.Xaml.XamlObjectWriterException: 'La valeur fournie sur 'System.Windows.Ba
    à System.IO.Packaging.PackWebResponse.get_ContentType()
    à System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
    à System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream st
+
+System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute
+
+System.AggregateException: Une ou plusieurs erreurs se sont produites. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<CreateContainer>d__12.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 27
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+---> (Exception interne #0) System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.Compile
+
+System.AggregateException: Une ou plusieurs erreurs se sont produites. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<CreateContainer>d__12.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 27
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+---> (Exception interne #0) System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.Compile
+
+System.AggregateException: Une ou plusieurs erreurs se sont produites. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<CreateContainer>d__12.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 27
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+---> (Exception interne #0) System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.Compile
+
+System.AggregateException: Une ou plusieurs erreurs se sont produites. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   à System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<CreateContainer>d__12.MoveNext() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 27
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+---> (Exception interne #0) System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'C:\Users\stpigu01\Google Drive\Paradox\Hearts of Iron IV\gfx\interface\events'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.GetFiles(String path, String searchPattern, SearchOption searchOption)
+   à FocusTreeManager.Helper.ImageHelper.findAllGameImages(ImageType source) dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\ImageHelper.cs:ligne 85
+   à FocusTreeManager.AsyncImageLoader.AsyncImageLoader.<>c.<LoadEvents>b__14_0() dans G:\Travail\Git\HoiProject\FocusTreeManager\AsyncImageLoader\AsyncImageLoader.cs:ligne 45
+   à System.Threading.Tasks.Task`1.InnerInvoke()
+   à System.Threading.Tasks.Task.Execute()
+--- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
+   à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   à System.Runtime.Compile

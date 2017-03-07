@@ -3,6 +3,7 @@ using FocusTreeManager.ViewModel;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using System;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Model
 {
@@ -12,7 +13,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                string Id = "";
+                string Id;
                 try
                 {
                     Id = InternalScript.FindValue("text").Parse();
@@ -22,9 +23,9 @@ namespace FocusTreeManager.Model
                     Id = "eventid.d_descriptioname";
                 }
 
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(Id) : null;
-                return translation != null ? translation : Id;
+                LocalisationModel locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(Id);
+                return translation ?? Id;
             }
         }
 
@@ -47,8 +48,6 @@ namespace FocusTreeManager.Model
                 RaisePropertyChanged(() => Text);
             }
         }
-
-        public EventDescriptionModel() { }
 
         public void EditDescScript()
         {

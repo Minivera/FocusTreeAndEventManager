@@ -1,7 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using System.Collections.Generic;
-using System;
-using FocusTreeManager.DataContract;
 using System.Collections.ObjectModel;
 using MonitoredUndo;
 using System.Collections.Specialized;
@@ -44,7 +41,7 @@ namespace FocusTreeManager.Model
 
         public bool isRequired()
         {
-            return (FociList.Count > 1);
+            return FociList.Count > 1;
         }
 
         public void DeleteSetRelations()
@@ -56,23 +53,23 @@ namespace FocusTreeManager.Model
             }
             Focus.Prerequisite.Remove(this);
             Focus = null;
-            foreach (FocusModel focus in FociList.ToList())
+            foreach (FocusModel item in FociList.ToList())
             {
-                FociList.Remove(focus);
+                FociList.Remove(item);
             }
         }
 
         #region Undo/Redo
 
-        void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "FociList",
-                this.FociList, e, "FociList Changed");
+                FociList, e, "FociList Changed");
         }
 
         public object GetUndoRoot()
         {
-            return (new ViewModelLocator()).Main;
+            return new ViewModelLocator().Main;
         }
 
         #endregion

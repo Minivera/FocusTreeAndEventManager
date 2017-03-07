@@ -26,27 +26,8 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public DiffPaneModel OldFileDiff
-        {
-            get
-            {
-                return diffModel.OldText;
-            }
-        }
+        public DiffPaneModel OldFileDiff => diffModel.OldText;
 
-        public DiffPaneModel NewFileDiff
-        {
-            get
-            {
-                return diffModel.NewText;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the CodeComparatorViewModel class.
-        /// </summary>
-        public CodeComparatorViewModel()
-        {
-        }
+        public DiffPaneModel NewFileDiff => diffModel.NewText;
     }
 }

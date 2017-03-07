@@ -1,4 +1,10 @@
-﻿using FocusTreeManager.CodeStructures;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using FocusTreeManager.CodeStructures;
 using FocusTreeManager.Helper;
 using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
@@ -6,14 +12,8 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GongSolutions.Wpf.DragDrop;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
+using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -25,16 +25,8 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ScripterViewModel : ViewModelBase, IDropTarget
     {
-        private readonly ObservableCollection<AssignationModel> codeBlocks 
-            = new ObservableCollection<AssignationModel>();
-
-        public ObservableCollection<AssignationModel> CodeBlocks
-        {
-            get
-            {
-                return codeBlocks;
-            }
-        }
+        public ObservableCollection<AssignationModel> CodeBlocks { get; } = 
+            new ObservableCollection<AssignationModel>();
 
         private Script managedScript = new Script();
 
@@ -83,27 +75,27 @@ namespace FocusTreeManager.ViewModel
             CancelCommand = new RelayCommand(CancelScript);
         }
         
-        private void setCode(Script internalScript)
+        private void setCode(ICodeStruct internalScript)
         {
-            codeBlocks.Clear();
+            CodeBlocks.Clear();
             EditorScript = internalScript == null? "" : internalScript.Parse(0);
             List<AssignationModel> listBlock = ModelsToScriptHelper.
                 TransformScriptToModels(managedScript, new RelayCommand<object>(DeleteNode));
             foreach (AssignationModel item in listBlock)
             {
-                codeBlocks.Add(item);
+                CodeBlocks.Add(item);
             }
         }
 
         public void ScriptToScripter()
         {
             managedScript.Analyse(editorScript);
-            codeBlocks.Clear();
+            CodeBlocks.Clear();
             List<AssignationModel> listBlock = ModelsToScriptHelper.
                 TransformScriptToModels(ManagedScript, new RelayCommand<object>(DeleteNode));
             foreach (AssignationModel item in listBlock)
             {
-                codeBlocks.Add(item);
+                CodeBlocks.Add(item);
             }
             RaisePropertyChanged(() => CodeBlocks);
         }
@@ -116,49 +108,49 @@ namespace FocusTreeManager.ViewModel
 
         public void SaveScript()
         {
-            if (SelectedTabIndex == "Scripter")
+            switch (SelectedTabIndex)
             {
-                managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
+                case "Scripter":
+                    managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
+                    break;
+                case "Editor":
+                    ManagedScript.Analyse(editorScript);
+                    break;
             }
-            else if (SelectedTabIndex == "Editor")
-            {
-                ManagedScript.Analyse(editorScript);
-            }
-            codeBlocks.Clear();
+            CodeBlocks.Clear();
             Messenger.Default.Send(new NotificationMessage("HideScripter"));
         }
 
         public void CancelScript()
         {
-            codeBlocks.Clear();
+            CodeBlocks.Clear();
             Messenger.Default.Send(new NotificationMessage("HideScripter"));
         }
 
         public void DragOver(IDropInfo dropInfo)
         {
-            GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.DragOver(dropInfo);
+            DragDrop.DefaultDropHandler.DragOver(dropInfo);
         }
 
         public void Drop(IDropInfo dropInfo)
         {
-            if (dropInfo == null || dropInfo.DragInfo == null)
+            if (dropInfo?.DragInfo == null)
             {
                 return;
             }
             int insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex 
                 ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
-            var destinationList = dropInfo.TargetCollection.TryGetList();
+            IList destinationList = dropInfo.TargetCollection.TryGetList();
             AssignationModel data = dropInfo.Data as AssignationModel;
-            AssignationModel currentItem = dropInfo.VisualTargetItem != null ?
-                                                ((FrameworkElement)dropInfo.VisualTargetItem)
-                                                .DataContext as AssignationModel : null;
+            AssignationModel currentItem = ((FrameworkElement) dropInfo.VisualTargetItem)?.
+                DataContext as AssignationModel;
             // If the sourcve and destination are in the same control, delete at the current index
             if (Equals(dropInfo.DragInfo.VisualSource, dropInfo.VisualTarget))
             {
-                var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
+                IList sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
                 if (currentItem == null || currentItem.CanHaveChild)
                 {
-                    var index = sourceList.IndexOf(data);
+                    int index = sourceList.IndexOf(data);
                     if (index != -1)
                     {
                         sourceList.RemoveAt(index);
@@ -169,22 +161,19 @@ namespace FocusTreeManager.ViewModel
                     }
                 }
             }
-            TreeView treeViewItem = dropInfo.VisualTarget as TreeView;
             // Add data at the new index
-            if (currentItem == null || currentItem.CanHaveChild)
+            if (currentItem != null && !currentItem.CanHaveChild) return;
+            AssignationModel obj2Insert = data;
+            if (!Equals(dropInfo.DragInfo.VisualSource, dropInfo.VisualTarget))
             {
-                var obj2Insert = data;
-                if (!Equals(dropInfo.DragInfo.VisualSource, dropInfo.VisualTarget))
+                ICloneable cloneable = data;
+                if (cloneable != null)
                 {
-                    var cloneable = data as ICloneable;
-                    if (cloneable != null)
-                    {
-                        obj2Insert = (AssignationModel)cloneable.Clone();
-                        obj2Insert.DeleteNodeCommand = new RelayCommand<object>(DeleteNode);
-                    }
+                    obj2Insert = (AssignationModel)cloneable.Clone();
+                    obj2Insert.DeleteNodeCommand = new RelayCommand<object>(DeleteNode);
                 }
-                destinationList.Insert(insertIndex++, obj2Insert);
             }
+            destinationList.Insert(insertIndex++, obj2Insert);
         }
 
         public void DeleteNode(object sender)
@@ -193,7 +182,7 @@ namespace FocusTreeManager.ViewModel
             {
                 return;
             }
-            AssignationModel model = sender as AssignationModel;
+            AssignationModel model = (AssignationModel) sender;
             foreach (AssignationModel child in CodeBlocks.ToList())
             {
                 //If it is the same as the searched one
@@ -213,22 +202,20 @@ namespace FocusTreeManager.ViewModel
         public void DeleteInChilds(AssignationModel model, AssignationModel sender)
         {
             //If there are childs in the model
-            if (model.Childrens.Any())
+            if (!model.Childrens.Any()) return;
+            //Loop in all the children
+            foreach (AssignationModel child in model.Childrens.ToList())
             {
-                //Loop in all the childs
-                foreach (AssignationModel child in model.Childrens.ToList())
+                //If it is the same as the searched one
+                if (child == sender)
                 {
-                    //If it is the same as the searched one
-                    if (child == sender)
-                    {
-                        //Remove
-                        model.Childrens.Remove(child);
-                    }
-                    else
-                    {
-                        //loop inside
-                        DeleteInChilds(child, sender);
-                    }
+                    //Remove
+                    model.Childrens.Remove(child);
+                }
+                else
+                {
+                    //loop inside
+                    DeleteInChilds(child, sender);
                 }
             }
         }

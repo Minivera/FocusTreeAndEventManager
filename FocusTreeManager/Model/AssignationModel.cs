@@ -15,8 +15,10 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                ResourceDictionary resourceLocalization = new ResourceDictionary
+                {
+                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                };
                 return resourceLocalization[LocalizationKey] as string;
             }
         }
@@ -31,7 +33,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<string>(() => this.LocalizationKey, ref this.localizationKey, value);
+                Set(() => LocalizationKey, ref localizationKey, value);
             }
         }
 
@@ -45,7 +47,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<Brush>(() => this.Color, ref this.color, value);
+                Set(() => Color, ref color, value);
             }
         }
 
@@ -59,7 +61,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<Brush>(() => this.BorderColor, ref this.borderColor, value);
+                Set(() => BorderColor, ref borderColor, value);
             }
         }
 
@@ -73,7 +75,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<Brush>(() => this.BackgroundColor, ref this.backgroundColor, value);
+                Set(() => BackgroundColor, ref backgroundColor, value);
             }
         }
 
@@ -87,7 +89,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<bool>(() => this.IsNotEditable, ref this.isNotEditable, value);
+                Set(() => IsNotEditable, ref isNotEditable, value);
             }
         }
 
@@ -101,7 +103,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<bool>(() => this.CanHaveChild, ref this.canHaveChild, value);
+                Set(() => CanHaveChild, ref canHaveChild, value);
             }
         }
 
@@ -115,7 +117,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<bool>(() => this.IsCloned, ref this.isCloned, value);
+                Set(() => IsCloned, ref isCloned, value);
             }
         }
 
@@ -129,7 +131,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<bool>(() => this.IsExpanded, ref this.isExpanded, value);
+                Set(() => IsExpanded, ref isExpanded, value);
             }
         }
 
@@ -143,7 +145,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<string>(() => this.Code, ref this.code, value);
+                Set(() => Code, ref code, value);
             }
         }
 
@@ -185,13 +187,14 @@ namespace FocusTreeManager.Model
 
         private void ExpanderClick()
         {
-            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Scripter, "ExpanderClick"));
+            Messenger.Default.Send(new NotificationMessage(this, 
+                new ViewModelLocator().Scripter, "ExpanderClick"));
         }
 
         public object Clone()
         {
             AssignationModel model = new AssignationModel(this) { IsCloned = true };
-            foreach (var child in Childrens)
+            foreach (AssignationModel child in Childrens)
             {
                 model.Childrens.Add((AssignationModel)child.Clone());
             }

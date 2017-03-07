@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="FocusTreeManager.Views.FocusGrid"
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.FocusGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:FocusTreeManager"
              xmlns:v="clr-namespace:FocusTreeManager.Views"
-             xmlns:m="clr-namespace:FocusTreeManager.Model"
+             xmlns:helper="clr-namespace:FocusTreeManager.Helper"
+             xmlns:userControls="clr-namespace:FocusTreeManager.Views.UserControls"
              mc:Ignorable="d" Loaded="UserControl_Loaded" 
              x:Name="FociGrid">
     <UserControl.Resources>
@@ -29,12 +29,12 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
+        <DockPanel.CacheMode>
+            <BitmapCache />
+        </DockPanel.CacheMode>
         <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" DockPanel.Dock="Bottom">
             <Grid Margin="45,0,45,0" x:Name="ListGrid" 
                   Tag="{Binding RelativeSource={RelativeSource Self}}">
-                <Grid.CacheMode>
-                    <BitmapCache />
-                </Grid.CacheMode>
                 <Grid.ContextMenu>
                     <ContextMenu >
                         <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}"
@@ -62,22 +62,22 @@
                 <ItemsControl ItemsSource="{Binding FociList}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <local:GriddedGrid local:GridHelpers.RowCount="{Binding RowCount}"
-                              local:GridHelpers.ColumnCount="{Binding ColumnCount}" x:Name="CentralGrid"
-                                  Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
-                                  GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
-                                <local:GriddedGrid.ColumnDefinitions>
+                            <v:GriddedGrid helper:GridHelpers.RowCount="{Binding RowCount}"
+                                  helper:GridHelpers.ColumnCount="{Binding ColumnCount}" x:Name="CentralGrid"
+                                      Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
+                                      GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
+                                <v:GriddedGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="75" />
-                                </local:GriddedGrid.ColumnDefinitions>
-                                <local:GriddedGrid.RowDefinitions>
+                                </v:GriddedGrid.ColumnDefinitions>
+                                <v:GriddedGrid.RowDefinitions>
                                     <RowDefinition Height="75" />
-                                </local:GriddedGrid.RowDefinitions>
-                            </local:GriddedGrid>
+                                </v:GriddedGrid.RowDefinitions>
+                            </v:GriddedGrid>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <v:Focus PreviewMouseLeftButtonDown="Focus_PreviewMouseLeftButtonDown" 
+                            <userControls:Focus PreviewMouseLeftButtonDown="Focus_PreviewMouseLeftButtonDown" 
                                      PreviewMouseMove="Focus_PreviewMouseMove"
                                      PreviewMouseLeftButtonUp="Focus_PreviewMouseLeftButtonUp"/>
                         </DataTemplate>
@@ -93,3 +93,6 @@
         </AdornerDecorator>
     </DockPanel>
 </UserControl>
+
+
+

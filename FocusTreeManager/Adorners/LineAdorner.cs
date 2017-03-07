@@ -1,23 +1,17 @@
-﻿using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
 using System.Windows.Shapes;
-using System.Windows.Controls;
+using FocusTreeManager.Model;
+using FocusTreeManager.Model.TabModels;
 
-namespace FocusTreeManager
+namespace FocusTreeManager.Adorners
 {
-    class LineAdorner : Adorner
+    public class LineAdorner : Adorner
     {
-        private FrameworkElement element;
+        private readonly FrameworkElement element;
 
         private Canvas Children;
 
@@ -45,13 +39,7 @@ namespace FocusTreeManager
             Children = new Canvas();
         }
 
-        protected override int VisualChildrenCount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        protected override int VisualChildrenCount => 1;
 
         protected override Visual GetVisualChild(int index)
         {
@@ -62,9 +50,10 @@ namespace FocusTreeManager
         protected override void OnRender(DrawingContext drawingContext)
         {
             Child.Children.Clear();
-            FocusGridModel DataContext = this.DataContext as FocusGridModel;
+            FocusGridModel context = DataContext as FocusGridModel;
             base.OnRender(drawingContext);
-            foreach (CanvasLine line in DataContext.CanvasLines)
+            if (context == null) return;
+            foreach (CanvasLine line in context.CanvasLines)
             {
                 Line newLine = new Line()
                 {
@@ -72,7 +61,7 @@ namespace FocusTreeManager
                     X2 = line.X2,
                     Y1 = line.Y1,
                     Y2 = line.Y2,
-                    Visibility = System.Windows.Visibility.Visible,
+                    Visibility = Visibility.Visible,
                     StrokeThickness = 2,
                     Stroke = line.Color
                 };
@@ -82,24 +71,28 @@ namespace FocusTreeManager
                 }
                 Child.Children.Add(newLine);
             }
-            if (DataContext.selectedLine != null)
+            if (context.selectedLine == null) return;
+            ResourceDictionary resourceLocalization = new ResourceDictionary
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri("/FocusTreeManager;component/Resources/Icons.xaml", UriKind.Relative);
-                Rectangle visualBoard = new Rectangle();
-                visualBoard.Width = 25;
-                visualBoard.Height = 25;
-                Canvas.SetLeft(visualBoard, Math.Min(DataContext.selectedLine.X1,
-                    DataContext.selectedLine.X2) + (Math.Abs(DataContext.selectedLine.X2 - 
-                    DataContext.selectedLine.X1) / 2) - 12.5);
-                Canvas.SetTop(visualBoard, Math.Min(DataContext.selectedLine.Y1,
-                    DataContext.selectedLine.Y2) + (Math.Abs(DataContext.selectedLine.Y2 -
-                    DataContext.selectedLine.Y1) / 2) - 12.5);
-                VisualBrush vBrush = new VisualBrush();
-                vBrush.Visual = (Visual)resourceLocalization["appbar_scissor"];
-                visualBoard.Fill = vBrush;
-                Child.Children.Add(visualBoard);
-            }
+                Source = new Uri("/FocusTreeManager;component/Resources/Icons.xaml", UriKind.Relative)
+            };
+            Rectangle visualBoard = new Rectangle
+            {
+                Width = 25,
+                Height = 25
+            };
+            Canvas.SetLeft(visualBoard, Math.Min(context.selectedLine.X1,
+                                            context.selectedLine.X2) + (Math.Abs(context.selectedLine.X2 - 
+                                                                                 context.selectedLine.X1) / 2) - 12.5);
+            Canvas.SetTop(visualBoard, Math.Min(context.selectedLine.Y1,
+                                           context.selectedLine.Y2) + (Math.Abs(context.selectedLine.Y2 -
+                                                                                context.selectedLine.Y1) / 2) - 12.5);
+            VisualBrush vBrush = new VisualBrush
+            {
+                Visual = (Visual) resourceLocalization["appbar_scissor"]
+            };
+            visualBoard.Fill = vBrush;
+            Child.Children.Add(visualBoard);
         }
 
         protected override Size ArrangeOverride(Size finalSize)

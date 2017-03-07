@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Linq;
-using FocusTreeManager.Containers;
-using FocusTreeManager.Model;
 using System.IO;
-using System.Text.RegularExpressions;
 using FocusTreeManager.CodeStructures;
 using FocusTreeManager.DataContract;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Parsers
 {
@@ -16,11 +11,8 @@ namespace FocusTreeManager.Parsers
     {
         public static string ParseScriptFileForCompare(string filename)
         {
-            if (!File.Exists(filename))
-            {
-                return "";
-            }
-            return ParseScriptForCompare(CreateScriptFromFile(filename));
+            return !File.Exists(filename) ? "" : 
+                ParseScriptForCompare(CreateScriptFromFile(filename));
         }
 
         public static string ParseScriptForCompare(ScriptModel model)
@@ -30,8 +22,7 @@ namespace FocusTreeManager.Parsers
                 FileInfo = model.FileInfo,
                 InternalScript = model.InternalScript
             };
-            string iD = container1.ContainerID.Replace(" ", "_");
-            return Parse(container1.InternalScript, iD);
+            return Parse(container1.InternalScript);
         }
 
         public static Dictionary<string, string> ParseEverything(List<ScriptContainer> Containers)
@@ -40,12 +31,12 @@ namespace FocusTreeManager.Parsers
             foreach (ScriptContainer container in Containers)
             {
                 string ID = container.ContainerID.Replace(" ", "_");
-                fileList[ID] = Parse(container.InternalScript, ID);
+                fileList[ID] = Parse(container.InternalScript);
             }
             return fileList;
         }
 
-        private static string Parse(Script script, string ID)
+        private static string Parse(ICodeStruct script)
         {
             StringBuilder text = new StringBuilder();
             text.AppendLine(script.Parse());

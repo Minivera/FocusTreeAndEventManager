@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FocusTreeManager.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:userControls="clr-namespace:FocusTreeManager.Views.UserControls"
         mc:Ignorable="d"
         Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png" 
         GlowBrush="{DynamicResource AccentColorBrush}" WindowState="Maximized"
@@ -22,7 +22,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <local:Scripter Grid.Row="0" Script="{Binding DataContext.ScriptText, 
+        <userControls:Scripter Grid.Row="0" Script="{Binding DataContext.ScriptText, 
                             RelativeSource={RelativeSource AncestorType={x:Type Controls:MetroWindow}}}" 
                         CurrentType="{Binding DataContext.ScriptType, 
                             RelativeSource={RelativeSource AncestorType={x:Type Controls:MetroWindow}}}" />
@@ -36,7 +36,7 @@
         </StackPanel>
         <Grid HorizontalAlignment="Right" Width="70" Height="110" x:Name="GridErrors" Grid.Row="1"
               Margin="0,-170,15,0" Panel.ZIndex="1">
-            <local:ErrorDawg />
+            <userControls:ErrorDawg />
         </Grid>
     </Grid>
 </Controls:MetroWindow>

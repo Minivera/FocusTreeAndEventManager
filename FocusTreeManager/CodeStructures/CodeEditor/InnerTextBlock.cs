@@ -11,28 +11,23 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
 
         public FormattedText LineNumbers { get; set; }
 
-        public int CharStartIndex { get; private set; }
+        public int CharStartIndex { get; }
 
-        public int CharEndIndex { get; private set; }
+        public int CharEndIndex { get; }
 
-        public int LineStartIndex { get; private set; }
+        public int LineStartIndex { get; }
 
-        public int LineEndIndex { get; private set; }
+        public int LineEndIndex { get; }
 
-        public Point Position
-        {
-            get
-            {
-                return new Point(0, LineStartIndex * lineHeight);
-            }
-        }
+        public Point Position => new Point(0, LineStartIndex * lineHeight);
         public bool IsLast { get; set; }
 
         public int Code { get; set; }
 
-        private double lineHeight;
+        private readonly double lineHeight;
 
-        public InnerTextBlock(int charStart, int charEnd, int lineStart, int lineEnd, double lineHeight)
+        public InnerTextBlock(int charStart, int charEnd, int lineStart, 
+            int lineEnd, double lineHeight)
         {
             CharStartIndex = charStart;
             CharEndIndex = charEnd;
@@ -50,12 +45,8 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
 
         public override string ToString()
         {
-            return string.Format("L:{0}/{1} C:{2}/{3} {4}",
-                LineStartIndex,
-                LineEndIndex,
-                CharStartIndex,
-                CharEndIndex,
-                FormattedText.Text);
+            return $"L:{LineStartIndex}/{LineEndIndex} " +
+                   $"C:{CharStartIndex}/{CharEndIndex} {FormattedText.Text}";
         }
     }
 }

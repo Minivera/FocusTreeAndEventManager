@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views.CodeEditor"
              mc:Ignorable="d" Height="180"
              Width="400" >
     <UserControl.Resources>
@@ -50,7 +49,7 @@
                        VerticalAlignment="Center" HorizontalAlignment="Stretch" FontWeight="Bold"
                            x:Name="Header"/>
             </StackPanel>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -58,13 +57,16 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30*"></ColumnDefinition>
                     <ColumnDefinition Width="70*"></ColumnDefinition>
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Content="{DynamicResource Editor_Search}" HorizontalAlignment="Right" 
                        VerticalAlignment="Center" />
-                <ComboBox Grid.Column="1" IsEditable="True" ItemsSource="{Binding SearchHistory}" 
+                <ComboBox Grid.Row="0" Grid.Column="1" IsEditable="True" 
+                          ItemsSource="{Binding SearchHistory}" 
                           Margin="5" x:Name="ComboFind"/>
                 <Label Content="{DynamicResource Editor_Find_Occurences}" HorizontalAlignment="Right" 
-                       Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="0,0,25,0"
+                       Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Center" 
+                       Margin="0,0,25,0"
                        Visibility="Hidden" x:Name="OccurencesLabel"/>
                 <Label Content="" HorizontalAlignment="Right" x:Name="CountLabel" Visibility="Hidden"
                        Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"/>
@@ -95,9 +97,9 @@
                 <CheckBox x:Name="FullWordCheck" HorizontalAlignment="Right" 
                        VerticalAlignment="Center"/>
                 <Label Content="{DynamicResource Editor_Find_Word}" HorizontalAlignment="Left" 
-                       VerticalAlignment="Center" Grid.Column="1"/>
+                       VerticalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
                 <CheckBox x:Name="CaseCheck" HorizontalAlignment="Right" 
-                       VerticalAlignment="Center" Grid.Row="1"/>
+                       VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                 <Label Content="{DynamicResource Editor_Find_Case}" HorizontalAlignment="Left" 
                        Grid.Row="1" VerticalAlignment="Center" Grid.Column="1"/>
             </Grid>

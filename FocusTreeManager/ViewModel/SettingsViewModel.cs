@@ -17,17 +17,9 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class SettingsViewModel : ViewModelBase
     {
-        private List<LanguageSelector> availableLanguages;
-
         private LanguageSelector selectedLanguage;
 
-        public List<LanguageSelector> AvailableLanguages
-        {
-            get
-            {
-                return availableLanguages;
-            }
-        }
+        public List<LanguageSelector> AvailableLanguages { get; }
 
         public LanguageSelector SelectedLanguage
         {
@@ -40,7 +32,7 @@ namespace FocusTreeManager.ViewModel
                 selectedLanguage = value;
                 Configurator.setLanguage(value.FileName);
                 Messenger.Default.Send(new NotificationMessage(this, "ChangeLanguage"));
-                RaisePropertyChanged("SelectedLanguage");
+                RaisePropertyChanged(() => SelectedLanguage);
             }
         }
 
@@ -53,7 +45,7 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 Configurator.setGamePath(value);
-                RaisePropertyChanged("GamePath");
+                RaisePropertyChanged(() => GamePath);
             }
         }
 
@@ -66,20 +58,12 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 Configurator.setScripterPreference(value);
-                RaisePropertyChanged("ScripterPreference");
+                RaisePropertyChanged(() => ScripterPreference);
             }
         }
 
-        private string message;
+        public string Message { get; }
 
-        public string Message
-        {
-            get
-            {
-                return message;
-            }
-        }
-        
         public RelayCommand FindCommand { get; private set; }
 
         /// <summary>
@@ -87,39 +71,44 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public SettingsViewModel()
         {
-            availableLanguages = Configurator.returnAllLanguages();
-            selectedLanguage = availableLanguages.SingleOrDefault((l) => l.FileName == Configurator.getLanguage());
+            AvailableLanguages = Configurator.returnAllLanguages();
+            selectedLanguage = AvailableLanguages.SingleOrDefault(l => l.FileName == 
+                Configurator.getLanguage());
             FindCommand = new RelayCommand(SelectGameFolder);
             if (!Configurator.getFirstStart())
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                message = resourceLocalization["First_Start"] as string;
-                RaisePropertyChanged("Message");
+                ResourceDictionary resourceLocalization = new ResourceDictionary
+                {
+                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                };
+                Message = resourceLocalization["First_Start"] as string;
             }
             else
             {
-                message = "";
-                RaisePropertyChanged("Message");
+                Message = "";
             }
         }
 
         public void SelectGameFolder()
         {
-            var dialog = new CommonOpenFileDialog();
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            dialog.Title = resourceLocalization["Game_Path_Title"] as string;
-            dialog.IsFolderPicker = true;
-            dialog.InitialDirectory = "C:";
-            dialog.AddToMostRecentlyUsedList = false;
-            dialog.AllowNonFileSystemItems = false;
-            dialog.DefaultDirectory = "C:";
-            dialog.EnsureFileExists = true;
-            dialog.EnsurePathExists = true;
-            dialog.EnsureReadOnly = false;
-            dialog.EnsureValidNames = true;
-            dialog.Multiselect = false;
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                Title = resourceLocalization["Game_Path_Title"] as string,
+                IsFolderPicker = true,
+                InitialDirectory = "C:",
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                DefaultDirectory = "C:",
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true,
+                Multiselect = false
+            };
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 GamePath = dialog.FileName;
@@ -129,7 +118,7 @@ namespace FocusTreeManager.ViewModel
 
         private void Activate()
         {
-            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            foreach (Window window in Application.Current.Windows)
             {
                 if (window.DataContext == this)
                 {

@@ -1,8 +1,10 @@
-﻿using DiffPlex;
+﻿using System;
+using System.IO;
+using System.Windows;
+using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.CodeStructures;
-using FocusTreeManager.DataContract;
 using FocusTreeManager.Parsers;
 using FocusTreeManager.ViewModel;
 using FocusTreeManager.Views;
@@ -11,23 +13,12 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
-using System;
-using System.IO;
-using System.Windows;
 
-namespace FocusTreeManager.Model
+namespace FocusTreeManager.Model.TabModels
 {
     public class ScriptModel : ObservableObject, ISupportsUndo
     {
-        private Guid ID;
-
-        public Guid UniqueID
-        {
-            get
-            {
-                return ID;
-            }
-        }
+        public Guid UniqueID { get; }
 
         private string visibleName;
 
@@ -97,7 +88,7 @@ namespace FocusTreeManager.Model
         public ScriptModel(string Filename)
         {
             visibleName = Filename;
-            this.ID = Guid.NewGuid();
+            UniqueID = Guid.NewGuid();
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Commands
@@ -108,13 +99,13 @@ namespace FocusTreeManager.Model
 
         private void SaveScript(FrameworkElement obj)
         {
-            (new ViewModelLocator()).Scripter.SaveScript();
+            new ViewModelLocator().Scripter.SaveScript();
             InternalScript = (new ViewModelLocator()).Scripter.ManagedScript;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.VisibleName == null)
+            if (VisibleName == null)
             {
                 return;
             }
@@ -128,41 +119,35 @@ namespace FocusTreeManager.Model
         private void SendDeleteSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+                new ViewModelLocator().ProjectView, "SendDeleteItemSignal"));
         }
 
         private void SendEditSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+                new ViewModelLocator().ProjectView, "SendEditItemSignal"));
         }
 
-        async public void CheckForChanges()
+        public async void CheckForChanges()
         {
-            DataContract.FileInfo info = this.FileInfo;
+            DataContract.FileInfo info = FileInfo;
             //check the fileinfo data
-            if (info != null)
+            if (info == null) return;
+            //If the file exists
+            if (!File.Exists(info.Filename)) return;
+            //If the file was modified after the last modification date
+            if (File.GetLastWriteTime(info.Filename) <= info.LastModifiedDate) return;
+            //Then we can show a message
+            MessageDialogResult Result = await (new ViewModelLocator())
+                .Main.ShowFileChangedDialog();
+            if (Result == MessageDialogResult.Affirmative)
             {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await (new ViewModelLocator())
-                            .Main.ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            string oldText = ScriptParser.ParseScriptForCompare(this);
-                            string newText = ScriptParser.ParseScriptFileForCompare(info.Filename);
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
+                string oldText = ScriptParser.ParseScriptForCompare(this);
+                string newText = ScriptParser.ParseScriptFileForCompare(info.Filename);
+                SideBySideDiffModel model = new SideBySideDiffBuilder(
+                    new Differ()).BuildDiffModel(oldText, newText);
+                new ViewModelLocator().CodeComparator.DiffModel = model;
+                new CompareCode().ShowDialog();
             }
         }
 

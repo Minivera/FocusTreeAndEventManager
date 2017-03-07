@@ -29,12 +29,12 @@ namespace FocusTreeManager.CodeStructures.LegacySerialization
 
         public Assignation()
         {
-            this.Level = 0;
+            Level = 0;
         }
 
         public Assignation(int level)
         {
-            this.Level = level;
+            Level = level;
         }
 
         public void Analyse(string code, int line = -1)

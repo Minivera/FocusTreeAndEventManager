@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FocusTreeManager.DataContract
 {
@@ -23,12 +24,7 @@ namespace FocusTreeManager.DataContract
         internal static List<LocaleContent> PopulateFromLegacy(
             List<Model.LegacySerialization.LocaleContent> localisationMap)
         {
-            List<LocaleContent> list = new List<LocaleContent>();
-            foreach (Model.LegacySerialization.LocaleContent legacyItem in localisationMap)
-            {
-                list.Add(new LocaleContent(legacyItem));
-            }
-            return list;
+            return localisationMap.Select(legacyItem => new LocaleContent(legacyItem)).ToList();
         }
     }
 }

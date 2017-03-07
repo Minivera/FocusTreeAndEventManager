@@ -1,9 +1,9 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class FocusEditor : UserControl
     {
@@ -24,27 +24,45 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void DescriptionButton_Click(object sender, RoutedEventArgs e)
         {
-            Canvas.SetRight(Localizator, -20);
-            Canvas.SetTop(Localizator, Canvas.GetTop(DescriptionButton) 
-                            - DescriptionButton.Height);
-            DescriptionButton.Command.Execute(DescriptionButton.CommandParameter);
-            Localizator.Show();
+            if (Localizator.Visibility == Visibility.Hidden)
+            {
+                Localizator.Hide();
+                Canvas.SetRight(Localizator, -20);
+                Canvas.SetTop(Localizator, Canvas.GetTop(DescriptionButton)
+                                           - DescriptionButton.Height);
+                DescriptionButton.Command.Execute(DescriptionButton.CommandParameter);
+                Localizator.Show();
+            }
+            else 
+            {
+                Localizator.Hide();
+            }
         }
 
         private void VisibleNameButton_Click(object sender, RoutedEventArgs e)
         {
-            Canvas.SetRight(Localizator, -20);
-            Canvas.SetTop(Localizator, Canvas.GetTop(VisibleNameButton)
-                            - VisibleNameButton.Height);
-            VisibleNameButton.Command.Execute(VisibleNameButton.CommandParameter);
-            Localizator.Show();
+            if (Localizator.Visibility == Visibility.Hidden)
+            {
+                Localizator.Hide();
+                Canvas.SetRight(Localizator, -20);
+                Canvas.SetTop(Localizator, Canvas.GetTop(VisibleNameButton)
+                                - VisibleNameButton.Height);
+                VisibleNameButton.Command.Execute(VisibleNameButton.CommandParameter);
+                Localizator.Show();
+            }
+            else 
+            {
+                Localizator.Hide();
+            }
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures
 {
@@ -13,19 +10,13 @@ namespace FocusTreeManager.CodeStructures
         private static readonly Lazy<ErrorLogger> lazy =
         new Lazy<ErrorLogger>(() => new ErrorLogger());
 
-        public static ErrorLogger Instance { get { return lazy.Value; } }
+        public static ErrorLogger Instance => lazy.Value;
 
-        private StringBuilder Error = new StringBuilder();
+        private readonly StringBuilder Error = new StringBuilder();
 
         public int NumberOfErrors { get; private set; }
 
-        public string ErrorMessages
-        {
-            get
-            {
-                return Error != null ? Error.ToString() : "";
-            }
-        }
+        public string ErrorMessages => Error?.ToString() ?? "";
 
         private ErrorLogger()
         {
@@ -48,7 +39,7 @@ namespace FocusTreeManager.CodeStructures
 
         public bool hasErrors()
         {
-            return Error.Length > 0 ? true : false;
+            return Error.Length > 0;
         }
     }
 }

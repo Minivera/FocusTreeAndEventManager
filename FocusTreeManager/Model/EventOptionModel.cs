@@ -1,5 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
-using FocusTreeManager.DataContract;
+using FocusTreeManager.Model.TabModels;
 using FocusTreeManager.ViewModel;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
@@ -35,9 +35,9 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(Name) : null;
-                return translation != null ? translation : Name;
+                LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(Name);
+                return translation ?? Name;
             }
         }
 
@@ -59,8 +59,6 @@ namespace FocusTreeManager.Model
                 RaisePropertyChanged(() => InternalScript);
             }
         }
-
-        public EventOptionModel() { }
 
         public void setDefaults()
         {

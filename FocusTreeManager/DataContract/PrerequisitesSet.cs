@@ -1,6 +1,4 @@
-﻿using FocusTreeManager.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace FocusTreeManager.DataContract
@@ -17,7 +15,7 @@ namespace FocusTreeManager.DataContract
 
         public PrerequisitesSet(Focus focus)
         {
-            this.Focus = focus;
+            Focus = focus;
             FociList = new List<Focus>();
         }
 

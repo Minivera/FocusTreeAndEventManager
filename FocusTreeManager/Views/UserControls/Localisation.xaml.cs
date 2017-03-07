@@ -1,28 +1,15 @@
-﻿using FocusTreeManager.Helper;
-using FocusTreeManager.Model;
-using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
+using FocusTreeManager.Model;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class Localisation : UserControl
     {
-        enum ColumnToFilter
+        private enum ColumnToFilter
         {
             Key,
             Value
@@ -50,9 +37,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private ColumnToFilter FilterKey;
@@ -60,32 +49,16 @@ namespace FocusTreeManager.Views
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             LocaleModel item = e.Item as LocaleModel;
-            if (item != null)
+            if (item == null) return;
+            if (FilterKey == ColumnToFilter.Key && 
+                !string.IsNullOrEmpty(FilterKeyTextBox?.Text))
             {
-                if (FilterKey == ColumnToFilter.Key && FilterKeyTextBox != null
-                    && !string.IsNullOrEmpty(FilterKeyTextBox.Text))
-                {
-                    if (item.Key.ToLower().Contains(FilterKeyTextBox.Text.ToLower()))
-                    {
-                        e.Accepted = true;
-                    }
-                    else
-                    {
-                        e.Accepted = false;
-                    }
-                }
-                else if (FilterKey == ColumnToFilter.Value && FilterValueTextBox != null
-                    && !string.IsNullOrEmpty(FilterValueTextBox.Text))
-                {
-                    if (item.Value.ToLower().Contains(FilterValueTextBox.Text.ToLower()))
-                    {
-                        e.Accepted = true;
-                    }
-                    else
-                    {
-                        e.Accepted = false;
-                    }
-                }
+                e.Accepted = item.Key.ToLower().Contains(FilterKeyTextBox.Text.ToLower());
+            }
+            else if (FilterKey == ColumnToFilter.Value && 
+                !string.IsNullOrEmpty(FilterValueTextBox?.Text))
+            {
+                e.Accepted = item.Value.ToLower().Contains(FilterValueTextBox.Text.ToLower());
             }
         }
 
@@ -109,7 +82,7 @@ namespace FocusTreeManager.Views
         private void FilterKeyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterKey = ColumnToFilter.Key;
-            ((CollectionViewSource)this.Resources["LocalisationSource"]).View.Refresh();
+            ((CollectionViewSource)Resources["LocalisationSource"]).View.Refresh();
         }
 
         private void FilterValueButton_Click(object sender, RoutedEventArgs e)
@@ -131,7 +104,7 @@ namespace FocusTreeManager.Views
         private void FilterValueTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterKey = ColumnToFilter.Value;
-            ((CollectionViewSource)this.Resources["LocalisationSource"]).View.Refresh();
+            ((CollectionViewSource)Resources["LocalisationSource"]).View.Refresh();
         }
     }
 }

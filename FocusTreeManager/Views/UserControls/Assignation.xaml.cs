@@ -1,24 +1,11 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
-    /// <summary>
-    /// Logique d'interaction pour Assignation.xaml
-    /// </summary>
     public partial class Assignation : UserControl
     {
         public Assignation()
@@ -30,13 +17,19 @@ namespace FocusTreeManager.Views
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            if (msg.Notification == "ChangeLanguage")
+            {
+                loadLocales();
+            }
         }
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
@@ -51,11 +44,10 @@ namespace FocusTreeManager.Views
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                Keyboard.ClearFocus();
-                ((TextBox)sender).BorderThickness = new Thickness(0);
-            }
+            //If the key is not enter
+            if (e.Key != Key.Enter) return;
+            Keyboard.ClearFocus();
+            ((TextBox)sender).BorderThickness = new Thickness(0);
         }
     }
 }

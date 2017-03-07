@@ -14,29 +14,12 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ErrorDawgViewModel : ViewModelBase
     {
-        public Visibility DawgVisible
-        {
-            get
-            {
-                return ErrorLogger.Instance.hasErrors() ? Visibility.Visible : Visibility.Hidden;
-            }
-        }
+        public Visibility DawgVisible => ErrorLogger.Instance.hasErrors() ? 
+            Visibility.Visible : Visibility.Hidden;
 
-        public string NumOfErrors
-        {
-            get
-            {
-                return ErrorLogger.Instance.NumberOfErrors + " Errors";
-            }
-        }
+        public string NumOfErrors => ErrorLogger.Instance.NumberOfErrors + " Errors";
 
-        public string Errors
-        {
-            get
-            {
-                return ErrorLogger.Instance.ErrorMessages;
-            }
-        }
+        public string Errors => ErrorLogger.Instance.ErrorMessages;
 
         public RelayCommand ResetCommand { get; private set; }
 

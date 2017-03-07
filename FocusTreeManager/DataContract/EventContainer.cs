@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.DataContract
 {
@@ -63,12 +64,7 @@ namespace FocusTreeManager.DataContract
         internal static List<EventContainer> PopulateFromLegacy(
             List<Containers.LegacySerialization.EventContainer> eventList)
         {
-            List<EventContainer> list = new List<EventContainer>();
-            foreach (Containers.LegacySerialization.EventContainer legacyItem in eventList)
-            {
-                list.Add(new EventContainer(legacyItem));
-            }
-            return list;
+            return eventList.Select(legacyItem => new EventContainer(legacyItem)).ToList();
         }
     }
 }

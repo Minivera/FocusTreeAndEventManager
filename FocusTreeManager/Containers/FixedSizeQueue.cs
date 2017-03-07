@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.Containers
 {
@@ -15,14 +12,14 @@ namespace FocusTreeManager.Containers
     /// <typeparam name="T"></typeparam>
     public class FixedSizeQueue<T> : IReadOnlyCollection<T>
     {
-        private ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
+        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
         private int _count;
 
-        public int Limit { get; private set; }
+        public int Limit { get; }
 
         public FixedSizeQueue(int limit)
         {
-            this.Limit = limit;
+            Limit = limit;
         }
 
         public void Enqueue(T obj)
@@ -35,7 +32,7 @@ namespace FocusTreeManager.Containers
             do
             {
                 currentCount = _count;
-                finalCount = Math.Min(currentCount, this.Limit);
+                finalCount = Math.Min(currentCount, Limit);
             } while (currentCount !=
                 Interlocked.CompareExchange(ref _count, finalCount, currentCount));
             T overflow;
@@ -45,10 +42,7 @@ namespace FocusTreeManager.Containers
             }
         }
 
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count => _count;
 
         public IEnumerator<T> GetEnumerator()
         {

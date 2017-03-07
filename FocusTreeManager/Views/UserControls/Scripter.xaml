@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="FocusTreeManager.Views.Scripter"
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.Scripter"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FocusTreeManager.Views"
         xmlns:e="clr-namespace:FocusTreeManager.Views.CodeEditor"
+        xmlns:userControls="clr-namespace:FocusTreeManager.Views.UserControls"
         mc:Ignorable="d"  
         Loaded="MetroWindow_Loaded" >
     <UserControl.Resources>
@@ -48,13 +48,13 @@
                               dd:DragDrop.DropHandler="{Binding}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Childrens}">
-                                <local:Assignation Margin="5"/>
+                                <userControls:Assignation Margin="5"/>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </ScrollViewer>
                 <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-                <local:ScripterControls CurrentType="{Binding DataContext.ScriptType, 
+                <userControls:ScripterControls CurrentType="{Binding DataContext.ScriptType, 
                             RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Grid.Column="2" />
             </Grid>
         </TabItem>

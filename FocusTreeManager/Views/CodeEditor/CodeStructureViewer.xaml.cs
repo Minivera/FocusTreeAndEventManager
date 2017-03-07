@@ -19,22 +19,14 @@ namespace FocusTreeManager.Views.CodeEditor
 
     public partial class CodeStructureViewer : UserControl, INotifyPropertyChanged
     {
-        private ObservableCollection<CodeElement> codeBlocks;
-
-        public ObservableCollection<CodeElement> CodeBlocks
-        {
-            get
-            {
-                return codeBlocks;
-            }
-        }
+        public ObservableCollection<CodeElement> CodeBlocks { get; }
 
         public CodeEditor LinkedEditor { get; set; }
 
         public CodeStructureViewer()
         {
             InitializeComponent();
-            codeBlocks = new ObservableCollection<CodeElement>();
+            CodeBlocks = new ObservableCollection<CodeElement>();
         }
 
         public void SetupViewer(string script)
@@ -43,41 +35,37 @@ namespace FocusTreeManager.Views.CodeEditor
             CodeBlocks.Clear();
             Script newscript = new Script();
             newscript.Analyse(script);
-            foreach (CodeStructures.Assignation item in newscript.Code)
+            foreach (ICodeStruct codeStruct in newscript.Code)
             {
-                CodeElement element = new CodeElement();
-                element.Occurence = AllAddedNames.Where((n) => n == item.Assignee).Count();
-                element.Name = item.Assignee;
-                if (item.Value is CodeBlock)
+                Assignation item = (Assignation) codeStruct;
+                CodeElement element = new CodeElement
                 {
-                    element.Childrens = RunInBlock(item.Value as CodeBlock, AllAddedNames);
-                }
-                else
-                {
-                    element.Childrens = new List<CodeElement>();
-                }
+                    Occurence = AllAddedNames.Count(n => n == item.Assignee),
+                    Name = item.Assignee
+                };
+                CodeBlock block = item.Value as CodeBlock;
+                element.Childrens = block != null ? RunInBlock(block, AllAddedNames) : 
+                    new List<CodeElement>();
                 AllAddedNames.Add(element.Name);
                 CodeBlocks.Add(element);
             }
             OnPropertyChanged("CodeBlocks");
         }
 
-        private List<CodeElement> RunInBlock(CodeBlock block, List<string> AllAddedNames)
+        private static List<CodeElement> RunInBlock(CodeBlock block, ICollection<string> AllAddedNames)
         {
             List<CodeElement> newlist = new List<CodeElement>();
-            foreach (CodeStructures.Assignation item in block.Code.Where((t) => t is CodeStructures.Assignation))
+            foreach (ICodeStruct codeStruct in block.Code.Where(t => t is Assignation))
             {
-                CodeElement element = new CodeElement();
-                element.Occurence = AllAddedNames.Where((n) => n == item.Assignee).Count();
-                element.Name = item.Assignee;
-                if (item.Value is CodeBlock)
+                Assignation item = (Assignation) codeStruct;
+                CodeElement element = new CodeElement
                 {
-                    element.Childrens = RunInBlock(item.Value as CodeBlock, AllAddedNames);
-                }
-                else
-                {
-                    element.Childrens = new List<CodeElement>();
-                }
+                    Occurence = AllAddedNames.Count(n => n == item.Assignee),
+                    Name = item.Assignee
+                };
+                CodeBlock codeBlock = item.Value as CodeBlock;
+                element.Childrens = codeBlock != null ? RunInBlock(codeBlock, AllAddedNames) : 
+                    new List<CodeElement>();
                 AllAddedNames.Add(element.Name);
                 newlist.Add(element);
             }
@@ -86,17 +74,15 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
-            {
-                TreeViewItem treeViewItem = UiHelper.FindVisualParent<TreeViewItem>
-                                        (e.OriginalSource as DependencyObject, this);
-                if (treeViewItem != null)
-                {
-                    CodeElement codeBlock = (CodeElement)treeViewItem.DataContext;
-                    LinkedEditor.Select(codeBlock.Name, codeBlock.Occurence);
-                    e.Handled = true;
-                }
-            }
+            //If not a long hold click
+            if (e.LeftButton != MouseButtonState.Pressed || e.ClickCount != 2) return;
+            TreeViewItem treeViewItem = UiHelper.FindVisualParent<TreeViewItem>
+                (e.OriginalSource as DependencyObject, this);
+            //If there is no tree view to be found
+            if (treeViewItem == null) return;
+            CodeElement codeBlock = (CodeElement)treeViewItem.DataContext;
+            LinkedEditor.Select(codeBlock.Name, codeBlock.Occurence);
+            e.Handled = true;
         }
 
         #region INotify

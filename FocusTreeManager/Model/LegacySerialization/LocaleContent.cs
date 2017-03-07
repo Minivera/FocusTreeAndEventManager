@@ -17,7 +17,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.Key, ref this.key, value);
+                Set<string>(() => Key, ref key, value);
             }
         }
 
@@ -32,7 +32,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.Value, ref this.value, value);
+                Set<string>(() => Value, ref this.value, value);
             }
         }
     }

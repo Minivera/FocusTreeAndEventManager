@@ -1,19 +1,17 @@
-﻿using FocusTreeManager.Containers;
-using FocusTreeManager.Model;
+﻿using FocusTreeManager.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using FocusTreeManager.CodeStructures;
 using System.IO;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.CodeStructures.CodeExceptions;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Parsers
 {
-    static class EventParser
+    public static class EventParser
     {
         private static readonly string[] CORE_EVENT_SCRIPTS_ELEMENTS =
         {
@@ -23,8 +21,7 @@ namespace FocusTreeManager.Parsers
         public static string ParseEventForCompare(EventTabModel model)
         {
             EventContainer container = new EventContainer(model);
-            container.ContainerID.Replace(" ", "_");
-            return Parse(container.EventList.ToList<Event>(), container.EventNamespace);
+            return Parse(container.EventList.ToList(), container.EventNamespace);
         }
 
         public static string ParseEventScriptForCompare(string filename)
@@ -34,7 +31,7 @@ namespace FocusTreeManager.Parsers
                 return "";
             }
             Script script = new Script();
-            script.Analyse(File.ReadAllText(filename), -1);
+            script.Analyse(File.ReadAllText(filename));
             return ParseEventForCompare(CreateEventFromScript(filename, script));
         }
 
@@ -106,10 +103,13 @@ namespace FocusTreeManager.Parsers
 
         public static EventTabModel CreateEventFromScript(string fileName, Script script)
         {
-            EventTabModel container = new EventTabModel(Path.GetFileNameWithoutExtension(fileName));
-            container.EventNamespace = script.FindValue("add_namespace").Parse();
-            foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("news_event"))
+            EventTabModel container = new EventTabModel(Path.GetFileNameWithoutExtension(fileName))
             {
+                EventNamespace = script.FindValue("add_namespace").Parse()
+            };
+            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("news_event"))
+            {
+                CodeBlock block = (CodeBlock)codeStruct;
                 //Check if the event is only a call, if it isn't, it must have a picture
                 if (block.FindValue("picture") == null)
                 {
@@ -121,14 +121,14 @@ namespace FocusTreeManager.Parsers
                     newEvent.Type = Event.EventType.news_event;
                     newEvent.Id = Script.TryParse(block, "id");
                     newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
-                    newEvent.IsMajor = block.FindValue("major") != null ?
-                        YesToBool(Script.TryParse(block, "major")) : false;
-                    newEvent.IsHidden = block.FindValue("hidden") != null ?
-                        YesToBool(Script.TryParse(block, "hidden")) : false;
-                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                        YesToBool(Script.TryParse(block, "is_triggered_only")) : false;
-                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                        YesToBool(Script.TryParse(block, "fire_only_once")) : false;
+                    newEvent.IsMajor = block.FindValue("major") != null 
+                        && YesToBool(Script.TryParse(block, "major"));
+                    newEvent.IsHidden = block.FindValue("hidden") != null 
+                        && YesToBool(Script.TryParse(block, "hidden"));
+                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null 
+                        && YesToBool(Script.TryParse(block, "is_triggered_only"));
+                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null 
+                        && YesToBool(Script.TryParse(block, "fire_only_once"));
                     foreach (ICodeStruct desc in block.FindAllValuesOfType<ICodeStruct>("desc"))
                     {
                         newEvent.Descriptions.Add(new EventDescriptionModel
@@ -141,14 +141,14 @@ namespace FocusTreeManager.Parsers
                         newEvent.Options.Add(new EventOptionModel
                         {
                             Name = Script.TryParse(block, "name"),
-                            InternalScript = option.GetContentAsScript(new string[1] { "name" })
+                            InternalScript = option.GetContentAsScript(new[] { "name" })
                         });
                     }
                     //Get all core scripting elements
                     Script InternalEventScript = new Script();
-                    for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
+                    foreach (string element in CORE_EVENT_SCRIPTS_ELEMENTS)
                     {
-                        ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
+                        ICodeStruct found = block.FindAssignation(element);
                         if (found != null)
                         {
                             InternalEventScript.Code.Add(found);
@@ -171,8 +171,9 @@ namespace FocusTreeManager.Parsers
                         + block.FindValue("id").Parse() + ", please double-check the syntax.");
                 }
             }
-            foreach (CodeBlock block in script.FindAllValuesOfType<CodeBlock>("country_event"))
+            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("country_event"))
             {
+                CodeBlock block = (CodeBlock)codeStruct;
                 //Check if the event is only a call, if it isn't, it must have a picture
                 if (block.FindValue("picture") == null)
                 {
@@ -184,27 +185,27 @@ namespace FocusTreeManager.Parsers
                     newEvent.Type = Event.EventType.country_event;
                     newEvent.Id = Script.TryParse(block, "id");
                     newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
-                    newEvent.IsMajor = block.FindValue("major") != null ?
-                        YesToBool(Script.TryParse(block, "major")) : false;
-                    newEvent.IsHidden = block.FindValue("hidden") != null ?
-                        YesToBool(Script.TryParse(block, "hidden")) : false;
-                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null ?
-                        YesToBool(Script.TryParse(block, "is_triggered_only")) : false;
-                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null ?
-                        YesToBool(Script.TryParse(block, "fire_only_once")) : false;
+                    newEvent.IsMajor = block.FindValue("major") != null && 
+                        YesToBool(Script.TryParse(block, "major"));
+                    newEvent.IsHidden = block.FindValue("hidden") != null && 
+                        YesToBool(Script.TryParse(block, "hidden"));
+                    newEvent.IsTriggeredOnly = block.FindValue("is_triggered_only") != null && 
+                        YesToBool(Script.TryParse(block, "is_triggered_only"));
+                    newEvent.IsFiredOnce = block.FindValue("fire_only_once") != null && 
+                        YesToBool(Script.TryParse(block, "fire_only_once"));
                     foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                     {
                         newEvent.Options.Add(new EventOptionModel
                         {
                             Name = Script.TryParse(block, "name"),
-                            InternalScript = option.GetContentAsScript(new string[1] { "name" })
+                            InternalScript = option.GetContentAsScript(new[] { "name" })
                         });
                     }
                     //Get all core scripting elements
                     Script InternalEventScript = new Script();
-                    for (int i = 0; i < CORE_EVENT_SCRIPTS_ELEMENTS.Length; i++)
+                    foreach (string element in CORE_EVENT_SCRIPTS_ELEMENTS)
                     {
-                        ICodeStruct found = block.FindAssignation(CORE_EVENT_SCRIPTS_ELEMENTS[i]);
+                        ICodeStruct found = block.FindAssignation(element);
                         if (found != null)
                         {
                             InternalEventScript.Code.Add(found);
@@ -232,11 +233,7 @@ namespace FocusTreeManager.Parsers
 
         private static bool YesToBool(string value)
         {
-            if (value == "yes")
-            {
-                return true;
-            }
-            return false;
+            return value == "yes";
         }
     }
 }

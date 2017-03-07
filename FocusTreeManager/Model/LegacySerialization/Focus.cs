@@ -26,7 +26,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.Image, ref this.image, value);
+                Set<string>(() => Image, ref image, value);
             }
         }
 
@@ -53,7 +53,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.UniqueName, ref this.uniquename, value);
+                Set<string>(() => UniqueName, ref uniquename, value);
             }
         }
 
@@ -68,7 +68,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<int>(() => this.X, ref this.x, value);
+                Set<int>(() => X, ref x, value);
             }
         }
 
@@ -83,7 +83,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<int>(() => this.Y, ref this.y, value);
+                Set<int>(() => Y, ref y, value);
             }
         }
 
@@ -98,7 +98,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<double>(() => this.Cost, ref this.cost, value);
+                Set<double>(() => Cost, ref cost, value);
             }
         }
 
@@ -113,7 +113,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Script>(() => this.InternalScript, ref this.internalScript, value);
+                Set<Script>(() => InternalScript, ref internalScript, value);
             }
         }
 

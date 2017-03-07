@@ -48,7 +48,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <ListView x:Name="EventMasterList"
-            Grid.Column="0" Grid.Row="1" 
+            Grid.Column="0"
             ItemsSource="{Binding EventList}" SelectionMode="Single"
             SelectedItem="{Binding SelectedNode}" AlternationCount="2">
             <ListView.ContextMenu>
@@ -74,9 +74,9 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <GridSplitter Grid.Column="1" Grid.Row="1" Width="5" HorizontalAlignment="Stretch" 
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
                       ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
-        <Grid Grid.Column="2" Grid.Row="1">
+        <Grid Grid.Column="2">
             <ContentControl Content="{Binding ElementName=EventMasterList, Path=SelectedItem}"
                             ContentTemplate="{StaticResource EventCardTemplate}"
                             DataContext="{Binding ElementName=EventMasterList, Path=SelectedItem}"/>

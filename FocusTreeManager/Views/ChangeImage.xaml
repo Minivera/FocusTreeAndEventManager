@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:l="clr-namespace:FocusTreeManager.AsyncImageLoader"
-        xmlns:local="clr-namespace:FocusTreeManager.Views"
         mc:Ignorable="d ignore" GlowBrush="{DynamicResource AccentColorBrush}"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" Title="{DynamicResource Chose_Image_Title}" 
         WindowStartupLocation="CenterScreen" Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png">

@@ -1,25 +1,11 @@
-﻿using FocusTreeManager.CodeStructures;
-using FocusTreeManager.ViewModel;
-using FocusTreeManager.Views.CodeEditor;
-using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
+using FocusTreeManager.CodeStructures;
+using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class Scripter : UserControl
     {
@@ -30,7 +16,7 @@ namespace FocusTreeManager.Views
         public static void OnScriptChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Scripter sender = d as Scripter;
-            ScripterViewModel Vm = sender.DataContext as ScripterViewModel;
+            ScripterViewModel Vm = sender?.DataContext as ScripterViewModel;
             if (Vm != null)
             {
                 Vm.ManagedScript = e.NewValue as Script;
@@ -44,22 +30,23 @@ namespace FocusTreeManager.Views
         }
 
         public static readonly DependencyProperty ScripterTypeProperty =
-        DependencyProperty.Register("CurrentType", typeof(ScripterType), typeof(UserControl),
-        new PropertyMetadata(ScripterType.Generic, OnScriptTypeChanged));
+        DependencyProperty.Register("CurrentType", typeof(ScripterControlsViewModel.ScripterType), typeof(UserControl),
+        new PropertyMetadata(ScripterControlsViewModel.ScripterType.Generic, OnScriptTypeChanged));
 
         public static void OnScriptTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Scripter sender = d as Scripter;
-            ScripterViewModel Vm = sender.DataContext as ScripterViewModel;
+            ScripterViewModel Vm = sender?.DataContext as ScripterViewModel;
             if (Vm != null)
             {
-                Vm.ScriptType = e.NewValue != null ? (ScripterType)e.NewValue : ScripterType.Generic;
+                Vm.ScriptType = (ScripterControlsViewModel.ScripterType?) e.NewValue ?? 
+                    ScripterControlsViewModel.ScripterType.Generic;
             }
         }
 
-        public ScripterType CurrentType
+        public ScripterControlsViewModel.ScripterType CurrentType
         {
-            get { return (ScripterType)GetValue(ScripterTypeProperty); }
+            get { return (ScripterControlsViewModel.ScripterType)GetValue(ScripterTypeProperty); }
             set { SetValue(ScripterTypeProperty, value); }
         }
 
@@ -81,9 +68,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -94,34 +83,33 @@ namespace FocusTreeManager.Views
                 Vm.ManagedScript = Script;
                 Vm.ScriptType = CurrentType;
             }
-            if (Configurator.getScripterPreference() == "Scripter")
+            switch (Configurator.getScripterPreference())
             {
-                Dispatcher.BeginInvoke((Action)(() => TabScript.SelectedItem = ScripterTab));
-                ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Scripter";
+                case "Scripter":
+                    Dispatcher.BeginInvoke((Action)(() => TabScript.SelectedItem = ScripterTab));
+                    ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Scripter";
+                    break;
+                case "Editor":
+                    Dispatcher.BeginInvoke((Action)(() => TabScript.SelectedItem = EditorTab));
+                    ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Editor";
+                    break;
             }
-            else if(Configurator.getScripterPreference() == "Editor")
-            {
-                Dispatcher.BeginInvoke((Action)(() => TabScript.SelectedItem = EditorTab));
-                ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Editor";
-            }
-            TabScript.SelectionChanged += new SelectionChangedEventHandler(TabScript_SelectionChanged);
+            TabScript.SelectionChanged += TabScript_SelectionChanged;
         }
 
         private void TabScript_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
+            if (e.AddedItems.Count <= 0) return;
+            TabItem selectedTab = e.AddedItems[0] as TabItem;
+            if (Equals(selectedTab, ScripterTab))
             {
-                TabItem selectedTab = e.AddedItems[0] as TabItem;
-                if (selectedTab == ScripterTab)
-                {
-                    ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Scripter";
-                    ((ScripterViewModel)TabScript.DataContext).ScriptToScripter();
-                }
-                else if (selectedTab == EditorTab)
-                {
-                    ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Editor";
-                    ((ScripterViewModel)TabScript.DataContext).ScripterToScript();
-                }
+                ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Scripter";
+                ((ScripterViewModel)TabScript.DataContext).ScriptToScripter();
+            }
+            else if (Equals(selectedTab, EditorTab))
+            {
+                ((ScripterViewModel)TabScript.DataContext).SelectedTabIndex = "Editor";
+                ((ScripterViewModel)TabScript.DataContext).ScripterToScript();
             }
         }
     }

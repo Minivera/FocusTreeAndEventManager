@@ -1,10 +1,10 @@
 ﻿using FocusTreeManager.Model;
 using FocusTreeManager.Parsers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.DataContract
 {
@@ -15,11 +15,11 @@ namespace FocusTreeManager.DataContract
     [DataContract(Name = "project")]
     public sealed class Project
     {
-        const string FOCUS_TREE_PATH = @"\common\national_focus\";
+        private const string FOCUS_TREE_PATH = @"\common\national_focus\";
 
-        const string LOCALISATION_PATH = @"\localisation\";
+        private const string LOCALISATION_PATH = @"\localisation\";
 
-        const string EVENTS_PATH = @"\events\";
+        private const string EVENTS_PATH = @"\events\";
 
         public string filename { get; set; }
 
@@ -55,15 +55,17 @@ namespace FocusTreeManager.DataContract
 
         public Project(Model.LegacySerialization.Project legacyProject)
         {
-            fociContainerList = FociGridContainer.PopulateFromLegacy(legacyProject.fociContainerList.ToList());
-            localisationList = LocalisationContainer.PopulateFromLegacy(legacyProject.localisationList.ToList());
+            fociContainerList = FociGridContainer.PopulateFromLegacy(
+                legacyProject.fociContainerList.ToList());
+            localisationList = LocalisationContainer.PopulateFromLegacy(
+                legacyProject.localisationList.ToList());
             eventList = EventContainer.PopulateFromLegacy(legacyProject.eventList.ToList());
             scriptList = ScriptContainer.PopulateFromLegacy(legacyProject.scriptList.ToList());
         }
 
-        public void ExportProject(string filename)
+        public void ExportProject(string paramFilename)
         {
-            string path = filename + FOCUS_TREE_PATH;
+            string path = paramFilename + FOCUS_TREE_PATH;
             Directory.CreateDirectory(path);
             //For each parsed focus trees
             foreach (KeyValuePair<string, string> item in
@@ -74,7 +76,7 @@ namespace FocusTreeManager.DataContract
                     tw.Write(item.Value);
                 }
             }
-            path = filename + LOCALISATION_PATH;
+            path = paramFilename + LOCALISATION_PATH;
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             //For each parsed localisation files
             foreach (KeyValuePair<string, string> item in
@@ -85,7 +87,7 @@ namespace FocusTreeManager.DataContract
                     tw.Write(item.Value);
                 }
             }
-            path = filename + EVENTS_PATH;
+            path = paramFilename + EVENTS_PATH;
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             //For each parsed event file
             foreach (KeyValuePair<string, string> item in
@@ -100,7 +102,7 @@ namespace FocusTreeManager.DataContract
             foreach (KeyValuePair<string, string> item in
                 ScriptParser.ParseEverything(scriptList))
             {
-                using (TextWriter tw = new StreamWriter(filename + "\\" + item.Key + ".txt"))
+                using (TextWriter tw = new StreamWriter(paramFilename + "\\" + item.Key + ".txt"))
                 {
                     tw.Write(item.Value);
                 }
