@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FocusTreeManager.DataContract
 {
@@ -45,12 +46,7 @@ namespace FocusTreeManager.DataContract
         internal static List<ScriptContainer> PopulateFromLegacy(
             List<Containers.LegacySerialization.ScriptContainer> scriptList)
         {
-            List<ScriptContainer> list = new List<ScriptContainer>();
-            foreach (Containers.LegacySerialization.ScriptContainer legacyItem in scriptList)
-            {
-                list.Add(new ScriptContainer(legacyItem));
-            }
-            return list;
+            return scriptList.Select(legacyItem => new ScriptContainer(legacyItem)).ToList();
         }
     }
 }

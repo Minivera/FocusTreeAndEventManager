@@ -1,10 +1,7 @@
-﻿using FocusTreeManager.DataContract;
-using FocusTreeManager.ViewModel;
+﻿using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using MonitoredUndo;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FocusTreeManager.Model
 {
@@ -58,13 +55,13 @@ namespace FocusTreeManager.Model
             //Set leftmost Focus as Focus 1 and rightmost focus as focus 2
             if (focus1.X < focus2.X)
             {
-                this.Focus1 = focus1;
-                this.Focus2 = focus2;
+                Focus1 = focus1;
+                Focus2 = focus2;
             }
             else if (focus1.X >= focus2.X)
             {
-                this.Focus2 = focus1;
-                this.Focus1 = focus2;
+                Focus2 = focus1;
+                Focus1 = focus2;
             }
         }
 
@@ -86,7 +83,7 @@ namespace FocusTreeManager.Model
             {
                 return true;
             }
-            else if (obj.Focus2 == Focus1 && obj.Focus1 == Focus2)
+            if (obj.Focus2 == Focus1 && obj.Focus1 == Focus2)
             {
                 return true;
             }
@@ -97,7 +94,7 @@ namespace FocusTreeManager.Model
 
         public object GetUndoRoot()
         {
-            return (new ViewModelLocator()).Main;
+            return new ViewModelLocator().Main;
         }
 
         #endregion

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
@@ -25,19 +24,19 @@ namespace FocusTreeManager.CodeStructures
 
         public CodeBlock()
         {
-            this.Level = 0;
+            Level = 0;
             Code = new List<ICodeStruct>();
         }
 
         public CodeBlock(int level)
         {
-            this.Level = level;
+            Level = level;
             Code = new List<ICodeStruct>();
         }
 
         internal void Analyse(List<SyntaxGroup> code)
         {
-            foreach (SyntaxGroup group in code as List<SyntaxGroup>)
+            foreach (SyntaxGroup group in code)
             {
                 Assignation tempo = new Assignation(Level + 1);
                 tempo.Analyse(group);
@@ -52,7 +51,7 @@ namespace FocusTreeManager.CodeStructures
         internal void Analyse(List<Token> code)
         {
             //Cut the code in parts and add them as code values
-            foreach (Token group in code as List<Token>)
+            foreach (Token group in code)
             {
                 Code.Add(new CodeValue(group.text));
             }
@@ -97,45 +96,33 @@ namespace FocusTreeManager.CodeStructures
 
         public CodeValue FindValue(string TagToFind)
         {
-            CodeValue found;
-            foreach (ICodeStruct item in Code)
-            {
-                found = item.FindValue(TagToFind);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-            return null;
+            //Find the first occurrence or return null
+            return Code.Select(item => item.FindValue(TagToFind)).
+                FirstOrDefault(found => found != null);
         }
 
         public ICodeStruct Extract(string TagToFind)
         {
-            ICodeStruct found;
             foreach (ICodeStruct item in Code)
             {
-                found = item.FindAssignation(TagToFind);
-                if (found != null)
+                ICodeStruct found = item.Extract(TagToFind);
+                //If it is not found, continue the loop
+                if (found == null) continue;
+                //Otherwise, extract
+                if (Code.Contains(found))
                 {
-                    ((CodeBlock)item).Code.Remove(found);
-                    return found;
+                    Code.Remove(found);
                 }
+                return found;
             }
             return null;
         }
 
         public Assignation FindAssignation(string TagToFind)
         {
-            Assignation found;
-            foreach (ICodeStruct item in Code)
-            {
-                found = item.FindAssignation(TagToFind);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-            return null;
+            //Return the first found value or no value
+            return Code.Select(item => item.FindAssignation(TagToFind)).
+                FirstOrDefault(found => found != null);
         }
 
         public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
@@ -151,8 +138,9 @@ namespace FocusTreeManager.CodeStructures
         public Script GetContentAsScript(string[] except)
         {
             Script newScript = new Script();
-            foreach (Assignation item in Code)
+            foreach (ICodeStruct codeStruct in Code)
             {
+                Assignation item = (Assignation) codeStruct;
                 if (!except.Contains(item.Assignee))
                 {
                     newScript.Code.Add(item);

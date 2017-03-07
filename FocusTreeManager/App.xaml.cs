@@ -12,17 +12,19 @@ namespace FocusTreeManager
     {
         public App()
         {
+            AsyncImageLoader.AsyncImageLoader.Worker.StartTheJob();
+            //Logging
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.FirstChanceException += HandleFirstChance;
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleCrashes);
+            currentDomain.UnhandledException += HandleCrashes;
         }
 
-        static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
+        private static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
         {
             LoggingHelper.LogException(e.Exception);
         }
 
-        static void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
+        private static void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
         {
             LoggingHelper.LogCrash((Exception)e.ExceptionObject);
         }

@@ -7,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -22,11 +21,11 @@ namespace FocusTreeManager.Helper
         Event
     }
 
-    static class ImageHelper
+    public static class ImageHelper
     {
         private const string GFX_GOAL_FOLDER = @"\gfx\interface\goals\";
 
-        private const string GFX_EVENT_FOLDER = @"\gfx\interface\goals\";
+        private const string GFX_EVENT_FOLDER = @"\gfx\event_pictures";
 
         private const string GFX_EXTENTION = ".dds";
 
@@ -34,66 +33,43 @@ namespace FocusTreeManager.Helper
 
         public static ImageSource getImageFromGame(string imageName, ImageType source)
         {
-            string rightFolder = "";
-            switch (source)
-            {
-                case ImageType.Goal:
-                    rightFolder = GFX_GOAL_FOLDER;
-                    break;
-                case ImageType.Event:
-                    rightFolder = GFX_EVENT_FOLDER;
-                    break;
-            }
             //Build the error image if the requested one do not exist
-            ResourceDictionary resourceDictionary = new ResourceDictionary();
-            resourceDictionary.Source = new Uri("PhotoLoader;component/Resources.xaml", UriKind.Relative);
+            ResourceDictionary resourceDictionary = new ResourceDictionary
+            {
+                Source = new Uri("PhotoLoader;component/Resources.xaml", UriKind.Relative)
+            };
             DrawingImage errorThumbnail = resourceDictionary["ImageError"] as DrawingImage;
+            //If we couldn't find the error image, throw an IO exception
+            if (errorThumbnail == null) throw new FileNotFoundException("ImageError");
             errorThumbnail.Freeze();
             //Try to obtain the image from the game's folder
-            string fullpath = Configurator.getGamePath() + rightFolder + imageName + GFX_EXTENTION;
-            if (File.Exists(fullpath))
+            try
             {
-                try
+                switch (source)
                 {
-                    using (FileStream stream = new FileStream(fullpath, FileMode.Open))
-                    {
-                        DDSImage image = new DDSImage(stream);
-                        return ImageSourceForBitmap(image.BitmapImage);
-                    }
-                }
-                catch (Exception)
-                {
-                    return errorThumbnail;
+                    case ImageType.Goal:
+                        return AsyncImageLoader.AsyncImageLoader.Worker.
+                            Focuses.FirstOrDefault(f => Path.
+                            GetFileNameWithoutExtension(f.Key) == imageName).Value;
+                    case ImageType.Event:
+                        return AsyncImageLoader.AsyncImageLoader.Worker.
+                            Events.FirstOrDefault(f => Path.
+                            GetFileNameWithoutExtension(f.Key) == imageName).Value;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(source), source, null);
                 }
             }
-            else
+            catch (Exception)
             {
-                //Load from mod folders
-                ProjectModel model = (new ViewModelLocator()).Main.Project;
-                foreach (string modpath in model.ListModFolders)
-                {
-                    fullpath = modpath + rightFolder + imageName + GFX_EXTENTION;
-                    try
-                    {
-                        using (FileStream stream = new FileStream(fullpath, FileMode.Open))
-                        {
-                            DDSImage image = new DDSImage(stream);
-                            return ImageSourceForBitmap(image.BitmapImage);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return errorThumbnail;
-                    }
-                }
+                //If an error occurred, return the error image
+                return errorThumbnail;
             }
-            return errorThumbnail;
         }
 
         public static Dictionary<string, ImageSource> findAllGameImages(ImageType source)
         {
             Dictionary<string, ImageSource> list = new Dictionary<string, ImageSource>();
-            string rightFolder = "";
+            string rightFolder;
             switch (source)
             {
                 case ImageType.Goal:
@@ -102,6 +78,8 @@ namespace FocusTreeManager.Helper
                 case ImageType.Event:
                     rightFolder = GFX_EVENT_FOLDER;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(source), source, null);
             }
             string fullpath = Configurator.getGamePath() + rightFolder;
             //For each file in the normal folder
@@ -117,40 +95,45 @@ namespace FocusTreeManager.Helper
                     using (FileStream stream = new FileStream(fileName, FileMode.Open))
                     {
                         DDSImage image = new DDSImage(stream);
-                        list[fileName] = (ImageSourceForBitmap(image.BitmapImage));
+                        ImageSource result = ImageSourceForBitmap(image.BitmapImage);
+                        result.Freeze();
+                        list[fileName] = result;
                     }
                 }
                 catch (Exception)
                 {
-                    continue;
+                    // ignored, we don't want to kill the whole process for one missing image
                 }
             }
             //For each file in add mod folders
-            ProjectModel model = (new ViewModelLocator()).Main.Project;
-            foreach (string modpath in model.ListModFolders)
-            {
-                fullpath = modpath + rightFolder;
-                foreach (string fileName in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION,
-                                                                   SearchOption.TopDirectoryOnly))
-                {
-                    if (IMAGE_DO_NOT_LOAD.Any(fileName.Contains))
-                    {
-                        continue;
-                    }
-                    try
-                    {
-                        using (FileStream stream = new FileStream(fileName, FileMode.Open))
-                        {
-                            DDSImage image = new DDSImage(stream);
-                            list[fileName] = (ImageSourceForBitmap(image.BitmapImage));
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
-                } 
-            }
+            //ProjectModel model = new ViewModelLocator().Main.Project;
+            //if (model?.ListModFolders == null) return list;
+            //{
+            //    foreach (string modpath in model.ListModFolders)
+            //    {
+            //        fullpath = modpath + rightFolder;
+            //        foreach (string fileName in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION,
+            //            SearchOption.TopDirectoryOnly))
+            //        {
+            //            if (IMAGE_DO_NOT_LOAD.Any(fileName.Contains))
+            //            {
+            //                continue;
+            //            }
+            //            try
+            //            {
+            //                using (FileStream stream = new FileStream(fileName, FileMode.Open))
+            //                {
+            //                    DDSImage image = new DDSImage(stream);
+            //                    list[fileName] = (ImageSourceForBitmap(image.BitmapImage));
+            //                }
+            //            }
+            //            catch (Exception)
+            //            {
+            //                // ignored, we don't want to kill the whole process for one missing image
+            //            }
+            //        } 
+            //    }
+            //}
             return list;
         }
 
@@ -160,7 +143,7 @@ namespace FocusTreeManager.Helper
 
         private static ImageSource ImageSourceForBitmap(Bitmap bmp)
         {
-            var handle = bmp.GetHbitmap();
+            IntPtr handle = bmp.GetHbitmap();
             try
             {
                 return Imaging.CreateBitmapSourceFromHBitmap(handle, 

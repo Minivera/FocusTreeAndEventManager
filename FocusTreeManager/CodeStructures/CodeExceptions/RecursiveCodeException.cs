@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    struct ErrorStruct
+    internal struct ErrorStruct
     {
         public int ErrorNumber;
         public string ClassName;
@@ -22,31 +20,30 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
     /// </summary>
     class RecursiveCodeException : Exception
     {
-        private List<ErrorStruct> Messages = new List<ErrorStruct>();
+        private readonly List<ErrorStruct> Messages = new List<ErrorStruct>();
 
         public override string Message
         {
             get
             {
-                string message = "";
-                foreach (ErrorStruct item in Messages)
-                {
-                    message += item.TimeStamp + "# " + item.ErrorNumber
-                        + " " + item.Message + " at " + item.ClassName +
-                        " on line " + item.Line + "\n";
-                }
-                return message;
+                return Messages.Aggregate("", (current, item) => 
+                    current + (item.TimeStamp + "# " + 
+                    item.ErrorNumber + " " + item.Message + " at " + 
+                    item.ClassName + " on line " + item.Line + "\n"));
             }
         }
 
-        public RecursiveCodeException AddToRecursiveChain(string message, string className, string Line)
+        public RecursiveCodeException AddToRecursiveChain(string message, string className, 
+            string Line)
         {
-            ErrorStruct tempo = new ErrorStruct();
-            tempo.ClassName = className;
-            tempo.Message = message;
-            tempo.Line = Line;
-            tempo.ErrorNumber = Messages.Count + 1;
-            tempo.TimeStamp = "[" + DateTime.Now.ToString("h:mm:ss tt") + "]";
+            ErrorStruct tempo = new ErrorStruct
+            {
+                ClassName = className,
+                Message = message,
+                Line = Line,
+                ErrorNumber = Messages.Count + 1,
+                TimeStamp = "[" + DateTime.Now.ToString("h:mm:ss tt") + "]"
+            };
             Messages.Add(tempo);
             return this;
         }

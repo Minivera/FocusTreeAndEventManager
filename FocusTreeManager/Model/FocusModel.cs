@@ -10,9 +10,10 @@ using FocusTreeManager.DataContract;
 using MonitoredUndo;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Media;
+using System.Windows.Threading;
 using FocusTreeManager.Helper;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Model
 {
@@ -40,14 +41,8 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public ImageSource Icon
-        {
-            get
-            {
-                return ImageHelper.getImageFromGame(image, ImageType.Goal);
-            }
-        }
-        
+        public ImageSource Icon => ImageHelper.getImageFromGame(image, ImageType.Goal);
+
         private string uniquename;
 
         public string UniqueName
@@ -75,9 +70,9 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(UniqueName) : null;
-                return translation != null ? translation : UniqueName;
+                var locales = new ViewModelLocator().Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(UniqueName);
+                return translation ?? UniqueName;
             }
         }
 
@@ -85,9 +80,9 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
-                string translation = locales != null ? locales.translateKey(UniqueName + "_desc") : null;
-                return translation != null ? translation : UniqueName + "_desc";
+                LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
+                string translation = locales?.translateKey(UniqueName + "_desc");
+                return translation ?? UniqueName + "_desc";
             }
         }
 
@@ -193,7 +188,7 @@ namespace FocusTreeManager.Model
             set
             {
                 //Don,t care about undo here
-                Set<bool>(() => this.IsSelected, ref this.isSelected, value);
+                Set(() => IsSelected, ref isSelected, value);
             }
         }
         
@@ -283,7 +278,7 @@ namespace FocusTreeManager.Model
 
         public void Edit()
         {
-            System.Windows.Application.Current.Properties["Mode"] = "Edit";
+            Application.Current.Properties["Mode"] = "Edit";
             Messenger.Default.Send(new NotificationMessage(this, "ShowEditFocus"));
         }
 
@@ -309,11 +304,11 @@ namespace FocusTreeManager.Model
 
         public void FinishSetCommands()
         {
-            if ((string)System.Windows.Application.Current.Properties["Mode"] == "Mutually")
+            if ((string)Application.Current.Properties["Mode"] == "Mutually")
             {
                 Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusMutually"));
             }
-            if ((string)System.Windows.Application.Current.Properties["Mode"] == "Prerequisite")
+            if ((string)Application.Current.Properties["Mode"] == "Prerequisite")
             {
                 Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusPrerequisite"));
             }
@@ -328,10 +323,10 @@ namespace FocusTreeManager.Model
             switch (param)
             {
                 case "VisibleName":
-                    LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
-                    var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                    LocalizatorViewModel vm = new ViewModelLocator().Localizator;
+                    LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
                     LocaleModel model = locales.LocalisationMap.FirstOrDefault(
-                        l => l.Key == this.UniqueName);
+                        l => l.Key == UniqueName);
                     if (model != null)
                     {
                         vm.Locale = model;
@@ -340,18 +335,18 @@ namespace FocusTreeManager.Model
                     {
                         vm.Locale = new LocaleModel()
                         {
-                            Key = this.UniqueName,
-                            Value = this.VisibleName
+                            Key = UniqueName,
+                            Value = VisibleName
                         };
                     }
                     vm.AddOrUpdateCommand = AddOrUpdateLocale;
-                    vm.RaisePropertyChanged("Locale");
+                    vm.RaisePropertyChanged(() => vm.Locale);
                     break;
                 case "Description":
-                    vm = (new ViewModelLocator()).Localizator;
+                    vm = new ViewModelLocator().Localizator;
                     locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
                     model = locales.LocalisationMap.FirstOrDefault(
-                        l => l.Key == this.UniqueName + "_desc");
+                        l => l.Key == UniqueName + "_desc");
                     if (model != null)
                     {
                         vm.Locale = model;
@@ -360,41 +355,40 @@ namespace FocusTreeManager.Model
                     {
                         vm.Locale = new LocaleModel()
                         {
-                            Key = this.UniqueName,
-                            Value = this.Description
+                            Key = UniqueName,
+                            Value = Description
                         };
                     }
                     vm.AddOrUpdateCommand = AddOrUpdateLocale;
-                    vm.RaisePropertyChanged("Locale");
+                    vm.RaisePropertyChanged(() => vm.Locale);
                     break;
             }
         }
 
         public bool CanEditLocale(string param)
         {
-            LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
-            var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+            LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
             return locales != null;
         }
 
         public void AddOrUpdateLocale()
         {
-            LocalizatorViewModel vm = (new ViewModelLocator()).Localizator;
-            var locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+            LocalizatorViewModel vm = new ViewModelLocator().Localizator;
+            LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
             LocaleModel model = locales.LocalisationMap.FirstOrDefault(
                         l => l.Key == vm.Locale.Key);
             if (model == null)
             {
                 locales.LocalisationMap.Add(vm.Locale);
             }
-            RaisePropertyChanged("LocalisationMap");
+            locales.RaisePropertyChanged(() => locales.LocalisationMap);
             RaisePropertyChanged(() => VisibleName);
             RaisePropertyChanged(() => Description);
         }
 
         public void AddPrerequisite(string Type)
         {
-            System.Windows.Application.Current.Properties["ModeParam"] = Type;
+            Application.Current.Properties["ModeParam"] = Type;
             Messenger.Default.Send(new NotificationMessage(this, "AddFocusPrerequisite"));
         }
         
@@ -409,13 +403,15 @@ namespace FocusTreeManager.Model
 
         #region Undo/Redo
 
-        void Prerequisite_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Prerequisite_CollectionChanged(object sender, 
+            NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "Prerequisite",
                 Prerequisite, e, "Prerequisite Changed");
         }
 
-        void MutualyExclusive_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void MutualyExclusive_CollectionChanged(object sender, 
+            NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, "MutualyExclusive",
                 MutualyExclusive, e, "MutualyExclusive Changed");
@@ -423,7 +419,7 @@ namespace FocusTreeManager.Model
 
         public object GetUndoRoot()
         {
-            return (new ViewModelLocator()).Main;
+            return new ViewModelLocator().Main;
         }
 
         #endregion

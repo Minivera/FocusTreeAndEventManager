@@ -1,15 +1,17 @@
-﻿using FocusTreeManager.Model;
-using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using FocusTreeManager.Model;
+using FocusTreeManager.Model.TabModels;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     /// <summary>
     /// Interaction logic for Focus.xaml
@@ -18,7 +20,7 @@ namespace FocusTreeManager.Views
     {
         private Point OldPoint;
 
-        private DispatcherTimer dispatcherTimer;
+        private readonly DispatcherTimer dispatcherTimer;
 
         public Focus()
         {
@@ -26,20 +28,24 @@ namespace FocusTreeManager.Views
             loadLocales();
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Timer
-            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             dispatcherTimer.Start();
         }
 
         private void StartImageDispatcher()
         {
-            FocusModel model = this.DataContext as FocusModel;
-            ImageSource source = model.Icon;
-            ThreadPool.QueueUserWorkItem(
-            o =>
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.BeginInvoke((Action)(() => FocusIcon.Source = source));
+                Binding binding = new Binding
+                {
+                    Path = new PropertyPath("Icon"),
+                    Source = model
+                };
+                BindingOperations.SetBinding(FocusIcon, Image.SourceProperty, binding);
             });
         }
 
@@ -53,9 +59,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -75,48 +83,51 @@ namespace FocusTreeManager.Views
                 }
                 parent = VisualTreeHelper.GetParent(parent);
             }
-            Point position = this.TranslatePoint(new Point(1, 1), (FrameworkElement)parent);
+            Point position = TranslatePoint(new Point(1, 1), (FrameworkElement)parent);
             //If the focus has not changed position
-            if (OldPoint != null && OldPoint == position)
+            if (OldPoint == position)
             {
                 return;
             }
             OldPoint = position;
-            FocusModel model = this.DataContext as FocusModel;
-            model.setPoints(new Point(position.X + (this.RenderSize.Width / 2), position.Y + 40),
-                            new Point(position.X + (this.RenderSize.Width / 2), position.Y + (this.RenderSize.Height)),
-                            new Point(position.X, position.Y + (this.RenderSize.Height / 2)),
-                            new Point(position.X + (this.RenderSize.Width), position.Y + (this.RenderSize.Height / 2)));
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            model.setPoints(new Point(position.X + (RenderSize.Width / 2), position.Y + 40),
+                new Point(position.X + (RenderSize.Width / 2), position.Y + (RenderSize.Height)),
+                new Point(position.X, position.Y + (RenderSize.Height / 2)),
+                new Point(position.X + (RenderSize.Width), position.Y + (RenderSize.Height / 2)));
             ((FocusGridModel)((FrameworkElement)parent).DataContext).UpdateFocus(model);
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
-                TextBoxName.Visibility = Visibility.Hidden;
-                this.ReleaseMouseCapture();
-                e.Handled = true;
-            }
+            //If key is not return
+            if (e.Key != Key.Return) return;
+            TextBoxName.Visibility = Visibility.Hidden;
+            ReleaseMouseCapture();
+            e.Handled = true;
         }
 
         private void MenuRenameFocus_Click(object sender, RoutedEventArgs e)
         {
             TextBoxName.Visibility = Visibility.Visible;
-            this.CaptureMouse();
+            CaptureMouse();
         }
 
         private void VisualFocus_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.IsMouseCaptured)
+            //If the mouse is not captured
+            if (!IsMouseCaptured) return;
+            Window window = Window.GetWindow(this);
+            if (window != null)
             {
-                Point pos = e.GetPosition(MainWindow.GetWindow(this));
-                Rect rect = this.TransformToVisual(MainWindow.GetWindow(this))
-                                .TransformBounds(LayoutInformation.GetLayoutSlot(this));
+                Point pos = e.GetPosition(window);
+                Rect rect = TransformToVisual(window)
+                    .TransformBounds(LayoutInformation.GetLayoutSlot(this));
                 if (!rect.Contains(pos))
                 {
                     TextBoxName.Visibility = Visibility.Hidden;
-                    this.ReleaseMouseCapture();
+                    ReleaseMouseCapture();
                 }
             }
         }
@@ -124,7 +135,7 @@ namespace FocusTreeManager.Views
         private void VisualFocus_Loaded(object sender, RoutedEventArgs e)
         {            
             //Image loading async
-            //StartImageDispatcher();
+            StartImageDispatcher();
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace FocusTreeManager.Views
 {
@@ -27,25 +28,29 @@ namespace FocusTreeManager.Views
         
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            var dialog = new CommonOpenFileDialog();
             ResourceDictionary resourceLocalization = new ResourceDictionary();
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            dialog.Title = resourceLocalization["Project_Load"] as string;
-            dialog.InitialDirectory = "C:";
-            dialog.AddToMostRecentlyUsedList = false;
-            dialog.AllowNonFileSystemItems = false;
-            dialog.DefaultDirectory = "C:";
-            dialog.EnsureFileExists = false;
-            dialog.EnsurePathExists = true;
-            dialog.EnsureReadOnly = false;
-            dialog.EnsureValidNames = true;
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                Title = resourceLocalization["Project_Load"] as string,
+                InitialDirectory = "C:",
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                DefaultDirectory = "C:",
+                EnsureFileExists = false,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true
+            };
             dialog.Filters.Add(new CommonFileDialogFilter("Project", "*.xh4prj"));
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -56,9 +61,11 @@ namespace FocusTreeManager.Views
                     filename += ".xh4prj";
                 }
                 ((TextBox)sender).Text = filename;
-                ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                BindingExpression bindingExpression = ((TextBox)sender)
+                    .GetBindingExpression(TextBox.TextProperty);
+                bindingExpression?.UpdateSource();
             }
-            this.Activate();
+            Activate();
         }
     }
 }

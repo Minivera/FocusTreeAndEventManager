@@ -14,7 +14,7 @@ namespace FocusTreeManager.CodeStructures
     }
 
     /// <summary>
-    /// Class that store all tokens as a group of something =|<|> something else
+    /// Class that store all tokens as a group of something operator something else
     /// </summary>
     public class SyntaxGroup
     {
@@ -25,13 +25,13 @@ namespace FocusTreeManager.CodeStructures
         public object Operand { get; set; }
     }
 
-    static class Tokenizer
+    public static class Tokenizer
     {
-        static private readonly char[] delimiters_array = { '=', '<', '>', '{', '}' };
+        private static readonly char[] delimiters_array = { '=', '<', '>', '{', '}' };
 
-        static private char comment_char = '#';
+        private const char comment_char = '#';
 
-        static public object GroupTokensByBlocks(List<Token> tokens, bool first = true)
+        public static object GroupTokensByBlocks(List<Token> tokens, bool first = true)
         {
             List<SyntaxGroup> list = new List<SyntaxGroup>();
             //Check if the list contains anything and is the first recursive call
@@ -89,7 +89,7 @@ namespace FocusTreeManager.CodeStructures
             return list;
         }
 
-        static public List<Token> Tokenize(string text)
+        public static List<Token> Tokenize(string text)
         {
             List<Token> list = new List<Token>();
             //Split by new lines
@@ -103,7 +103,7 @@ namespace FocusTreeManager.CodeStructures
                     bool isFullyStringed = false;
                     bool isStartedComment = false;
                     string fullString = "";
-                    foreach (string item in line.Split(new char[] { ' ', '\t' }))
+                    foreach (string item in line.Split(' ', '\t'))
                     {
                         string word = item;
                         if (item.Contains(comment_char))
@@ -120,7 +120,7 @@ namespace FocusTreeManager.CodeStructures
                             {
                                 //Create the token and skip to the next work
                                 isFullyStringed = false;
-                                fullString = fullString + word.TrimEnd(new char[0]);
+                                fullString = fullString + word.TrimEnd();
                                 Token token = new Token
                                 {
                                     text = fullString,
@@ -153,7 +153,7 @@ namespace FocusTreeManager.CodeStructures
                     //If still fully string, but the line has ended
                     if (isFullyStringed)
                     {
-                        fullString = fullString.TrimEnd(new char[0]);
+                        fullString = fullString.TrimEnd();
                         Token token = new Token
                         {
                             text = fullString,
@@ -168,7 +168,7 @@ namespace FocusTreeManager.CodeStructures
             return list;
         }
 
-        static private List<Token> SubTokenize(string text, int line, int column)
+        private static IEnumerable<Token> SubTokenize(string text, int line, int column)
         {
             List<Token> list = new List<Token>();
             //If the text contains any delimiters
@@ -211,35 +211,29 @@ namespace FocusTreeManager.CodeStructures
         /// </summary>
         /// <param name="tokens">List of tokens to loop through</param>
         /// <returns>Position of the corresponding closing bracket, -1 if not found.</returns>
-        static private int getIndexOfClosingBracket(List<Token> tokens)
+        private static int getIndexOfClosingBracket(List<Token> tokens)
         {
             int noBrackets = 1;
             int i = 0;
             while (noBrackets > 0 && i < tokens.Count)
             {
-                if (tokens[i].text == "{")
+                switch (tokens[i].text)
                 {
-                    noBrackets++;
-                }
-                else if (tokens[i].text == "}")
-                {
-                    noBrackets--;
+                    case "{":
+                        noBrackets++;
+                        break;
+                    case "}":
+                        noBrackets--;
+                        break;
                 }
                 i++;
             }
             return i >= 1 ? i : -1;
         }
 
-        static private bool ContainsDelimiters(List<Token> tokens)
+        private static bool ContainsDelimiters(IEnumerable<Token> tokens)
         {
-            foreach (Token item in tokens)
-            {
-                if (item.text.IndexOfAny(delimiters_array) != -1)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return tokens.Any(item => item.text.IndexOfAny(delimiters_array) != -1);
         }
     }
 }

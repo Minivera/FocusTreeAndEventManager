@@ -1,12 +1,6 @@
-﻿using FocusTreeManager.Model;
-using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Windows;
 
 namespace FocusTreeManager
 {
@@ -17,94 +11,88 @@ namespace FocusTreeManager
         public string FileName { get; set; }
     }
 
-    static class Configurator
+    public static class Configurator
     {
         const string LOCALE_FILE_STRING = "/FocusTreeManager;component/Languages/";
 
-        static public string getLanguageFile()
+        public static string getLanguageFile()
         {
-            return LOCALE_FILE_STRING + FocusTreeManager.Properties.Settings.Default.Language + ".xaml";
+            return LOCALE_FILE_STRING + Properties.Settings.Default.Language + ".xaml";
         }  
         
-        static public string getLanguage()
+        public static string getLanguage()
         {
             return ConfigurationManager.AppSettings["Language"];
         } 
 
-        static public void setLanguage(string Language)
+        public static void setLanguage(string Language)
         {
-            FocusTreeManager.Properties.Settings.Default.Language = Language;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.Language = Language;
+            Properties.Settings.Default.Save();
         }
 
-        static public List<LanguageSelector> returnAllLanguages()
+        public static List<LanguageSelector> returnAllLanguages()
         {
-            List<LanguageSelector> list = new List<LanguageSelector>();
-            string Languages = FocusTreeManager.Properties.Resources.Languages;
-            foreach (string language in Languages.Split(','))
+            string Languages = Properties.Resources.Languages;
+            return Languages.Split(',').Select(language => new LanguageSelector
             {
-                list.Add(new LanguageSelector()
-                {
-                    FileName = language.Split(';')[0],
-                    Name = language.Split(';')[1]
-                });
-            }
-            return list;
+                FileName = language.Split(';')[0], Name = language.Split(';')[1]
+            }).ToList();
         }
 
-        static public void setGamePath(string path)
+        public static void setGamePath(string path)
         {
-            FocusTreeManager.Properties.Settings.Default.Path = path;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.Path = path;
+            Properties.Settings.Default.Save();
         }
 
-        static public string getGamePath()
+        public static string getGamePath()
         {
-            return FocusTreeManager.Properties.Settings.Default.Path;
+            return Properties.Settings.Default.Path;
         }
 
-        static public void setFirstStart()
+        public static void setFirstStart()
         {
-            FocusTreeManager.Properties.Settings.Default.IsFirstStart = true;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.IsFirstStart = true;
+            Properties.Settings.Default.Save();
         }
 
-        static public bool getFirstStart()
+        public static bool getFirstStart()
         {
-            return FocusTreeManager.Properties.Settings.Default.IsFirstStart;
+            return Properties.Settings.Default.IsFirstStart;
         }
 
-        static public void setScripterPreference(string preference)
+        public static void setScripterPreference(string preference)
         {
-            FocusTreeManager.Properties.Settings.Default.ScripterPreference = preference;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.ScripterPreference = preference;
+            Properties.Settings.Default.Save();
         }
 
-        static public string getScripterPreference()
+        public static string getScripterPreference()
         {
-            return FocusTreeManager.Properties.Settings.Default.ScripterPreference;
+            return Properties.Settings.Default.ScripterPreference;
         }
 
-        static public void setEditorShowStruct(bool preference)
+        public static void setEditorShowStruct(bool preference)
         {
-            FocusTreeManager.Properties.Settings.Default.EditorShowStruct = preference;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.EditorShowStruct = preference;
+            Properties.Settings.Default.Save();
         }
 
-        static public bool getEditorShowStruct()
+        public static bool getEditorShowStruct()
         {
-            return FocusTreeManager.Properties.Settings.Default.EditorShowStruct;
+            return Properties.Settings.Default.EditorShowStruct;
         }
 
-        static public void setEditorShowPlan(bool preference)
+        public static void setEditorShowPlan(bool preference)
         {
-            FocusTreeManager.Properties.Settings.Default.EditorShowPlan = preference;
-            FocusTreeManager.Properties.Settings.Default.Save();
+            Properties.Settings.Default.EditorShowPlan = preference;
+            Properties.Settings.Default.Save();
         }
 
-        static public bool getEditorShowPlan()
+        public static bool getEditorShowPlan()
         {
-            return FocusTreeManager.Properties.Settings.Default.EditorShowPlan;
+            return Properties.Settings.Default.EditorShowPlan;
         }
     }
 }

@@ -19,13 +19,12 @@ namespace FocusTreeManager.CodeStructures
 
         public CodeValue(string value)
         {
-            this.Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
+            Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
         }
 
         internal void Analyse(SyntaxGroup code, int line = -1)
         {
             //Can't analyse
-            return;
         }
 
         public CodeValue FindValue(string TagToFind)

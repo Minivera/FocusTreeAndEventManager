@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="FocusTreeManager.Views.FocusEditor"
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.FocusEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views" 
              xmlns:uc="clr-namespace:FocusTreeManager.Views.UserControls"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
@@ -103,7 +102,7 @@
                     AncestorType={x:Type UserControl}}, Path=DataContext}"
                 Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" 
                 IsDefault="True"/>
-        <Canvas Grid.ColumnSpan="2" Grid.RowSpan="9">
+        <Canvas Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="9">
             <Button Style="{DynamicResource MetroCircleButtonStyle}"
                     Width="36" x:Name="VisibleNameButton"
                     Height="35" Canvas.Left="328" Canvas.Top="37"
@@ -130,7 +129,8 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <local:Localizator x:Name="Localizator" Visibility="Hidden"></local:Localizator>
+            <uc:Localizator x:Name="Localizator" Visibility="Hidden"></uc:Localizator>
         </Canvas>
     </Grid>
 </UserControl>
+

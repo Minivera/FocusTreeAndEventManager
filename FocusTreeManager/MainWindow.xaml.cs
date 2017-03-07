@@ -15,7 +15,8 @@ using GalaSoft.MvvmLight;
 using System.IO;
 using FocusTreeManager.Helper;
 using Dragablz;
-using FocusTreeManager.DataContract;
+using FocusTreeManager.Model.TabModels;
+using FocusGrid = FocusTreeManager.Views.UserControls.FocusGrid;
 
 namespace FocusTreeManager
 {
@@ -44,19 +45,23 @@ namespace FocusTreeManager
             {
                 case "ShowAddFocus":
                     {
-                        ResourceDictionary resourceLocalization = new ResourceDictionary();
-                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        ResourceDictionary resourceLocalization = new ResourceDictionary
+                        {
+                            Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                        };
                         FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
-                        (new ViewModelLocator()).EditFocus.SetupFlyout(msg.Sender, ModeType.Create);
+                        new ViewModelLocator().EditFocus.SetupFlyout(msg.Sender, ModeType.Create);
                         FocusFlyout.IsOpen = true;
                         break;
                     }
                 case "ShowEditFocus":
                     {
-                        ResourceDictionary resourceLocalization = new ResourceDictionary();
-                        resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                        ResourceDictionary resourceLocalization = new ResourceDictionary
+                        {
+                            Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                        };
                         FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
-                        (new ViewModelLocator()).EditFocus.SetupFlyout(msg.Sender, ModeType.Edit);
+                        new ViewModelLocator().EditFocus.SetupFlyout(msg.Sender, ModeType.Edit);
                         FocusFlyout.IsOpen = true;
                         break;
                     }
@@ -73,7 +78,7 @@ namespace FocusTreeManager
                 case "HideProjectControl":
                     {
                         ProjectFlyout.IsOpen = false;
-                        ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Hidden;
+                        ProjectFlyout.CloseButtonVisibility = Visibility.Hidden;
                         break;
                     }
                 case "RefreshTabViewer":
@@ -94,42 +99,47 @@ namespace FocusTreeManager
             Application.Current.Shutdown();
         }
 
-        async private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MainViewModel Model = this.DataContext as MainViewModel;
-            if (Model.IsProjectExist)
+            MainViewModel Model = DataContext as MainViewModel;
+            //If the model or project do not exist, quit.
+            if (Model == null || !Model.IsProjectExist) return;
+            e.Cancel = true;
+            MessageDialogResult Result = await ShowSaveDialog();
+            switch (Result)
             {
-                e.Cancel = true;
-                MessageDialogResult Result = await ShowSaveDialog();
-                if (Result == MessageDialogResult.Affirmative)
-                {
-                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).Main, "SaveProject"));
+                case MessageDialogResult.Affirmative:
+                    Messenger.Default.Send(new NotificationMessage(this, 
+                        new ViewModelLocator().Main, "SaveProject"));
                     //Show Save dialog and quit
                     Application.Current.Shutdown();
-                }
-                else if (Result == MessageDialogResult.FirstAuxiliary)
-                {
+                    break;
+                case MessageDialogResult.FirstAuxiliary:
                     //Quit without saving
                     Application.Current.Shutdown();
-                }
+                    break;
             }
         }
 
-        async private Task<MessageDialogResult> ShowSaveDialog()
+        private async Task<MessageDialogResult> ShowSaveDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            string Title = resourceLocalization["Exit_Confirm_Title"] as string;
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            string title = resourceLocalization["Exit_Confirm_Title"] as string;
             string Message = resourceLocalization["Exit_Confirm"] as string;
-            MetroDialogSettings settings = new MetroDialogSettings();
-            settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
-            settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
-            settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Quit"] as string;
-            return await this.ShowMessageAsync(Title, Message, 
+            MetroDialogSettings settings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = resourceLocalization["Command_Save"] as string,
+                NegativeButtonText = resourceLocalization["Command_Cancel"] as string,
+                FirstAuxiliaryButtonText = resourceLocalization["Command_Quit"] as string
+            };
+            return await this.ShowMessageAsync(title, Message, 
                             MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
         }
 
-        async private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Settings view = new Settings();
             if (!Directory.Exists(Configurator.getGamePath() + @"\gfx\interface\"))
@@ -146,62 +156,68 @@ namespace FocusTreeManager
             }
         }
 
-        async private Task<MessageDialogResult> ShowWrongGameFolderDialog()
+        private async Task<MessageDialogResult> ShowWrongGameFolderDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            string Title = resourceLocalization["Application_Game_Folder_Not_Set_Header"] as string;
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            string title = resourceLocalization["Application_Game_Folder_Not_Set_Header"] as string;
             string Message = resourceLocalization["Application_Game_Folder_Not_Set"] as string;
-            return await this.ShowMessageAsync(Title, Message, MessageDialogStyle.Affirmative);
+            return await this.ShowMessageAsync(title, Message);
         }
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void ProjectButton_Click(object sender, RoutedEventArgs e)
         {
             ProjectFlyout.IsOpen = true;
-            ProjectFlyout.CloseButtonVisibility = System.Windows.Visibility.Visible;
+            ProjectFlyout.CloseButtonVisibility = Visibility.Visible;
         }
 
         //Drag with the mouse effect
 
-        private Point scrollMousePoint = new Point();
+        private Point scrollMousePoint;
 
         private double hOff = 1;
 
         private double vOff = 1;
 
-        private bool isMouseHold = false;
+        private bool isMouseHold;
 
         private void scrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //If we hit a focus or a scrollbar rather than an empty grid
-            if (((e.OriginalSource is FrameworkElement) && 
-                (((FrameworkElement)e.OriginalSource).DataContext is FocusModel ||
-                e.OriginalSource is Rectangle)))
+            FrameworkElement source = e.OriginalSource as FrameworkElement;
+            if (source != null && 
+                (source.DataContext is FocusModel ||
+                 e.OriginalSource is Rectangle))
             {
                 return;
             }
             ScrollViewer element = sender as ScrollViewer;
             isMouseHold = true;
             scrollMousePoint = e.GetPosition(element);
+            //If element could not be found
+            if (element == null) return;
             hOff = element.HorizontalOffset;
             vOff = element.VerticalOffset;
         }
 
         private void scrollViewer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isMouseHold)
-            {
-                ScrollViewer element = sender as ScrollViewer;
-                isMouseHold = false;
-                element.ReleaseMouseCapture();
-            }
+            //If the mouse is not held
+            if (!isMouseHold) return;
+            ScrollViewer element = sender as ScrollViewer;
+            isMouseHold = false;
+            element?.ReleaseMouseCapture();
         }
 
         private void ContentScroll_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -209,9 +225,13 @@ namespace FocusTreeManager
             if (isMouseHold)
             {
                 ScrollViewer element = sender as ScrollViewer;
+                //If the element could not be found
+                if (element == null) return;
                 element.CaptureMouse();
-                element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - e.GetPosition(element).X));
-                element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - e.GetPosition(element).Y));
+                element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - 
+                    e.GetPosition(element).X));
+                element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - 
+                    e.GetPosition(element).Y));
             }
         }
 
@@ -221,7 +241,7 @@ namespace FocusTreeManager
             {
                 return;
             }
-            foreach (var item in ((TabControl)e.Source).Items)
+            foreach (object item in ((TabControl)e.Source).Items)
             {
                 if (item is FocusGridModel)
                 {
@@ -240,18 +260,18 @@ namespace FocusTreeManager
             }
             if (e.AddedItems.Count > 0)
             {
-                var selectedTab = e.AddedItems[0];
+                object selectedTab = e.AddedItems[0];
                 if (selectedTab is FocusGridModel)
                 {
                     ((FocusGridModel)selectedTab).isShown = true;
-                    foreach (FocusGrid grid in UiHelper.FindVisualChildren<FocusGrid>(CentralTabControl))
+                    foreach (FocusGrid grid in UiHelper.FindVisualChildren<FocusGrid>(
+                        CentralTabControl))
                     {
-                        if (grid.DataContext == selectedTab)
-                        {
-                            grid.setupInternalFoci();
-                            ((FocusGridModel)selectedTab).RedrawGrid();
-                            break;
-                        }
+                        //If the grid is not the selected grid
+                        if (grid.DataContext != selectedTab) continue;
+                        grid.setupInternalFoci();
+                        ((FocusGridModel)selectedTab).RedrawGrid();
+                        break;
                     }
                 }
                 else if (selectedTab is EventModel)
@@ -264,19 +284,19 @@ namespace FocusTreeManager
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //If there is a command line argument
-            var args = Environment.GetCommandLineArgs();
+            string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1)
             {
-                var fileName = args[1];
+                string fileName = args[1];
                 if (File.Exists(fileName))
                 {
-                    var extension = System.IO.Path.GetExtension(fileName);
+                    string extension = System.IO.Path.GetExtension(fileName);
                     //If a file was opened and the fil is a project
                     if (extension == ".h4prj" || extension == ".xh4prj")
                     {
                         //Load it
-                        MainViewModel vm = this.DataContext as MainViewModel;
-                        vm.LoadProject(fileName);
+                        MainViewModel vm = DataContext as MainViewModel;
+                        vm?.LoadProject(fileName);
                     }
                 }
             }
@@ -291,12 +311,12 @@ namespace FocusTreeManager
             int RowsToAdd = 0;
             int ColumnsToAdd = 0;
             ScrollViewer scrollViewer = sender as ScrollViewer;
-            if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            if (scrollViewer?.VerticalOffset == scrollViewer?.ScrollableHeight)
             {
                 //Max Vertical
                 RowsToAdd++;
             }
-            if (scrollViewer.HorizontalOffset == scrollViewer.ScrollableWidth)
+            if (scrollViewer?.HorizontalOffset == scrollViewer?.ScrollableWidth)
             {
                 //Max horizontal
                 ColumnsToAdd++;

@@ -31,7 +31,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.Id, ref this.id, value);
+                Set<string>(() => Id, ref id, value);
             }
         }
 
@@ -46,7 +46,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<EventType>(() => this.Type, ref this.type, value);
+                Set<EventType>(() => Type, ref type, value);
             }
         }
 
@@ -61,7 +61,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<string>(() => this.Picture, ref this.picture, value);
+                Set<string>(() => Picture, ref picture, value);
                 RaisePropertyChanged(() => ImagePath);
             }
         }
@@ -85,7 +85,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<bool>(() => this.IsMajor, ref this.isMajor, value);
+                Set<bool>(() => IsMajor, ref isMajor, value);
             }
         }
 
@@ -100,7 +100,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<bool>(() => this.IsTriggeredOnly, ref this.isTriggeredOnly, value);
+                Set<bool>(() => IsTriggeredOnly, ref isTriggeredOnly, value);
             }
         }
 
@@ -115,7 +115,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<bool>(() => this.IsHidden, ref this.isHidden, value);
+                Set<bool>(() => IsHidden, ref isHidden, value);
             }
         }
         
@@ -130,7 +130,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<bool>(() => this.IsFiredOnce, ref this.isFiredOnce, value);
+                Set<bool>(() => IsFiredOnce, ref isFiredOnce, value);
             }
         }
 
@@ -145,7 +145,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Script>(() => this.InternalScript, ref this.internalScript, value);
+                Set<Script>(() => InternalScript, ref internalScript, value);
             }
         }
 

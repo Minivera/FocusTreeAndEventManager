@@ -48,8 +48,6 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public LocaleModel() { }
-
         #region Undo/Redo
 
         public object GetUndoRoot()

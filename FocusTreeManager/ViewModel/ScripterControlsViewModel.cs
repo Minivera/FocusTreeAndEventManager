@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Linq;
 using System.Windows.Media;
 using System.Xml;
 
@@ -17,7 +17,7 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ScripterControlsViewModel : ViewModelBase
     {
-        const string XML_FILES_PATH = @"Common\ScripterControls\";
+        private const string XML_FILES_PATH = @"Common\ScripterControls\";
 
         public enum ScripterType
         {
@@ -44,62 +44,32 @@ namespace FocusTreeManager.ViewModel
 
         public static readonly Brush[] CONDITIONS_COLORS = 
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#b71c1c")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#f44336")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffffff"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#b71c1c"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#f44336"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff")
         };
 
         public static readonly Brush[] BLOCKS_COLORS = 
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#3f51b5")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#1a237e")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffffff"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#3f51b5"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#1a237e"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff")
         };
 
         public static readonly Brush[] ASSIGNATIONS_COLORS = 
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffeb3b")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#f57f17")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffeb3b"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#f57f17"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#000000")
         };
 
-        private ObservableCollection<AssignationModel> conditions;
+        public ObservableCollection<AssignationModel> Conditions { get; }
 
-        public ObservableCollection<AssignationModel> Conditions
-        {
-            get
-            {
-                return conditions;
-            }
-        }
+        public ObservableCollection<AssignationModel> Blocks { get; }
 
-        private ObservableCollection<AssignationModel> blocks;
+        public ObservableCollection<AssignationModel> Assignations { get; }
 
-        public ObservableCollection<AssignationModel> Blocks
-        {
-            get
-            {
-                return blocks;
-            }
-        }
-
-        private ObservableCollection<AssignationModel> assigantions;
-
-        public ObservableCollection<AssignationModel> Assignations
-        {
-            get
-            {
-                return assigantions;
-            }
-        }
-
-        public List<ControlInfo> CommonControls
-        {
-            get
-            {
-                return getCommonControls();
-            }
-        }
+        public List<ControlInfo> CommonControls => getCommonControls();
 
         private ScripterType currentType = ScripterType.Generic;
 
@@ -121,105 +91,104 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public ScripterControlsViewModel()
         {
-            conditions = new ObservableCollection<AssignationModel>();
-            blocks = new ObservableCollection<AssignationModel>();
-            assigantions = new ObservableCollection<AssignationModel>();
+            Conditions = new ObservableCollection<AssignationModel>();
+            Blocks = new ObservableCollection<AssignationModel>();
+            Assignations = new ObservableCollection<AssignationModel>();
             BuildCommonControls();
         }
 
         private void BuildCommonControls()
         {
-            conditions.Clear();
-            blocks.Clear();
-            assigantions.Clear();
+            Conditions.Clear();
+            Blocks.Clear();
+            Assignations.Clear();
             //Load the required XMl File
             XmlDocument doc = new XmlDocument();
             doc.Load(XML_FILES_PATH + currentType.ToString() + ".xml");
             //Load all the children of the root node
-            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Assignations/Control"))
+            XmlNodeList xmlNodeList = doc.DocumentElement?.SelectNodes("//Assignations/Control");
+            if (xmlNodeList == null) return;
+            foreach (XmlNode node in xmlNodeList)
             {
-                assigantions.Add(new AssignationModel()
+                if (node.Attributes != null)
                 {
-                    LocalizationKey = node.Attributes["Text"].Value,
-                    Code = node.Attributes["Code"].Value,
-                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
-                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
-                    BackgroundColor = ASSIGNATIONS_COLORS[0],
-                    BorderColor = ASSIGNATIONS_COLORS[1],
-                    Color = ASSIGNATIONS_COLORS[2],
-                });
+                    Assignations.Add(new AssignationModel()
+                    {
+                        LocalizationKey = node.Attributes["Text"].Value,
+                        Code = node.Attributes["Code"].Value,
+                        IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                        CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                        BackgroundColor = ASSIGNATIONS_COLORS[0],
+                        BorderColor = ASSIGNATIONS_COLORS[1],
+                        Color = ASSIGNATIONS_COLORS[2],
+                    });
+                }
             }
-            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Blocks/Control"))
+            XmlNodeList selectNodes = doc.DocumentElement.SelectNodes("//Blocks/Control");
+            if (selectNodes != null)
             {
-                conditions.Add(new AssignationModel()
+                foreach (XmlNode node in selectNodes)
                 {
-                    LocalizationKey = node.Attributes["Text"].Value,
-                    Code = node.Attributes["Code"].Value,
-                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
-                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
-                    BackgroundColor = CONDITIONS_COLORS[0],
-                    BorderColor = CONDITIONS_COLORS[1],
-                    Color = CONDITIONS_COLORS[2],
-                });
+                    if (node.Attributes != null)
+                    {
+                        Conditions.Add(new AssignationModel()
+                        {
+                            LocalizationKey = node.Attributes["Text"].Value,
+                            Code = node.Attributes["Code"].Value,
+                            IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                            CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                            BackgroundColor = CONDITIONS_COLORS[0],
+                            BorderColor = CONDITIONS_COLORS[1],
+                            Color = CONDITIONS_COLORS[2],
+                        });
+                    }
+                }
             }
-            foreach (XmlNode node in doc.DocumentElement.SelectNodes("//Conditions/Control"))
+            XmlNodeList nodeList = doc.DocumentElement.SelectNodes("//Conditions/Control");
+            if (nodeList != null)
             {
-                Blocks.Add(new AssignationModel()
+                foreach (XmlNode node in nodeList)
                 {
-                    LocalizationKey = node.Attributes["Text"].Value,
-                    Code = node.Attributes["Code"].Value,
-                    IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
-                    CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
-                    BackgroundColor = BLOCKS_COLORS[0],
-                    BorderColor = BLOCKS_COLORS[1],
-                    Color = BLOCKS_COLORS[2],
-                });
+                    if (node.Attributes != null)
+                    {
+                        Blocks.Add(new AssignationModel()
+                        {
+                            LocalizationKey = node.Attributes["Text"].Value,
+                            Code = node.Attributes["Code"].Value,
+                            IsNotEditable = Convert.ToBoolean(node.Attributes["IsNotEditable"].Value),
+                            CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
+                            BackgroundColor = BLOCKS_COLORS[0],
+                            BorderColor = BLOCKS_COLORS[1],
+                            Color = BLOCKS_COLORS[2],
+                        });
+                    }
+                }
             }
         }
 
         private List<ControlInfo> getCommonControls()
         {
-            List<ControlInfo> array = new List<ControlInfo>();
-            foreach (AssignationModel model in assigantions)
-            {
-                //If known control
-                if (model.IsNotEditable)
+            List<ControlInfo> array = (from model in Assignations
+                where model.IsNotEditable
+                select new ControlInfo()
                 {
-                    array.Add(new ControlInfo()
-                    {
-                        control = model.Code.Split('=')[0].Trim(),
-                        controlName = model.LocalizationKey,
-                        controlType = ControlType.Assignation
-                    });
-                }
-            }
-            foreach (AssignationModel model in blocks)
-            {
-                //If known control
-                if (model.IsNotEditable)
+                    control = model.Code.Split('=')[0].Trim(),
+                    controlName = model.LocalizationKey, controlType = ControlType.Assignation
+                }).ToList();
+            array.AddRange(from model in Blocks
+                where model.IsNotEditable
+                select new ControlInfo()
                 {
-                    array.Add(new ControlInfo()
-                    {
-                        control = model.Code.Split('=')[0].Trim(),
-                        controlName = model.LocalizationKey,
-                        controlType = ControlType.Block
-                    });
-                }
-            }
-            foreach (AssignationModel model in conditions)
-            {
-                //If known control
-                if (model.IsNotEditable)
+                    control = model.Code.Split('=')[0].Trim(),
+                    controlName = model.LocalizationKey, controlType = ControlType.Block
+                });
+            array.AddRange(from model in Conditions
+                where model.IsNotEditable
+                select new ControlInfo()
                 {
-                    array.Add(new ControlInfo()
-                    {
-                        control = model.Code.Split('=')[0].Trim(),
-                        controlName = model.LocalizationKey,
-                        controlType = ControlType.Condition
-                    });
-                }
-
-            }
+                    control = model.Code.Split('=')[0].Trim(),
+                    controlName = model.LocalizationKey, controlType = ControlType.Condition
+                });
             return array;
         }
     }

@@ -6,10 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 
 namespace FocusTreeManager.Helper
@@ -18,26 +15,27 @@ namespace FocusTreeManager.Helper
     {
         private static readonly Brush[] CONDITIONS_COLORS =
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#b71c1c")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#f44336")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffffff"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#b71c1c"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#f44336"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff")
         };
 
         private static readonly Brush[] BLOCKS_COLORS =
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#3f51b5")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#1a237e")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffffff"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#3f51b5"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#1a237e"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff")
         };
 
         private static readonly Brush[] ASSIGNATIONS_COLORS =
         {
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#ffeb3b")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#f57f17")),
-            (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"))
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#ffeb3b"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#f57f17"),
+            (SolidColorBrush)new BrushConverter().ConvertFrom("#000000")
         };
 
-        public static List<AssignationModel> TransformScriptToModels(Script script, RelayCommand<object> deleteCommand)
+        public static List<AssignationModel> TransformScriptToModels(Script script, 
+            RelayCommand<object> deleteCommand)
         {
             List<AssignationModel> listModels = new List<AssignationModel>();
             if (script.Code == null)
@@ -60,7 +58,6 @@ namespace FocusTreeManager.Helper
                 {
                     //TODO: Add language support
                     ErrorLogger.Instance.AddLogLine("Unknown error in script");
-                    continue;
                 }
             }
             return listModels;
@@ -68,30 +65,31 @@ namespace FocusTreeManager.Helper
 
         private static AssignationModel BlockToModel(ICodeStruct currentBlock, RelayCommand<object> deleteCommand)
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             //Should never loop inside something other than an assignation, check type
-            if (currentBlock is Assignation)
+            Assignation assignation = currentBlock as Assignation;
+            if (assignation != null)
             {
-                Assignation block = currentBlock as Assignation;
+                Assignation block = assignation;
                 //Check if simply empty, consider an empty block
                 if (block.Value == null)
                 {
                     //Simple assignation, return corresponding model
-                    return new AssignationModel()
+                    return new AssignationModel
                     {
                         BackgroundColor = BLOCKS_COLORS[0],
                         BorderColor = BLOCKS_COLORS[1],
                         Color = BLOCKS_COLORS[2],
                         IsNotEditable = false,
                         CanHaveChild = true,
-                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator + " {}",
+                        Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " 
+                            + block.Operator + " {}",
                         LocalizationKey = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
                     };
                 }
                 //check if a code value
-                if (block.Value is CodeValue)
+                CodeValue value = block.Value as CodeValue;
+                if (value != null)
                 {
                     //Simple assignation, return corresponding model
                     return new AssignationModel()
@@ -102,14 +100,15 @@ namespace FocusTreeManager.Helper
                         IsNotEditable = false,
                         CanHaveChild = false,
                         Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") + " " + block.Operator
-                                + " " + Regex.Replace(((CodeValue)block.Value).Value, @"\t|\n|\r|\s", ""),
+                                + " " + Regex.Replace(value.Value, @"\t|\n|\r|\s", ""),
                         LocalizationKey = "Scripter_Assignation_Custom",
                         DeleteNodeCommand = deleteCommand
                     };
                     //Ignore childs even if there is some
                 }
                 //Otherwise, the child is a codeblock
-                else if (block.Value is CodeBlock)
+                CodeBlock codeBlock = block.Value as CodeBlock;
+                if (codeBlock != null)
                 {
                     AssignationModel newAssignation = new AssignationModel()
                     {
@@ -119,25 +118,23 @@ namespace FocusTreeManager.Helper
                         IsNotEditable = false,
                         CanHaveChild = true,
                         Code = Regex.Replace(block.Assignee, @"\t|\n|\r|\s", "") +
-                            " " + block.Operator + " {}",
+                               " " + block.Operator + " {}",
                         LocalizationKey = getAssignationName(block.Assignee),
                         DeleteNodeCommand = deleteCommand
                     };
-                    foreach (ICodeStruct code in ((CodeBlock)block.Value).Code)
+                    foreach (ICodeStruct code in codeBlock.Code)
                     {
                         newAssignation.Childrens.Add(BlockToModel(code, deleteCommand));
                     }
                     return newAssignation;
                 }
-                else
-                {
-                    //An error in the code, log it
-                    RecursiveCodeException e = new RecursiveCodeException();
-                    throw e.AddToRecursiveChain("Invalid assignation", block.Assignee, block.Line.ToString());
-                }
+                //An error in the code, log it
+                RecursiveCodeException e = new RecursiveCodeException();
+                throw e.AddToRecursiveChain("Invalid assignation", block.Assignee, 
+                    block.Line.ToString());
             }
             //If the current block is a code Value (Corrsponding to block = { Value }
-            else if (currentBlock is CodeValue)
+            if (currentBlock is CodeValue)
             {
                 //Print the value
                 return new AssignationModel()
@@ -157,11 +154,9 @@ namespace FocusTreeManager.Helper
         
         private static string getAssignationName(string part)
         {
-            part = Regex.Replace(part, @"\t|\n|\r", String.Empty);
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+            part = Regex.Replace(part, @"\t|\n|\r", string.Empty);
             foreach (ScripterControlsViewModel.ControlInfo item in 
-                (new ViewModelLocator()).ScripterControls.CommonControls)
+                new ViewModelLocator().ScripterControls.CommonControls)
             {
                 //If we can find a control with that particular name
                 if (item.control == part)
@@ -175,23 +170,23 @@ namespace FocusTreeManager.Helper
 
         private static Brush[] getColorArray(string part)
         {
-            part = Regex.Replace(part, @"\t|\n|\r", String.Empty);
+            part = Regex.Replace(part, @"\t|\n|\r", string.Empty);
             foreach (ScripterControlsViewModel.ControlInfo item in
-                (new ViewModelLocator()).ScripterControls.CommonControls)
+                new ViewModelLocator().ScripterControls.CommonControls)
             {
                 //If we can find a control with that particular name
-                if (item.control == part)
+                if (item.control != part) continue;
+                //Check type and return the correct color array
+                switch (item.controlType)
                 {
-                    //Check type and return the correct color array
-                    switch (item.controlType)
-                    {
-                        case ScripterControlsViewModel.ControlType.Assignation:
-                            return ASSIGNATIONS_COLORS;
-                        case ScripterControlsViewModel.ControlType.Block:
-                            return BLOCKS_COLORS;
-                        case ScripterControlsViewModel.ControlType.Condition:
-                            return CONDITIONS_COLORS;
-                    }
+                    case ScripterControlsViewModel.ControlType.Assignation:
+                        return ASSIGNATIONS_COLORS;
+                    case ScripterControlsViewModel.ControlType.Block:
+                        return BLOCKS_COLORS;
+                    case ScripterControlsViewModel.ControlType.Condition:
+                        return CONDITIONS_COLORS;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             //Otherwise, return block brush
@@ -217,7 +212,6 @@ namespace FocusTreeManager.Helper
                 {
                     //TODO: Add language support
                     ErrorLogger.Instance.AddLogLine("Unknown error in script");
-                    continue;
                 }
             }
             return newScript;
@@ -246,8 +240,8 @@ namespace FocusTreeManager.Helper
                     };
                 }
                 //If contains lesser than, but also does not contains a block
-                else if (model.Code.Contains("<") &&
-                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                else if (model.Code.Contains("<") && !model.Code.Contains("{") 
+                    && !model.Code.Contains("}"))
                 {
                     //If yes, assignation
                     return new Assignation(level)
@@ -258,8 +252,8 @@ namespace FocusTreeManager.Helper
                     };
                 }
                 //If contains bigger than, but also does not contains a block
-                else if (model.Code.Contains(">") &&
-                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                else if (model.Code.Contains(">") && !model.Code.Contains("{") 
+                    && !model.Code.Contains("}"))
                 {
                     //If yes, assignation
                     return new Assignation(level)
@@ -285,61 +279,52 @@ namespace FocusTreeManager.Helper
                 }
                 return newBlock;
             }
-            else
+            //Should be a code value, since there is no children
+            //Check if it contains an equal, but no code block
+            if (model.Code.Contains("=") && !model.Code.Contains("{") && !model.Code.Contains("}"))
             {
-                //Should be a code value, since there is no children
-                //Check if it contains an equal, but no code block
-                if (model.Code.Contains("=") && 
-                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
+                //If yes, assignation
+                return new Assignation(level)
                 {
-                    //If yes, assignation
-                    return new Assignation(level)
-                    {
-                        Assignee = model.Code.Split('=')[0].Trim(),
-                        Operator = "=",
-                        Value = new CodeValue(model.Code.Split('=')[1].Trim())
-                    };
-                }
-                //If contains lesser than, but also does not contains a block
-                else if (model.Code.Contains("<") &&
-                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
-                {
-                    //If yes, assignation
-                    return new Assignation(level)
-                    {
-                        Assignee = model.Code.Split('<')[0].Trim(),
-                        Operator = "<",
-                        Value = new CodeValue(model.Code.Split('<')[1].Trim())
-                    };
-                }
-                //If contains bigger than, but also does not contains a block
-                else if (model.Code.Contains(">") &&
-                    (!model.Code.Contains("{") && !model.Code.Contains("}")))
-                {
-                    //If yes, assignation
-                    return new Assignation(level)
-                    {
-                        Assignee = model.Code.Split('>')[0].Trim(),
-                        Operator = ">",
-                        Value = new CodeValue(model.Code.Split('>')[1].Trim())
-                    };
-                }
-                //If contains equals, but also contains a block
-                else if (model.Code.Contains("="))
-                {
-                    //Empty code block, create as such
-                    return new Assignation(level)
-                    {
-                        Assignee = model.Code.Split('=')[0].Trim(),
-                        Operator = "="
-                    };
-                }
-                else
-                {
-                    //Code value in block 
-                    return new CodeValue(model.Code);
-                }
+                    Assignee = model.Code.Split('=')[0].Trim(),
+                    Operator = "=",
+                    Value = new CodeValue(model.Code.Split('=')[1].Trim())
+                };
             }
+            //If contains lesser than, but also does not contains a block
+            if (model.Code.Contains("<") && !model.Code.Contains("{") && !model.Code.Contains("}"))
+            {
+                //If yes, assignation
+                return new Assignation(level)
+                {
+                    Assignee = model.Code.Split('<')[0].Trim(),
+                    Operator = "<",
+                    Value = new CodeValue(model.Code.Split('<')[1].Trim())
+                };
+            }
+            //If contains bigger than, but also does not contains a block
+            if (model.Code.Contains(">") && !model.Code.Contains("{") && !model.Code.Contains("}"))
+            {
+                //If yes, assignation
+                return new Assignation(level)
+                {
+                    Assignee = model.Code.Split('>')[0].Trim(),
+                    Operator = ">",
+                    Value = new CodeValue(model.Code.Split('>')[1].Trim())
+                };
+            }
+            //If contains equals, but also contains a block
+            if (model.Code.Contains("="))
+            {
+                //Empty code block, create as such
+                return new Assignation(level)
+                {
+                    Assignee = model.Code.Split('=')[0].Trim(),
+                    Operator = "="
+                };
+            }
+            //Code value in block 
+            return new CodeValue(model.Code);
         }
     }
 }

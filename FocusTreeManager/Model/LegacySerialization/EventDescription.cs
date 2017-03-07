@@ -21,7 +21,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Script>(() => this.InternalScript, ref this.internalScript, value);
+                Set<Script>(() => InternalScript, ref internalScript, value);
             }
         }
 

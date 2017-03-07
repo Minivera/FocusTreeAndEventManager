@@ -1,32 +1,20 @@
-﻿using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
+using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class ScripterControls : UserControl
     {
         public static readonly DependencyProperty ScripterTypeProperty =
-        DependencyProperty.Register("CurrentType", typeof(ScripterType), typeof(ScripterControls),
-        new UIPropertyMetadata(ScripterType.Generic));
+        DependencyProperty.Register("CurrentType", typeof(ScripterControlsViewModel.ScripterType), typeof(ScripterControls),
+        new UIPropertyMetadata(ScripterControlsViewModel.ScripterType.Generic));
 
-        public ScripterType CurrentType
+        public ScripterControlsViewModel.ScripterType CurrentType
         {
-            get { return (ScripterType)GetValue(ScripterTypeProperty); }
+            get { return (ScripterControlsViewModel.ScripterType)GetValue(ScripterTypeProperty); }
             set { SetValue(ScripterTypeProperty, value); }
         }
 
@@ -55,9 +43,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
     }
 }

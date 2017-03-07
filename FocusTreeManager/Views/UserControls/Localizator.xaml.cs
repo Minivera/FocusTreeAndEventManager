@@ -1,11 +1,11 @@
-﻿using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class Localizator : UserControl
     {
@@ -21,24 +21,33 @@ namespace FocusTreeManager.Views
             if (msg.Notification == "CloseLocalizator")
             {
                 Storyboard sb = Resources["HideRight"] as Storyboard;
-                sb.Begin(this);
-                this.Visibility = Visibility.Hidden;
+                sb?.Begin(this);
+                Visibility = Visibility.Hidden;
             }
         }
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         public void Show()
         {
-            this.Visibility = Visibility.Visible;
+            Visibility = Visibility.Visible;
             Storyboard sb = Resources["ShowRight"] as Storyboard;
-            sb.Begin(this);
-            this.Focus();
+            sb?.Begin(this);
+            Focus();
+        }
+
+        public void Hide()
+        {
+            Storyboard sb = Resources["HideRight"] as Storyboard;
+            sb?.Begin(this);
+            Visibility = Visibility.Hidden;
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
@@ -50,21 +59,22 @@ namespace FocusTreeManager.Views
 
         private void TextboxLocale_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Return)
+            switch (e.Key)
             {
-                Storyboard sb = Resources["HideRight"] as Storyboard;
-                sb.Begin(this);
-                this.Visibility = Visibility.Hidden;
-                e.Handled = true;
-                LocalizatorViewModel vm = this.DataContext as LocalizatorViewModel;
-                vm.OkCommand.Execute(null);
-            }
-            else if (e.Key == System.Windows.Input.Key.Escape)
-            {
-                Storyboard sb = Resources["HideRight"] as Storyboard;
-                sb.Begin(this);
-                this.Visibility = Visibility.Hidden;
-                e.Handled = true;
+                case System.Windows.Input.Key.Return:
+                {
+                    Hide();
+                    e.Handled = true;
+                    LocalizatorViewModel vm = DataContext as LocalizatorViewModel;
+                    vm?.OkCommand.Execute(null);
+                    break;
+                }
+                case System.Windows.Input.Key.Escape:
+                {
+                    Hide();
+                    e.Handled = true;
+                    break;
+                }
             }
         }
     }

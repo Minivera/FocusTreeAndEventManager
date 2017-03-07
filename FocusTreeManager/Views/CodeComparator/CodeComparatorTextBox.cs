@@ -1,34 +1,31 @@
 ﻿using DiffPlex.DiffBuilder.Model;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
-using System;
 
 namespace FocusTreeManager.Views.CodeComparator
 {
     public class CodeComparatorTextBox : StackPanel
     {
-        const int MAX_LINE_TO_SKIP = 25;
+        private const int MAX_LINE_TO_SKIP = 25;
 
-        const string ADDED_LINE_TEXT = "+ ";
+        private const string ADDED_LINE_TEXT = "+ ";
 
         private readonly Brush ADDED_LINE_COLOR = (SolidColorBrush)
-                        (new BrushConverter().ConvertFrom("#00c853"));
+                        new BrushConverter().ConvertFrom("#00c853");
 
-        const string CHANGED_LINE_TEXT = "* ";
+        private const string CHANGED_LINE_TEXT = "* ";
 
         private readonly Brush CHANGED_LINE_COLOR = (SolidColorBrush)
-                        (new BrushConverter().ConvertFrom("#ffd600"));
+                        new BrushConverter().ConvertFrom("#ffd600");
 
-        const string DELETED_LINE_TEXT = "- ";
+        private const string DELETED_LINE_TEXT = "- ";
 
         private readonly Brush DELETED_LINE_COLOR = (SolidColorBrush)
-                        (new BrushConverter().ConvertFrom("#d50000"));
+                        new BrushConverter().ConvertFrom("#d50000");
 
-        const string NOTHING_LINE_TEXT = "  ";
+        private const string NOTHING_LINE_TEXT = "  ";
 
         public static readonly DependencyProperty DiffModelProperty =
         DependencyProperty.Register("DiffModel", typeof(DiffPaneModel), 
@@ -44,14 +41,7 @@ namespace FocusTreeManager.Views.CodeComparator
                                              DependencyPropertyChangedEventArgs e)
         {
             CodeComparatorTextBox textbox = sender as CodeComparatorTextBox;
-            if (textbox != null)
-            {
-                textbox.CreateFlowDocumentFromDiff(e.NewValue as DiffPaneModel);
-            }
-        }
-
-        public CodeComparatorTextBox()
-        {
+            textbox?.CreateFlowDocumentFromDiff(e.NewValue as DiffPaneModel);
         }
 
         private void CreateFlowDocumentFromDiff(DiffPaneModel model)
@@ -102,7 +92,10 @@ namespace FocusTreeManager.Views.CodeComparator
                             Children.Add(CreateDocumentRow(row, DELETED_LINE_TEXT + diff.Text,
                                 DELETED_LINE_COLOR));
                             break;
-                        default:
+                        case ChangeType.Unchanged:
+                            Children.Add(CreateDocumentRow(row, NOTHING_LINE_TEXT + diff.Text));
+                            break;
+                        case ChangeType.Imaginary:
                             Children.Add(CreateDocumentRow(row, NOTHING_LINE_TEXT + diff.Text));
                             break;
                     }
@@ -113,11 +106,11 @@ namespace FocusTreeManager.Views.CodeComparator
             {
                 //Write the final number of line we skipped
                 //TODO: Add language support
-                Children.Add(CreateDocumentRow(row, "Skipped " + skipCount.ToString() + " lines."));
+                Children.Add(CreateDocumentRow(row, "Skipped " + skipCount + " lines."));
             }
         }
 
-        private bool NoChangeForNextTenRows(DiffPiece current, DiffPaneModel model)
+        private static bool NoChangeForNextTenRows(DiffPiece current, DiffPaneModel model)
         {
             int i = 0;
             foreach (DiffPiece diff in model.Lines.SkipWhile(x => x != current).Skip(1))
@@ -127,7 +120,7 @@ namespace FocusTreeManager.Views.CodeComparator
                 {
                     return false;
                 }
-                else if(i >= MAX_LINE_TO_SKIP)
+                if(i >= MAX_LINE_TO_SKIP)
                 {
                     return true;
                 }
@@ -136,10 +129,9 @@ namespace FocusTreeManager.Views.CodeComparator
             return true;
         }
 
-        private UIElement CreateDocumentRow(int row, string text, Brush color = null)
+        private static UIElement CreateDocumentRow(int row, string text, Brush color = null)
         {
-            StackPanel container = new StackPanel();
-            container.Orientation = Orientation.Horizontal;
+            StackPanel container = new StackPanel {Orientation = Orientation.Horizontal};
             container.Children.Add(new TextBlock()
             {
                 Text = row.ToString(),

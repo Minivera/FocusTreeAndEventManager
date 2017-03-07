@@ -191,3 +191,14 @@
 - The focus icon will now refresh properly when changed.
 - Error dawg will now properly show itself when importing a syntax incorrect script.
 (The original changelog was longer, but major git issues caused it to disappear.)
+
+***********************
+*       Beta_2i       *
+***********************
+- Improved code readability and the number of steps for certain operations, which should improve 
+the performance slightly.
+- All images are now loaded with the app rather than when requested, which should help performance.
+- A small loading cursor will now display for long tasks, though performance is still an issue.
+- Clicking on the bubble icon again will now hide the localizator.
+- Created a test project that will test every part of the application automatically, saving time and preventing bugs.
+- Fixed various minor issues found by the testing

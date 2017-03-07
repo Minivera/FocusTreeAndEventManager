@@ -1,6 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures;
 using FocusTreeManager.CodeStructures.CodeExceptions;
-using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls.Dialogs;
@@ -9,14 +8,15 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.ViewModel
 {
     public class FileManagerViewModel : ViewModelBase
     {
-        private IDialogCoordinator coordinator;
+        private readonly IDialogCoordinator coordinator;
 
-        private ObservableObject file = null;
+        private ObservableObject file;
 
         public ObservableObject File
         {
@@ -57,18 +57,22 @@ namespace FocusTreeManager.ViewModel
             File = null;
             try
             {
-                var dialog = new CommonOpenFileDialog();
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                dialog.Title = resourceLocalization["Add_Game_File"] as string;
-                dialog.InitialDirectory = Configurator.getGamePath();
-                dialog.AddToMostRecentlyUsedList = false;
-                dialog.AllowNonFileSystemItems = false;
-                dialog.DefaultDirectory = "C:";
-                dialog.EnsureFileExists = true;
-                dialog.EnsurePathExists = true;
-                dialog.EnsureReadOnly = false;
-                dialog.EnsureValidNames = true;
+                ResourceDictionary resourceLocalization = new ResourceDictionary
+                {
+                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                };
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                {
+                    Title = resourceLocalization["Add_Game_File"] as string,
+                    InitialDirectory = Configurator.getGamePath(),
+                    AddToMostRecentlyUsedList = false,
+                    AllowNonFileSystemItems = false,
+                    DefaultDirectory = "C:",
+                    EnsureFileExists = true,
+                    EnsurePathExists = true,
+                    EnsureReadOnly = false,
+                    EnsureValidNames = true
+                };
                 dialog.Filters.Add(new CommonFileDialogFilter("Scripts", "*.txt"));
                 dialog.Filters.Add(new CommonFileDialogFilter("Localization", "*.yml"));
                 dialog.Filters.Add(new CommonFileDialogFilter("All", "*.*"));
@@ -79,7 +83,7 @@ namespace FocusTreeManager.ViewModel
                     if (Path.GetExtension(dialog.FileName) == ".yml")
                     {
                         File = Parsers.LocalisationParser.CreateLocaleFromFile(dialog.FileName);
-                        ((LocalisationModel)File).FileInfo = new DataContract.FileInfo()
+                        ((LocalisationModel)File).FileInfo = new DataContract.FileInfo
                         {
                             Filename = dialog.FileName,
                             LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
@@ -95,8 +99,9 @@ namespace FocusTreeManager.ViewModel
                             //If a focus tree
                             if (script.FindAssignation("focus_tree") != null)
                             {
-                                File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName, script);
-                                ((FocusGridModel)File).FileInfo = new DataContract.FileInfo()
+                                File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName, 
+                                    script);
+                                ((FocusGridModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
                                     LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
@@ -106,8 +111,9 @@ namespace FocusTreeManager.ViewModel
                             else if (script.FindAssignation("country_event") != null ||
                                      script.FindAssignation("news_event") != null)
                             {
-                                File = Parsers.EventParser.CreateEventFromScript(dialog.FileName, script);
-                                ((EventTabModel)File).FileInfo = new DataContract.FileInfo()
+                                File = Parsers.EventParser.CreateEventFromScript(dialog.FileName, 
+                                    script);
+                                ((EventTabModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
                                     LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
@@ -117,7 +123,7 @@ namespace FocusTreeManager.ViewModel
                             else
                             {
                                 File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
-                                ((ScriptModel)File).FileInfo = new DataContract.FileInfo()
+                                ((ScriptModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
                                     LastModifiedDate = System.IO.File.GetLastWriteTime(dialog.FileName)
@@ -126,9 +132,11 @@ namespace FocusTreeManager.ViewModel
                         }
                         catch (Exception)
                         {
-                            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), 
+                                UriKind.Relative);
                             string Title = resourceLocalization["Application_Error"] as string;
-                            string Message = resourceLocalization["Application_Script_Fallback"] as string;
+                            string Message = resourceLocalization["Application_Script_Fallback"] 
+                                as string;
                             coordinator.ShowMessageAsync(this, Title, Message);
                             //If it crashed, it is possible it was a generic file
                             File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
@@ -140,8 +148,10 @@ namespace FocusTreeManager.ViewModel
             }
             catch (SyntaxException e)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                ResourceDictionary resourceLocalization = new ResourceDictionary
+                {
+                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                };
                 string Title = resourceLocalization["Application_Error"] as string;
                 string Message = resourceLocalization["Application_Error_Script"] as string;
                 coordinator.ShowMessageAsync(this, Title, Message);
@@ -149,8 +159,10 @@ namespace FocusTreeManager.ViewModel
             }
             catch (Exception)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
+                ResourceDictionary resourceLocalization = new ResourceDictionary
+                {
+                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+                };
                 string Title = resourceLocalization["Application_Error"] as string;
                 string Message = resourceLocalization["Application_Error_Script"] as string;
                 coordinator.ShowMessageAsync(this, Title, Message);
@@ -196,7 +208,7 @@ namespace FocusTreeManager.ViewModel
 
         private void Close()
         {
-            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            foreach (Window window in Application.Current.Windows)
             {
                 if (window.DataContext == this)
                 {
@@ -207,7 +219,7 @@ namespace FocusTreeManager.ViewModel
 
         private void Activate()
         {
-            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            foreach (Window window in Application.Current.Windows)
             {
                 if (window.DataContext == this)
                 {

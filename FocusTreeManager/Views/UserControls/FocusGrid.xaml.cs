@@ -1,22 +1,17 @@
-﻿using FocusTreeManager.Helper;
-using FocusTreeManager.Model;
-using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using FocusTreeManager.Adorners;
+using FocusTreeManager.Helper;
+using FocusTreeManager.Model;
+using FocusTreeManager.Model.TabModels;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     /// <summary>
     /// Interaction logic for FocusGrid.xaml
@@ -25,6 +20,7 @@ namespace FocusTreeManager.Views
     {
         public FocusGrid()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             InitializeComponent();
             loadLocales();
             //Messenger
@@ -47,9 +43,10 @@ namespace FocusTreeManager.Views
         {
             //Adorner
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(ListGrid);
-            LineAdorner Adorner = new LineAdorner(ListGrid, (FocusGridModel)this.DataContext);
+            LineAdorner Adorner = new LineAdorner(ListGrid, (FocusGridModel)DataContext);
             adornerLayer.Add(Adorner);
             setupInternalFoci();
+            Mouse.OverrideCursor = null;
         }
 
         public void setupInternalFoci()
@@ -63,9 +60,11 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private Point anchorPoint;
@@ -93,14 +92,12 @@ namespace FocusTreeManager.Views
                 DraggedElement = element;
                 DraggedElement.CaptureMouse();
             }
-            if (DraggedElement != null && DraggedElement.IsMouseCaptured)
-            {
-                currentPoint = e.GetPosition(ListGrid);
-                transform.X += currentPoint.X - anchorPoint.X;
-                transform.Y += (currentPoint.Y - anchorPoint.Y);
-                DraggedElement.RenderTransform = transform;
-                anchorPoint = currentPoint;
-            }
+            if (DraggedElement == null || !DraggedElement.IsMouseCaptured) return;
+            currentPoint = e.GetPosition(ListGrid);
+            transform.X += currentPoint.X - anchorPoint.X;
+            transform.Y += (currentPoint.Y - anchorPoint.Y);
+            DraggedElement.RenderTransform = transform;
+            anchorPoint = currentPoint;
         }
 
         private void Focus_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -110,7 +107,7 @@ namespace FocusTreeManager.Views
                 return;
             }
             DraggedElement.ReleaseMouseCapture();
-            ((FocusGridModel)this.DataContext).ChangePosition(DraggedElement.DataContext, currentPoint);
+            ((FocusGridModel)DataContext).ChangePosition(DraggedElement.DataContext, currentPoint);
             transform.X = 0;
             transform.Y = 0;
             DraggedElement.RenderTransform = new TranslateTransform();

@@ -5,7 +5,6 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Reflection;
 using System.Windows.Media;
 
 namespace FocusTreeManager.ViewModel
@@ -25,10 +24,6 @@ namespace FocusTreeManager.ViewModel
             public int MaxWidth { get; set; }
         }
 
-        const string GFX_FOLDER = @"GFX\";
-
-        const string IMAGE_PATH = @"pack://application:,,,/FocusTreeManager;component/GFX/";
-        
         public RelayCommand<string> SelectCommand { get; private set; }
 
         private string focusImage;
@@ -42,11 +37,11 @@ namespace FocusTreeManager.ViewModel
             set
             {
                 focusImage = value;
-                RaisePropertyChanged("FocusImage");
+                RaisePropertyChanged(() => FocusImage);
             }
         }
 
-        public ObservableCollection<ImageData> ImageList { get; private set; }
+        public ObservableCollection<ImageData> ImageList { get; }
 
         /// <summary>
         /// Initializes a new instance of the ChangeImageViewModel class.
@@ -54,7 +49,7 @@ namespace FocusTreeManager.ViewModel
         public ChangeImageViewModel()
         {
             ImageList = new ObservableCollection<ImageData>();
-            SelectCommand = new RelayCommand<string>((s) => SelectFocus(s));
+            SelectCommand = new RelayCommand<string>(SelectFocus);
         }
 
         public void LoadImages(string SubFolder, string CurrentImage)
@@ -74,11 +69,10 @@ namespace FocusTreeManager.ViewModel
             }
             
             ImageList.Clear();
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                GFX_FOLDER + SubFolder + "\\");
             foreach (KeyValuePair<string, ImageSource> source in ImageHelper.findAllGameImages(type))
             {
-                ImageList.Add(new ImageData() {
+                ImageList.Add(new ImageData
+                {
                     Image = source.Value,
                     Filename = source.Key,
                     MaxWidth = MaxWidth

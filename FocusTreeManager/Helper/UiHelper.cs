@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,63 +14,57 @@ namespace FocusTreeManager.Helper
     /// </summary>
     public static class UiHelper
     {
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) 
+            where T : DependencyObject
         {
-            if (depObj != null)
+            if (depObj == null) yield break;
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                T children = child as T;
+                if (children != null)
                 {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
-                    {
-                        yield return childOfChild;
-                    }
+                    yield return children;
+                }
+                foreach (T childOfChild in FindVisualChildren<T>(child))
+                {
+                    yield return childOfChild;
                 }
             }
         }
 
-        public static T FindVisualParent<T>(DependencyObject depObj, 
-            FrameworkElement HighestParent) where T : DependencyObject
+        public static T FindVisualParent<T>(DependencyObject depObj, FrameworkElement HighestParent) 
+            where T : DependencyObject
         {
-            if (depObj != null && depObj != HighestParent)
+            while (true)
             {
+                if (depObj == null || Equals(depObj, HighestParent)) return null;
                 DependencyObject parent = VisualTreeHelper.GetParent(depObj);
-                if (parent != null && parent is T)
+                T visualParent = parent as T;
+                if (visualParent != null)
                 {
-                    return (T)parent;
+                    return visualParent;
                 }
-                return FindVisualParent<T>(parent, HighestParent);
+                depObj = parent;
             }
-            return null;
         }
 
         public static bool RessourceExists(string ressourceName)
         {
-            foreach (string item in GetResourceNames())
-            {
-                if (item.Contains(ressourceName))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return GetResourceNames().Any(item => item.Contains(ressourceName));
         }
 
-        private static string[] GetResourceNames()
+        private static IEnumerable<string> GetResourceNames()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             string resName = assembly.GetName().Name + ".g.resources";
-            using (var stream = assembly.GetManifestResourceStream(resName))
+            using (Stream stream = assembly.GetManifestResourceStream(resName))
             {
-                using (var reader = new System.Resources.ResourceReader(stream))
+                if (stream == null) return null;
+                using (ResourceReader reader = new ResourceReader(stream))
                 {
                     return reader.Cast<DictionaryEntry>().Select(entry =>
-                             (string)entry.Key).ToArray();
+                        (string) entry.Key).ToArray();
                 }
             }
         }

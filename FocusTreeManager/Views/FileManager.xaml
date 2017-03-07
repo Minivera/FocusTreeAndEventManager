@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FocusTreeManager.Views"
         xmlns:usrcontrl="clr-namespace:FocusTreeManager.Views.UserControls"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -73,7 +72,7 @@
         </Grid>
         <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom"
               Width="70" Height="110" Margin="0,0,9.6,33.4" x:Name="GridErrors" Grid.Column="2">
-            <local:ErrorDawg />
+            <usrcontrl:ErrorDawg />
         </Grid>
     </Grid>
 </Controls:MetroWindow>

@@ -3,16 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FocusTreeManager"
-        xmlns:v="clr-namespace:FocusTreeManager.Views"
         xmlns:vu="clr-namespace:FocusTreeManager.Views.UserControls"
-        xmlns:m="clr-namespace:FocusTreeManager.Model"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+        xmlns:tabModels="clr-namespace:FocusTreeManager.Model.TabModels"
         mc:Ignorable="d"
         Title="{DynamicResource Main_Title}" Height="350" Width="525"
         WindowState="Maximized" Icon="GFX/Focus/goal_unknown.png" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing"
@@ -20,7 +18,7 @@
         Dialog:DialogParticipation.Register="{Binding}" Loaded="MetroWindow_Loaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <command:EventToCommand Command="{Binding WindowLoadedCommand}"
+            <cmd:EventToCommand Command="{Binding WindowLoadedCommand}"
                             PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -31,23 +29,23 @@
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate DataType="{x:Type m:FocusGridModel}">
+            <DataTemplate DataType="{x:Type tabModels:FocusGridModel}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
                               PreviewMouseMove="ContentScroll_PreviewMouseMove" 
                               PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
                               PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
                               Background="Transparent" ScrollChanged="ScrollViewer_ScrollChanged">
-                    <v:FocusGrid></v:FocusGrid>
+                    <vu:FocusGrid></vu:FocusGrid>
                 </ScrollViewer>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type m:LocalisationModel}">
-                <v:Localisation></v:Localisation>
+            <DataTemplate DataType="{x:Type tabModels:LocalisationModel}">
+                <vu:Localisation></vu:Localisation>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type m:EventTabModel}">
+            <DataTemplate DataType="{x:Type tabModels:EventTabModel}">
                 <vu:EventList></vu:EventList>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type m:ScriptModel}">
+            <DataTemplate DataType="{x:Type tabModels:ScriptModel}">
                 <Grid DataContext="{Binding}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -59,7 +57,7 @@
                         Command="{Binding SaveScriptCommand}"
                         CommandParameter="{Binding ElementName=Scripter}"/>
                     </Grid.InputBindings>
-                    <v:Scripter Script="{Binding DataContext.InternalScript, 
+                    <vu:Scripter Script="{Binding DataContext.(tabModels:ScriptModel.InternalScript), 
                                 RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
                                 Grid.Row="0" x:Name="Scripter"/>
                     <StackPanel HorizontalAlignment="Right" Grid.Row="1">
@@ -164,7 +162,7 @@
         <Controls:FlyoutsControl>
             <Controls:Flyout x:Name="FocusFlyout" 
                       Width="400" IsModal="True" Position="Right">
-                <v:FocusEditor></v:FocusEditor>
+                <vu:FocusEditor></vu:FocusEditor>
             </Controls:Flyout>
             <Controls:Flyout x:Name="ProjectFlyout" VerticalAlignment="Center"
                       Width="400" IsModal="True" Position="Left" IsOpen="True" CloseButtonVisibility="Hidden">
@@ -199,7 +197,7 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <v:ProjectView Grid.Column="0"/>
+        <vu:ProjectView Grid.Column="0"/>
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
         <DockPanel Grid.Column="2">
             <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
@@ -209,7 +207,7 @@
                     </StatusBarItem>
                 </StatusBar>
                 <Grid HorizontalAlignment="Right" Width="70" Height="110" Margin="0,-130,15,0" x:Name="GridErrors">
-                    <v:ErrorDawg />
+                    <vu:ErrorDawg />
                 </Grid>
             </Grid>
             <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"

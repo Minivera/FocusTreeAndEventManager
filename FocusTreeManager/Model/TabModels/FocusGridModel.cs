@@ -1,4 +1,13 @@
-﻿using DiffPlex;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
@@ -10,22 +19,13 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
-namespace FocusTreeManager.Model
+namespace FocusTreeManager.Model.TabModels
 {
     public class FocusGridModel : ObservableObject, ISupportsUndo
     {
-        const int MIN_ROW_COUNT = 7;
-        const int MIN_COLUMN_COUNT = 20;
+        private const int MIN_ROW_COUNT = 7;
+        private const int MIN_COLUMN_COUNT = 20;
 
         private ObservableCollection<CanvasLine> canvasLines;
 
@@ -36,8 +36,6 @@ namespace FocusTreeManager.Model
         private int rowCount;
 
         private int columnCount;
-
-        private Guid ID;
 
         private string visibleName;
 
@@ -93,13 +91,7 @@ namespace FocusTreeManager.Model
             }
         }
 
-        public Guid UniqueID
-        {
-            get
-            {
-                return ID;
-            }
-        }
+        public Guid UniqueID { get; }
 
         public string VisibleName
         {
@@ -182,14 +174,14 @@ namespace FocusTreeManager.Model
             set
             {
                 canvasLines = value;
-                RaisePropertyChanged("CanvasLines");
+                RaisePropertyChanged(() => CanvasLines);
             }
         }
 
         public FocusGridModel(string Filename)
         {
             visibleName = Filename;
-            ID = Guid.NewGuid();
+            UniqueID = Guid.NewGuid();
             FociList = new ObservableCollection<FocusModel>();
             FociList.CollectionChanged += FociList_CollectionChanged;
             //Min Row & column Count
@@ -209,13 +201,13 @@ namespace FocusTreeManager.Model
         public FocusGridModel(FociGridContainer container)
         {
             //Transfer data
-            ID = container.IdentifierID;
+            UniqueID = container.IdentifierID;
             visibleName = container.ContainerID;
             tag = container.TAG;
             additionnalMods = container.AdditionnalMods;
             FileInfo = container.FileInfo;
             FociList = new ObservableCollection<FocusModel>();
-            foreach (DataContract.Focus focus in container.FociList)
+            foreach (Focus focus in container.FociList)
             {
                 FociList.Add(new FocusModel(focus));
             }
@@ -244,16 +236,13 @@ namespace FocusTreeManager.Model
 
         internal void ChangePosition(object draggedElement, Point currentPoint)
         {
-            if (!(draggedElement is FocusModel))
-            {
-                return;
-            }
-            else
+            FocusModel element = draggedElement as FocusModel;
+            if (element != null)
             {
                 int X = (int)Math.Floor(currentPoint.X / 89);
                 int Y = (int)Math.Floor(currentPoint.Y / 140);
-                ((FocusModel)draggedElement).X = X;
-                ((FocusModel)draggedElement).Y = Y;
+                element.X = X;
+                element.Y = Y;
                 EditGridDefinition();
                 DrawOnCanvas();
             }
@@ -279,14 +268,14 @@ namespace FocusTreeManager.Model
 
         public void AddFocus(object sender)
         {
-            System.Windows.Application.Current.Properties["Mode"] = "Add";
+            Application.Current.Properties["Mode"] = "Add";
             UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddFocus", false);
             Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
 
         public void RightClick(object sender)
         {
-            System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
+            Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
                                             inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
                                             inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
@@ -305,10 +294,11 @@ namespace FocusTreeManager.Model
 
         public void Hover(object sender)
         {
-            System.Windows.Point Position = Mouse.GetPosition((Grid)sender);
+            Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
                                             inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
-                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
+                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y))
+                                            .ToList();
             if (clickedElements.Any())
             {
                 selectedLine = clickedElements.FirstOrDefault();
@@ -316,35 +306,34 @@ namespace FocusTreeManager.Model
             }
             else
             {
-                if (selectedLine != null)
-                {
-                    selectedLine = null;
-                    Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
-                }
+                //If a line is selected
+                if (selectedLine == null) return;
+                selectedLine = null;
+                Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
             }
         }
 
         private void SendDeleteSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+                new ViewModelLocator().ProjectView, "SendDeleteItemSignal"));
         }
 
         private void SendEditSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+                new ViewModelLocator().ProjectView, "SendEditItemSignal"));
         }
 
         public bool inRange(int Range1, int Range2, int Value)
         {
             int smallest = Math.Min(Range1, Range2);
             int highest = Math.Max(Range1, Range2);
-            return ((smallest - 2 <= Value && Value <= highest - 2) ||
-                    (smallest - 1 <= Value && Value <= highest - 1) ||
-                    (smallest <= Value && Value <= highest) ||
-                    (smallest + 1 <= Value && Value <= highest + 1) ||
-                    (smallest + 2 <= Value && Value <= highest + 2));
+            return smallest - 2 <= Value && Value <= highest - 2 ||
+                   smallest - 1 <= Value && Value <= highest - 1 ||
+                   smallest <= Value && Value <= highest ||
+                   smallest + 1 <= Value && Value <= highest + 1 ||
+                   smallest + 2 <= Value && Value <= highest + 2;
         }
 
         public void RedrawGrid()
@@ -355,7 +344,7 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.VisibleName == null)
+            if (VisibleName == null)
             {
                 return;
             }
@@ -364,7 +353,7 @@ namespace FocusTreeManager.Model
             {
                 RaisePropertyChanged(() => VisibleName);
             }
-            if (!this.isShown)
+            if (!isShown)
             {
                 //is not shown, do not manage
                 return;
@@ -373,55 +362,65 @@ namespace FocusTreeManager.Model
             switch (msg.Notification)
             {
                 case "CloseEditFocus":
-                    if ((string)System.Windows.Application.Current.Properties["Mode"] == "Add")
+                    switch ((string) Application.Current.Properties["Mode"])
                     {
-                        ManageFocusViewModel viewModel = msg.Sender as ManageFocusViewModel;
-                        addFocusToList(viewModel.Focus);
-                        DrawOnCanvas();
+                        case "Add":
+                            ManageFocusViewModel viewModel = msg.Sender as ManageFocusViewModel;
+                            if (viewModel != null) addFocusToList(viewModel.Focus);
+                            DrawOnCanvas();
+                            break;
+                        case "Edit":
+                            EditGridDefinition();
+                            DrawOnCanvas();
+                            break;
                     }
-                    else if((string)System.Windows.Application.Current.Properties["Mode"] == "Edit")
-                    { 
-                        EditGridDefinition();
-                        DrawOnCanvas();
-                    }
-                    System.Windows.Application.Current.Properties["Mode"] = null;
+                    Application.Current.Properties["Mode"] = null;
                     break;
                 case "DeleteFocus":
                     DeleteFocus(Model);
                     break;
                 case "AddFocusMutually":
-                    System.Windows.Application.Current.Properties["Mode"] = "Mutually";
-                    selectedFocus = Model;
-                    Model.IsSelected = true;
+                    Application.Current.Properties["Mode"] = "Mutually";
+                    if (Model != null)
+                    {
+                        selectedFocus = Model;
+                        Model.IsSelected = true;
+                    }
                     break;
                 case "FinishAddFocusMutually":
                     if (selectedFocus != null && selectedFocus != Model &&
-                        FociList.Where((f) => f == Model).Any())
+                        FociList.Any(f => f == Model))
                     {
-                        UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddMutuallyExclusive", false);
-                        System.Windows.Application.Current.Properties["Mode"] = null;
+                        UndoService.Current[GetUndoRoot()]
+                            .BeginChangeSetBatch("AddMutuallyExclusive", false);
+                        Application.Current.Properties["Mode"] = null;
                         selectedFocus.IsSelected = false;
-                        var tempo = new MutuallyExclusiveSetModel(selectedFocus, Model);
+                        MutuallyExclusiveSetModel tempo = 
+                            new MutuallyExclusiveSetModel(selectedFocus, Model);
                         selectedFocus.MutualyExclusive.Add(tempo);
-                        Model.MutualyExclusive.Add(tempo);
+                        Model?.MutualyExclusive.Add(tempo);
                         UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
                     break;
                 case "AddFocusPrerequisite":
-                    System.Windows.Application.Current.Properties["Mode"] = "Prerequisite";
-                    selectedFocus = Model;
-                    Model.IsSelected = true;
+                    Application.Current.Properties["Mode"] = "Prerequisite";
+                    if (Model != null)
+                    {
+                        selectedFocus = Model;
+                        Model.IsSelected = true;
+                    }
                     break;
                 case "FinishAddFocusPrerequisite":
                     if (selectedFocus != null && selectedFocus != Model &&
-                        FociList.Where((f) => f == Model).Any())
+                        FociList.Any(f => f == Model))
                     {
-                        UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddPrerequisite", false);
-                        System.Windows.Application.Current.Properties["Mode"] = null;
-                        string Type = (string)System.Windows.Application.Current.Properties["ModeParam"];
-                        System.Windows.Application.Current.Properties["ModeParam"] = null;
+                        UndoService.Current[GetUndoRoot()]
+                            .BeginChangeSetBatch("AddPrerequisite", false);
+                        Application.Current.Properties["Mode"] = null;
+                        string Type = (string) Application.Current.Properties["ModeParam"];
+                        Application.Current.Properties["ModeParam"] = null;
                         selectedFocus.IsSelected = false;
                         if (Type == "Required")
                         {
@@ -451,11 +450,9 @@ namespace FocusTreeManager.Model
 
         public void UpdateFocus(FocusModel sender)
         {
-            if (this.isShown)
-            {
-                EditGridDefinition();
-                DrawOnCanvas();
-            }
+            if (!isShown) return;
+            EditGridDefinition();
+            DrawOnCanvas();
         }
 
         private void DeleteFocus(FocusModel Model)
@@ -494,7 +491,7 @@ namespace FocusTreeManager.Model
             DrawOnCanvas();
         }
 
-        const double PRE_LINE_HEIGHT = 20;
+        private const double PRE_LINE_HEIGHT = 20;
 
         public void DrawOnCanvas()
         {
@@ -516,23 +513,21 @@ namespace FocusTreeManager.Model
                         set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
                         System.Windows.Media.Brushes.Teal, set.isRequired(), set);
                     CanvasLines.Add(newline);
-                    foreach (FocusModel Prerequisite in set.FociList.OfType<FocusModel>())
+                    foreach (FocusModel model in set.FociList)
                     {
+                        FocusModel Prerequisite = model;
+                        if (Prerequisite == null) continue;
                         //Draw horizontal lines to prerequisite pos
-                        newline = new CanvasLine(
-                            set.Focus.FocusTop.X,
-                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                            Prerequisite.FocusBottom.X,
-                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
+                        newline = new CanvasLine(set.Focus.FocusTop.X, 
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT, Prerequisite.FocusBottom.X, 
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT, System.Windows.Media.Brushes.Teal,
+                            set.isRequired(), set);
                         CanvasLines.Add(newline);
                         //Draw line to prerequisite bottom
-                        newline = new CanvasLine(
-                            Prerequisite.FocusBottom.X,
-                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT,
-                            Prerequisite.FocusBottom.X,
-                            Prerequisite.FocusBottom.Y,
-                            System.Windows.Media.Brushes.Teal, set.isRequired(), set);
+                        newline = new CanvasLine(Prerequisite.FocusBottom.X, 
+                            set.Focus.FocusTop.Y - PRE_LINE_HEIGHT, Prerequisite.FocusBottom.X, 
+                            Prerequisite.FocusBottom.Y, System.Windows.Media.Brushes.Teal, 
+                            set.isRequired(), set);
                         CanvasLines.Add(newline);
                     }
                 }
@@ -545,10 +540,10 @@ namespace FocusTreeManager.Model
                         set.Focus2.FocusLeft.X,
                         set.Focus2.FocusLeft.Y,
                         System.Windows.Media.Brushes.Red, false, set);
-                    if (!CanvasLines.Where((line) => (line.X1 == newline.X1 &&
-                                                    line.X2 == newline.X2 &&
-                                                    line.Y1 == newline.Y1 &&
-                                                    line.Y2 == newline.Y2)).Any())
+                    if (!CanvasLines.Any(line => line.X1 == newline.X1 &&
+                                                 line.X2 == newline.X2 &&
+                                                 line.Y1 == newline.Y1 &&
+                                                 line.Y2 == newline.Y2))
                     {
                         CanvasLines.Add(newline);
                     }
@@ -558,41 +553,35 @@ namespace FocusTreeManager.Model
             Messenger.Default.Send(new NotificationMessage("DrawOnCanvas"));
         }
 
-        async public void CheckForChanges()
+        public async void CheckForChanges()
         {
-            DataContract.FileInfo info = this.FileInfo;
+            DataContract.FileInfo info = FileInfo;
             //check the fileinfo data
-            if (info != null)
+            if (info == null) return;
+            //If the file exists
+            if (!File.Exists(info.Filename)) return;
+            //If the file was modified after the last modification date
+            if (File.GetLastWriteTime(info.Filename) <= info.LastModifiedDate) return;
+            //Then we can show a message
+            MessageDialogResult Result = await new ViewModelLocator()
+                .Main.ShowFileChangedDialog();
+            if (Result == MessageDialogResult.Affirmative)
             {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await (new ViewModelLocator())
-                            .Main.ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            string oldText = FocusTreeParser.ParseTreeForCompare(this);
-                            string newText = FocusTreeParser.ParseTreeScriptForCompare(info.Filename);
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
+                string oldText = FocusTreeParser.ParseTreeForCompare(this);
+                string newText = FocusTreeParser.ParseTreeScriptForCompare(info.Filename);
+                SideBySideDiffModel model = new SideBySideDiffBuilder(
+                    new Differ()).BuildDiffModel(oldText, newText);
+                new ViewModelLocator().CodeComparator.DiffModel = model;
+                new CompareCode().ShowDialog();
             }
         }
 
         #region Undo/Redo
 
-        void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FociList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DefaultChangeFactory.Current.OnCollectionChanged(this, 
-                "FociList", this.FociList, e, "FociList Changed");
+                "FociList", FociList, e, "FociList Changed");
         }
         
         public object GetUndoRoot()

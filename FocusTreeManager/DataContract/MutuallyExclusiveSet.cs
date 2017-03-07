@@ -1,5 +1,4 @@
-﻿using FocusTreeManager.Model;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace FocusTreeManager.DataContract
 {

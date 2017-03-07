@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FocusTreeManager.Helper
 {
-    class LoggingHelper
+    public class LoggingHelper
     {
-        const string LOG_FOLDER = @"Log\";
+        private const string LOG_FOLDER = @"Log\";
 
         public static void LogException(Exception e)
         {
@@ -44,7 +39,7 @@ namespace FocusTreeManager.Helper
 
         private static FileStream GetStream(string path, FileMode mode, FileAccess access, int timeoutMs = 1000)
         {
-            var time = Stopwatch.StartNew();
+            Stopwatch time = Stopwatch.StartNew();
             while (time.ElapsedMilliseconds < timeoutMs)
             {
                 try
@@ -67,7 +62,7 @@ namespace FocusTreeManager.Helper
         /// <returns>True if the file was deleted</returns>
         public static bool Delete(string filename, int timeoutMs = 1000)
         {
-            var time = Stopwatch.StartNew();
+            Stopwatch time = Stopwatch.StartNew();
             while (time.ElapsedMilliseconds < timeoutMs)
             {
                 try

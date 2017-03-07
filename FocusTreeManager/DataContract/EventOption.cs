@@ -1,6 +1,7 @@
 ﻿using FocusTreeManager.CodeStructures;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FocusTreeManager.DataContract
 {
@@ -33,12 +34,7 @@ namespace FocusTreeManager.DataContract
 
         internal static List<EventOption> PopulateFromLegacy(List<Model.LegacySerialization.EventOption> options)
         {
-            List<EventOption> list = new List<EventOption>();
-            foreach (Model.LegacySerialization.EventOption legacyItem in options)
-            {
-                list.Add(new EventOption(legacyItem));
-            }
-            return list;
+            return options.Select(legacyItem => new EventOption(legacyItem)).ToList();
         }
     }
 }

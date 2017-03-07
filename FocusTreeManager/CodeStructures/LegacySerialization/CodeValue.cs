@@ -20,7 +20,7 @@ namespace FocusTreeManager.CodeStructures.LegacySerialization
 
         public CodeValue(string value)
         {
-            this.Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
+            Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
         }
 
         public void Analyse(string code, int line = -1)

@@ -1,5 +1,4 @@
-﻿using FocusTreeManager.DataContract;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 
 namespace FocusTreeManager.Model
 {
@@ -15,7 +14,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<double>(() => this.X1, ref this.x1, value);
+                Set(() => X1, ref x1, value);
             }
         }
 
@@ -29,7 +28,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<double>(() => this.Y1, ref this.y1, value);
+                Set(() => Y1, ref y1, value);
             }
         }
 
@@ -43,7 +42,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<double>(() => this.X2, ref this.x2, value);
+                Set(() => X2, ref x2, value);
             }
         }
 
@@ -57,7 +56,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<double>(() => this.Y2, ref this.y2, value);
+                Set(() => Y2, ref y2, value);
             }
         }
 
@@ -71,7 +70,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<System.Windows.Media.Brush>(() => this.Color, ref this.color, value);
+                Set(() => Color, ref color, value);
             }
         }
 
@@ -85,7 +84,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                Set<bool>(() => this.Dashes, ref this.dashes, value);
+                Set(() => Dashes, ref dashes, value);
             }
         }
 
@@ -98,7 +97,7 @@ namespace FocusTreeManager.Model
             this.X2 = X2;
             this.Y2 = Y2;
             this.Color = Color;
-            this.dashes = dashed;
+            dashes = dashed;
             InternalSet = set;
         }
     }

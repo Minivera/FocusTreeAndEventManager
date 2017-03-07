@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views.UserControls"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" IsVisibleChanged="UserControl_IsVisibleChanged" >
     <UserControl.Resources>
@@ -57,11 +56,12 @@
                        ToolTip="{DynamicResource Event_Title}"
                        FontSize="15"/>
         </StackPanel>
-        <Image Grid.Row="1" Grid.ColumnSpan="2" 
+        <Image Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                Source="{Binding ImagePath, TargetNullValue={StaticResource ImageError}}" 
                ToolTip="{DynamicResource Event_Picture}" />
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
-                    Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="0,0,0,5" 
+                    Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" 
+                VerticalAlignment="Bottom" Margin="0,0,0,5" 
                     Style="{DynamicResource SquareButtonStyle}" Width="150"/>
         <Grid Grid.Row="2" Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
@@ -147,7 +147,7 @@
             <Button Content="{DynamicResource Command_Edit}" 
                     Grid.Row="2" Grid.Column="1" Command="{Binding EditScriptCommand}" 
                     Style="{DynamicResource SquareButtonStyle}" Width="150" Height="25"/>
-            <DockPanel Grid.Row="3" Grid.ColumnSpan="2">
+            <DockPanel Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0">
                 <Label Content="{DynamicResource Event_Option}" Padding="5" 
                                    DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
                 <DataGrid ItemsSource="{Binding Path=Options}" DockPanel.Dock="Bottom"

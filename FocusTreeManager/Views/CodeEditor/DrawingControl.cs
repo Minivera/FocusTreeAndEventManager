@@ -6,16 +6,15 @@ namespace FocusTreeManager.Views.CodeEditor
 {
 	public class DrawingControl : FrameworkElement
     {
-		private VisualCollection visuals;
+		private readonly VisualCollection visuals;
 
-		private DrawingVisual visual;
+		private readonly DrawingVisual visual;
 
 		public DrawingControl()
         {
 			visual = new DrawingVisual();
-			visuals = new VisualCollection(this);
-			visuals.Add(visual);
-		}
+            visuals = new VisualCollection(this) {visual};
+        }
 
 		public DrawingContext GetContext()
         {
@@ -27,12 +26,9 @@ namespace FocusTreeManager.Views.CodeEditor
             return visual;
         }
 
-		protected override int VisualChildrenCount
-        {
-			get { return visuals.Count; }
-		}
+		protected override int VisualChildrenCount => visuals.Count;
 
-		protected override Visual GetVisualChild(int index)
+        protected override Visual GetVisualChild(int index)
         {
 			if (index < 0 || index >= visuals.Count)
             {

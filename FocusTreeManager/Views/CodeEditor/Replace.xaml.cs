@@ -1,23 +1,12 @@
 ﻿using FocusTreeManager.Containers;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -25,31 +14,23 @@ namespace FocusTreeManager.Views.CodeEditor
     {
         const int MAX_HISTORY = 15;
 
-        private FixedSizeQueue<string> historyFind = new FixedSizeQueue<string>(MAX_HISTORY);
+        private readonly FixedSizeQueue<string> historyFind = 
+            new FixedSizeQueue<string>(MAX_HISTORY);
 
-        private FixedSizeQueue<string> historyReplace = new FixedSizeQueue<string>(MAX_HISTORY);
+        private readonly FixedSizeQueue<string> historyReplace = 
+            new FixedSizeQueue<string>(MAX_HISTORY);
 
-        private int CurrentIndex = 0;
+        private int CurrentIndex;
 
-        private int FindSize = 0;
+        private int FindSize;
 
         private string LastSearch;
 
-        public ObservableCollection<string> SearchHistory
-        {
-            get
-            {
-                return new ObservableCollection<string>(historyFind.ToList());
-            }
-        }
+        public ObservableCollection<string> SearchHistory => 
+            new ObservableCollection<string>(historyFind.ToList());
 
-        public ObservableCollection<string> ReplaceHistory
-        {
-            get
-            {
-                return new ObservableCollection<string>(historyReplace.ToList());
-            }
-        }
+        public ObservableCollection<string> ReplaceHistory => 
+            new ObservableCollection<string>(historyReplace.ToList());
 
         public CodeEditor LinkedEditor { get; set; }
 
@@ -72,9 +53,11 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
@@ -144,11 +127,9 @@ namespace FocusTreeManager.Views.CodeEditor
             CurrentIndex = 0;
             FindSize = 0;
             LinkedEditor.EndFindAndReplace();
-            if (!ReplaceHistory.Contains(ComboReplace.Text))
-            {
-                historyReplace.Enqueue(ComboReplace.Text);
-                OnPropertyChanged("ReplaceHistory");
-            }
+            if (ReplaceHistory.Contains(ComboReplace.Text)) return;
+            historyReplace.Enqueue(ComboReplace.Text);
+            OnPropertyChanged("ReplaceHistory");
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

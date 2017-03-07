@@ -1,12 +1,9 @@
 ﻿using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.DataContract
 {
@@ -47,7 +44,7 @@ namespace FocusTreeManager.DataContract
         {
             IdentifierID = legacyItem.IdentifierID;
             ContainerID = legacyItem.ContainerID;
-            LanguageName = legacyItem­.ShortName;
+            LanguageName = legacyItem.ShortName;
             LocalisationMap = LocaleContent.PopulateFromLegacy(legacyItem.LocalisationMap.ToList());
         }
 
@@ -71,12 +68,8 @@ namespace FocusTreeManager.DataContract
         internal static List<LocalisationContainer> PopulateFromLegacy(
             List<Containers.LegacySerialization.LocalisationContainer> localisationList)
         {
-            List<LocalisationContainer> list = new List<LocalisationContainer>();
-            foreach (Containers.LegacySerialization.LocalisationContainer legacyItem in localisationList)
-            {
-                list.Add(new LocalisationContainer(legacyItem));
-            }
-            return list;
+            return localisationList.Select(legacyItem => new LocalisationContainer(legacyItem))
+                .ToList();
         }
     }
 }

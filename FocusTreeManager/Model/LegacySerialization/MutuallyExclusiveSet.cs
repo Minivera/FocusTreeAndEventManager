@@ -20,7 +20,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Focus>(() => this.Focus1, ref this.focus1, value);
+                Set<Focus>(() => Focus1, ref focus1, value);
             }
         }
 
@@ -35,7 +35,7 @@ namespace FocusTreeManager.Model.LegacySerialization
             }
             set
             {
-                Set<Focus>(() => this.Focus2, ref this.focus2, value);
+                Set<Focus>(() => Focus2, ref focus2, value);
             }
         }
 

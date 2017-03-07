@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using FocusTreeManager.Containers;
 using FocusTreeManager.Model;
 using System.IO;
 using System.Text.RegularExpressions;
 using FocusTreeManager.DataContract;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Parsers
 {
@@ -15,19 +13,14 @@ namespace FocusTreeManager.Parsers
     {
         public static string ParseLocalizationFileForCompare(string filename)
         {
-            if (!File.Exists(filename))
-            {
-                return "";
-            }
-            return ParseLocalizationForCompare(CreateLocaleFromFile(filename));
+            return !File.Exists(filename) ? "" : 
+                ParseLocalizationForCompare(CreateLocaleFromFile(filename));
         }
 
         public static string ParseLocalizationForCompare(LocalisationModel model)
         {
             LocalisationContainer container = new LocalisationContainer(model);
-            string iD = container.ContainerID.Replace(" ", "_") + "_" + container.LanguageName;
-            return Parse(container.LocalisationMap.ToList<LocaleContent>(), 
-                iD, container.LanguageName);
+            return Parse(container.LocalisationMap.ToList(), container.LanguageName);
         }
 
         public static Dictionary<string, string> ParseEverything(List<LocalisationContainer> Containers)
@@ -37,12 +30,12 @@ namespace FocusTreeManager.Parsers
             {
                 string ID = container.ContainerID.Replace(" ", "_");
                 ID += "_" + container.LanguageName;
-                fileList[ID] = Parse(container.LocalisationMap.ToList(), ID, container.LanguageName);
+                fileList[ID] = Parse(container.LocalisationMap.ToList(), container.LanguageName);
             }
             return fileList;
         }
 
-        private static string Parse(List<LocaleContent> iMap, string ID, string language)
+        private static string Parse(IEnumerable<LocaleContent> iMap, string language)
         {
             StringBuilder text = new StringBuilder();
             text.AppendLine(language + ":");

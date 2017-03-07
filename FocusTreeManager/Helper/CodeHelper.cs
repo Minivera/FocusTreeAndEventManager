@@ -8,17 +8,9 @@ namespace FocusTreeManager.Helper
 		/// <summary>
 		/// Returns the raw number of the current line count.
 		/// </summary>
-		public static int GetLineCount(String text)
-        {
-			int lcnt = 1;
-			for (int i = 0; i < text.Length; i++)
-            {
-				if (text[i] == '\n')
-                {
-                    lcnt += 1;
-                }
-			}
-			return lcnt;
+		public static int GetLineCount(string text)
+		{
+		    return text.Count(t => t == '\n');
 		}
 
 		/// <summary>
@@ -31,26 +23,29 @@ namespace FocusTreeManager.Helper
         {
 			if (text == null)
             {
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
             }
             if (lineIndex <= 0)
             {
                 return 0;
             }
-			int currentLineIndex = 0;
-			for (int i = 0; i < text.Length - 1; i++)
+			int currentLine = 0;
+            int charindex = 0;
+            foreach (string line in text.Split('\n'))
             {
-				if (text[i] == '\n')
+                if (currentLine == lineIndex)
                 {
-					currentLineIndex += 1;
-                    if (currentLineIndex == lineIndex)
+                    while (char.IsWhiteSpace(text[charindex]))
                     {
-                        return Math.Min(i + 1, text.Length - 1);
+                        charindex++;
                     }
-				}
-			}
-			return Math.Max(text.Length - 1, 0);
-		}
+                    return charindex;
+                }
+                currentLine++;
+                charindex += line.Length + 1;
+            }
+            return 0;
+        }
 
 		/// <summary>
 		/// Returns the index of the last character of the
@@ -62,32 +57,31 @@ namespace FocusTreeManager.Helper
         {
             if (text == null)
             {
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
             }
             if (lineIndex < 0)
             {
                 return 0;
             }
-			int currentLineIndex = 0;
-			for (int i = 0; i < text.Length - 1; i++)
+            int currentLine = 0;
+            int charindex = 0;
+            foreach (string line in text.Split('\n'))
             {
-				if (text[i] == '\n')
+                if (currentLine == lineIndex)
                 {
-                    if (currentLineIndex == lineIndex)
-                    {
-                        return i;
-                    }
-					currentLineIndex += 1;
-				}
-			}
-			return Math.Max(text.Length - 1, 0);
-		}
+                    return charindex + line.Length - 1;
+                }
+                charindex += line.Length + 1;
+                currentLine++;
+            }
+            return text.Length;
+        }
 
         public static int getLevelOfIndent(string text)
         {
             if (text == null)
             {
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
             }
             //Indent equals the number of opening brackets minus the number of closing brackets
             int IndentLevel = text.Count(f => f == '{') - text.Count(f => f == '}');
@@ -101,25 +95,14 @@ namespace FocusTreeManager.Helper
             //For each line since the opening bracket
             foreach (string line in text.Substring(openingBracketPos).Split('\n').Skip(1))
             {
-                //If a new opening bracket is found
-                if (line.Contains("{"))
-                {
-                    //add one block opened
-                    NumberOfBlocks++;
-                }
-                else if (line.Contains("}"))
-                {
-                    NumberOfBlocks--;
-                }
+                //Count the number of closing bracket minus the number of opening bracket.
+                NumberOfBlocks += line.Count(f => f == '{') - line.Count(f => f == '}');
                 //If there was one closing bracket more than opening brackets
                 if (line.Contains("}") && NumberOfBlocks <= 0)
                 {
-                    return ClosingPos + line.IndexOf("}") + 1;
+                    return ClosingPos + line.IndexOf("}", StringComparison.Ordinal) + 1;
                 }
-                else
-                {
-                    ClosingPos += line.Length + 1;
-                }
+                ClosingPos += line.Length + 1;
             }
             return ClosingPos;
         }
@@ -131,25 +114,14 @@ namespace FocusTreeManager.Helper
             //Reverse for each from the last closing bracket to beginning
             foreach (string line in text.Substring(0, closingBracketPos).Split('\n').Reverse())
             {
-                //If a new opening bracket is found
-                if (line.Contains("}"))
-                {
-                    //add one block opened
-                    NumberOfBlocks++;
-                }
-                else if (line.Contains("{"))
-                {
-                    NumberOfBlocks--;
-                }
+                //Count the number of closing bracket minus the number of opening bracket.
+                NumberOfBlocks += line.Count(f => f == '}') - line.Count(f => f == '{');
                 //If there was one closing bracket more than opening brackets
                 if (line.Contains("{") && NumberOfBlocks <= 0)
                 {
                     return OpeningPos - (line.Reverse().ToList().IndexOf('{') + 1);
                 }
-                else
-                {
-                    OpeningPos -= (line.Length + 1);
-                }
+                OpeningPos -= line.Length + 1;
             }
             return OpeningPos;
         }

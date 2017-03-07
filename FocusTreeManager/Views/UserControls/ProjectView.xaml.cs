@@ -1,15 +1,14 @@
-﻿using FocusTreeManager.Helper;
-using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FocusTreeManager.Helper;
+using FocusTreeManager.Model.TabModels;
+using FocusTreeManager.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace FocusTreeManager.Views
+namespace FocusTreeManager.Views.UserControls
 {
     public partial class ProjectView : UserControl
     {
@@ -31,29 +30,30 @@ namespace FocusTreeManager.Views
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                Keyboard.ClearFocus();
-                ((TextBox)sender).Visibility = Visibility.Hidden;
-            }
+            //If key is not enter
+            if (e.Key != Key.Enter) return;
+            Keyboard.ClearFocus();
+            ((TextBox)sender).Visibility = Visibility.Hidden;
         }
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = sender as MenuItem;
-            StackPanel Parent = null;
+            StackPanel parent = null;
             if (item != null)
             {
-                Parent = ((ContextMenu)item.Parent).PlacementTarget as StackPanel;
+                parent = ((ContextMenu)item.Parent).PlacementTarget as StackPanel;
             }
-            TextBox textbox = UiHelper.FindVisualChildren<TextBox>(Parent).FirstOrDefault();
+            TextBox textbox = UiHelper.FindVisualChildren<TextBox>(parent).FirstOrDefault();
             if (textbox != null)
             {
                 textbox.Visibility = Visibility.Visible;
@@ -66,34 +66,32 @@ namespace FocusTreeManager.Views
 
         private void CodeTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ProjectViewViewModel vm = this.DataContext as ProjectViewViewModel;
+            ProjectViewViewModel vm = DataContext as ProjectViewViewModel;
             if (e.NewValue is FocusGridModel ||
                 e.NewValue is EventTabModel ||
                 e.NewValue is LocalisationModel ||
                 e.NewValue is ScriptModel)
             {
-                vm.SelectedItem = e.NewValue;
+                if (vm != null) vm.SelectedItem = e.NewValue;
                 RenameButton.IsEnabled = true;
             }
             else
             {
-                vm.SelectedItem = null;
+                if (vm != null) vm.SelectedItem = null;
                 RenameButton.IsEnabled = false;
             }
-            vm.DeleteElementMenuCommand.RaiseCanExecuteChanged();
-            vm.EditElementMenuCommand.RaiseCanExecuteChanged();
+            vm?.DeleteElementMenuCommand.RaiseCanExecuteChanged();
+            vm?.EditElementMenuCommand.RaiseCanExecuteChanged();
         }
 
         private void RenameButton_Click(object sender, RoutedEventArgs e)
         {
             TreeViewItem item = CodeTreeView.Tag as TreeViewItem;
-            if (item != null)
+            if (item == null) return;
+            TextBox textbox = UiHelper.FindVisualChildren<TextBox>(item).FirstOrDefault();
+            if (textbox != null)
             {
-                TextBox textbox = UiHelper.FindVisualChildren<TextBox>(item).FirstOrDefault();
-                if (textbox != null)
-                {
-                    textbox.Visibility = Visibility.Visible;
-                }
+                textbox.Visibility = Visibility.Visible;
             }
         }
 

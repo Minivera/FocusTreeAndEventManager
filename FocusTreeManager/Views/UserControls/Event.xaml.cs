@@ -1,20 +1,8 @@
 ﻿using FocusTreeManager.Model;
 using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace FocusTreeManager.Views.UserControls
@@ -38,16 +26,19 @@ namespace FocusTreeManager.Views.UserControls
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceLocalization);
+            ResourceDictionary resourceLocalization = new ResourceDictionary
+            {
+                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                EventModel model = this.DataContext as EventModel;
+                EventModel model = DataContext as EventModel;
+                if (model == null) return;
                 model.EditDescScriptCommand.RaiseCanExecuteChanged();
                 model.EditOptionScriptCommand.RaiseCanExecuteChanged();
             }), DispatcherPriority.ContextIdle, null);

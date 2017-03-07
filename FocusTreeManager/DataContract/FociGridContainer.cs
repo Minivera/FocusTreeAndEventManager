@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.DataContract
 {
@@ -75,21 +76,24 @@ namespace FocusTreeManager.DataContract
             {
                 FocusModel associatedModel = 
                     item.FociList.FirstOrDefault(f => f.UniqueName == focus.UniqueName);
-                foreach (PrerequisitesSetModel set in associatedModel.Prerequisite)
+                if (associatedModel == null) continue;
                 {
-                    PrerequisitesSet newset = new PrerequisitesSet(focus);
-                    foreach (FocusModel model in set.FociList)
+                    foreach (PrerequisitesSetModel set in associatedModel.Prerequisite)
                     {
-                        newset.FociList.Add(FociList.FirstOrDefault(f => f.UniqueName == model.UniqueName));
+                        PrerequisitesSet newset = new PrerequisitesSet(focus);
+                        foreach (FocusModel model in set.FociList)
+                        {
+                            newset.FociList.Add(FociList.FirstOrDefault(f => f.UniqueName == model.UniqueName));
+                        }
+                        focus.Prerequisite.Add(newset);
                     }
-                    focus.Prerequisite.Add(newset);
-                }
-                foreach (MutuallyExclusiveSetModel set in associatedModel.MutualyExclusive)
-                {
-                    MutuallyExclusiveSet newset = new MutuallyExclusiveSet(
-                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
-                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName));
-                    focus.MutualyExclusive.Add(newset);
+                    foreach (MutuallyExclusiveSetModel set in associatedModel.MutualyExclusive)
+                    {
+                        MutuallyExclusiveSet newset = new MutuallyExclusiveSet(
+                            FociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
+                            FociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName));
+                        focus.MutualyExclusive.Add(newset);
+                    }
                 }
             }
         }
@@ -97,12 +101,7 @@ namespace FocusTreeManager.DataContract
         internal static List<FociGridContainer> PopulateFromLegacy
             (List<Containers.LegacySerialization.FociGridContainer> fociContainerList)
         {
-            List<FociGridContainer> list = new List<FociGridContainer>();
-            foreach (Containers.LegacySerialization.FociGridContainer legacyItem in fociContainerList)
-            {
-                list.Add(new FociGridContainer(legacyItem));
-            }
-            return list;
+            return fociContainerList.Select(legacyItem => new FociGridContainer(legacyItem)).ToList();
         }
     }
 }

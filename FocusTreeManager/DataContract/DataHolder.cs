@@ -1,20 +1,11 @@
 ﻿using FocusTreeManager.Helper;
-using GalaSoft.MvvmLight;
 using FocusTreeManager.Model;
 
 namespace FocusTreeManager.DataContract
 {
     public sealed class DataHolder
     {
-        private static DataHolder instance = new DataHolder();
-
-        public static DataHolder Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static DataHolder Instance { get; } = new DataHolder();
 
         public Project Project;
 
@@ -29,7 +20,7 @@ namespace FocusTreeManager.DataContract
             SerializationHelper.Serialize(Project.filename, Project);
         }
 
-        static public bool LoadContract(string filename)
+        public static bool LoadContract(string filename)
         {
             Project returnVal = SerializationHelper.Deserialize(filename);
             if (returnVal == null)

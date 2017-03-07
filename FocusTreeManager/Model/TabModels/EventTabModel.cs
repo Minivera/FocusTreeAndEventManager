@@ -1,4 +1,8 @@
-﻿using DiffPlex;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
@@ -10,24 +14,12 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MonitoredUndo;
-using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
 
-namespace FocusTreeManager.Model
+namespace FocusTreeManager.Model.TabModels
 {
     public class EventTabModel : ObservableObject, ISupportsUndo
     {
-        private Guid ID;
-
-        public Guid UniqueID
-        {
-            get
-            {
-                return ID;
-            }
-        }
+        public Guid UniqueID { get; }
 
         private string visbleName;
 
@@ -90,7 +82,7 @@ namespace FocusTreeManager.Model
 
         public ObservableCollection<EventModel> EventList { get; set; }
 
-        private EventModel selectedNode = null;
+        private EventModel selectedNode;
 
         public EventModel SelectedNode
         {
@@ -103,7 +95,7 @@ namespace FocusTreeManager.Model
                 if (value != selectedNode)
                 {
                     selectedNode = value;
-                    RaisePropertyChanged("SelectedVNode");
+                    RaisePropertyChanged(() => SelectedNode);
                 }
             }
         }
@@ -118,8 +110,8 @@ namespace FocusTreeManager.Model
 
         public EventTabModel(string Filename)
         {
-            this.visbleName = Filename;
-            this.ID = Guid.NewGuid();
+            visbleName = Filename;
+            UniqueID = Guid.NewGuid();
             EventList = new ObservableCollection<EventModel>();
             EventList.CollectionChanged += EventList_CollectionChanged;
             //Command
@@ -132,9 +124,9 @@ namespace FocusTreeManager.Model
 
         public EventTabModel(EventContainer container)
         {
-            this.ID = container.IdentifierID;
-            this.visbleName = container.ContainerID;
-            this.eventNamespace = container.EventNamespace;
+            UniqueID = container.IdentifierID;
+            visbleName = container.ContainerID;
+            eventNamespace = container.EventNamespace;
             FileInfo = container.FileInfo;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
@@ -160,7 +152,7 @@ namespace FocusTreeManager.Model
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (this.VisibleName == null)
+            if (VisibleName == null)
             {
                 return;
             }
@@ -169,18 +161,16 @@ namespace FocusTreeManager.Model
             {
                 RaisePropertyChanged(() => VisibleName);
             }
-            if (!this.isShown)
+            if (!isShown)
             {
                 //is not shown, do not manage
                 return;
             }
-            switch (msg.Notification)
+            if (msg.Notification == "DeleteEvent")
             {
-                case "DeleteEvent":
-                    EventModel sender = msg.Sender as EventModel;
-                    EventList.Remove(sender);
-                    RaisePropertyChanged(() => EventList);
-                    break;
+                EventModel sender = msg.Sender as EventModel;
+                EventList.Remove(sender);
+                RaisePropertyChanged(() => EventList);
             }
         }
 
@@ -196,41 +186,35 @@ namespace FocusTreeManager.Model
                 (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
         }
 
-        async public void CheckForChanges()
+        public async void CheckForChanges()
         {
-            DataContract.FileInfo info = this.FileInfo;
+            DataContract.FileInfo info = FileInfo;
             //check the fileinfo data
-            if (info != null)
+            if (info == null) return;
+            //If the file exists
+            if (!File.Exists(info.Filename)) return;
+            //If the file was modified after the last modification date
+            if (File.GetLastWriteTime(info.Filename) <= info.LastModifiedDate) return;
+            //Then we can show a message
+            MessageDialogResult Result = await (new ViewModelLocator())
+                .Main.ShowFileChangedDialog();
+            if (Result == MessageDialogResult.Affirmative)
             {
-                //If the file exists
-                if (File.Exists(info.Filename))
-                {
-                    //If the file was modified after the last modification date
-                    if (File.GetLastWriteTime(info.Filename) > info.LastModifiedDate)
-                    {
-                        //Then we can show a message
-                        MessageDialogResult Result = await (new ViewModelLocator())
-                            .Main.ShowFileChangedDialog();
-                        if (Result == MessageDialogResult.Affirmative)
-                        {
-                            string oldText = EventParser.ParseEventForCompare(this);
-                            string newText = EventParser.ParseEventScriptForCompare(info.Filename);
-                            SideBySideDiffModel model = new SideBySideDiffBuilder(
-                                new Differ()).BuildDiffModel(oldText, newText);
-                            (new ViewModelLocator()).CodeComparator.DiffModel = model;
-                            new CompareCode().ShowDialog();
-                        }
-                    }
-                }
+                string oldText = EventParser.ParseEventForCompare(this);
+                string newText = EventParser.ParseEventScriptForCompare(info.Filename);
+                SideBySideDiffModel model = new SideBySideDiffBuilder(
+                    new Differ()).BuildDiffModel(oldText, newText);
+                (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                new CompareCode().ShowDialog();
             }
         }
 
         #region Undo/Redo
 
-        void EventList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void EventList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            DefaultChangeFactory.Current.OnCollectionChanged(this, "EventList", 
-                this.EventList, e, "EventList Changed");
+            DefaultChangeFactory.Current.OnCollectionChanged(this, "EventList",
+                EventList, e, "EventList Changed");
         }
 
         public object GetUndoRoot()

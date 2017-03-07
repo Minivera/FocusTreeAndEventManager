@@ -23,13 +23,13 @@ namespace FocusTreeManager.CodeStructures.LegacySerialization
 
         public CodeBlock()
         {
-            this.Level = 0;
+            Level = 0;
             Code = new List<ICodeStruct>();
         }
 
         public CodeBlock(int level)
         {
-            this.Level = level;
+            Level = level;
             Code = new List<ICodeStruct>();
         }
 

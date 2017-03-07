@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FocusTreeManager.CodeStructures;
-using FocusTreeManager.Model;
 
 namespace FocusTreeManager.DataContract
 {
@@ -66,12 +65,15 @@ namespace FocusTreeManager.DataContract
             }
             foreach (Focus item in list)
             {
-                item.RepairMutuallyExclusive(fociList.SingleOrDefault(
-                                                (i) => i.X == item.X && i.Y == item.Y).MutualyExclusive,
-                                             list);
-                item.RepairPrerequisites(fociList.SingleOrDefault(
-                                            (i) => i.X == item.X && i.Y == item.Y).Prerequisite,
-                                         list);
+                Model.LegacySerialization.Focus focus = fociList.SingleOrDefault(
+                    i => i.X == item.X && i.Y == item.Y);
+                if (focus != null)
+                {
+                    item.RepairMutuallyExclusive(focus.MutualyExclusive,
+                        list);
+                    item.RepairPrerequisites(focus.Prerequisite,
+                        list);
+                }
             }
             return list;
         }
@@ -87,7 +89,7 @@ namespace FocusTreeManager.DataContract
                     set.FociList.Add(fociList.SingleOrDefault((i) => i.X == legacyFocus.X &&
                                                                i.Y == legacyFocus.Y));
                 }
-                this.Prerequisite.Add(set);
+                Prerequisite.Add(set);
             }
         }
 
@@ -102,7 +104,7 @@ namespace FocusTreeManager.DataContract
                                                                     fociList.SingleOrDefault((i) =>
                                                                         i.X == legacyItem.Focus2.X &&
                                                                         i.Y == legacyItem.Focus2.Y));
-                this.MutualyExclusive.Add(set);
+                MutualyExclusive.Add(set);
             }
         }
     }

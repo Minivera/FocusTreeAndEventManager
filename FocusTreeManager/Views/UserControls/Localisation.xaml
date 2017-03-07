@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="FocusTreeManager.Views.Localisation"
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.Localisation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FocusTreeManager.Views"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -39,7 +38,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid VirtualizingStackPanel.VirtualizationMode="Recycling">
-        <DataGrid ItemsSource="{Binding Source={StaticResource LocalisationSource}}" Grid.Row="1"
+        <DataGrid ItemsSource="{Binding Source={StaticResource LocalisationSource}}"
                   AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
                   AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush2}"
                   RowBackground="{DynamicResource AccentColorBrush3}"
@@ -61,7 +60,8 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{DynamicResource Localisation_Key}" Grid.Row="0"/>
-                                <Button Grid.Column="1" x:Name="FilterKeyButton" Click="FilterKeyButton_Click"
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        x:Name="FilterKeyButton" Click="FilterKeyButton_Click"
                                         Style="{StaticResource TransparentStyle}" Margin="7,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <Rectangle Width="10" Height="10"
@@ -74,8 +74,11 @@
                                         </Rectangle>
                                     </StackPanel>
                                 </Button>
-                                <TextBox Grid.Row="1" x:Name="FilterKeyTextBox" Visibility="Collapsed" Grid.ColumnSpan="2"
-                                         Loaded="FilterKeyTextBox_Loaded" TextChanged="FilterKeyTextBox_TextChanged"/>
+                                <TextBox Grid.Row="1" x:Name="FilterKeyTextBox" 
+                                         Visibility="Collapsed" Grid.ColumnSpan="2"
+                                         Grid.Column="0"
+                                         Loaded="FilterKeyTextBox_Loaded" 
+                                         TextChanged="FilterKeyTextBox_TextChanged"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
@@ -93,7 +96,8 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{DynamicResource Localisation_Value}" Grid.Row="0"/>
-                                <Button Grid.Column="1" x:Name="FilterValueButton" Click="FilterValueButton_Click"
+                                <Button Grid.Row="0" Grid.Column="1" x:Name="FilterValueButton" 
+                                        Click="FilterValueButton_Click"
                                         Style="{StaticResource TransparentStyle}" Margin="7,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <Rectangle Width="10" Height="10"
@@ -106,8 +110,11 @@
                                         </Rectangle>
                                     </StackPanel>
                                 </Button>
-                                <TextBox Grid.Row="1" x:Name="FilterValueTextBox" Visibility="Collapsed"  Grid.ColumnSpan="2"
-                                         Loaded="FilterValueTextBox_Loaded" TextChanged="FilterValueTextBox_TextChanged"/>
+                                <TextBox Grid.Row="1" x:Name="FilterValueTextBox" 
+                                         Visibility="Collapsed"  Grid.ColumnSpan="2"
+                                         Grid.Column="0"
+                                         Loaded="FilterValueTextBox_Loaded" 
+                                         TextChanged="FilterValueTextBox_TextChanged"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
