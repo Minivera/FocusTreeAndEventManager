@@ -30,8 +30,7 @@ namespace FocusTreeManager.Parsers
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             foreach (ScriptContainer container in Containers)
             {
-                string ID = container.ContainerID.Replace(" ", "_");
-                fileList[ID] = Parse(container.InternalScript);
+                fileList[container.ContainerID] = Parse(container.InternalScript);
             }
             return fileList;
         }

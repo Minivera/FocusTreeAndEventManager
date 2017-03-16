@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
@@ -41,7 +40,7 @@ namespace FocusTreeManager.CodeStructures
                 Assignation tempo = new Assignation(Level + 1);
                 tempo.Analyse(group);
                 //If tempo has a value
-                if (!String.IsNullOrEmpty(tempo.Assignee))
+                if (!string.IsNullOrEmpty(tempo.Assignee))
                 {
                     Code.Add(tempo);
                 }

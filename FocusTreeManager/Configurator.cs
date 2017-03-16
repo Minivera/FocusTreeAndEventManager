@@ -13,7 +13,7 @@ namespace FocusTreeManager
 
     public static class Configurator
     {
-        const string LOCALE_FILE_STRING = "/FocusTreeManager;component/Languages/";
+        private const string LOCALE_FILE_STRING = "/FocusTreeManager;component/Languages/";
 
         public static string getLanguageFile()
         {
@@ -22,7 +22,7 @@ namespace FocusTreeManager
         
         public static string getLanguage()
         {
-            return ConfigurationManager.AppSettings["Language"];
+            return Properties.Settings.Default.Language;
         } 
 
         public static void setLanguage(string Language)

@@ -36,14 +36,6 @@ namespace FocusTreeManager.DataContract
             FociList = new List<Focus>();
         }
 
-        public FociGridContainer(Containers.LegacySerialization.FociGridContainer legacyItem)
-        {
-            IdentifierID = legacyItem.IdentifierID;
-            ContainerID = legacyItem.ContainerID;
-            TAG = legacyItem.TAG;
-            FociList = Focus.PopulateFromLegacy(legacyItem.FociList.ToList());
-        }
-
         public FociGridContainer(string filename)
         {
             ContainerID = filename;
@@ -96,12 +88,6 @@ namespace FocusTreeManager.DataContract
                     }
                 }
             }
-        }
-
-        internal static List<FociGridContainer> PopulateFromLegacy
-            (List<Containers.LegacySerialization.FociGridContainer> fociContainerList)
-        {
-            return fociContainerList.Select(legacyItem => new FociGridContainer(legacyItem)).ToList();
         }
     }
 }

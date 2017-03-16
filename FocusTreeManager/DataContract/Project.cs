@@ -53,16 +53,6 @@ namespace FocusTreeManager.DataContract
             scriptList = new List<ScriptContainer>();
         }
 
-        public Project(Model.LegacySerialization.Project legacyProject)
-        {
-            fociContainerList = FociGridContainer.PopulateFromLegacy(
-                legacyProject.fociContainerList.ToList());
-            localisationList = LocalisationContainer.PopulateFromLegacy(
-                legacyProject.localisationList.ToList());
-            eventList = EventContainer.PopulateFromLegacy(legacyProject.eventList.ToList());
-            scriptList = ScriptContainer.PopulateFromLegacy(legacyProject.scriptList.ToList());
-        }
-
         public void ExportProject(string paramFilename)
         {
             string path = paramFilename + FOCUS_TREE_PATH;

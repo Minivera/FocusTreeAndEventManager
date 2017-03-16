@@ -14,17 +14,5 @@ namespace FocusTreeManager.DataContract
         public string Value { get; set; }
 
         public LocaleContent() { }
-
-        public LocaleContent(Model.LegacySerialization.LocaleContent legacyItem)
-        {
-            Key = legacyItem.Key;
-            Value = legacyItem.Value;
-        }
-
-        internal static List<LocaleContent> PopulateFromLegacy(
-            List<Model.LegacySerialization.LocaleContent> localisationMap)
-        {
-            return localisationMap.Select(legacyItem => new LocaleContent(legacyItem)).ToList();
-        }
     }
 }

@@ -116,7 +116,7 @@ namespace FocusTreeManager.CodeStructures
                         if (word.Contains('"') && !word.Contains('\\'))
                         {
                             //If it is also the end
-                            if (isFullyStringed || (word.Count(f => (f == '"')) > 1))
+                            if (isFullyStringed || word.Count(f => f == '"') > 1)
                             {
                                 //Create the token and skip to the next work
                                 isFullyStringed = false;

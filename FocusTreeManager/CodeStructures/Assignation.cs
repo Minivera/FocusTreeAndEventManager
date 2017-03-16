@@ -78,10 +78,6 @@ namespace FocusTreeManager.CodeStructures
                 Value = new CodeBlock();
                 ((CodeBlock)Value).Analyse((List<Token>)code.Operand);
             }
-            else
-            {
-                //Empty, kill
-            }
         }
 
         public string Parse(int StartLevel = -1)

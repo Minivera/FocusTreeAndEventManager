@@ -29,7 +29,6 @@
             </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/PhotoLoader;component/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -57,7 +56,7 @@
                        FontSize="15"/>
         </StackPanel>
         <Image Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
-               Source="{Binding ImagePath, TargetNullValue={StaticResource ImageError}}" 
+               Source="{Binding ImagePath}" 
                ToolTip="{DynamicResource Event_Picture}" />
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
                     Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" 

@@ -40,14 +40,6 @@ namespace FocusTreeManager.DataContract
             IdentifierID = Guid.NewGuid();
         }
 
-        public EventContainer(Containers.LegacySerialization.EventContainer legacyItem)
-        {
-            ContainerID = legacyItem.ContainerID;
-            EventNamespace = legacyItem.EventNamespace;
-            EventList = Event.PopulateFromLegacy(legacyItem.EventList.ToList());
-            IdentifierID = legacyItem.IdentifierID;
-        }
-
         public EventContainer(EventTabModel item)
         {
             IdentifierID = item.UniqueID;
@@ -59,12 +51,6 @@ namespace FocusTreeManager.DataContract
             {
                 EventList.Add(new Event(model));
             }
-        }
-
-        internal static List<EventContainer> PopulateFromLegacy(
-            List<Containers.LegacySerialization.EventContainer> eventList)
-        {
-            return eventList.Select(legacyItem => new EventContainer(legacyItem)).ToList();
         }
     }
 }

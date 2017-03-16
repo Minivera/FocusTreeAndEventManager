@@ -33,15 +33,8 @@ namespace FocusTreeManager.Helper
 
         public static ImageSource getImageFromGame(string imageName, ImageType source)
         {
-            //Build the error image if the requested one do not exist
-            ResourceDictionary resourceDictionary = new ResourceDictionary
-            {
-                Source = new Uri("PhotoLoader;component/Resources.xaml", UriKind.Relative)
-            };
-            DrawingImage errorThumbnail = resourceDictionary["ImageError"] as DrawingImage;
             //If we couldn't find the error image, throw an IO exception
-            if (errorThumbnail == null) throw new FileNotFoundException("ImageError");
-            errorThumbnail.Freeze();
+            //TODO: Prepare an error image
             //Try to obtain the image from the game's folder
             try
             {
@@ -62,7 +55,8 @@ namespace FocusTreeManager.Helper
             catch (Exception)
             {
                 //If an error occurred, return the error image
-                return errorThumbnail;
+                //TODO: Return something
+                return null;
             }
         }
 
