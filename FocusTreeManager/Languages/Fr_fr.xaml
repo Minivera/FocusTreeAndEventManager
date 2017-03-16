@@ -25,6 +25,7 @@
     <system:String x:Key="Project_Save_As">Sauvegarder le projet sous</system:String>
     <system:String x:Key="Project_Edit">Editer le project</system:String>
     <system:String x:Key="Project_Name">Nom du project</system:String>
+    <system:String x:Key="Project_Select">Sélectionner ou créer un nouveau Projet</system:String>
     <system:String x:Key="Project_Default_Locale">Fichier de localisation par défaut</system:String>
     <system:String x:Key="Project_Preload">Précharger les fichiers du jeu?</system:String>
     <system:String x:Key="Project_Mods_Folders">Dossiers de mods à charger en plus des fichiers de base</system:String>
@@ -32,6 +33,7 @@
     <system:String x:Key="Focus_TAG">Tag du pays (Voir le wiki)</system:String>
     <system:String x:Key="Focus_Additional_Mods">Modificateurs additionnels pour la sélection du pays</system:String>
     <system:String x:Key="Focus_Unique_Name">Nom unique</system:String>
+    <system:String x:Key="Focus_Text">Identifiant pour la localisation</system:String>
     <system:String x:Key="Focus_Visible_Name">Nom d'affichage</system:String>
     <system:String x:Key="Focus_Description">Description</system:String>
     <system:String x:Key="Focus_X">Position horizontale (X)</system:String>

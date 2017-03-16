@@ -41,7 +41,7 @@ namespace FocusTreeManager.Views
             resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             CommonOpenFileDialog dialog = new CommonOpenFileDialog
             {
-                Title = resourceLocalization["Project_Load"] as string,
+                Title = resourceLocalization["Project_Select"] as string,
                 InitialDirectory = "C:",
                 AddToMostRecentlyUsedList = false,
                 AllowNonFileSystemItems = false,

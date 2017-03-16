@@ -11,7 +11,6 @@ using MonitoredUndo;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Windows.Media;
-using System.Windows.Threading;
 using FocusTreeManager.Helper;
 using FocusTreeManager.Model.TabModels;
 
@@ -66,13 +65,41 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private string text;
+
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+            set
+            {
+                if (value == text)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Text", text, value, "Text Changed");
+                text = value;
+                RaisePropertyChanged(() => Text);
+                RaisePropertyChanged(() => VisibleName);
+                RaisePropertyChanged(() => Description);
+            }
+        }
+
         public string VisibleName
         {
             get
             {
+                string source = UniqueName;
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    source = Text;
+                }
                 var locales = new ViewModelLocator().Main.Project.DefaultLocale;
-                string translation = locales?.translateKey(UniqueName);
-                return translation ?? UniqueName;
+                string translation = locales?.translateKey(source);
+                return translation ?? source;
             }
         }
 
@@ -80,9 +107,14 @@ namespace FocusTreeManager.Model
         {
             get
             {
+                string source = UniqueName;
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    source = Text;
+                }
                 LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
-                string translation = locales?.translateKey(UniqueName + "_desc");
-                return translation ?? UniqueName + "_desc";
+                string translation = locales?.translateKey(source + "_desc");
+                return translation ?? source + "_desc";
             }
         }
 
@@ -227,6 +259,7 @@ namespace FocusTreeManager.Model
         {
             image = focus.Image;
             uniquename = focus.UniqueName;
+            text = focus.Text;
             x = focus.X;
             y = focus.Y;
             cost = focus.Cost;

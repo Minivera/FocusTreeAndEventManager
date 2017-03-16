@@ -16,15 +16,16 @@ namespace FocusTreeManager.Parsers
     {
         private static readonly string[] CORE_FOCUS_SCRIPTS_ELEMENTS =
         {
-            "ai_will_do", "completion_reward", "available", "bypass", "cancel", "complete_tooltip"
+            "ai_will_do", "completion_reward", "available", "bypass",
+            "cancel", "complete_tooltip"
         };
 
         private static readonly string[] ALL_PASED_ELEMENTS = 
         {
-            "id", "x", "y", "icon", "prerequisite", "relative_position_id", "cost", "mutually_exclusive"
+            "id", "x", "y", "icon", "text", "prerequisite", "relative_position_id",
+            "cost", "mutually_exclusive"
         };
-
-
+        
         public static string ParseTreeForCompare(FocusGridModel model)
         {
             FociGridContainer container = new FociGridContainer(model);
@@ -92,6 +93,7 @@ namespace FocusTreeManager.Parsers
             {
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
+                text.AppendLine("\t\ttext = " + focus.Text);
                 text.AppendLine("\t\ticon = GFX_" + focus.Image);
                 text.AppendLine("\t\tcost = " + $"{focus.Cost:0.00}");
                 if (focus.Prerequisite.Any())
@@ -250,6 +252,7 @@ namespace FocusTreeManager.Parsers
                     FocusModel newFocus = new FocusModel
                     {
                         UniqueName = Script.TryParse(block, "id"),
+                        Text = Script.TryParse(block, "text", false),
                         Image = Script.TryParse(block, "icon").Replace("GFX_", ""),
                         X = int.Parse(Script.TryParse(block, "x")),
                         Y = int.Parse(Script.TryParse(block, "y")),

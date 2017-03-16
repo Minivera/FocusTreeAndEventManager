@@ -36,6 +36,9 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "mutually_exclusives", Order = 7)]
         public List<MutuallyExclusiveSet> MutualyExclusive { get; set; }
 
+        [DataMember(Name = "text", Order = 8)]
+        public string Text { get; set; }
+
         public Focus()
         {
             MutualyExclusive = new List<MutuallyExclusiveSet>();
