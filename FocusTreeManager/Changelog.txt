@@ -208,3 +208,6 @@ the performance slightly.
 - Changed the .NET framework required to 4.6.1 to see if it fixes a CTD some users have.
 - Fixed a rare bug where an imported focus tree exported and then imported back would not load properly.
 - Fixed a bug where the localization files would be named weirdly when exported.
+- Changed the name of the dialog box when creating a new project to prevent confusion.
+- Added support for text ids in focus trees using the text = xxxx. if available, the 
+application will use the text, otherwise, it will use the unique name.
