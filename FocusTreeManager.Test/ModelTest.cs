@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using FocusTreeManager.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FocusTreeManager.Test
@@ -7,28 +9,19 @@ namespace FocusTreeManager.Test
     public class ModelTest
     {
         [TestMethod]
-        public void TestEventTabModel()
-        {
-        }
-
-        [TestMethod]
-        public void LocalisationModel()
-        {
-        }
-
-        [TestMethod]
-        public void TestFocusGridModel()
-        {
-        }
-
-        [TestMethod]
-        public void TestScriptModel()
-        {
-        }
-
-        [TestMethod]
         public void TestAssignationModel()
         {
+            //Arrange
+            AssignationModel model = new AssignationModel();
+            AssignationModel child = new AssignationModel();
+            //Act
+            model.Childrens.Add(child);
+            AssignationModel clone = model.Clone() as AssignationModel;
+            //Assert
+            Assert.IsNotNull(clone);
+            Assert.IsTrue(model.Childrens.Any());
+            Assert.IsTrue(clone.Childrens.Any());
+            Assert.IsTrue(clone.IsCloned);
         }
 
         [TestMethod]
@@ -37,7 +30,32 @@ namespace FocusTreeManager.Test
         }
 
         [TestMethod]
+        public void TestEventDescriptionModel()
+        {
+        }
+
+        [TestMethod]
+        public void TestEventOptionModel()
+        {
+        }
+
+        [TestMethod]
         public void TestFocusModel()
+        {
+        }
+
+        [TestMethod]
+        public void TestMutuallyExclusiveModel()
+        {
+        }
+
+        [TestMethod]
+        public void TestPrerequisiteModel()
+        {
+        }
+
+        [TestMethod]
+        public void TestLocaleModel()
         {
         }
 

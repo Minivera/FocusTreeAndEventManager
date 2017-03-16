@@ -160,7 +160,9 @@ namespace FocusTreeManager.Model
             set
             {
                 if (Equals(value, childrens))
+                {
                     return;
+                }
                 childrens = value;
                 RaisePropertyChanged(() => Childrens);
             }
