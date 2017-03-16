@@ -238,7 +238,6 @@ namespace FocusTreeManager.ViewModel
                 dialog.EnsureReadOnly = false;
                 dialog.EnsureValidNames = true;
                 dialog.Filters.Add(new CommonFileDialogFilter("Project", "*.xh4prj"));
-                dialog.Filters.Add(new CommonFileDialogFilter("Beta project", "*.h4prj"));
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {

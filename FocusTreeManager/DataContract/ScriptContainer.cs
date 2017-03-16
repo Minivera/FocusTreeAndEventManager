@@ -34,19 +34,5 @@ namespace FocusTreeManager.DataContract
             InternalScript = new Script();
             IdentifierID = Guid.NewGuid();
         }
-
-        public ScriptContainer(Containers.LegacySerialization.ScriptContainer legacyItem)
-        {
-            ContainerID = legacyItem.ContainerID;
-            InternalScript = new Script();
-            InternalScript.Analyse(legacyItem.InternalScript.Parse());
-            IdentifierID = legacyItem.IdentifierID;
-        }
-
-        internal static List<ScriptContainer> PopulateFromLegacy(
-            List<Containers.LegacySerialization.ScriptContainer> scriptList)
-        {
-            return scriptList.Select(legacyItem => new ScriptContainer(legacyItem)).ToList();
-        }
     }
 }

@@ -122,6 +122,7 @@ namespace FocusTreeManager.Test
             try
             {
                 script.Analyse(code);
+                //Assert
                 Assert.Fail("Exception was to be lifted by broken script");
             }
             catch (Exception e)

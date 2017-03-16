@@ -1,5 +1,4 @@
 ﻿using FocusTreeManager.DataContract;
-using ProtoBuf;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
@@ -15,24 +14,7 @@ namespace FocusTreeManager.Helper
             //If we are loading a legacy version
             try
             {
-                if (Path.GetExtension(filename) == ".h4prj")
-                {
-                    Model.LegacySerialization.Project project;
-                    using (FileStream fs = File.OpenRead(filename))
-                    {
-                        project = Serializer.Deserialize<Model.LegacySerialization.Project>(fs);
-                        project.filename = filename;
-                    }
-                    //Repair references
-                    foreach (Containers.LegacySerialization.FociGridContainer container 
-                        in project.fociContainerList)
-                    {
-                        container.RepairInternalReferences();
-                    }
-                    return new Project(project);
-                }
-                //Loading the new xml format
-                else
+                if (Path.GetExtension(filename) == ".xh4prj")
                 {
                     FileStream fs = new FileStream(filename, FileMode.Open);
                     XmlReader reader = XmlReader.Create(fs);
@@ -42,6 +24,7 @@ namespace FocusTreeManager.Helper
                     fs.Close();
                     return project;
                 }
+                return null;
             }
             catch (Exception)
             {

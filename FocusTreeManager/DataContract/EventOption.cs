@@ -19,22 +19,10 @@ namespace FocusTreeManager.DataContract
         {
         }
 
-        public EventOption(Model.LegacySerialization.EventOption legacyItem)
-        {
-            Name = legacyItem.Name;
-            InternalScript = new Script();
-            InternalScript.Analyse(legacyItem.InternalScript.Parse());
-        }
-
         public void setDefaults()
         {
             Name = "namespace.count.a";
             InternalScript = new Script();
-        }
-
-        internal static List<EventOption> PopulateFromLegacy(List<Model.LegacySerialization.EventOption> options)
-        {
-            return options.Select(legacyItem => new EventOption(legacyItem)).ToList();
         }
     }
 }

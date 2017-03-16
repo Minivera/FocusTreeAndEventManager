@@ -201,4 +201,10 @@ the performance slightly.
 - A small loading cursor will now display for long tasks, though performance is still an issue.
 - Clicking on the bubble icon again will now hide the localizator.
 - Created a test project that will test every part of the application automatically, saving time and preventing bugs.
-- Fixed various minor issues found by the testing
+- Fixed various minor issues found by the testing.
+- Removed unnecessary modules to speed up to loading.
+- Removed all instances of the old file format, users still having old .h4prj projects should load them in beta_2g or lower.
+- The settings Windows will now properly show the currently selected language.
+- Changed the .NET framework required to 4.6.1 to see if it fixes a CTD some users have.
+- Fixed a rare bug where an imported focus tree exported and then imported back would not load properly.
+- Fixed a bug where the localization files would be named weirdly when exported.

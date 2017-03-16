@@ -29,7 +29,6 @@ namespace FocusTreeManager.Parsers
             foreach (LocalisationContainer container in Containers)
             {
                 string ID = container.ContainerID.Replace(" ", "_");
-                ID += "_" + container.LanguageName;
                 fileList[ID] = Parse(container.LocalisationMap.ToList(), container.LanguageName);
             }
             return fileList;

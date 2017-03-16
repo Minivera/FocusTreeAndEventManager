@@ -40,14 +40,6 @@ namespace FocusTreeManager.DataContract
             IdentifierID = Guid.NewGuid();
         }
 
-        public LocalisationContainer(Containers.LegacySerialization.LocalisationContainer legacyItem)
-        {
-            IdentifierID = legacyItem.IdentifierID;
-            ContainerID = legacyItem.ContainerID;
-            LanguageName = legacyItem.ShortName;
-            LocalisationMap = LocaleContent.PopulateFromLegacy(legacyItem.LocalisationMap.ToList());
-        }
-
         public LocalisationContainer(LocalisationModel item)
         {
             IdentifierID = item.UniqueID;
@@ -63,13 +55,6 @@ namespace FocusTreeManager.DataContract
                     Value = model.Value
                 });
             }
-        }
-
-        internal static List<LocalisationContainer> PopulateFromLegacy(
-            List<Containers.LegacySerialization.LocalisationContainer> localisationList)
-        {
-            return localisationList.Select(legacyItem => new LocalisationContainer(legacyItem))
-                .ToList();
         }
     }
 }

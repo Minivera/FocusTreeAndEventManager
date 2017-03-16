@@ -58,22 +58,6 @@ namespace FocusTreeManager.DataContract
             Options = new List<EventOption>();
         }
 
-        public Event(Model.LegacySerialization.Event legacyItem)
-        {
-            Id = legacyItem.Id;
-            Type = legacyItem.Type == Model.LegacySerialization.Event.EventType.country_event ? 
-                EventType.country_event : EventType.news_event;
-            Picture = legacyItem.Picture;
-            IsFiredOnce = legacyItem.IsFiredOnce;
-            IsHidden = legacyItem.IsHidden;
-            IsMajor = legacyItem.IsMajor;
-            IsTriggeredOnly = legacyItem.IsTriggeredOnly;
-            InternalScript = new Script();
-            InternalScript.Analyse(legacyItem.InternalScript.Parse());
-            Descriptions = EventDescription.PopulateFromLegacy(legacyItem.Descriptions);
-            Options = EventOption.PopulateFromLegacy(legacyItem.Options);
-        }
-
         public Event(EventModel model)
         {
             Id = model.Id;
@@ -101,12 +85,6 @@ namespace FocusTreeManager.DataContract
                     InternalScript = option.InternalScript
                 });
             }
-        }
-
-        internal static List<Event> PopulateFromLegacy(
-            List<Model.LegacySerialization.Event> eventList)
-        {
-            return eventList.Select(legacyItem => new Event(legacyItem)).ToList();
         }
     }
 }

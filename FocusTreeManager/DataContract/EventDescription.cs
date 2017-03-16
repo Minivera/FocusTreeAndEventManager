@@ -11,21 +11,5 @@ namespace FocusTreeManager.DataContract
     {
         [DataMember(Name = "script", Order = 0)]
         public Script InternalScript { get; set; }
-
-        public EventDescription()
-        {
-        }
-
-        public EventDescription(Model.LegacySerialization.EventDescription legacyItem)
-        {
-            InternalScript = new Script();
-            InternalScript.Analyse(legacyItem.InternalScript.Parse());
-        }
-
-        internal static List<EventDescription> PopulateFromLegacy(
-            List<Model.LegacySerialization.EventDescription> descriptions)
-        {
-            return descriptions.Select(legacyItem => new EventDescription(legacyItem)).ToList();
-        }
     }
 }

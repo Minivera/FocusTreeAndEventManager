@@ -19,7 +19,7 @@ namespace FocusTreeManager.CodeStructures
 
         public CodeValue(string value)
         {
-            Value = Regex.Replace(value, @"\t|\n|\r|\s", "");
+            Value = value;
         }
 
         internal void Analyse(SyntaxGroup code, int line = -1)
