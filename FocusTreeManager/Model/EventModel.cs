@@ -45,7 +45,7 @@ namespace FocusTreeManager.Model
             get
             {
                 
-                LocalisationModel locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
                 string translation = locales?.translateKey(Id + ".t");
                 return translation ?? Id + ".t";
             }
@@ -55,7 +55,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                LocalisationModel locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
                 string translation = locales?.translateKey(Id + ".d");
                 return translation ?? Id + ".d";
             }
