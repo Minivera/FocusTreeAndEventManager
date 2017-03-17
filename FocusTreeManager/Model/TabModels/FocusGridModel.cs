@@ -221,8 +221,7 @@ namespace FocusTreeManager.Model.TabModels
             //Create the remaining stuff
             FociList.CollectionChanged += FociList_CollectionChanged;
             //Min Row & column Count
-            rowCount = MIN_ROW_COUNT;
-            columnCount = MIN_COLUMN_COUNT;
+            EditGridDefinition();
             canvasLines = new ObservableCollection<CanvasLine>();
             //Commands
             AddFocusCommand = new RelayCommand<object>(AddFocus);
@@ -241,10 +240,27 @@ namespace FocusTreeManager.Model.TabModels
             {
                 int X = (int)Math.Floor(currentPoint.X / 89);
                 int Y = (int)Math.Floor(currentPoint.Y / 140);
-                element.X = X;
-                element.Y = Y;
+                element.DisplayX = X;
+                element.DisplayY = Y;
+                //Make all relative to focuses changed their positions
+                updateRelatives(element);
                 EditGridDefinition();
                 DrawOnCanvas();
+            }
+        }
+
+        internal void updateRelatives(FocusModel RelativeTo)
+        {
+            if (FociList.All(f => f.CoordinatesRelativeTo != RelativeTo))
+            {
+                return;
+            }
+            foreach (FocusModel relative in
+                    FociList.Where(f => f.CoordinatesRelativeTo == RelativeTo))
+            {
+                relative.RaisePropertyChanged(() => relative.DisplayX);
+                relative.RaisePropertyChanged(() => relative.DisplayY);
+                updateRelatives(relative);
             }
         }
 
@@ -254,10 +270,12 @@ namespace FocusTreeManager.Model.TabModels
             {
                 return;
             }
-            FocusModel biggestY = FociList.Aggregate((i1, i2) => i1.Y > i2.Y ? i1 : i2);
-            FocusModel biggestX = FociList.Aggregate((i1, i2) => i1.X > i2.X ? i1 : i2);
-            RowCount = biggestY.Y >= RowCount ? biggestY.Y + 1 : RowCount;
-            ColumnCount = biggestX.X >= ColumnCount ? biggestX.X + 1 : ColumnCount;
+            FocusModel biggestY = FociList.Aggregate((i1, i2) => i1.DisplayY > 
+                    i2.DisplayY ? i1 : i2);
+            FocusModel biggestX = FociList.Aggregate((i1, i2) => i1.DisplayX > 
+                    i2.DisplayX ? i1 : i2);
+            RowCount = biggestY.DisplayY >= RowCount ? biggestY.DisplayY + 1 : RowCount;
+            ColumnCount = biggestX.DisplayX >= ColumnCount ? biggestX.DisplayX + 1 : ColumnCount;
         }
 
         public void AddGridCells(int RowsToAdd, int ColumnsToAddt)
@@ -284,7 +302,17 @@ namespace FocusTreeManager.Model.TabModels
                 UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("DeleteSetAny", false);
                 foreach (CanvasLine line in clickedElements)
                 {
-                    line.InternalSet.DeleteSetRelations();
+                    if (line.InternalSet != null)
+                    {
+                        line.InternalSet.DeleteSetRelations();
+                    }
+                    else
+                    {
+                        //Hit a relative to
+                        line.Relative.X = line.Relative.DisplayX;
+                        line.Relative.Y = line.Relative.DisplayY;
+                        line.Relative.CoordinatesRelativeTo = null;
+                    }
                 }
                 UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                 CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
@@ -445,6 +473,30 @@ namespace FocusTreeManager.Model.TabModels
                         DrawOnCanvas();
                     }
                     break;
+                case "MakeRelativeTo":
+                    Application.Current.Properties["Mode"] = "RelativeTo";
+                    if (Model != null)
+                    {
+                        selectedFocus = Model;
+                        Model.IsSelected = true;
+                    }
+                    break;
+                case "FinishMakeRelativeTo":
+                    if (selectedFocus != null && selectedFocus != Model &&
+                        FociList.Any(f => f == Model))
+                    {
+                        UndoService.Current[GetUndoRoot()]
+                            .BeginChangeSetBatch("MakeRelativeTo", false);
+                        Application.Current.Properties["Mode"] = null;
+                        selectedFocus.IsSelected = false;
+                        selectedFocus.CoordinatesRelativeTo = Model;
+                        selectedFocus.X = selectedFocus.DisplayX - Model.DisplayX;
+                        selectedFocus.Y = selectedFocus.DisplayY - Model.DisplayY;
+                        UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
+                        RaisePropertyChanged(() => FociList);
+                        DrawOnCanvas();
+                    }
+                    break;
             }
         }
 
@@ -502,6 +554,17 @@ namespace FocusTreeManager.Model.TabModels
             CanvasLines.Clear();
             foreach (FocusModel focus in FociList)
             {
+                //Draw relatives
+                if (focus.CoordinatesRelativeTo != null)
+                {
+                    CanvasLine newline = new CanvasLine(
+                            focus.FocusTop.X,
+                            focus.FocusTop.Y,
+                            focus.CoordinatesRelativeTo.FocusBottom.X,
+                            focus.CoordinatesRelativeTo.FocusBottom.Y,
+                            System.Windows.Media.Brushes.Gold, false, null, focus);
+                    CanvasLines.Add(newline);
+                }
                 //Draw Prerequisites
                 foreach (PrerequisitesSetModel set in focus.Prerequisite)
                 {

@@ -1,4 +1,5 @@
-﻿using FocusTreeManager.ViewModel;
+﻿using System;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -118,6 +119,31 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private FocusModel coordinatesRelativeTo;
+
+        public FocusModel CoordinatesRelativeTo
+        {
+            get
+            {
+                return coordinatesRelativeTo;
+            }
+            set
+            {
+                if (value == coordinatesRelativeTo)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                            "CoordinatesRelativeTo", 
+                            coordinatesRelativeTo, value, "CoordinatesRelativeTo Changed");
+                coordinatesRelativeTo = value;
+                RaisePropertyChanged(() => X);
+                RaisePropertyChanged(() => Y);
+                RaisePropertyChanged(() => DisplayX);
+                RaisePropertyChanged(() => DisplayY);
+            }
+        }
+
         private int x;
 
         public int X
@@ -136,6 +162,35 @@ namespace FocusTreeManager.Model
                          "X", x, value, "X Changed");
                 x = value;
                 RaisePropertyChanged(() => X);
+                RaisePropertyChanged(() => DisplayX);
+            }
+        }
+
+        public int DisplayX
+        {
+            get
+            {
+                return coordinatesRelativeTo != null ?
+                    Math.Max(0, coordinatesRelativeTo.DisplayX + x) : x;
+            }
+            set
+            {
+                if (value == x)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "X", x, value, "X Changed");
+                if (coordinatesRelativeTo != null)
+                {
+                    x = value - coordinatesRelativeTo.x;
+                }
+                else
+                {
+                    x = value;
+                }
+                RaisePropertyChanged(() => X);
+                RaisePropertyChanged(() => DisplayX);
             }
         }
 
@@ -157,6 +212,35 @@ namespace FocusTreeManager.Model
                          "Y", y, value, "Y Changed");
                 y = value;
                 RaisePropertyChanged(() => Y);
+                RaisePropertyChanged(() => DisplayY);
+            }
+        }
+
+        public int DisplayY
+        {
+            get
+            {
+                return coordinatesRelativeTo != null ? 
+                    Math.Max(0, coordinatesRelativeTo.DisplayY + y) : y;
+            }
+            set
+            {
+                if (value == y)
+                {
+                    return;
+                }
+                DefaultChangeFactory.Current.OnChanging(this,
+                         "Y", y, value, "Y Changed");
+                if (coordinatesRelativeTo != null)
+                {
+                    y = value - coordinatesRelativeTo.y;
+                }
+                else
+                {
+                    y = value;
+                }
+                RaisePropertyChanged(() => Y);
+                RaisePropertyChanged(() => DisplayY);
             }
         }
 
@@ -219,7 +303,7 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                //Don,t care about undo here
+                //Don't care about undo here
                 Set(() => IsSelected, ref isSelected, value);
             }
         }
@@ -235,7 +319,9 @@ namespace FocusTreeManager.Model
         public RelayCommand MutuallyFocusCommand { get; private set; }
 
         public RelayCommand<string> PrerequisiteFocusCommand { get; private set; }
-        
+
+        public RelayCommand MakeRelativeToCommand { get; private set; }
+
         public RelayCommand TestFinishCommand { get; private set; }
 
         public RelayCommand<string> EditLocaleCommand { get; private set; }
@@ -251,6 +337,7 @@ namespace FocusTreeManager.Model
             DeleteFocusCommand = new RelayCommand(Delete);
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
+            MakeRelativeToCommand = new RelayCommand(MakeRelativeTo);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
             EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
@@ -273,12 +360,20 @@ namespace FocusTreeManager.Model
             DeleteFocusCommand = new RelayCommand(Delete);
             MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
             PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
+            MakeRelativeToCommand = new RelayCommand(MakeRelativeTo);
             TestFinishCommand = new RelayCommand(FinishSetCommands);
             EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public void RepairSets(Focus focus, List<FocusModel> fociList)
         {
+            //Relative ids
+            if (focus.RelativeTo != null)
+            {
+                CoordinatesRelativeTo = fociList.FirstOrDefault(f => f.UniqueName
+                                            == focus.RelativeTo.UniqueName);
+            }
+            //Prerequisites
             foreach (PrerequisitesSet set in focus.Prerequisite)
             {
                 //Add the linked focus
@@ -292,6 +387,7 @@ namespace FocusTreeManager.Model
                 }
                 Prerequisite.Add(prerequiste);
             }
+            //Mutually exclusives
             foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
             {
                 //Create the set with both foci
@@ -335,6 +431,11 @@ namespace FocusTreeManager.Model
             Messenger.Default.Send(new NotificationMessage(this, "AddFocusMutually"));
         }
 
+        public void MakeRelativeTo()
+        {
+            Messenger.Default.Send(new NotificationMessage(this, "MakeRelativeTo"));
+        }
+
         public void FinishSetCommands()
         {
             if ((string)Application.Current.Properties["Mode"] == "Mutually")
@@ -345,6 +446,10 @@ namespace FocusTreeManager.Model
             {
                 Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusPrerequisite"));
             }
+            if ((string)Application.Current.Properties["Mode"] == "RelativeTo")
+            {
+                Messenger.Default.Send(new NotificationMessage(this, "FinishMakeRelativeTo"));
+            }
         }
 
         public void EditLocale(string param)
@@ -353,22 +458,23 @@ namespace FocusTreeManager.Model
             {
                 return;
             }
+            string key = string.IsNullOrEmpty(Text) ? UniqueName : Text;
             switch (param)
             {
                 case "VisibleName":
                     LocalizatorViewModel vm = new ViewModelLocator().Localizator;
                     LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
                     LocaleModel model = locales.LocalisationMap.FirstOrDefault(
-                        l => l.Key == UniqueName);
+                        l => l.Key == key);
                     if (model != null)
                     {
                         vm.Locale = model;
                     }
                     else
                     {
-                        vm.Locale = new LocaleModel()
+                        vm.Locale = new LocaleModel
                         {
-                            Key = UniqueName,
+                            Key = key,
                             Value = VisibleName
                         };
                     }
@@ -377,18 +483,18 @@ namespace FocusTreeManager.Model
                     break;
                 case "Description":
                     vm = new ViewModelLocator().Localizator;
-                    locales = (new ViewModelLocator()).Main.Project.DefaultLocale;
+                    locales = new ViewModelLocator().Main.Project.DefaultLocale;
                     model = locales.LocalisationMap.FirstOrDefault(
-                        l => l.Key == UniqueName + "_desc");
+                        l => l.Key == key + "_desc");
                     if (model != null)
                     {
                         vm.Locale = model;
                     }
                     else
                     {
-                        vm.Locale = new LocaleModel()
+                        vm.Locale = new LocaleModel
                         {
-                            Key = UniqueName,
+                            Key = key + "_desc",
                             Value = Description
                         };
                     }

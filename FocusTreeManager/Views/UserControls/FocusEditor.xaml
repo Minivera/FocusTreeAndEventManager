@@ -72,12 +72,12 @@
         </ScrollViewer>
         <Label Content="{DynamicResource Focus_X}" 
                            Grid.Column="0" Grid.Row="4"/>
-        <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
+        <Controls:NumericUpDown Minimum="-50" Maximum="50" Interval="1" InterceptArrowKeys="True"
                                 Grid.Row="4" Grid.Column="1" Value="{Binding Path=X}" 
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Y}" 
                            Grid.Column="0" Grid.Row="5"/>
-        <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="1" InterceptArrowKeys="True"
+        <Controls:NumericUpDown Minimum="-50" Maximum="50" Interval="1" InterceptArrowKeys="True"
                                 Grid.Row="5" Grid.Column="1" Value="{Binding Path=Y}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Cost}" 
@@ -90,14 +90,14 @@
         <Image Grid.Column="1" Grid.Row="7" 
                Source="{Binding Icon}"/>
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 
-                Grid.Row="8" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" 
+                Grid.Row="7" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,5" 
                 Style="{DynamicResource SquareButtonStyle}" MinWidth="150"
                 DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                     AncestorType={x:Type UserControl}}, Path=DataContext}"/>
         <Label Content="{DynamicResource Focus_Script}" 
                            Grid.Column="0" Grid.Row="8"/>
         <Button Content="{DynamicResource Command_Edit}" 
-                Grid.Row="9" Grid.Column="1" Command="{Binding EditScriptCommand}" 
+                Grid.Row="8" Grid.Column="1" Command="{Binding EditScriptCommand}" 
                 Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Height="25"
                 DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                     AncestorType={x:Type UserControl}}, Path=DataContext}"/>
