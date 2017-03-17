@@ -84,8 +84,8 @@
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>
                         <Style>
-                            <Setter Property="Grid.Column" Value="{Binding X}"/>
-                            <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                            <Setter Property="Grid.Column" Value="{Binding DisplayX}"/>
+                            <Setter Property="Grid.Row" Value="{Binding DisplayY}"/>
                         </Style>
                     </ItemsControl.ItemContainerStyle>
                 </ItemsControl>

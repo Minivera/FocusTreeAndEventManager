@@ -134,6 +134,7 @@
     <system:String x:Key="Command_Delete">Supprimer</system:String>
     <system:String x:Key="Command_Reset">Vider</system:String>
     <system:String x:Key="Command_Rename">Renommer</system:String>
+    <system:String x:Key="Command_Open">Ouvrir</system:String>
     <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Command_Yes">Oui</system:String>
     <system:String x:Key="Command_No">Non</system:String>

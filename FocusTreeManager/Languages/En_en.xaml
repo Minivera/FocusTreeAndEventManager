@@ -131,6 +131,7 @@
     <system:String x:Key="Command_Delete">Delete</system:String>
     <system:String x:Key="Command_Reset">Empty</system:String>
     <system:String x:Key="Command_Rename">Rename</system:String>
+    <system:String x:Key="Command_Open">Open file</system:String>
     <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Command_Yes">Yes</system:String>
     <system:String x:Key="Command_No">No</system:String>

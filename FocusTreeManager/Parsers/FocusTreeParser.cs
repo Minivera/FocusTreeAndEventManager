@@ -93,7 +93,10 @@ namespace FocusTreeManager.Parsers
             {
                 text.AppendLine("\tfocus = {");
                 text.AppendLine("\t\tid = " + focus.UniqueName);
-                text.AppendLine("\t\ttext = " + focus.Text);
+                if (!string.IsNullOrEmpty(focus.Text))
+                {
+                    text.AppendLine("\t\ttext = " + focus.Text);
+                }
                 text.AppendLine("\t\ticon = GFX_" + focus.Image);
                 text.AppendLine("\t\tcost = " + $"{focus.Cost:0.00}");
                 if (focus.Prerequisite.Any())
@@ -126,6 +129,10 @@ namespace FocusTreeManager.Parsers
                 }
                 text.AppendLine("\t\tx = " + focus.X);
                 text.AppendLine("\t\ty = " + focus.Y);
+                if (focus.RelativeTo != null)
+                {
+                    text.AppendLine("\t\trelative_position_id = " + focus.RelativeTo.UniqueName);
+                }
                 text.AppendLine(focus.InternalScript.Parse(3));
                 text.AppendLine("\t}");
             }
@@ -299,6 +306,14 @@ namespace FocusTreeManager.Parsers
                     //Check if we removed this focus because of a syntax error
                     continue;
                 } 
+                //Try to find its relative to
+                string relativeToId = Script.TryParse(block, "relative_position_id", false);
+                if (!string.IsNullOrEmpty(relativeToId))
+                {
+                    newFocus.CoordinatesRelativeTo = container.FociList.FirstOrDefault(f =>
+                            f.UniqueName == relativeToId);
+                }
+                //Recreate its mutually exclusives
                 foreach (ICodeStruct exclusives in block.FindAllValuesOfType<ICodeStruct>
                     ("mutually_exclusive"))
                 {
@@ -306,7 +321,7 @@ namespace FocusTreeManager.Parsers
                         .FindAllValuesOfType<ICodeStruct>("focus"))
                     {
                         //Check if focus exists in list
-                        FocusModel found = container.FociList.FirstOrDefault((f) =>
+                        FocusModel found = container.FociList.FirstOrDefault(f =>
                             f.UniqueName == focuses.Parse());
                         //If we have found something
                         if (found == null) continue;
@@ -322,6 +337,7 @@ namespace FocusTreeManager.Parsers
                         found.MutualyExclusive.Add(set);
                     }
                 }
+                //Recreate its prerequisites
                 foreach (ICodeStruct prerequistes in block
                     .FindAllValuesOfType<ICodeStruct>("prerequisite"))
                 {

@@ -64,29 +64,37 @@ namespace FocusTreeManager.DataContract
                     InternalScript = model.InternalScript
                 });
             }
-            //Repair sets
+            //Repair sets and relative to
             foreach (Focus focus in FociList)
             {
                 FocusModel associatedModel = 
                     item.FociList.FirstOrDefault(f => f.UniqueName == focus.UniqueName);
+                //If no model was found, continue the loop, the focus is broken
                 if (associatedModel == null) continue;
+                //Relative to
+                if (associatedModel.CoordinatesRelativeTo != null)
                 {
-                    foreach (PrerequisitesSetModel set in associatedModel.Prerequisite)
+                    focus.RelativeTo = FociList.FirstOrDefault(f => f.UniqueName ==
+                                                associatedModel.CoordinatesRelativeTo.UniqueName);
+                }
+                //Prerequisites
+                foreach (PrerequisitesSetModel set in associatedModel.Prerequisite)
+                {
+                    PrerequisitesSet newset = new PrerequisitesSet(focus);
+                    foreach (FocusModel model in set.FociList)
                     {
-                        PrerequisitesSet newset = new PrerequisitesSet(focus);
-                        foreach (FocusModel model in set.FociList)
-                        {
-                            newset.FociList.Add(FociList.FirstOrDefault(f => f.UniqueName == model.UniqueName));
-                        }
-                        focus.Prerequisite.Add(newset);
+                        newset.FociList.Add(FociList.FirstOrDefault(f => f.UniqueName == 
+                            model.UniqueName));
                     }
-                    foreach (MutuallyExclusiveSetModel set in associatedModel.MutualyExclusive)
-                    {
-                        MutuallyExclusiveSet newset = new MutuallyExclusiveSet(
-                            FociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
-                            FociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName));
-                        focus.MutualyExclusive.Add(newset);
-                    }
+                    focus.Prerequisite.Add(newset);
+                }
+                //Mutually exclusives
+                foreach (MutuallyExclusiveSetModel set in associatedModel.MutualyExclusive)
+                {
+                    MutuallyExclusiveSet newset = new MutuallyExclusiveSet(
+                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
+                        FociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName));
+                    focus.MutualyExclusive.Add(newset);
                 }
             }
         }

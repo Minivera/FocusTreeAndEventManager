@@ -205,9 +205,18 @@ the performance slightly.
 - Removed unnecessary modules to speed up to loading.
 - Removed all instances of the old file format, users still having old .h4prj projects should load them in beta_2g or lower.
 - The settings Windows will now properly show the currently selected language.
-- Changed the .NET framework required to 4.6.1 to see if it fixes a CTD some users have.
-- Fixed a rare bug where an imported focus tree exported and then imported back would not load properly.
+- Fixed a rare bug where an imported focus tree which was exported and then imported back would not load properly.
 - Fixed a bug where the localization files would be named weirdly when exported.
 - Changed the name of the dialog box when creating a new project to prevent confusion.
 - Added support for text ids in focus trees using the text = xxxx. if available, the 
 application will use the text, otherwise, it will use the unique name.
+
+***********************
+*       Beta_2i       *
+***********************
+- Added "Open File" to the files' context menu, double clicking the file still works.
+- Using the localizator bubble when editing a focus will now properly chose the Text id over the unique name.
+- Using the localizator bubble for the description will now properly create a key for it rather than erase the visiblename.
+- Focus trees using the relative_position_id command will now display properly.
+- Creating a new localisation file will now properly create a localization file rather than an event file.
+- Creating a new event file will now properly create an event file rather than a localization file.

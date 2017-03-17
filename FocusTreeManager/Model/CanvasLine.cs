@@ -90,7 +90,11 @@ namespace FocusTreeManager.Model
 
         public ISet InternalSet { get; private set; }
 
-        public CanvasLine(double X1, double Y1, double X2, double Y2, System.Windows.Media.Brush Color, bool dashed, ISet set)
+        public FocusModel Relative { get; private set; }
+
+        public CanvasLine(double X1, double Y1, double X2, 
+            double Y2, System.Windows.Media.Brush Color, bool dashed, 
+            ISet set, FocusModel relative = null)
         {
             this.X1 = X1;
             this.Y1 = Y1;
@@ -99,6 +103,7 @@ namespace FocusTreeManager.Model
             this.Color = Color;
             dashes = dashed;
             InternalSet = set;
+            Relative = relative;
         }
     }
 }

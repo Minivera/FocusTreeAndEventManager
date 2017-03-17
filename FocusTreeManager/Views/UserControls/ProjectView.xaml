@@ -14,10 +14,16 @@
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="TemplateLabel">
                 <StackPanel DataContext="{Binding}"
-                            MouseDown="CodeTreeView_MouseDown">
+                            MouseDown="CodeTreeView_MouseDown"
+                            Tag="{Binding RelativeSource={RelativeSource 
+                                    AncestorType={x:Type UserControl}}}">
                     <StackPanel.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
 		                             RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="{DynamicResource Command_Open}" 
+                                      Command="{Binding Path=PlacementTarget.Tag.DataContext.OpenFileCommand, 
+                                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                      CommandParameter="{Binding}" />
                             <MenuItem Header="{DynamicResource Command_Delete}" 
                                       Command="{Binding DeleteElementCommand}"/>
                             <MenuItem Header="{DynamicResource Command_Edit}" 
@@ -40,7 +46,6 @@
                              Text="{Binding VisibleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              KeyDown="TextBox_KeyDown" 
                              Visibility="Hidden"/>
-
                     </Grid>
                 </StackPanel>
             </DataTemplate>

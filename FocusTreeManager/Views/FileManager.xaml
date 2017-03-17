@@ -46,8 +46,8 @@
                   Grid.Column="1" SelectionMode="Single"
                   SelectionChanged="FileTypeList_SelectionChanged">
             <ListViewItem Content="{DynamicResource Manage_Focus}" Tag="FocusTreeItem"/>
-            <ListViewItem Content="{DynamicResource Manage_Event}" Tag="EventItem"/>
             <ListViewItem Content="{DynamicResource Manage_Localisation}" Tag="LocalisationItem"/>
+            <ListViewItem Content="{DynamicResource Manage_Event}" Tag="EventItem"/>
             <ListViewItem Content="{DynamicResource Manage_Generic}" Tag="GenericItem"/>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonUp">
