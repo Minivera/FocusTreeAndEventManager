@@ -37,6 +37,8 @@ namespace FocusTreeManager.Model.TabModels
 
         private int columnCount;
 
+        private bool DrawPositionLines;
+
         private string visibleName;
 
         private string tag;
@@ -54,6 +56,8 @@ namespace FocusTreeManager.Model.TabModels
         public RelayCommand DeleteElementCommand { get; private set; }
 
         public RelayCommand EditElementCommand { get; private set; }
+
+        public RelayCommand ShowHidePositionLinesCommand { get; private set; }
 
         public bool isShown { get; set; }
 
@@ -188,14 +192,7 @@ namespace FocusTreeManager.Model.TabModels
             rowCount = MIN_ROW_COUNT;
             columnCount = MIN_COLUMN_COUNT;
             canvasLines = new ObservableCollection<CanvasLine>();
-            //Commands
-            AddFocusCommand = new RelayCommand<object>(AddFocus);
-            RightClickCommand = new RelayCommand<object>(RightClick);
-            HoverCommand = new RelayCommand<object>(Hover);
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
-            EditElementCommand = new RelayCommand(SendEditSignal);
-            //Messenger
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            SetupCommands();
         }
 
         public FocusGridModel(FociGridContainer container)
@@ -223,12 +220,18 @@ namespace FocusTreeManager.Model.TabModels
             //Min Row & column Count
             EditGridDefinition();
             canvasLines = new ObservableCollection<CanvasLine>();
+            SetupCommands();
+        }
+
+        internal void SetupCommands()
+        {
             //Commands
             AddFocusCommand = new RelayCommand<object>(AddFocus);
             RightClickCommand = new RelayCommand<object>(RightClick);
             HoverCommand = new RelayCommand<object>(Hover);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
+            ShowHidePositionLinesCommand = new RelayCommand(ShowHidePositionLines);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -294,9 +297,8 @@ namespace FocusTreeManager.Model.TabModels
         public void RightClick(object sender)
         {
             Point Position = Mouse.GetPosition((Grid)sender);
-            List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
-                                            inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
-                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y)).ToList();
+            List<CanvasLine> clickedElements = CanvasLines.Where(line => 
+                                               line.ContainsPoint(Position)).ToList();
             if (clickedElements.Any())
             {
                 UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("DeleteSetAny", false);
@@ -323,10 +325,8 @@ namespace FocusTreeManager.Model.TabModels
         public void Hover(object sender)
         {
             Point Position = Mouse.GetPosition((Grid)sender);
-            List<CanvasLine> clickedElements = CanvasLines.Where((line) =>
-                                            inRange((int)line.X1, (int)line.X2, (int)Position.X) &&
-                                            inRange((int)line.Y1, (int)line.Y2, (int)Position.Y))
-                                            .ToList();
+            List<CanvasLine> clickedElements = CanvasLines.Where(line =>
+                                               line.ContainsPoint(Position)).ToList();
             if (clickedElements.Any())
             {
                 selectedLine = clickedElements.FirstOrDefault();
@@ -353,15 +353,10 @@ namespace FocusTreeManager.Model.TabModels
                 new ViewModelLocator().ProjectView, "SendEditItemSignal"));
         }
 
-        public bool inRange(int Range1, int Range2, int Value)
+        private void ShowHidePositionLines()
         {
-            int smallest = Math.Min(Range1, Range2);
-            int highest = Math.Max(Range1, Range2);
-            return smallest - 2 <= Value && Value <= highest - 2 ||
-                   smallest - 1 <= Value && Value <= highest - 1 ||
-                   smallest <= Value && Value <= highest ||
-                   smallest + 1 <= Value && Value <= highest + 1 ||
-                   smallest + 2 <= Value && Value <= highest + 2;
+            DrawPositionLines = !DrawPositionLines;
+            DrawOnCanvas();
         }
 
         public void RedrawGrid()
@@ -485,16 +480,19 @@ namespace FocusTreeManager.Model.TabModels
                     if (selectedFocus != null && selectedFocus != Model &&
                         FociList.Any(f => f == Model))
                     {
-                        UndoService.Current[GetUndoRoot()]
-                            .BeginChangeSetBatch("MakeRelativeTo", false);
-                        Application.Current.Properties["Mode"] = null;
-                        selectedFocus.IsSelected = false;
-                        selectedFocus.CoordinatesRelativeTo = Model;
-                        selectedFocus.X = selectedFocus.DisplayX - Model.DisplayX;
-                        selectedFocus.Y = selectedFocus.DisplayY - Model.DisplayY;
-                        UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
-                        RaisePropertyChanged(() => FociList);
-                        DrawOnCanvas();
+                        if (Model != null)
+                        {
+                            UndoService.Current[GetUndoRoot()]
+                                .BeginChangeSetBatch("MakeRelativeTo", false);
+                            Application.Current.Properties["Mode"] = null;
+                            selectedFocus.IsSelected = false;
+                            selectedFocus.X = selectedFocus.DisplayX - Model.DisplayX;
+                            selectedFocus.Y = selectedFocus.DisplayY - Model.DisplayY;
+                            selectedFocus.CoordinatesRelativeTo = Model;
+                            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
+                            RaisePropertyChanged(() => FociList);
+                            DrawOnCanvas();
+                        }
                     }
                     break;
             }
@@ -555,7 +553,7 @@ namespace FocusTreeManager.Model.TabModels
             foreach (FocusModel focus in FociList)
             {
                 //Draw relatives
-                if (focus.CoordinatesRelativeTo != null)
+                if (DrawPositionLines && focus.CoordinatesRelativeTo != null)
                 {
                     CanvasLine newline = new CanvasLine(
                             focus.FocusTop.X,

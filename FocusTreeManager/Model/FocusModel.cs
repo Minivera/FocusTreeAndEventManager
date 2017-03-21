@@ -175,10 +175,6 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                if (value == x)
-                {
-                    return;
-                }
                 DefaultChangeFactory.Current.OnChanging(this,
                          "X", x, value, "X Changed");
                 if (coordinatesRelativeTo != null)
@@ -225,10 +221,6 @@ namespace FocusTreeManager.Model
             }
             set
             {
-                if (value == y)
-                {
-                    return;
-                }
                 DefaultChangeFactory.Current.OnChanging(this,
                          "Y", y, value, "Y Changed");
                 if (coordinatesRelativeTo != null)

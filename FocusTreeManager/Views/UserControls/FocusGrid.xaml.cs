@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -47,6 +48,11 @@ namespace FocusTreeManager.Views.UserControls
             adornerLayer.Add(Adorner);
             setupInternalFoci();
             Mouse.OverrideCursor = null;
+            //Keydown
+            Window MainWindow = Application.Current.Windows.OfType<Window>()
+                .SingleOrDefault(x => x.IsActive);
+            MainWindow.KeyDown += FocusGrid_OnKeyDown;
+            MainWindow.KeyUp += FocusGrid_OnKeyUp;
         }
 
         public void setupInternalFoci()
@@ -114,6 +120,28 @@ namespace FocusTreeManager.Views.UserControls
             isDown = false;
             DraggedElement = null;
             e.Handled = true;
+        }
+
+        private bool IsShown;
+
+        private void FocusGrid_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (IsShown && e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                IsShown = false;
+                FocusGridModel model = (FocusGridModel) DataContext;
+                model.ShowHidePositionLinesCommand.Execute(this);
+            }
+        }
+
+        private void FocusGrid_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!IsShown && e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                IsShown = true;
+                FocusGridModel model = (FocusGridModel)DataContext;
+                model.ShowHidePositionLinesCommand.Execute(this);
+            }
         }
     }
 }

@@ -13,7 +13,8 @@
         xmlns:tabModels="clr-namespace:FocusTreeManager.Model.TabModels"
         mc:Ignorable="d"
         Title="{DynamicResource Main_Title}" Height="350" Width="525"
-        WindowState="Maximized" Icon="GFX/Focus/goal_unknown.png" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing"
+        WindowState="Maximized" Icon="GFX/Focus/goal_unknown.png" Closed="MetroWindow_Closed" 
+        Closing="MetroWindow_Closing"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Dialog:DialogParticipation.Register="{Binding}" Loaded="MetroWindow_Loaded">
     <i:Interaction.Triggers>

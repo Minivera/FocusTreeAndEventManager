@@ -150,6 +150,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="focus_l_english.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

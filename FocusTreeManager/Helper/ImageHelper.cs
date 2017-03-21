@@ -1,17 +1,14 @@
-﻿using FocusTreeManager.AsyncImageLoader;
-using FocusTreeManager.Model;
-using FocusTreeManager.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Imaging.DDSReader;
 
 namespace FocusTreeManager.Helper
 {
@@ -77,22 +74,18 @@ namespace FocusTreeManager.Helper
             }
             string fullpath = Configurator.getGamePath() + rightFolder;
             //For each file in the normal folder
-            foreach (string fileName in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION, 
+            foreach (string filename in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION, 
                                                            SearchOption.TopDirectoryOnly))
             {
-                if (IMAGE_DO_NOT_LOAD.Any(fileName.Contains))
+                if (IMAGE_DO_NOT_LOAD.Any(filename.Contains))
                 {
                     continue;
                 }
                 try
                 {
-                    using (FileStream stream = new FileStream(fileName, FileMode.Open))
-                    {
-                        DDSImage image = new DDSImage(stream);
-                        ImageSource result = ImageSourceForBitmap(image.BitmapImage);
-                        result.Freeze();
-                        list[fileName] = result;
-                    }
+                    ImageSource result = ImageSourceForBitmap(DDS.LoadImage(filename));
+                    result.Freeze();
+                    list[filename] = result;
                 }
                 catch (Exception)
                 {
@@ -140,7 +133,7 @@ namespace FocusTreeManager.Helper
             IntPtr handle = bmp.GetHbitmap();
             try
             {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, 
+                return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(handle, 
                     IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
             finally { DeleteObject(handle); }
