@@ -220,3 +220,11 @@ application will use the text, otherwise, it will use the unique name.
 - Focus trees using the relative_position_id command will now display properly.
 - Creating a new localisation file will now properly create a localization file rather than an event file.
 - Creating a new event file will now properly create an event file rather than a localization file.
+- Modified some of the image loading process to prevent the admin right requirement.
+- Greatly optimized and reduced the amount of library used, this should increase the initial loading speed.
+- Right-clicking on a focus will now allow you to make its position relative to a parent. 
+- Right-clicking on an empty space will allow you to show or hide the relative positioning lines.
+- Holding ALT in the focus grid will show you the relative positioning lines.
+- Hovering and cutting lines in the focus grid is now much more precise.
+- The small scissors icon will now follow the mouse around the line rather than hang in the middle.
+- The glow effect will now properly show around the focus when hovering over it.

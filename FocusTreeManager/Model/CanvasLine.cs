@@ -1,9 +1,14 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
+using GalaSoft.MvvmLight;
 
 namespace FocusTreeManager.Model
 {
     public class CanvasLine : ObservableObject
     {
+        private const int SELECTION_FUZZINESS = 5;
+
         private double x1;
 
         public double X1
@@ -60,9 +65,9 @@ namespace FocusTreeManager.Model
             }
         }
 
-        private System.Windows.Media.Brush color;
+        private Brush color;
 
-        public System.Windows.Media.Brush Color
+        public Brush Color
         {
             get
             {
@@ -93,7 +98,7 @@ namespace FocusTreeManager.Model
         public FocusModel Relative { get; private set; }
 
         public CanvasLine(double X1, double Y1, double X2, 
-            double Y2, System.Windows.Media.Brush Color, bool dashed, 
+            double Y2, Brush Color, bool dashed, 
             ISet set, FocusModel relative = null)
         {
             this.X1 = X1;
@@ -104,6 +109,52 @@ namespace FocusTreeManager.Model
             dashes = dashed;
             InternalSet = set;
             Relative = relative;
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            LineGeometry lineGeo = new LineGeometry(new Point(X1, Y1), new Point(X2, Y2));
+            Point leftPoint;
+            Point rightPoint;
+            // Normalize start/end to left right to make the offset calc simpler.
+            if (lineGeo.StartPoint.X <= lineGeo.EndPoint.X)
+            {
+                leftPoint = lineGeo.StartPoint;
+                rightPoint = lineGeo.EndPoint;
+            }
+            else
+            {
+                leftPoint = lineGeo.EndPoint;
+                rightPoint = lineGeo.StartPoint;
+            }
+            // If point is out of bounds, no need to do further checks.                  
+            if (point.X + SELECTION_FUZZINESS < leftPoint.X
+                || rightPoint.X < point.X - SELECTION_FUZZINESS)
+            {
+                return false;
+
+            }
+            if (point.Y + SELECTION_FUZZINESS < Math.Min(leftPoint.Y, rightPoint.Y) ||
+                Math.Max(leftPoint.Y, rightPoint.Y) < point.Y - SELECTION_FUZZINESS)
+            {
+                return false;
+            }
+            double deltaX = rightPoint.X - leftPoint.X;
+            double deltaY = rightPoint.Y - leftPoint.Y;
+            // If the line is straight, the earlier boundary check is enough
+            // to determine that the point is on the line.
+            // Also prevents division by zero exceptions.
+            if (deltaX == 0 || deltaY == 0)
+            {
+                return true;
+            }
+            double slope = deltaY / deltaX;
+            double offset = leftPoint.Y - leftPoint.X * slope;
+            double calculatedY = point.X * slope + offset;
+            // Check calculated Y matches the points Y coord with some easing.
+            bool lineContains = point.Y - SELECTION_FUZZINESS 
+                <= calculatedY && calculatedY <= point.Y + SELECTION_FUZZINESS;
+            return lineContains;
         }
     }
 }

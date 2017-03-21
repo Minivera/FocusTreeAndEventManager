@@ -225,3 +225,40 @@ System.AggregateException: Une ou plusieurs erreurs se sont produites. ---> Syst
 --- Fin de la trace de la pile à partir de l'emplacement précédent au niveau duquel l'exception a été levée ---
    à System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
    à System.Runtime.Compile
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.Views.UserControls.FocusGrid..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\FocusGrid.xaml.cs:ligne 28
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   à System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.Views.UserControls.FocusGrid..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\FocusGrid.xaml.cs:ligne 28
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   à System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.Views.UserControls.FocusGrid..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\FocusGrid.xaml.cs:ligne 28
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   à System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   à System.Activator.CreateInstance(Type type, Object[] args)
+   à System.Xaml.Schema.SafeReflectionInvoker.CreateInstanceCritical(Type type, Object[] arguments)
+   à System.Xaml.Schema.SafeReflectionInvoker.CreateInstance(Type type, Object[] arguments)
+   à System.Xaml.Schema.XamlTypeInvoker.CreateInstance(Object[] arguments)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.CreateInstanceWithCtor(XamlType xamlType, Object[] args)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.CreateInstance(XamlType xamlType, Object[] args)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.CreateInstance(XamlType xamlType, Object[] args)
+   à System.Xaml.XamlObjectWriter.Logic_CreateAndAssignToParentStart(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWrit

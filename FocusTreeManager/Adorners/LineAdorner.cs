@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using FocusTreeManager.Model;
@@ -81,12 +82,17 @@ namespace FocusTreeManager.Adorners
                 Width = 25,
                 Height = 25
             };
-            Canvas.SetLeft(visualBoard, Math.Min(context.selectedLine.X1,
-                                            context.selectedLine.X2) + (Math.Abs(context.selectedLine.X2 - 
-                                                                                 context.selectedLine.X1) / 2) - 12.5);
-            Canvas.SetTop(visualBoard, Math.Min(context.selectedLine.Y1,
-                                           context.selectedLine.Y2) + (Math.Abs(context.selectedLine.Y2 -
-                                                                                context.selectedLine.Y1) / 2) - 12.5);
+            //Canvas.SetLeft(visualBoard, Math.Min(context.selectedLine.X1,
+            //                                context.selectedLine.X2) + 
+            //                                Math.Abs(context.selectedLine.X2 - 
+            //                                         context.selectedLine.X1) / 2 - 12.5);
+            //Canvas.SetTop(visualBoard, Math.Min(context.selectedLine.Y1,
+            //                               context.selectedLine.Y2) + 
+            //                               Math.Abs(context.selectedLine.Y2 -
+            //                                        context.selectedLine.Y1) / 2 - 12.5);
+            Point Position = Mouse.GetPosition(this);
+            Canvas.SetTop(visualBoard, Position.Y);
+            Canvas.SetLeft(visualBoard, Position.X);
             VisualBrush vBrush = new VisualBrush
             {
                 Visual = (Visual) resourceLocalization["appbar_scissor"]

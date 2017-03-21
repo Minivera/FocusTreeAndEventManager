@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" x:Name="VisualFocus"
              MouseDown="VisualFocus_MouseDown"
-             Loaded="VisualFocus_Loaded">
+             Loaded="VisualFocus_Loaded"
+             MouseEnter="Focus_OnMouseEnter"
+             MouseLeave="Focus_OnMouseLeave">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,6 +30,8 @@
                                           Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
             <MenuItem x:Name="MenuRequiredPrerequisitesFocus" Header="{DynamicResource Add_Required_Prerequisite_Focus}" 
                                           Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
+            <MenuItem x:Name="MenuMakeRelativeTo" Header="{DynamicResource Add_Relative_Pos}" 
+                                          Command="{Binding MakeRelativeToCommand}"/>
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid Width="89" Height="80">
@@ -37,7 +41,8 @@
                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
                         <Setter Property="Effect">
                             <Setter.Value>
-                                <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
+                                <DropShadowEffect ShadowDepth="0" 
+                                                  Color="Red" Opacity="1" BlurRadius="20"/>
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using FocusTreeManager.Model;
 using FocusTreeManager.Model.TabModels;
@@ -136,6 +136,23 @@ namespace FocusTreeManager.Views.UserControls
         {            
             //Image loading async
             StartImageDispatcher();
+        }
+
+        private void Focus_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            DropShadowEffect GlowEffect = new DropShadowEffect
+            {
+                Color = Colors.Yellow,
+                BlurRadius = 20,
+                Opacity = 1,
+                ShadowDepth = 0
+            };
+            FocusIcon.Effect = GlowEffect;
+        }
+
+        private void Focus_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            FocusIcon.ClearValue(EffectProperty);
         }
     }
 }
