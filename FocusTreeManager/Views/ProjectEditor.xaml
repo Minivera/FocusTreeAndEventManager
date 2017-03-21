@@ -50,7 +50,9 @@
                     <RowDefinition x:Name="NameRow" Height="35" />
                     <RowDefinition x:Name="DefaultRow" Height="35" />
                     <RowDefinition x:Name="PreloadRow" Height="35" />
+                    <RowDefinition x:Name="AddModsLabelRow" Height="35" />
                     <RowDefinition x:Name="AddModsRow" Height="170" />
+                    <RowDefinition x:Name="AddModsCommandsRow" Height="35" />
                 </Grid.RowDefinitions>
                 <Label Content="{DynamicResource Files_Filename}" Grid.Row="0" Grid.Column="0"/>
                 <TextBox Text="{Binding Filename}" Grid.Row="0" Grid.Column="1" GotFocus="TextBox_GotFocus"/>
@@ -61,6 +63,27 @@
                 <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding localisationList}"
                   DisplayMemberPath="VisibleName"
                   SelectedValue="{Binding DefaultLocale}" />
+                <Label Content="{DynamicResource Project_Mods_Folders}" Grid.Row="4" 
+                       Grid.ColumnSpan="2" Grid.Column="0"/>
+                <ListBox ItemsSource="{Binding ListModFolders}" Grid.Row="5" 
+                         Grid.ColumnSpan="2" Grid.Column="0" 
+                         SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}, Path=DataContext.SelectedString}"
+                         BorderBrush="White" BorderThickness="1">
+                </ListBox>
+                <WrapPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                           HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Button Content="{DynamicResource Command_Add}" 
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                AncestorType={x:Type Window}}, Path=DataContext.AddModFolderCommand}"
+                            Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" 
+                            MinWidth="100"/>
+                    <Button Content="{DynamicResource Command_Remove}" 
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                AncestorType={x:Type Window}}, Path=DataContext.DeleteModFolderCommand}" 
+                            Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" 
+                            MinWidth="100"/>
+                </WrapPanel>
             </Grid>
             <WrapPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <Button Content="{DynamicResource Command_Accept}" Command="{Binding AcceptCommand}" 

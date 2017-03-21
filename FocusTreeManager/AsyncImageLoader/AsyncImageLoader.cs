@@ -7,7 +7,9 @@ namespace FocusTreeManager.AsyncImageLoader
 {
     public class AsyncImageLoader
     {
-        private readonly BackgroundWorker backgroundWorker;
+        private readonly BackgroundWorker StarterWorker;
+
+        private readonly BackgroundWorker ModWorker;
 
         private static readonly object myLock = new object();
 
@@ -19,20 +21,40 @@ namespace FocusTreeManager.AsyncImageLoader
 
         private AsyncImageLoader()
         {
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += backgroundWorker_DoWork;
-
+            StarterWorker = new BackgroundWorker();
+            StarterWorker.DoWork += StarterWorker_DoWork;
+            ModWorker = new BackgroundWorker();
+            ModWorker.DoWork += ModWorker_DoWork;
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void StarterWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             Focuses = ImageHelper.findAllGameImages(ImageType.Goal);
             Events = ImageHelper.findAllGameImages(ImageType.Event);
         }
 
+        private void ModWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            foreach (KeyValuePair<string, ImageSource> images 
+                in ImageHelper.RefreshFromMods(ImageType.Goal))
+            {
+                Focuses[images.Key] = images.Value;
+            }
+            foreach (KeyValuePair<string, ImageSource> images
+                in ImageHelper.RefreshFromMods(ImageType.Event))
+            {
+                Events[images.Key] = images.Value;
+            }
+        }
+
         public void StartTheJob()
         {
-            backgroundWorker.RunWorkerAsync();
+            StarterWorker.RunWorkerAsync();
+        }
+
+        public void RefreshFromMods()
+        {
+            ModWorker.RunWorkerAsync();
         }
 
         public static AsyncImageLoader Worker

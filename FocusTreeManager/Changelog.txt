@@ -212,11 +212,11 @@ the performance slightly.
 application will use the text, otherwise, it will use the unique name.
 
 ***********************
-*       Beta_2i       *
+*       Beta_2j       *
 ***********************
 - Added "Open File" to the files' context menu, double clicking the file still works.
 - Using the localizator bubble when editing a focus will now properly chose the Text id over the unique name.
-- Using the localizator bubble for the description will now properly create a key for it rather than erase the visiblename.
+- Using the localizator bubble for the description will now properly create a key for it rather than erase the visible name.
 - Focus trees using the relative_position_id command will now display properly.
 - Creating a new localisation file will now properly create a localization file rather than an event file.
 - Creating a new event file will now properly create an event file rather than a localization file.
@@ -228,3 +228,4 @@ application will use the text, otherwise, it will use the unique name.
 - Hovering and cutting lines in the focus grid is now much more precise.
 - The small scissors icon will now follow the mouse around the line rather than hang in the middle.
 - The glow effect will now properly show around the focus when hovering over it.
+- Can now add mod folders where the images will be loaded in addition to the game folder. The app will prioritize modded versions.

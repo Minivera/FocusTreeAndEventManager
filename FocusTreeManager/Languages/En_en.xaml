@@ -5,7 +5,8 @@
     <system:String x:Key="Main_Title">Focus Tree And Event Manager</system:String>
     <system:String x:Key="Chose_Image_Title">Choose the desired image</system:String>
     <system:String x:Key="Localize_Title">Create localisation</system:String>
-    <system:String x:Key="Game_Path_Title">Select game installation folder</system:String>
+    <system:String x:Key="Game_Path_Title">Select the game installation folder</system:String>
+    <system:String x:Key="Mode_Path_Title">Select the mod folder</system:String>
     <system:String x:Key="Scripter_Title">Scripter</system:String>
     <system:String x:Key="Errors_Title">Error list</system:String>
     <system:String x:Key="Load_Title">Select a project</system:String>
@@ -137,6 +138,8 @@
     <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Command_Yes">Yes</system:String>
     <system:String x:Key="Command_No">No</system:String>
+    <system:String x:Key="Command_Add">Add</system:String>
+    <system:String x:Key="Command_Remove">Remove</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
     <system:String x:Key="Menu_Export">Export</system:String>

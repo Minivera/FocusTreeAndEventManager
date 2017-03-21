@@ -274,6 +274,7 @@ namespace FocusTreeManager.ViewModel
                 return;
             }
             project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
+            AsyncImageLoader.AsyncImageLoader.Worker.RefreshFromMods();
             project.Filename = path;
             RaisePropertyChanged("isProjectExist");
             TabsModelList = new ObservableCollection<ObservableObject>();

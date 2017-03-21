@@ -127,7 +127,11 @@ namespace FocusTreeManager.Model
 
         public static ProjectModel createFromDataContract(Project dataContract)
         {
-            ProjectModel newproject = new ProjectModel();
+            ProjectModel newproject = new ProjectModel
+            {
+                ListModFolders = new ObservableCollection<string>(dataContract.modFolderList),
+                PreloadGameContent = dataContract.preloadGameContent
+            };
             //Build foci list
             foreach (FociGridContainer container in dataContract.fociContainerList)
             {

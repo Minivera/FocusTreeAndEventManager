@@ -6,6 +6,7 @@
     <system:String x:Key="Chose_Image_Title">Choisir l'image voulue</system:String>
     <system:String x:Key="Localize_Title">Créer la localisation</system:String>
     <system:String x:Key="Game_Path_Title">Sélectionner le dossier du jeu</system:String>
+    <system:String x:Key="Mode_Path_Title">Sélectionner le dossier du mod</system:String>
     <system:String x:Key="Load_Title">Sélectionner un projet</system:String>
     <system:String x:Key="Scripter_Title">Scripter</system:String>
     <system:String x:Key="Errors_Title">Liste d'erreurs</system:String>
@@ -140,6 +141,8 @@
     <system:String x:Key="Command_OK">OK</system:String>
     <system:String x:Key="Command_Yes">Oui</system:String>
     <system:String x:Key="Command_No">Non</system:String>
+    <system:String x:Key="Command_Add">Ajouter</system:String>
+    <system:String x:Key="Command_Remove">Supprimer</system:String>
     <system:String x:Key="Menu_Settings">Paramètres</system:String>
     <system:String x:Key="Menu_Project">Projet</system:String>
     <system:String x:Key="Menu_Export">Exporter</system:String>
