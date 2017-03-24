@@ -229,3 +229,7 @@ application will use the text, otherwise, it will use the unique name.
 - The small scissors icon will now follow the mouse around the line rather than hang in the middle.
 - The glow effect will now properly show around the focus when hovering over it.
 - Can now add mod folders where the images will be loaded in addition to the game folder. The app will prioritize modded versions.
+
+***********************
+*       Beta_3a       *
+***********************
