@@ -12,26 +12,34 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary>
+                    <TextBlock x:Key="CursorGrab" Cursor="/FocusTreeManager;component/Resources/Cursors/grab.cur"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Tag="{Binding PlacementTarget.Tag, 
+		                             RelativeSource={RelativeSource Self}}">
             <MenuItem x:Name="MenuEditFocus" Header="{DynamicResource Edit_Focus}" 
-                                          Command="{Binding EditFocusCommand}"/>
+                      Command="{Binding EditFocusCommand}"/>
             <MenuItem x:Name="MenuRenameFocus" Header="{DynamicResource Rename_Focus}"
                       Click="MenuRenameFocus_Click"/>
             <MenuItem x:Name="MenuDeleteFocus" Header="{DynamicResource Delete_Focus}" 
-                                          Command="{Binding DeleteFocusCommand}"/>
+                      Command="{Binding DeleteFocusCommand}"/>
             <Separator />
             <MenuItem x:Name="MenuMutuallyFocus" Header="{DynamicResource Add_Mutually_Focus}" 
-                                          Command="{Binding MutuallyFocusCommand}"/>
+                      Command="{Binding MutuallyFocusCommand}"/>
             <MenuItem x:Name="MenuPrerequisitesFocus" Header="{DynamicResource Add_Prerequisite_Focus}" 
-                                          Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
+                      Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
             <MenuItem x:Name="MenuRequiredPrerequisitesFocus" Header="{DynamicResource Add_Required_Prerequisite_Focus}" 
-                                          Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
+                      Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
             <MenuItem x:Name="MenuMakeRelativeTo" Header="{DynamicResource Add_Relative_Pos}" 
-                                          Command="{Binding MakeRelativeToCommand}"/>
+                      Command="{Binding MakeRelativeToCommand}"/>
+            <Separator />
+            <MenuItem x:Name="MenuCopy" Header="{DynamicResource Command_Copy}" 
+                      Command="{Binding Path=PlacementTarget.Tag.DataContext.CopyCommand, 
+                                   RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid Width="89" Height="80">

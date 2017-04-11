@@ -50,43 +50,51 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Label Content="{DynamicResource Focus_Unique_Name}" 
-                           Grid.Column="0" Grid.Row="0"/>
+               Grid.Column="0" Grid.Row="0"
+               ToolTip="{DynamicResource Focus_Unique_Name_Tooltip}"/>
         <TextBox Text="{Binding UniqueName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
+                 Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Unique_Name}"/>
         <Label Content="{DynamicResource Focus_Text}" 
-                           Grid.Column="0" Grid.Row="1"/>
+               Grid.Column="0" Grid.Row="1"
+               ToolTip="{DynamicResource Focus_Text_Tooltip}"/>
         <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Row="1" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Text}"/>
+                 Grid.Row="1" Grid.Column="1" 
+                 Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Text}"/>
         <Label Content="{DynamicResource Focus_Visible_Name}" 
-                           Grid.Column="0" Grid.Row="2"/>
+               Grid.Column="0" Grid.Row="2"
+               ToolTip="{DynamicResource Focus_Visible_Name_Tooltip}"/>
         <TextBox Text="{Binding VisibleName, Mode=OneWay}" Grid.Row="2" Grid.Column="1" 
-                             Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"
-                             IsReadOnly="True"/>
+                 Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Visible_Name}"
+                 IsReadOnly="True"/>
         <Label Content="{DynamicResource Focus_Description}" 
-                           Grid.Column="0" Grid.Row="3"/>
+               Grid.Column="0" Grid.Row="3"
+               ToolTip="{DynamicResource Focus_Description_Tooltip}"/>
         <ScrollViewer Grid.Row="3" Grid.Column="1">
             <TextBlock Text="{Binding Description, Mode=OneWay}"  
                        Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Description}"
                        TextWrapping="Wrap" VerticalAlignment="Center"/>
         </ScrollViewer>
         <Label Content="{DynamicResource Focus_X}" 
-                           Grid.Column="0" Grid.Row="4"/>
+               Grid.Column="0" Grid.Row="4"
+               ToolTip="{DynamicResource Focus_X_Tooltip}"/>
         <Controls:NumericUpDown Minimum="-50" Maximum="50" Interval="1" InterceptArrowKeys="True"
                                 Grid.Row="4" Grid.Column="1" Value="{Binding Path=X}" 
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Y}" 
-                           Grid.Column="0" Grid.Row="5"/>
+               Grid.Column="0" Grid.Row="5"
+               ToolTip="{DynamicResource Focus_Y_Tooltip}"/>
         <Controls:NumericUpDown Minimum="-50" Maximum="50" Interval="1" InterceptArrowKeys="True"
                                 Grid.Row="5" Grid.Column="1" Value="{Binding Path=Y}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="False"/>
         <Label Content="{DynamicResource Focus_Cost}" 
-                           Grid.Column="0" Grid.Row="6"/>
+               Grid.Column="0" Grid.Row="6"
+               ToolTip="{DynamicResource Focus_Cost_Tooltip}"/>
         <Controls:NumericUpDown Minimum="0" Maximum="50" Interval="0.1" InterceptArrowKeys="True"
                                 Grid.Row="6" Grid.Column="1" Value="{Binding Path=Cost}"
                                 TextAlignment="Justify" Padding="5,0,0,0" HasDecimals="True"/>
         <Label Content="{DynamicResource Focus_Image}" 
-                           Grid.Column="0" Grid.Row="7"/>
+               Grid.Column="0" Grid.Row="7"
+               ToolTip="{DynamicResource Focus_Image_Tooltip}"/>
         <Image Grid.Column="1" Grid.Row="7" 
                Source="{Binding Icon}"/>
         <Button Content="{DynamicResource Command_Change}" Command="{Binding ChangeImageCommand}" 

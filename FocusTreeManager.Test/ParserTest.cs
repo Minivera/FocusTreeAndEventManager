@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FocusTreeManager.CodeStructures;
@@ -119,6 +118,7 @@ namespace FocusTreeManager.Test
         {
             EventTabModel model = TestScriptToEvent();
             TestEventToScript(model);
+            TestParseAllEvents();
         }
 
         private EventTabModel TestScriptToEvent()
@@ -149,6 +149,31 @@ namespace FocusTreeManager.Test
             Assert.IsNotNull(filecontent);
             Assert.IsNotNull(fileName);
             Assert.AreEqual(fileName, "Baltic");
+        }
+
+        private void TestParseAllEvents()
+        {
+            //Arrange
+            Script script = new Script();
+            Script tester = new Script();
+            foreach (string file in Directory.EnumerateFiles("events", "*.txt"))
+            {
+                string contents = File.ReadAllText(file);
+                script.Analyse(contents);
+                //Act
+                EventTabModel model = EventParser.CreateEventFromScript(file, script);
+                EventContainer container = new EventContainer(model);
+                List<EventContainer> list = new List<EventContainer> { container };
+                Dictionary<string, string> files = EventParser.ParseAllEvents(list);
+                string filecontent = files.FirstOrDefault().Value;
+                string fileName = files.FirstOrDefault().Key;
+                //Assert
+                Assert.IsNotNull(model);
+                Assert.IsTrue(model.EventList.Any());
+                Assert.IsNotNull(fileName);
+                Assert.IsNotNull(filecontent);
+                tester.Analyse(filecontent);
+            }
         }
 
         [TestMethod]

@@ -5,18 +5,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using FocusTreeManager.CodeStructures;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Helper;
 using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using GongSolutions.Wpf.DragDrop;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
 using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace FocusTreeManager.ViewModel
 {
+    public enum ScripterType
+    {
+        FocusTree,
+        Event,
+        EventOption,
+        EventDescription,
+        Generic
+    }
+
+    public enum ControlType
+    {
+        Assignation,
+        Block,
+        Condition
+    }
+
     /// <summary>
     /// This class contains properties that a View can data bind to.
     /// <para>
@@ -58,7 +73,21 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public ScripterType ScriptType { get; set; }
+        private ScripterType scriptType = ScripterType.Generic;
+
+        public ScripterType ScriptType
+        {
+            get
+            {
+                return scriptType;
+            }
+
+            set
+            {
+                scriptType = value;
+                RaisePropertyChanged(() => ScriptType);
+            }
+        }
 
         public string SelectedTabIndex { get; set; }
 
@@ -78,7 +107,7 @@ namespace FocusTreeManager.ViewModel
         private void setCode(ICodeStruct internalScript)
         {
             CodeBlocks.Clear();
-            EditorScript = internalScript == null? "" : internalScript.Parse(0);
+            EditorScript = internalScript == null? "" : internalScript.Parse(null, 0);
             List<AssignationModel> listBlock = ModelsToScriptHelper.
                 TransformScriptToModels(managedScript, new RelayCommand<object>(DeleteNode));
             foreach (AssignationModel item in listBlock)
@@ -87,44 +116,33 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        public void ScriptToScripter()
-        {
-            managedScript.Analyse(editorScript);
-            CodeBlocks.Clear();
-            List<AssignationModel> listBlock = ModelsToScriptHelper.
-                TransformScriptToModels(ManagedScript, new RelayCommand<object>(DeleteNode));
-            foreach (AssignationModel item in listBlock)
-            {
-                CodeBlocks.Add(item);
-            }
-            RaisePropertyChanged(() => CodeBlocks);
-        }
-
-        public void ScripterToScript()
-        {
-            managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
-            editorScript = managedScript.Parse();
-        }
-
         public void SaveScript()
         {
-            switch (SelectedTabIndex)
+            //Make sure all syntax exceptions are ignored, we'll show them later
+            try
             {
-                case "Scripter":
-                    managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
-                    break;
-                case "Editor":
-                    ManagedScript.Analyse(editorScript);
-                    break;
+                switch (Configurator.getScripterPreference())
+                {
+                    case "Scripter":
+                        managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
+                        break;
+                    case "Editor":
+                        ManagedScript.Analyse(editorScript);
+                        break;
+                }
+            }
+            catch (SyntaxException e)
+            {
+                //Todo : Do something with them?
             }
             CodeBlocks.Clear();
-            Messenger.Default.Send(new NotificationMessage("HideScripter"));
+            Close();
         }
 
         public void CancelScript()
         {
             CodeBlocks.Clear();
-            Messenger.Default.Send(new NotificationMessage("HideScripter"));
+            Close();
         }
 
         public void DragOver(IDropInfo dropInfo)
@@ -144,7 +162,7 @@ namespace FocusTreeManager.ViewModel
             AssignationModel data = dropInfo.Data as AssignationModel;
             AssignationModel currentItem = ((FrameworkElement) dropInfo.VisualTargetItem)?.
                 DataContext as AssignationModel;
-            // If the sourcve and destination are in the same control, delete at the current index
+            // If the source and destination are in the same control, delete at the current index
             if (Equals(dropInfo.DragInfo.VisualSource, dropInfo.VisualTarget))
             {
                 IList sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
@@ -216,6 +234,17 @@ namespace FocusTreeManager.ViewModel
                 {
                     //loop inside
                     DeleteInChilds(child, sender);
+                }
+            }
+        }
+
+        private void Close()
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.DataContext == this)
+                {
+                    window.Close();
                 }
             }
         }

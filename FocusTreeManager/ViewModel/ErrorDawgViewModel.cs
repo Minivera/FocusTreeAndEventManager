@@ -43,11 +43,19 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
             if (msg.Notification == "ErrorAdded")
             {
                 RaisePropertyChanged(() => DawgVisible);
                 RaisePropertyChanged(() => NumOfErrors);
                 RaisePropertyChanged(() => Errors);
+            }
+            if (msg.Target == this)
+            {
+                //Resend to the tutorial View model if this was the target
+                Messenger.Default.Send(new NotificationMessage(msg.Sender,
+                new ViewModelLocator().Tutorial, msg.Notification));
             }
         }
     }

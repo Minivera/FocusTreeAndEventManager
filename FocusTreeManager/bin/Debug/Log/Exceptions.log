@@ -262,3 +262,667 @@ System.Reflection.TargetInvocationException: Une exception a été levée par la
    à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.CreateInstance(XamlType xamlType, Object[] args)
    à System.Xaml.XamlObjectWriter.Logic_CreateAndAssignToParentStart(ObjectWriterContext ctx)
    à System.Xaml.XamlObjectWrit
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.Add
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   à System.Windows.Window.Show
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à 
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.Add
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   à System.Windows.Window.Show
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à 
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.Add
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   à System.Windows.Window.Show
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à 
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.Add
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   à System.Windows.Window.Show
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.ArgumentOutOfRangeException: L'index était hors limites. Il ne doit pas être négatif et doit être inférieur à la taille de la collection.
+Nom du paramètre : index
+   à System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   à System.Collections.Generic.List`1.get_Item(Int32 index)
+   à FocusTreeManager.CodeStructures.Tokenizer.getIndexOfClosingBracket(List`1 tokens) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 221
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 71
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   à 
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.InvalidOperationException: La séquence ne contient aucun élément.
+   à System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 68
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Script.Analy
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.InvalidOperationException: La séquence ne contient aucun élément.
+   à System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 68
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   à MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   à System.Window
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.InvalidOperationException: La séquence ne contient aucun élément.
+   à System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 68
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 72
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 29
+   à FocusTreeManager.ViewModel.FileManagerViewModel.AddGameFile() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\FileManagerViewModel.cs:ligne 96
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction.Execute() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:ligne 283
+   à GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:ligne 221
+   à System.Windows.Interactivity.InvokeCommandAction.Invoke(Object parameter)
+   à System.Windows.Interactivity.TriggerBase.InvokeActions(Object parameter)
+   à System.Windows.Interactivity.EventTriggerBase.OnEvent(EventArgs eventArgs)
+   à System.Windows.Interactivity.EventTriggerBase.OnEventImpl(Object sender, EventArgs eventArgs)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   à System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   à System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   à System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   à System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   à System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   à System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   à System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   à System.Windows.Input.InputManager.ProcessStagingArea()
+   à System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   à System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   à System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   à System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   à MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   à System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   à System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   à System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   à MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wP
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Vie
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Delegate.DynamicInvokeImpl(Object[] args)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.DoGet
+
+System.Reflection.TargetInvocationException: L'accesseur de propriété 'Tutorial' sur l'objet 'FocusTreeManager.ViewModel.ViewModelLocator' a levé l'exception suivante :'Une exception a été levée par la cible d'un appel.' ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parame
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Vie
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Delegate.DynamicInvokeImpl(Object[] args)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.DoGet
+
+System.Reflection.TargetInvocationException: L'accesseur de propriété 'Tutorial' sur l'objet 'FocusTreeManager.ViewModel.ViewModelLocator' a levé l'exception suivante :'Une exception a été levée par la cible d'un appel.' ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parame
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Vie
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Delegate.DynamicInvokeImpl(Object[] args)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.DoGet
+
+System.Reflection.TargetInvocationException: L'accesseur de propriété 'Tutorial' sur l'objet 'FocusTreeManager.ViewModel.ViewModelLocator' a levé l'exception suivante :'Une exception a été levée par la cible d'un appel.' ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.IO.DirectoryNotFoundException: Impossible de trouver une partie du chemin d'accès 'G:\Travail\Git\HoiProject\FocusTreeManager\bin\Debug\Common\Tutorials'.
+   à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   à System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   à System.IO.Directory.EnumerateFiles(String path, String searchPattern)
+   à FocusTreeManager.Helper.TutorialHelper.getTutorials() dans G:\Travail\Git\HoiProject\FocusTreeManager\Helper\TutorialHelper.cs:ligne 14
+   à FocusTreeManager.ViewModel.TutorialViewModel..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 50
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Ioc.SimpleIoc.MakeInstance[TClass]() dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight.Extras (PCL)\Ioc\SimpleIoc.cs:ligne 722
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parame

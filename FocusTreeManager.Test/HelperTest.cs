@@ -96,7 +96,7 @@ namespace FocusTreeManager.Test
             int lastChar = Helper.CodeHelper.GetLastCharIndexFromLineIndex(FileForTest, 28);
             //Assert
             Assert.IsTrue(lastChar > 0);
-            Assert.AreEqual('}', FileForTest[lastChar]);
+            Assert.AreEqual('}', FileForTest[lastChar - 1]);
         }
 
         [TestMethod]

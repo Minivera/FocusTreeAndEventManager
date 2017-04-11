@@ -29,7 +29,9 @@ namespace FocusTreeManager.Model.TabModels
 
         private ObservableCollection<CanvasLine> canvasLines;
 
-        private FocusModel selectedFocus;
+        private FocusModel ChosenFocusForLink;
+
+        public List<FocusModel> SelectedFocuses;
 
         public CanvasLine selectedLine { get; set; }
 
@@ -49,7 +51,7 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand<object> AddFocusCommand { get; private set; }
 
-        public RelayCommand<object> RightClickCommand { get; private set; }
+        public RelayCommand<object> LeftClickCommand { get; private set; }
 
         public RelayCommand<object> HoverCommand { get; private set; }
 
@@ -59,7 +61,9 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand ShowHidePositionLinesCommand { get; private set; }
 
-        public bool isShown { get; set; }
+        public RelayCommand CopyCommand { get; private set; }
+
+        public RelayCommand<object> PasteCommand { get; private set; }
 
         public int RowCount
         {
@@ -186,24 +190,20 @@ namespace FocusTreeManager.Model.TabModels
         {
             visibleName = Filename;
             UniqueID = Guid.NewGuid();
-            FociList = new ObservableCollection<FocusModel>();
-            FociList.CollectionChanged += FociList_CollectionChanged;
             //Min Row & column Count
             rowCount = MIN_ROW_COUNT;
             columnCount = MIN_COLUMN_COUNT;
-            canvasLines = new ObservableCollection<CanvasLine>();
-            SetupCommands();
+            SetupCommons();
         }
 
         public FocusGridModel(FociGridContainer container)
         {
+            SetupCommons();
             //Transfer data
             UniqueID = container.IdentifierID;
             visibleName = container.ContainerID;
             tag = container.TAG;
             additionnalMods = container.AdditionnalMods;
-            FileInfo = container.FileInfo;
-            FociList = new ObservableCollection<FocusModel>();
             foreach (Focus focus in container.FociList)
             {
                 FociList.Add(new FocusModel(focus));
@@ -219,37 +219,181 @@ namespace FocusTreeManager.Model.TabModels
             FociList.CollectionChanged += FociList_CollectionChanged;
             //Min Row & column Count
             EditGridDefinition();
-            canvasLines = new ObservableCollection<CanvasLine>();
-            SetupCommands();
         }
 
-        internal void SetupCommands()
+        internal void SetupCommons()
         {
+            SelectedFocuses = new List<FocusModel>();
+            canvasLines = new ObservableCollection<CanvasLine>();
+            FociList = new ObservableCollection<FocusModel>();
+            FociList.CollectionChanged += FociList_CollectionChanged;
             //Commands
             AddFocusCommand = new RelayCommand<object>(AddFocus);
-            RightClickCommand = new RelayCommand<object>(RightClick);
+            LeftClickCommand = new RelayCommand<object>(LeftClick);
             HoverCommand = new RelayCommand<object>(Hover);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
             ShowHidePositionLinesCommand = new RelayCommand(ShowHidePositionLines);
+            CopyCommand = new RelayCommand(Copy, CanCopy);
+            PasteCommand = new RelayCommand<object>(Paste, CanPaste);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        internal void ChangePosition(object draggedElement, Point currentPoint)
+        internal void ChangePosition(object draggedElement, Point newPos)
         {
             FocusModel element = draggedElement as FocusModel;
-            if (element != null)
+            if (element == null) return;
+            UndoService.Current[GetUndoRoot()]
+                .BeginChangeSetBatch("ChangePosition", false);
+            //Move the focuses
+            element.DisplayX = (int)Math.Floor(newPos.X / 89);
+            element.DisplayY = (int)Math.Floor(newPos.Y / 140);
+            //Make all relative to focuses change their positions
+            updateRelatives(element);
+            EditGridDefinition();
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
+        }
+
+        public void SelectFocus(Views.UserControls.Focus selected)
+        {
+            FocusModel model = selected.DataContext as FocusModel;
+            if (model == null) return;
+            model.IsSelected = true;
+            SelectedFocuses.Add(model);
+            CopyCommand.RaiseCanExecuteChanged();
+        }
+
+        public void ClearSelected()
+        {
+            foreach (FocusModel selected in SelectedFocuses)
             {
-                int X = (int)Math.Floor(currentPoint.X / 89);
-                int Y = (int)Math.Floor(currentPoint.Y / 140);
-                element.DisplayX = X;
-                element.DisplayY = Y;
-                //Make all relative to focuses changed their positions
-                updateRelatives(element);
-                EditGridDefinition();
-                DrawOnCanvas();
+                selected.IsSelected = false;
             }
+            SelectedFocuses.Clear();
+            CopyCommand.RaiseCanExecuteChanged();
+            PasteCommand.RaiseCanExecuteChanged();
+        }
+
+        private List<FocusModel> CopyTempMemory = new List<FocusModel>();
+
+        private void Copy()
+        {
+            CopyTempMemory = SelectedFocuses;
+            PasteCommand.RaiseCanExecuteChanged();
+        }
+
+        private void Paste(object sender)
+        {
+            if (!CanPaste(sender)) return;
+            UndoService.Current[GetUndoRoot()]
+                .BeginChangeSetBatch("PasteMultiple", false);
+            Point mousePos = Mouse.GetPosition((IInputElement)sender);
+            if (!CopyTempMemory.Any()) return;
+            int XChange = 0;
+            int YChange = 0;
+            if (sender != null)
+            {
+                FocusModel First = CopyTempMemory.FirstOrDefault();
+                if (First == null) return;
+                XChange = (int)Math.Floor(mousePos.X / 89 - 0.4) - First.DisplayX;
+                YChange = (int)Math.Floor(mousePos.Y / 140) - First.DisplayY;
+            }
+            List<FocusModel> newSelected = CopyTempMemory.Select(selected => 
+                                            selected.Copy(XChange, YChange)).ToList();
+            for (int index = 0; index < CopyTempMemory.Count; index++)
+            {
+                FocusModel selected = CopyTempMemory[index];
+                FocusModel currentFocus = newSelected[index];
+                //Repair relative to
+                if (selected.CoordinatesRelativeTo != null)
+                {
+                    //If the relative to can be found in the current new list
+                    if (newSelected.Any(f => selected.CoordinatesRelativeTo.UniqueName == f.UniqueName))
+                    {
+                        currentFocus.CoordinatesRelativeTo = newSelected.FirstOrDefault(f =>
+                                    selected.CoordinatesRelativeTo.UniqueName == f.UniqueName);
+                    }
+                    else
+                    {
+                        //Otherwise, keep the same
+                        currentFocus.CoordinatesRelativeTo = selected.CoordinatesRelativeTo;
+                    }
+                }
+                //Repair prerequisites
+                foreach (PrerequisitesSetModel set in selected.Prerequisite)
+                {
+                    PrerequisitesSetModel newset = new PrerequisitesSetModel(currentFocus);
+                    foreach (FocusModel child in set.FociList)
+                    {
+                        //If the focus to can be found in the current new list
+                        if (newSelected.Any(f => child.UniqueName == f.UniqueName))
+                        {
+                            newset.FociList.Add(newSelected.FirstOrDefault(f => child.UniqueName 
+                                                        == f.UniqueName));
+                        }
+                        else
+                        {
+                            //Otherwise, keep the same
+                            newset.FociList.Add(child);
+                        }
+                    }
+                    currentFocus.Prerequisite.Add(newset);
+                }
+                //Repair mutually exclusives
+                foreach (MutuallyExclusiveSetModel set in selected.MutualyExclusive)
+                {
+                    FocusModel toFind = null;
+                    FocusModel focus1;
+                    FocusModel focus2;
+                    if (set.Focus1.UniqueName == currentFocus.UniqueName)
+                    {
+                        toFind = set.Focus2;
+                        focus1 = set.Focus1;
+                    }
+                    else if(set.Focus2.UniqueName == currentFocus.UniqueName)
+                    {
+                        toFind = set.Focus1;
+                        focus1 = set.Focus2;
+                    }
+                    else
+                    {
+                        //Cannot be found, cancel
+                        continue;
+                    }
+                    //If the focus to can be found in the current new list
+                    if (newSelected.Any(f => toFind.UniqueName == f.UniqueName))
+                    {
+                        focus2 = newSelected.FirstOrDefault(f => toFind.UniqueName
+                                                    == f.UniqueName);
+                    }
+                    else
+                    {
+                        //Otherwise, keep the same
+                        focus2 = toFind;
+                    }
+                    currentFocus.MutualyExclusive.Add(new MutuallyExclusiveSetModel(focus1, focus2));
+                }
+                currentFocus.IsSelected = true;
+                FociList.Add(currentFocus);
+            }
+            //Unselect all the selected foci
+            foreach (FocusModel selected in SelectedFocuses)
+            {
+                selected.IsSelected = false;
+            }
+            SelectedFocuses = newSelected;
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
+        }
+
+        private bool CanPaste(object sender)
+        {
+            return CopyTempMemory.Any();
+        }
+
+        private bool CanCopy()
+        {
+            return SelectedFocuses.Any();
         }
 
         internal void updateRelatives(FocusModel RelativeTo)
@@ -258,8 +402,10 @@ namespace FocusTreeManager.Model.TabModels
             {
                 return;
             }
+            //Select all focuses that are relative to this parent, but not currently in movement
             foreach (FocusModel relative in
-                    FociList.Where(f => f.CoordinatesRelativeTo == RelativeTo))
+                    FociList.Where(f => f.CoordinatesRelativeTo == RelativeTo &&
+                                   !SelectedFocuses.Contains(f)))
             {
                 relative.RaisePropertyChanged(() => relative.DisplayX);
                 relative.RaisePropertyChanged(() => relative.DisplayY);
@@ -294,7 +440,7 @@ namespace FocusTreeManager.Model.TabModels
             Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
 
-        public void RightClick(object sender)
+        public void LeftClick(object sender)
         {
             Point Position = Mouse.GetPosition((Grid)sender);
             List<CanvasLine> clickedElements = CanvasLines.Where(line => 
@@ -319,6 +465,15 @@ namespace FocusTreeManager.Model.TabModels
                 UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                 CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
                 DrawOnCanvas();
+            }
+            else
+            {
+                if (ChosenFocusForLink == null) return;
+                Application.Current.Properties["Mode"] = null;
+                ChosenFocusForLink.IsSelected = false;
+                ChosenFocusForLink = null;
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().StatusBar, "Clear_message"));
             }
         }
 
@@ -367,20 +522,10 @@ namespace FocusTreeManager.Model.TabModels
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (VisibleName == null)
-            {
-                return;
-            }
-            //Always manage container renamed
-            if (msg.Notification == "ContainerRenamed")
-            {
-                RaisePropertyChanged(() => VisibleName);
-            }
-            if (!isShown)
-            {
-                //is not shown, do not manage
-                return;
-            }
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
+            //If this is a dead tab waiting to be destroyed
+            if (VisibleName == null) return;
             FocusModel Model = msg.Sender as FocusModel;
             switch (msg.Notification)
             {
@@ -406,21 +551,21 @@ namespace FocusTreeManager.Model.TabModels
                     Application.Current.Properties["Mode"] = "Mutually";
                     if (Model != null)
                     {
-                        selectedFocus = Model;
+                        ChosenFocusForLink = Model;
                         Model.IsSelected = true;
                     }
                     break;
                 case "FinishAddFocusMutually":
-                    if (selectedFocus != null && selectedFocus != Model &&
+                    if (ChosenFocusForLink != null && ChosenFocusForLink != Model &&
                         FociList.Any(f => f == Model))
                     {
                         UndoService.Current[GetUndoRoot()]
                             .BeginChangeSetBatch("AddMutuallyExclusive", false);
                         Application.Current.Properties["Mode"] = null;
-                        selectedFocus.IsSelected = false;
+                        ChosenFocusForLink.IsSelected = false;
                         MutuallyExclusiveSetModel tempo = 
-                            new MutuallyExclusiveSetModel(selectedFocus, Model);
-                        selectedFocus.MutualyExclusive.Add(tempo);
+                            new MutuallyExclusiveSetModel(ChosenFocusForLink, Model);
+                        ChosenFocusForLink.MutualyExclusive.Add(tempo);
                         Model?.MutualyExclusive.Add(tempo);
                         UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
@@ -431,12 +576,12 @@ namespace FocusTreeManager.Model.TabModels
                     Application.Current.Properties["Mode"] = "Prerequisite";
                     if (Model != null)
                     {
-                        selectedFocus = Model;
+                        ChosenFocusForLink = Model;
                         Model.IsSelected = true;
                     }
                     break;
                 case "FinishAddFocusPrerequisite":
-                    if (selectedFocus != null && selectedFocus != Model &&
+                    if (ChosenFocusForLink != null && ChosenFocusForLink != Model &&
                         FociList.Any(f => f == Model))
                     {
                         UndoService.Current[GetUndoRoot()]
@@ -444,24 +589,24 @@ namespace FocusTreeManager.Model.TabModels
                         Application.Current.Properties["Mode"] = null;
                         string Type = (string) Application.Current.Properties["ModeParam"];
                         Application.Current.Properties["ModeParam"] = null;
-                        selectedFocus.IsSelected = false;
+                        ChosenFocusForLink.IsSelected = false;
                         if (Type == "Required")
                         {
                             //Create new set
-                            PrerequisitesSetModel set = new PrerequisitesSetModel(selectedFocus);
+                            PrerequisitesSetModel set = new PrerequisitesSetModel(ChosenFocusForLink);
                             set.FociList.Add(Model);
-                            selectedFocus.Prerequisite.Add(set);
+                            ChosenFocusForLink.Prerequisite.Add(set);
                         }
                         else
                         {
                             //Create new set if no exist
-                            if (!selectedFocus.Prerequisite.Any())
+                            if (!ChosenFocusForLink.Prerequisite.Any())
                             {
-                                PrerequisitesSetModel set = new PrerequisitesSetModel(selectedFocus);
-                                selectedFocus.Prerequisite.Add(set);
+                                PrerequisitesSetModel set = new PrerequisitesSetModel(ChosenFocusForLink);
+                                ChosenFocusForLink.Prerequisite.Add(set);
                             }
                             //Add Model to last Set
-                            selectedFocus.Prerequisite.Last().FociList.Add(Model);
+                            ChosenFocusForLink.Prerequisite.Last().FociList.Add(Model);
                         }
                         UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
@@ -472,12 +617,12 @@ namespace FocusTreeManager.Model.TabModels
                     Application.Current.Properties["Mode"] = "RelativeTo";
                     if (Model != null)
                     {
-                        selectedFocus = Model;
+                        ChosenFocusForLink = Model;
                         Model.IsSelected = true;
                     }
                     break;
                 case "FinishMakeRelativeTo":
-                    if (selectedFocus != null && selectedFocus != Model &&
+                    if (ChosenFocusForLink != null && ChosenFocusForLink != Model &&
                         FociList.Any(f => f == Model))
                     {
                         if (Model != null)
@@ -485,10 +630,10 @@ namespace FocusTreeManager.Model.TabModels
                             UndoService.Current[GetUndoRoot()]
                                 .BeginChangeSetBatch("MakeRelativeTo", false);
                             Application.Current.Properties["Mode"] = null;
-                            selectedFocus.IsSelected = false;
-                            selectedFocus.X = selectedFocus.DisplayX - Model.DisplayX;
-                            selectedFocus.Y = selectedFocus.DisplayY - Model.DisplayY;
-                            selectedFocus.CoordinatesRelativeTo = Model;
+                            ChosenFocusForLink.IsSelected = false;
+                            ChosenFocusForLink.X = ChosenFocusForLink.DisplayX - Model.DisplayX;
+                            ChosenFocusForLink.Y = ChosenFocusForLink.DisplayY - Model.DisplayY;
+                            ChosenFocusForLink.CoordinatesRelativeTo = Model;
                             UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                             RaisePropertyChanged(() => FociList);
                             DrawOnCanvas();
@@ -496,11 +641,17 @@ namespace FocusTreeManager.Model.TabModels
                     }
                     break;
             }
+            if (msg.Target == this)
+            {
+                //Resend to the tutorial View model if this was the target
+                Messenger.Default.Send(new NotificationMessage(msg.Sender,
+                new ViewModelLocator().Tutorial, msg.Notification));
+            }
         }
 
         public void UpdateFocus(FocusModel sender)
         {
-            if (!isShown) return;
+            if (new ViewModelLocator().Main.SelectedTab != this) return;
             EditGridDefinition();
             DrawOnCanvas();
         }
@@ -651,5 +802,6 @@ namespace FocusTreeManager.Model.TabModels
         }
 
         #endregion
+
     }
 }

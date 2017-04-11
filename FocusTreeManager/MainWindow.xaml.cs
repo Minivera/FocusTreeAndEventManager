@@ -194,6 +194,8 @@ namespace FocusTreeManager
 
         private void scrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //Make sure we hold the middle mouse button
+            if (e.ChangedButton != MouseButton.Middle) return;
             //If we hit a focus or a scrollbar rather than an empty grid
             FrameworkElement source = e.OriginalSource as FrameworkElement;
             if (source != null && 
@@ -204,6 +206,7 @@ namespace FocusTreeManager
             }
             ScrollViewer element = sender as ScrollViewer;
             isMouseHold = true;
+            Cursor = ((TextBlock)Resources["CursorGrabbing"]).Cursor;
             scrollMousePoint = e.GetPosition(element);
             //If element could not be found
             if (element == null) return;
@@ -213,26 +216,29 @@ namespace FocusTreeManager
 
         private void scrollViewer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            //Make sure we hold the middle mouse button
+            if (e.ChangedButton != MouseButton.Middle) return;
             //If the mouse is not held
             if (!isMouseHold) return;
             ScrollViewer element = sender as ScrollViewer;
             isMouseHold = false;
+            Cursor = null;
             element?.ReleaseMouseCapture();
         }
 
         private void ContentScroll_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (isMouseHold)
-            {
-                ScrollViewer element = sender as ScrollViewer;
-                //If the element could not be found
-                if (element == null) return;
-                element.CaptureMouse();
-                element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - 
-                    e.GetPosition(element).X));
-                element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - 
-                    e.GetPosition(element).Y));
-            }
+            //Make sure we hold the middle mouse button
+            if (e.MiddleButton != MouseButtonState.Pressed) return;
+            if (!isMouseHold) return;
+            ScrollViewer element = sender as ScrollViewer;
+            //If the element could not be found
+            if (element == null) return;
+            element.CaptureMouse();
+            element.ScrollToHorizontalOffset(hOff + (scrollMousePoint.X - 
+                                                     e.GetPosition(element).X));
+            element.ScrollToVerticalOffset(vOff + (scrollMousePoint.Y - 
+                                                   e.GetPosition(element).Y));
         }
 
         private void CentralTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -243,40 +249,11 @@ namespace FocusTreeManager
             }
             foreach (object item in ((TabControl)e.Source).Items)
             {
-                if (item is FocusGridModel)
-                {
-                    ((FocusGridModel)item).isShown = false;
-                }
-                else if (item is EventModel)
-                {
-                    ((EventTabModel)item).isShown = false;
-                }
                 //Save all potential datagrids unsaved rows
                 foreach (DataGrid grid
                     in UiHelper.FindVisualChildren<DataGrid>((TabControl)e.Source))
                 {
                     grid.CancelEdit();
-                }
-            }
-            if (e.AddedItems.Count > 0)
-            {
-                object selectedTab = e.AddedItems[0];
-                if (selectedTab is FocusGridModel)
-                {
-                    ((FocusGridModel)selectedTab).isShown = true;
-                    foreach (FocusGrid grid in UiHelper.FindVisualChildren<FocusGrid>(
-                        CentralTabControl))
-                    {
-                        //If the grid is not the selected grid
-                        if (grid.DataContext != selectedTab) continue;
-                        grid.setupInternalFoci();
-                        ((FocusGridModel)selectedTab).RedrawGrid();
-                        break;
-                    }
-                }
-                else if (selectedTab is EventModel)
-                {
-                    ((EventTabModel)selectedTab).isShown = true;
                 }
             }
         }

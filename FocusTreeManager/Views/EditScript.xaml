@@ -17,15 +17,15 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveScriptCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <userControls:Scripter Grid.Row="0" Script="{Binding DataContext.ScriptText, 
-                            RelativeSource={RelativeSource AncestorType={x:Type Controls:MetroWindow}}}" 
-                        CurrentType="{Binding DataContext.ScriptType, 
-                            RelativeSource={RelativeSource AncestorType={x:Type Controls:MetroWindow}}}" />
+        <userControls:Scripter Grid.Row="0" />
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10" 
                     VerticalAlignment="Bottom" Grid.Row="1"
                     DataContext="{Binding Scripter, Source={StaticResource Locator}}">

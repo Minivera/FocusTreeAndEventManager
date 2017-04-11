@@ -1,6 +1,5 @@
 ﻿using FocusTreeManager.CodeStructures.CodeExceptions;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
@@ -51,12 +50,12 @@ namespace FocusTreeManager.CodeStructures
             return new List<ICodeStruct>();
         }
 
-        public string Parse(int StartLevel = -1)
+        public string Parse(Dictionary<int, string> Comments = null, int StartLevel = -1)
         {
             return Value;
         }
 
-        public Script GetContentAsScript(string[] except)
+        public Script GetContentAsScript(string[] except, Dictionary<int, string> Comments = null)
         {
             //TODO: Add language support
             RecursiveCodeException e = new RecursiveCodeException();

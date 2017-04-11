@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,6 +68,59 @@ namespace FocusTreeManager.Helper
                         (string) entry.Key).ToArray();
                 }
             }
+        }
+
+        public static DependencyObject FindChildWithName(DependencyObject parent, string childName)
+        {
+            if (parent == null) return null;
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                FrameworkElement frameworkElement = child as FrameworkElement;
+                // If the child's name is set for search
+                if (frameworkElement == null || frameworkElement.Name != childName)
+                {
+                    DependencyObject foundChild = FindChildWithName(child, childName);
+                    // If the child is found, break so we do not overwrite the found child. 
+                    if (foundChild != null)
+                    {
+                        return foundChild;
+                    }
+                }
+                else if (frameworkElement.Name == childName)
+                {
+                    // if the child's name is of the request name
+                    return child;
+                }
+            }
+            return null;
+        }
+
+        public static DependencyObject FindChildWithType(DependencyObject parent, Type ChildType)
+        {
+            if (parent == null) return null;
+            DependencyObject foundChild = parent;
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                // If the child is not of the request child type child
+                if (child.GetType() != ChildType)
+                {
+                    // recursively drill down the tree
+                    foundChild = FindChildWithType(child, ChildType);
+                    // If the child is found, break so we do not overwrite the found child. 
+                    if (foundChild != null) break;
+                }
+                else
+                {
+                    // child element found.
+                    foundChild = child;
+                    break;
+                }
+            }
+            return foundChild;
         }
     }
 }

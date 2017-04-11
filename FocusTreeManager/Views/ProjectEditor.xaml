@@ -50,8 +50,10 @@
                     <RowDefinition x:Name="NameRow" Height="35" />
                     <RowDefinition x:Name="DefaultRow" Height="35" />
                     <RowDefinition x:Name="PreloadRow" Height="35" />
+                    <RowDefinition x:Name="PreloadHelpRow" Height="40" />
                     <RowDefinition x:Name="AddModsLabelRow" Height="35" />
                     <RowDefinition x:Name="AddModsRow" Height="170" />
+                    <RowDefinition x:Name="AddModsHelpRow" Height="40" />
                     <RowDefinition x:Name="AddModsCommandsRow" Height="35" />
                 </Grid.RowDefinitions>
                 <Label Content="{DynamicResource Files_Filename}" Grid.Row="0" Grid.Column="0"/>
@@ -63,15 +65,17 @@
                 <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding localisationList}"
                   DisplayMemberPath="VisibleName"
                   SelectedValue="{Binding DefaultLocale}" />
-                <Label Content="{DynamicResource Project_Mods_Folders}" Grid.Row="4" 
+                <Label Content="{DynamicResource Project_Mods_Folders}" Grid.Row="5" 
                        Grid.ColumnSpan="2" Grid.Column="0"/>
-                <ListBox ItemsSource="{Binding ListModFolders}" Grid.Row="5" 
+                <ListBox ItemsSource="{Binding ListModFolders}" Grid.Row="6" 
                          Grid.ColumnSpan="2" Grid.Column="0" 
                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type Window}}, Path=DataContext.SelectedString}"
                          BorderBrush="White" BorderThickness="1">
                 </ListBox>
-                <WrapPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                <TextBlock Text="{DynamicResource Project_Mods_Folders_Tooltip}" Grid.Row="7" 
+                       Grid.ColumnSpan="2" Grid.Column="0" TextWrapping="Wrap"/>
+                <WrapPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
                            HorizontalAlignment="Right" VerticalAlignment="Bottom">
                     <Button Content="{DynamicResource Command_Add}" 
                             Command="{Binding RelativeSource={RelativeSource FindAncestor, 

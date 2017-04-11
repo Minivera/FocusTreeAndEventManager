@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -123,9 +124,17 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void UserControlTextUpdated(string Text)
         {
-            //Setup the Code Viewer
-            Viewer.SetupViewer(Editor.Text);
-            Viewer.LinkedEditor = Editor;
+            //Make sure no syntax exception goes beyond this point
+            try
+            {
+                //Setup the Code Viewer
+                Viewer.SetupViewer(Editor.Text);
+                Viewer.LinkedEditor = Editor;
+            }
+            catch (SyntaxException e)
+            {
+                //TODO: Manage the syntax exceptions
+            }
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)

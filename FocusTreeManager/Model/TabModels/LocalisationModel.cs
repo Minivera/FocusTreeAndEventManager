@@ -121,14 +121,10 @@ namespace FocusTreeManager.Model.TabModels
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (visibleName == null)
-            {
-                return;
-            }
-            if (msg.Notification == "ContainerRenamed")
-            {
-                RaisePropertyChanged(() => visibleName);
-            }
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
+            //If this is a dead tab waiting to be destroyed
+            if (VisibleName == null) return;
         }
 
         public string translateKey(string key)

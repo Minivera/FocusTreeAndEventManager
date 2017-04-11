@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using FocusTreeManager.CodeStructures;
+using FocusTreeManager.DataContract;
+using FocusTreeManager.Helper;
+using FocusTreeManager.Model.TabModels;
 using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System.Windows;
-using System.Linq;
-using FocusTreeManager.CodeStructures;
-using System.Collections.ObjectModel;
-using FocusTreeManager.DataContract;
 using MonitoredUndo;
-using System.Collections.Specialized;
-using System.Collections.Generic;
-using System.Windows.Media;
-using FocusTreeManager.Helper;
-using FocusTreeManager.Model.TabModels;
 
 namespace FocusTreeManager.Model
 {
@@ -320,18 +320,7 @@ namespace FocusTreeManager.Model
 
         public FocusModel()
         {
-            Prerequisite = new ObservableCollection<PrerequisitesSetModel>();
-            Prerequisite.CollectionChanged += Prerequisite_CollectionChanged;
-            MutualyExclusive = new ObservableCollection<MutuallyExclusiveSetModel>();
-            MutualyExclusive.CollectionChanged += MutualyExclusive_CollectionChanged;
-            //Commands
-            EditFocusCommand = new RelayCommand(Edit);
-            DeleteFocusCommand = new RelayCommand(Delete);
-            MutuallyFocusCommand = new RelayCommand(AddMutuallyExclusive);
-            PrerequisiteFocusCommand = new RelayCommand<string>(AddPrerequisite);
-            MakeRelativeToCommand = new RelayCommand(MakeRelativeTo);
-            TestFinishCommand = new RelayCommand(FinishSetCommands);
-            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
+            SetupCommonComponents();
         }
 
         public FocusModel(Focus focus)
@@ -343,6 +332,25 @@ namespace FocusTreeManager.Model
             y = focus.Y;
             cost = focus.Cost;
             internalScript = focus.InternalScript;
+            SetupCommonComponents();
+        }
+
+        public FocusModel Copy(int XChange = 0, int YChange = 0)
+        {
+            return new FocusModel
+            {
+                Image = Image,
+                UniqueName = UniqueName + "_Copy",
+                Text = Text,
+                X = X + XChange,
+                Y = Y + YChange,
+                Cost = Cost,
+                InternalScript = InternalScript
+            };
+        }
+
+        private void SetupCommonComponents()
+        {
             Prerequisite = new ObservableCollection<PrerequisitesSetModel>();
             Prerequisite.CollectionChanged += Prerequisite_CollectionChanged;
             MutualyExclusive = new ObservableCollection<MutuallyExclusiveSetModel>();
@@ -415,33 +423,54 @@ namespace FocusTreeManager.Model
             {
                 set.DeleteSetRelations();
             }
-            Messenger.Default.Send(new NotificationMessage(this, "DeleteFocus"));
+            Messenger.Default.Send(new NotificationMessage(this, 
+                new ViewModelLocator().Main.SelectedTab, "DeleteFocus"));
+        }
+
+        public void AddPrerequisite(string Type)
+        {
+            Application.Current.Properties["ModeParam"] = Type;
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().Main.SelectedTab, "AddFocusPrerequisite"));
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().StatusBar, "Status_Make_Prerequisite"));
         }
 
         public void AddMutuallyExclusive()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "AddFocusMutually"));
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().Main.SelectedTab, "AddFocusMutually"));
+            Messenger.Default.Send(new NotificationMessage(this, 
+                new ViewModelLocator().StatusBar, "Status_Make_Exclusive"));
         }
 
         public void MakeRelativeTo()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "MakeRelativeTo"));
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().Main.SelectedTab, "MakeRelativeTo"));
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().StatusBar, "Status_Make_Relative"));
         }
 
         public void FinishSetCommands()
         {
             if ((string)Application.Current.Properties["Mode"] == "Mutually")
             {
-                Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusMutually"));
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().Main.SelectedTab, "FinishAddFocusMutually"));
             }
             if ((string)Application.Current.Properties["Mode"] == "Prerequisite")
             {
-                Messenger.Default.Send(new NotificationMessage(this, "FinishAddFocusPrerequisite"));
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().Main.SelectedTab, "FinishAddFocusPrerequisite"));
             }
             if ((string)Application.Current.Properties["Mode"] == "RelativeTo")
             {
-                Messenger.Default.Send(new NotificationMessage(this, "FinishMakeRelativeTo"));
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().Main.SelectedTab, "FinishMakeRelativeTo"));
             }
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().StatusBar, "Clear_message"));
         }
 
         public void EditLocale(string param)
@@ -516,12 +545,6 @@ namespace FocusTreeManager.Model
             RaisePropertyChanged(() => VisibleName);
             RaisePropertyChanged(() => Description);
         }
-
-        public void AddPrerequisite(string Type)
-        {
-            Application.Current.Properties["ModeParam"] = Type;
-            Messenger.Default.Send(new NotificationMessage(this, "AddFocusPrerequisite"));
-        }
         
         public void setDefaults(int FocusNumber)
         {
@@ -530,6 +553,7 @@ namespace FocusTreeManager.Model
             uniquename = "newfocus_" + FocusNumber;
             x = 0;
             y = 0;
+            cost = 10;
         }
 
         #region Undo/Redo

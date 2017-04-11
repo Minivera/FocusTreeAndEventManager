@@ -56,7 +56,7 @@ namespace FocusTreeManager.Adorners
             if (context == null) return;
             foreach (CanvasLine line in context.CanvasLines)
             {
-                Line newLine = new Line()
+                Line newLine = new Line
                 {
                     X1 = line.X1,
                     X2 = line.X2,

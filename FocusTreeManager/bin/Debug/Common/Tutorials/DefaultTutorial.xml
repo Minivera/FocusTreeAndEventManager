@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tutorials>
+  <tutorial control="FociGrid">
+    <step text="Tutorial_Test" Highlight="FocusGridScroll" 
+          WaitForMessage="FocusLoaded" RightClick="true"/>
+    <step text="Tutorial_Test2" Highlight="FocusTreeManager.Views.UserControls.Focus"
+          Circle="true" Arrow="true"/>
+  </tutorial>
+</tutorials>

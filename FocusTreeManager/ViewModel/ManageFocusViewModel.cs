@@ -34,6 +34,8 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
+        public FocusGridModel sender { get; set; }
+
         public RelayCommand FocusCommand { get; private set; }
 
         public RelayCommand ChangeImageCommand { get; private set; }
@@ -57,15 +59,14 @@ namespace FocusTreeManager.ViewModel
             {
                 Point mousePos = Mouse.GetPosition((IInputElement)sender);
                 FocusModel localFocus = new FocusModel();
-                FocusGridModel firstOrDefault = (FocusGridModel)new ViewModelLocator().Main.TabsModelList
-                    .FirstOrDefault(t => t is FocusGridModel && ((FocusGridModel)t).isShown);
+                FocusGridModel firstOrDefault = new ViewModelLocator().Main.SelectedTab as FocusGridModel;
                 if (firstOrDefault != null)
                 {
                     localFocus.setDefaults(firstOrDefault
                         .FociList.Count);
                     Focus = localFocus;
                     //minus 0.4 because if you hit the border of a cell, it will add it to the next one... Annoying
-                    Focus.X = (int)Math.Floor((mousePos.X / 89) - 0.4);
+                    Focus.X = (int)Math.Floor(mousePos.X / 89 - 0.4);
                     Focus.Y = (int)Math.Floor(mousePos.Y / 140);
                 }
             }
@@ -79,22 +80,24 @@ namespace FocusTreeManager.ViewModel
 
         public void CloseEditFocus()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "CloseEditFocus"));
+            Messenger.Default.Send(new NotificationMessage(this, 
+                new ViewModelLocator().Main.SelectedTab, "CloseEditFocus"));
         }
 
         public void ChangeImage()
         {
             ChangeImage view = new ChangeImage();
-            (new ViewModelLocator()).ChangeImage.LoadImages("Focus", Focus.Image);
+            new ViewModelLocator().ChangeImage.LoadImages("Focus", Focus.Image);
             view.ShowDialog();
-            Focus.Image = (new ViewModelLocator()).ChangeImage.FocusImage;
+            Focus.Image = new ViewModelLocator().ChangeImage.FocusImage;
         }
 
         public void EditScript()
         {
-            ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            EditScript dialog = new EditScript(Focus.InternalScript,
-                ScripterControlsViewModel.ScripterType.FocusTree);
+            ScripterViewModel ViewModel = new ViewModelLocator().Scripter;
+            ViewModel.ScriptType = ScripterType.FocusTree;
+            ViewModel.ManagedScript = focus.InternalScript;
+            EditScript dialog = new EditScript();
             dialog.ShowDialog();
             focus.InternalScript = ViewModel.ManagedScript;
         }

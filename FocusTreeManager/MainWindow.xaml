@@ -29,16 +29,25 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
+                <ResourceDictionary>
+                    <TextBlock x:Key="CursorGrabbing" Cursor="Resources/Cursors/grabbing.cur"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate DataType="{x:Type tabModels:FocusGridModel}">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                              VerticalScrollBarVisibility="Auto"
-                              PreviewMouseMove="ContentScroll_PreviewMouseMove" 
-                              PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown"
-                              PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
-                              Background="Transparent" ScrollChanged="ScrollViewer_ScrollChanged">
-                    <vu:FocusGrid></vu:FocusGrid>
-                </ScrollViewer>
+                <Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                  VerticalScrollBarVisibility="Auto"
+                                  PreviewMouseMove="ContentScroll_PreviewMouseMove" 
+                                  PreviewMouseDown="scrollViewer_PreviewMouseLeftButtonDown"
+                                  PreviewMouseUp="scrollViewer_PreviewMouseLeftButtonUp" 
+                                  Background="Transparent" ScrollChanged="ScrollViewer_ScrollChanged"
+                                  x:Name="FocusGridScroll">
+                        <vu:FocusGrid x:Name="FociGrid"></vu:FocusGrid>
+                    </ScrollViewer>
+                    <vu:TutorialButton LinkedElement="{Binding ElementName=FociGrid}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"/>
+                </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:LocalisationModel}">
                 <vu:Localisation></vu:Localisation>
@@ -58,9 +67,7 @@
                         Command="{Binding SaveScriptCommand}"
                         CommandParameter="{Binding ElementName=Scripter}"/>
                     </Grid.InputBindings>
-                    <vu:Scripter Script="{Binding DataContext.(tabModels:ScriptModel.InternalScript), 
-                                RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
-                                Grid.Row="0" x:Name="Scripter"/>
+                    <vu:Scripter Grid.Row="0" x:Name="Scripter"/>
                     <StackPanel HorizontalAlignment="Right" Grid.Row="1">
                         <Button Content="{DynamicResource Command_Save}" 
                                 Command="{Binding SaveScriptCommand}"
@@ -202,9 +209,9 @@
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
         <DockPanel Grid.Column="2">
             <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
-                <StatusBar>
+                <StatusBar DataContext="{Binding StatusBar, Source={StaticResource Locator}}">
                     <StatusBarItem>
-                        <TextBlock Name="StatusText" Text="{Binding StatusText}"/>
+                        <TextBlock Name="StatusText" Text="{Binding Message}"/>
                     </StatusBarItem>
                 </StatusBar>
                 <Grid HorizontalAlignment="Right" Width="70" Height="110" Margin="0,-130,15,0" x:Name="GridErrors">
@@ -212,10 +219,11 @@
                 </Grid>
             </Grid>
             <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
-                     FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
+                         FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
                 <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
-                    ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" 
-                    SelectionChanged="CentralTabControl_SelectionChanged" >
+                        ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" 
+                        SelectedItem="{Binding SelectedTab}"
+                        SelectionChanged="CentralTabControl_SelectionChanged" >
                     <dragablz:TabablzControl.HeaderItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding VisibleName}"  />

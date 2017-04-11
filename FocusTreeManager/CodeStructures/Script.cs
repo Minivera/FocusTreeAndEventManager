@@ -18,23 +18,34 @@ namespace FocusTreeManager.CodeStructures
         [DataMember(Name = "code", Order = 0)]
         public List<ICodeStruct> Code { get; set; }
 
+        [DataMember(Name = "comments", Order = 1)]
+        public Dictionary<int, string> Comments { get; set; }
+
         public Script()
         {
             Code = new List<ICodeStruct>();
+            Comments = new Dictionary<int, string>();
         }
 
         public void Analyse(string code, int line = -1)
         {
             Code.Clear();
             List<SyntaxGroup> list = 
-                Tokenizer.GroupTokensByBlocks(Tokenizer.Tokenize(code)) 
+                Tokenizer.GroupTokensByBlocks(Tokenizer.Tokenize(code, this)) 
                 as List<SyntaxGroup>;
             //Return if list is null
-            if (list == null) return;
+            if (list == null || !list.Any()) return;
             foreach (SyntaxGroup group in list)
             {
                 try
                 {
+                    //Check if there is an assignation or code value at the end of the code
+                    Assignation last = Code.LastOrDefault() as Assignation;
+                    if (last != null)
+                    {
+                        //set its end line as this line's end - 1
+                        last.EndLine = group.Component.line - 1;
+                    }
                     Assignation tempo = new Assignation(1);
                     tempo.Analyse(group);
                     Code.Add(tempo);
@@ -51,20 +62,39 @@ namespace FocusTreeManager.CodeStructures
                     ErrorLogger.Instance.AddLogLine("Unknown error in script");
                 }
             }
+            //Check if there is an assignation or code value at the end of the code
+            Assignation Verylast = Code.LastOrDefault() as Assignation;
+            if (Verylast != null)
+            {
+                //Check if the last is Empty
+                if (list.Last().Component.line == Verylast.Line)
+                {
+                    //Empty block, set the end line as starting line + 2
+                    Verylast.EndLine = Verylast.Line + 2;
+                }
+                else
+                {
+                    //Set its end line as this line's end - 1
+                    Verylast.EndLine = list.Last().Component.line - 1;
+                }
+            }
         }
 
-        public string Parse(int StartLevel = -1)
+        public string Parse(Dictionary<int, string> comments = null, int StartLevel = -1)
         {
             string content = "";
-            if (Code == null)
+            //End here is the code is empty
+            if (Code == null || !Code.Any())
             {
                 return content;
             }
+            //Make a local copy, so we do not remove the master comments
+            Dictionary<int, string> localCopy = Comments.ToDictionary(t => t.Key, t => t.Value);
             foreach (ICodeStruct item in Code)
             {
                 try
                 {
-                    content += item.Parse(StartLevel) + "\n";
+                    content += item.Parse(localCopy, StartLevel) + "\n";
                 }
                 catch (RecursiveCodeException e)
                 {
@@ -122,7 +152,8 @@ namespace FocusTreeManager.CodeStructures
             return founds;
         }
 
-        public Script GetContentAsScript(string[] except)
+        public Script GetContentAsScript(string[] except,
+            Dictionary<int, string> comments = null)
         {
             Script newScript = new Script();
             foreach (ICodeStruct codeStruct in Code)
@@ -133,26 +164,51 @@ namespace FocusTreeManager.CodeStructures
                     newScript.Code.Add(item);
                 }
             }
+            Assignation firstLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).FirstOrDefault() as Assignation;
+            Assignation lastLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).LastOrDefault() as Assignation;
+            //If no lines were found
+            if (firstLine == null || lastLine == null) return newScript;
+            //Try to get the comments
+            newScript.Comments = Comments.SkipWhile(c => c.Key < firstLine.Line)
+                                         .TakeWhile(c => c.Key <= lastLine.Line)
+                                         .ToDictionary(c => c.Key, c => c.Value);
             return newScript;
         }
 
-        public static string TryParse(ICodeStruct block, string tag, bool isMandatory = true)
+        public void AddWordToComment(int line, string word)
+        {
+            if (Comments.ContainsKey(line))
+            {
+                Comments[line] += " " + word;
+            }
+            else
+            {
+                Comments[line] = word;
+            }
+        }
+
+        public static string TryParse(ICodeStruct block, string tag,
+            Dictionary<int, string> comments = null, bool isMandatory = true)
         {
             Assignation found = block.FindAssignation(tag);
             if (found != null)
             {
                 try
                 {
-                    return found.Value.Parse();
+                    return found.Value.Parse(comments);
                 }
                 catch (Exception)
                 {
-                    throw new SyntaxException(tag, found.Line);
+                    throw new SyntaxException(tag, found.Line, null, 
+                        new UnparsableTagException(tag));
                 }
             }
             if (isMandatory)
             {
-                throw new SyntaxException(tag);
+                throw new SyntaxException(tag, null, null, 
+                    new MandatoryTagException(tag));
             }
             return null;
         }

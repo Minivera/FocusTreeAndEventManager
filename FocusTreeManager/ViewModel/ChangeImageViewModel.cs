@@ -55,21 +55,20 @@ namespace FocusTreeManager.ViewModel
         public void LoadImages(string SubFolder, string CurrentImage)
         {
             int MaxWidth = 250;
-            ImageType type = ImageType.Event;
+            Dictionary<string, ImageSource> images = new Dictionary<string, ImageSource>();
             switch (SubFolder)
             {
                 case "Focus":
                     MaxWidth = 100;
-                    type = ImageType.Goal;
+                    images = AsyncImageLoader.AsyncImageLoader.Worker.Focuses;
                     break;
                 case "Event":
                     MaxWidth = 250;
-                    type = ImageType.Event;
+                    images = AsyncImageLoader.AsyncImageLoader.Worker.Events;
                     break;
             }
-            
             ImageList.Clear();
-            foreach (KeyValuePair<string, ImageSource> source in ImageHelper.findAllGameImages(type))
+            foreach (KeyValuePair<string, ImageSource> source in images)
             {
                 ImageList.Add(new ImageData
                 {
@@ -84,7 +83,7 @@ namespace FocusTreeManager.ViewModel
 
         public void SelectFocus(string path)
         {
-            FocusImage = Path.GetFileNameWithoutExtension(path);
+            FocusImage = path;
             Messenger.Default.Send(new NotificationMessage(this, "HideChangeImage"));
         }
     }

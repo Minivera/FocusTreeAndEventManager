@@ -68,9 +68,10 @@ namespace FocusTreeManager.Model
 
         public void EditOptionScript()
         {
-            ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            EditScript dialog = new EditScript(InternalScript,
-                ScripterControlsViewModel.ScripterType.EventOption);
+            ScripterViewModel ViewModel = new ViewModelLocator().Scripter;
+            ViewModel.ScriptType = ScripterType.EventOption;
+            ViewModel.ManagedScript = internalScript;
+            EditScript dialog = new EditScript();
             dialog.ShowDialog();
             internalScript = ViewModel.ManagedScript;
         }

@@ -3,23 +3,19 @@ using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System;
 using System.Windows;
+using FocusTreeManager.ViewModel;
 using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
 
 namespace FocusTreeManager.Views
 {
     public partial class EditScript : MetroWindow
     {
-        public Script ScriptText { get; private set; }
 
-        public ScripterType ScriptType { get; private set; }
-
-        public EditScript(Script ScriptText, ScripterType ScriptType)
+        public EditScript()
         {
             InitializeComponent();
             loadLocales();
-            this.ScriptText = ScriptText;
-            this.ScriptType = ScriptType;
-            DataContext = this;
+            DataContext = new ViewModelLocator().Scripter;
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
@@ -28,10 +24,6 @@ namespace FocusTreeManager.Views
             if (msg.Notification == "ChangeLanguage")
             {
                 loadLocales();
-            }
-            if (msg.Notification == "HideScripter")
-            {
-                Hide();
             }
         }
 

@@ -28,6 +28,9 @@ namespace FocusTreeManager.CodeStructures
         [DataMember(Name = "line", Order = 4)]
         public int Line { get; set; }
 
+        [DataMember(Name = "endline", Order = 5)]
+        public int EndLine { get; set; }
+
         public Assignation()
         {
             Level = 0;
@@ -80,7 +83,7 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public string Parse(int StartLevel = -1)
+        public string Parse(Dictionary<int, string> comments = null, int StartLevel = -1)
         {
             int BasicLevel = StartLevel == -1 ? Level : StartLevel + 1;
             string tabulations = "";
@@ -89,6 +92,23 @@ namespace FocusTreeManager.CodeStructures
                 tabulations += "\t";
             }
             StringBuilder content = new StringBuilder();
+            string endComment = "";
+            //Check if comments is not null
+            if (comments != null)
+            {
+                //Make a copy for the loop
+                Dictionary<int, string> localCopy = comments.ToDictionary(t => t.Key, t => t.Value);
+                //Parse all comments before going further
+                foreach (KeyValuePair<int, string> comment in localCopy.TakeWhile(i => i.Key < Line))
+                {
+                    content.Append(comment.Value);
+                    comments.Remove(comment.Key);
+                }
+                //Get this lines comments if any
+                endComment = comments.ContainsKey(Line) ? comments[Line] : "";
+                //Remove all added
+                comments.Remove(Line);
+            }
             try
             {
                 // If the value is nothing but it has an operator
@@ -96,14 +116,22 @@ namespace FocusTreeManager.CodeStructures
                     && !((CodeBlock)Value).Code.Any())
                     && Operator != null)
                 {
+                    //Check if there are comments in there
+                    string comment = "";
+                    if (comments != null)
+                    {
+                        comment = comments.Where(c => c.Key > Line && c.Key < EndLine)
+                            .Aggregate(comment, (current, item) => current + item.Value + "\n");
+                    }
                     //Empty block
-                    content.Append(tabulations + Assignee + " " + Operator + " {\n\n}");
+                    content.Append(tabulations + Assignee + " " + Operator + " {\n" + 
+                        comment + "\n}" + endComment);
                 }
                 //Otherwise, print as usual
                 else if (Value != null)
                 {
                     content.Append(tabulations + Assignee + " " + Operator + " " + 
-                        Value.Parse(BasicLevel));
+                        Value.Parse(comments, BasicLevel) + endComment);
                 }
             }
             catch (RecursiveCodeException e)
@@ -181,7 +209,7 @@ namespace FocusTreeManager.CodeStructures
             return founds;
         }
 
-        public Script GetContentAsScript(string[] except)
+        public Script GetContentAsScript(string[] except, Dictionary<int, string> Comments = null)
         {
             Script newScript = new Script();
             if (Value is CodeBlock)
@@ -202,6 +230,18 @@ namespace FocusTreeManager.CodeStructures
                 throw e.AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
                                              Assignee, Line.ToString());
             }
+            //If no comments are given
+            if (Comments == null) return newScript;
+            Assignation firstLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).FirstOrDefault() as Assignation;
+            Assignation lastLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).LastOrDefault() as Assignation;
+            //If no lines were found
+            if (firstLine == null || lastLine == null) return newScript;
+            //Try to get the comments
+            newScript.Comments = Comments.SkipWhile(c => c.Key < firstLine.Line)
+                                         .TakeWhile(c => c.Key <= lastLine.Line)
+                                         .ToDictionary(c => c.Key, c => c.Value);
             return newScript;
         }
     }

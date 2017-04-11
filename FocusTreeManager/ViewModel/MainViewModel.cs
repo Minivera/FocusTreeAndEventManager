@@ -1,9 +1,5 @@
-using DiffPlex;
-using DiffPlex.DiffBuilder;
-using DiffPlex.DiffBuilder.Model;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.Model;
-using FocusTreeManager.Parsers;
 using FocusTreeManager.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -25,21 +21,6 @@ namespace FocusTreeManager.ViewModel
     public class MainViewModel : ViewModelBase, ISupportsUndo
     {
         private IDialogCoordinator coordinator;
-
-        private string statusText;
-
-        public string StatusText
-        {
-            get
-            {
-                return statusText;
-            }
-            set
-            {
-                statusText = value;
-                RaisePropertyChanged("StatusText");
-            }
-        }
 
         private bool isProjectExist = false;
 
@@ -72,7 +53,23 @@ namespace FocusTreeManager.ViewModel
         }
 
         public ObservableCollection<ObservableObject> TabsModelList { get; private set; }
-        
+
+        private ObservableObject selectedTab;
+
+        public ObservableObject SelectedTab
+        {
+            get { return selectedTab; }
+            set
+            {
+                if (value == selectedTab) return;
+                selectedTab = value;
+                if (selectedTab is FocusGridModel)
+                {
+                    ((FocusGridModel)selectedTab).RedrawGrid();
+                }
+            }
+        }
+
         public RelayCommand NewProjectCommand { get; private set; }
 
         public RelayCommand LoadProjectCommand { get; private set; }
@@ -215,10 +212,12 @@ namespace FocusTreeManager.ViewModel
 
         public void editProject()
         {
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("EditProject", false);
             var Vm = (new ViewModelLocator()).ProjectEditor;
             ProjectEditor dialog = new ProjectEditor();
             Vm.Project = Project;
             dialog.ShowDialog();
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
         }
 
         private void loadProject()
@@ -352,6 +351,8 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
             if (msg.Notification == "OpenFocusTree")
             {
                 FocusGridModel container = msg.Sender as FocusGridModel;
@@ -414,6 +415,12 @@ namespace FocusTreeManager.ViewModel
                 }
                 TabsModelList.Remove(Model);
                 RaisePropertyChanged("TabsModelList");
+            }
+            if (msg.Target == this)
+            {
+                //Resend to the tutorial View model if this was the target
+                Messenger.Default.Send(new NotificationMessage(msg.Sender,
+                new ViewModelLocator().Tutorial, msg.Notification));
             }
         }
 
@@ -520,9 +527,9 @@ namespace FocusTreeManager.ViewModel
             var undoRoot = UndoService.Current[this];
             undoRoot.Undo();
             //Refresh all focus grids if needed
-            foreach (FocusGridModel model in Project.fociList.Where(m => m.isShown))
+            if (selectedTab is FocusGridModel)
             {
-                model.RedrawGrid();
+                ((FocusGridModel)selectedTab).RedrawGrid();
             }
         }
 

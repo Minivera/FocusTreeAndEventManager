@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Runtime.ExceptionServices;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Helper;
 
 namespace FocusTreeManager
@@ -21,6 +22,8 @@ namespace FocusTreeManager
 
         private static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
         {
+            //Ignore syntax exceptions
+            if (e.Exception is SyntaxException) return;
             LoggingHelper.LogException(e.Exception);
         }
 

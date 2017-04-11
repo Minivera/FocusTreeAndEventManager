@@ -14,7 +14,7 @@
                 <Grid>
                     <Border x:Name="BackgroundBorder" BorderThickness="1"
                             BorderBrush="{DynamicResource AccentColorBrush3}"
-                            Background="{DynamicResource AccentColorBrush4}" Padding="6">
+                            Background="{DynamicResource AccentColorBrush4}">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="2" Opacity="0.25" ShadowDepth="4" />
                         </Border.Effect>

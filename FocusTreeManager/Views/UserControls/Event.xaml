@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" IsVisibleChanged="UserControl_IsVisibleChanged" >
+             mc:Ignorable="d" >
     <UserControl.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -44,15 +44,16 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Background="{DynamicResource AccentBaseColorBrush}">
-                <Label Content="{DynamicResource Event_Id}" Padding="5" 
+                <Label Content="{DynamicResource Event_Id}" 
                        VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                       FontSize="16" FontWeight="Bold"/>
+                       FontSize="16" FontWeight="Bold"
+                       ToolTip="{DynamicResource Event_Id_Tooltip}"/>
                 <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <TextBlock Text="{Binding Title}" Background="{DynamicResource AccentBaseColorBrush}" 
-                       Foreground="{DynamicResource IdealForegroundColorBrush}" Padding="5,0,0,5"
+                       Foreground="{DynamicResource IdealForegroundColorBrush}"
                        VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                       ToolTip="{DynamicResource Event_Title}"
+                       ToolTip="{DynamicResource Event_Title_Tooltip}"
                        FontSize="15"/>
         </StackPanel>
         <Image Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
@@ -68,13 +69,15 @@
                 <RowDefinition Height="*" x:Name="Description"/>
             </Grid.RowDefinitions>
             <Controls:ToggleSwitch Grid.Row="0" Header="{DynamicResource Event_Type_Switch}" 
+                                   ToolTip="{DynamicResource Event_Type_Switch_Tooltip}"
                                    OffLabel="{DynamicResource Event_Type_Switch_1}" 
                                    OnLabel="{DynamicResource Event_Type_Switch_2}"
                                    IsChecked="{Binding SwitchIsChecked}"
                                    Width="200"/>
             <DockPanel Grid.Row="1" x:Name="DescriptionText">
                 <Label Content="{DynamicResource Event_Description}" Padding="5" 
-                               DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
+                       DockPanel.Dock="Top" HorizontalAlignment="Stretch"
+                       ToolTip="{DynamicResource Event_Description_Tooltip}"/>
                 <ScrollViewer DockPanel.Dock="Bottom" >
                     <TextBlock Text="{Binding Description}" Padding="5" 
                                HorizontalAlignment="Stretch" TextWrapping="Wrap"/>
@@ -85,7 +88,8 @@
                                         AncestorType=Window, AncestorLevel=1}}"
                         Visibility="{Binding Path=SwitchIsChecked, Converter={StaticResource BoolToVis}}">
                 <Label Content="{DynamicResource Event_Description_Options}" Padding="5" 
-                       HorizontalAlignment="Stretch" DockPanel.Dock="Top"/>
+                       HorizontalAlignment="Stretch" DockPanel.Dock="Top"
+                       ToolTip="{DynamicResource Event_Description_Options_Tooltip}"/>
                 <DataGrid ItemsSource="{Binding Path=Descriptions}"
                           AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
                           AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}" 
@@ -106,10 +110,13 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Command="{Binding DataContext.EditDescScriptCommand, 
-                                            RelativeSource={RelativeSource FindAncestor, 
-                                            AncestorType={x:Type DataGrid}}}" 
+                                                RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type DataGrid}}}" 
                                             CommandParameter="{Binding}" 
-                                            Content="{DynamicResource Command_Change}"/>
+                                            Content="{DynamicResource Command_Change}"
+                                            Style="{DynamicResource SquareButtonStyle}"
+                                            Loaded="FrameworkElement_OnLoaded"
+                                            IsEnabled="False"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.HeaderTemplate>
@@ -134,13 +141,17 @@
                 <RowDefinition Height="*" x:Name="Options"/>
             </Grid.RowDefinitions>
             <CheckBox Grid.Row="0" Grid.Column="0" Content="{DynamicResource Event_Major}"
-                          IsChecked="{Binding IsMajor}"/>
+                      IsChecked="{Binding IsMajor}"
+                      ToolTip="{DynamicResource Event_Major_Tooltip}"/>
             <CheckBox Grid.Row="0" Grid.Column="1" Content="{DynamicResource Event_Triggered}"
-                          IsChecked="{Binding IsTriggeredOnly}"/>
+                      IsChecked="{Binding IsTriggeredOnly}"
+                      ToolTip="{DynamicResource Event_Triggered_Tooltip}"/>
             <CheckBox Grid.Row="1" Grid.Column="0" Content="{DynamicResource Event_Hidden}"
-                          IsChecked="{Binding IsHidden}"/>
+                      IsChecked="{Binding IsHidden}"
+                      ToolTip="{DynamicResource Event_Hidden_Tooltip}"/>
             <CheckBox Grid.Row="1" Grid.Column="1" Content="{DynamicResource Event_Fired_Once}"
-                          IsChecked="{Binding IsFiredOnce}"/>
+                      IsChecked="{Binding IsFiredOnce}"
+                      ToolTip="{DynamicResource Event_Fired_Once_Tooltip}"/>
             <Label Content="{DynamicResource Event_Script}" 
                    Grid.Column="0" Grid.Row="2"/>
             <Button Content="{DynamicResource Command_Edit}" 
@@ -148,7 +159,8 @@
                     Style="{DynamicResource SquareButtonStyle}" Width="150" Height="25"/>
             <DockPanel Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0">
                 <Label Content="{DynamicResource Event_Option}" Padding="5" 
-                                   DockPanel.Dock="Top" HorizontalAlignment="Stretch"/>
+                       DockPanel.Dock="Top" HorizontalAlignment="Stretch"
+                       ToolTip="{DynamicResource Event_Option_Tooltip}"/>
                 <DataGrid ItemsSource="{Binding Path=Options}" DockPanel.Dock="Bottom"
                               AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
                               AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
@@ -178,8 +190,11 @@
                                     <Button Command="{Binding DataContext.EditOptionScriptCommand, 
                                                     RelativeSource={RelativeSource FindAncestor, 
                                                     AncestorType={x:Type DataGrid}}}" 
-                                                CommandParameter="{Binding}"
-                                                Content="{DynamicResource Command_Change}"/>
+                                            CommandParameter="{Binding}"
+                                            Content="{DynamicResource Command_Change}"
+                                            Style="{DynamicResource SquareButtonStyle}"
+                                            Loaded="FrameworkElement_OnLoaded"
+                                            IsEnabled="False"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.HeaderTemplate>

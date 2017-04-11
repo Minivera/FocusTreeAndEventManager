@@ -92,7 +92,7 @@ namespace FocusTreeManager.Test
             Assert.IsTrue(assigns.Any());
             Assert.IsTrue(tag == "USA");
             //Test broken parse 
-            Assert.IsNull(Script.TryParse(script, "default", false));
+            Assert.IsNull(Script.TryParse(script, "default", null, false));
             try
             {
                 Script.TryParse(script, "default");

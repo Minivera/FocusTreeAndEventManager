@@ -1,11 +1,11 @@
-﻿using FocusTreeManager.Model;
-using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
 using System.Xml;
+using FocusTreeManager.Model;
+using GalaSoft.MvvmLight;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -18,22 +18,6 @@ namespace FocusTreeManager.ViewModel
     public class ScripterControlsViewModel : ViewModelBase
     {
         private const string XML_FILES_PATH = @"Common\ScripterControls\";
-
-        public enum ScripterType
-        {
-            FocusTree,
-            Event,
-            EventOption,
-            EventDescription,
-            Generic
-        }
-
-        public enum ControlType
-        {
-            Assignation,
-            Block,
-            Condition
-        }
 
         public struct ControlInfo
         {
@@ -71,20 +55,7 @@ namespace FocusTreeManager.ViewModel
 
         public List<ControlInfo> CommonControls => getCommonControls();
 
-        private ScripterType currentType = ScripterType.Generic;
-
-        public ScripterType CurrentType
-        {
-            get
-            {
-                return currentType;
-            }
-            set
-            {
-                currentType = value;
-                BuildCommonControls();
-            }
-        }
+        public ScripterType CurrentType => new ViewModelLocator().Scripter.ScriptType;
 
         /// <summary>
         /// Initializes a new instance of the ScripterControlsViewModel class.
@@ -104,7 +75,7 @@ namespace FocusTreeManager.ViewModel
             Assignations.Clear();
             //Load the required XMl File
             XmlDocument doc = new XmlDocument();
-            doc.Load(XML_FILES_PATH + currentType.ToString() + ".xml");
+            doc.Load(XML_FILES_PATH + CurrentType + ".xml");
             //Load all the children of the root node
             XmlNodeList xmlNodeList = doc.DocumentElement?.SelectNodes("//Assignations/Control");
             if (xmlNodeList == null) return;
@@ -112,7 +83,7 @@ namespace FocusTreeManager.ViewModel
             {
                 if (node.Attributes != null)
                 {
-                    Assignations.Add(new AssignationModel()
+                    Assignations.Add(new AssignationModel
                     {
                         LocalizationKey = node.Attributes["Text"].Value,
                         Code = node.Attributes["Code"].Value,
@@ -120,7 +91,7 @@ namespace FocusTreeManager.ViewModel
                         CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
                         BackgroundColor = ASSIGNATIONS_COLORS[0],
                         BorderColor = ASSIGNATIONS_COLORS[1],
-                        Color = ASSIGNATIONS_COLORS[2],
+                        Color = ASSIGNATIONS_COLORS[2]
                     });
                 }
             }
@@ -131,7 +102,7 @@ namespace FocusTreeManager.ViewModel
                 {
                     if (node.Attributes != null)
                     {
-                        Conditions.Add(new AssignationModel()
+                        Conditions.Add(new AssignationModel
                         {
                             LocalizationKey = node.Attributes["Text"].Value,
                             Code = node.Attributes["Code"].Value,
@@ -139,7 +110,7 @@ namespace FocusTreeManager.ViewModel
                             CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
                             BackgroundColor = CONDITIONS_COLORS[0],
                             BorderColor = CONDITIONS_COLORS[1],
-                            Color = CONDITIONS_COLORS[2],
+                            Color = CONDITIONS_COLORS[2]
                         });
                     }
                 }
@@ -151,7 +122,7 @@ namespace FocusTreeManager.ViewModel
                 {
                     if (node.Attributes != null)
                     {
-                        Blocks.Add(new AssignationModel()
+                        Blocks.Add(new AssignationModel
                         {
                             LocalizationKey = node.Attributes["Text"].Value,
                             Code = node.Attributes["Code"].Value,
@@ -159,7 +130,7 @@ namespace FocusTreeManager.ViewModel
                             CanHaveChild = Convert.ToBoolean(node.Attributes["CanHaveChild"].Value),
                             BackgroundColor = BLOCKS_COLORS[0],
                             BorderColor = BLOCKS_COLORS[1],
-                            Color = BLOCKS_COLORS[2],
+                            Color = BLOCKS_COLORS[2]
                         });
                     }
                 }
@@ -170,21 +141,21 @@ namespace FocusTreeManager.ViewModel
         {
             List<ControlInfo> array = (from model in Assignations
                 where model.IsNotEditable
-                select new ControlInfo()
+                select new ControlInfo
                 {
                     control = model.Code.Split('=')[0].Trim(),
                     controlName = model.LocalizationKey, controlType = ControlType.Assignation
                 }).ToList();
             array.AddRange(from model in Blocks
                 where model.IsNotEditable
-                select new ControlInfo()
+                select new ControlInfo
                 {
                     control = model.Code.Split('=')[0].Trim(),
                     controlName = model.LocalizationKey, controlType = ControlType.Block
                 });
             array.AddRange(from model in Conditions
                 where model.IsNotEditable
-                select new ControlInfo()
+                select new ControlInfo
                 {
                     control = model.Code.Split('=')[0].Trim(),
                     controlName = model.LocalizationKey, controlType = ControlType.Condition

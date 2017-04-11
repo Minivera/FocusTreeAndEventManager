@@ -10,6 +10,8 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
 
         private readonly int? column;
 
+        private readonly string InnerMessage;
+
         public override string Message
         {
             get
@@ -24,15 +26,21 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
                 {
                     message += " at character " + column;
                 }
+                if (!string.IsNullOrEmpty(InnerMessage))
+                {
+                    message += "\n" + InnerMessage;
+                }
                 return message;
             }
         }
 
-        public SyntaxException(string tag, int? line = null, int? column = null)
+        public SyntaxException(string tag, int? line = null, int? column = null
+            , Exception InnerException = null)
         {
             this.tag = tag;
             this.line = line;
             this.column = column;
+            InnerMessage = InnerException?.Message;
         }
     }
 }

@@ -244,8 +244,8 @@ namespace FocusTreeManager.Model
             //Commands
             EditScriptCommand = new RelayCommand(EditScript);
             DeleteEventCommand = new RelayCommand(DeleteElement);
-            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript, CanExecuteEdit);
-            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript, CanExecuteEdit);
+            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
+            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
             ChangeImageCommand = new RelayCommand(ChangeImage);
         }
 
@@ -281,16 +281,17 @@ namespace FocusTreeManager.Model
             //Commands
             EditScriptCommand = new RelayCommand(EditScript);
             DeleteEventCommand = new RelayCommand(DeleteElement);
-            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript, CanExecuteEdit);
-            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript, CanExecuteEdit);
+            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
+            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
             ChangeImageCommand = new RelayCommand(ChangeImage);
         }
 
         public void EditScript()
         {
-            ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            EditScript dialog = new EditScript(InternalScript, 
-                ScripterControlsViewModel.ScripterType.Event);
+            ScripterViewModel ViewModel = new ViewModelLocator().Scripter;
+            ViewModel.ScriptType = ScripterType.Event;
+            ViewModel.ManagedScript = internalScript;
+            EditScript dialog = new EditScript();
             dialog.ShowDialog();
             InternalScript = ViewModel.ManagedScript;
         }
@@ -307,22 +308,18 @@ namespace FocusTreeManager.Model
             model?.EditDescScript();
         }
 
-        private static bool CanExecuteEdit(object arg)
-        {
-            return arg is EventDescriptionModel || arg is EventOptionModel;
-        }
-
         public void DeleteElement()
         {
-            Messenger.Default.Send(new NotificationMessage(this, "DeleteEvent"));
+            Messenger.Default.Send(new NotificationMessage(this, 
+                new ViewModelLocator().Main.SelectedTab, "DeleteEvent"));
         }
 
         public void ChangeImage()
         {
             ChangeImage view = new ChangeImage();
-            (new ViewModelLocator()).ChangeImage.LoadImages("Events", Picture);
+            new ViewModelLocator().ChangeImage.LoadImages("Events", Picture);
             view.ShowDialog();
-            Picture = (new ViewModelLocator()).ChangeImage.FocusImage;
+            Picture = new ViewModelLocator().ChangeImage.FocusImage;
         }
 
         public void setDefaults(string EventNamespace)
@@ -359,7 +356,7 @@ namespace FocusTreeManager.Model
 
         public object GetUndoRoot()
         {
-            return (new ViewModelLocator()).Main;
+            return new ViewModelLocator().Main;
         }
 
         #endregion

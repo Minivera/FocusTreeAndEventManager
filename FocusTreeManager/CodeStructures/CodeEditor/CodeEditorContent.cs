@@ -10,37 +10,49 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
 {
     public sealed class CodeEditorContent
     {
-        private readonly Brush KeyWordColor = (SolidColorBrush)
-            new BrushConverter().ConvertFrom("#3f51b5");
+        private readonly Brush StringColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#a5c25c");
+
+        private readonly Brush BlockColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#6897bb");
 
         private readonly Brush AssignerColor = (SolidColorBrush)
-            new BrushConverter().ConvertFrom("#ffeb3b");
+            new BrushConverter().ConvertFrom("#ffc66a");
 
-        private readonly Brush ConditionColor = (SolidColorBrush)
-            new BrushConverter().ConvertFrom("#b71c1c");
+        private readonly Brush NumberColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#cc7832");
+
+        private readonly Brush BoolsColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#a3510d");
+
+        private readonly Brush ErrorColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#8b0807");
+
+        private readonly Brush CommentsColor = (SolidColorBrush)
+            new BrushConverter().ConvertFrom("#d2f776");
+
+        private const string REGEX_STRINGS = "\"[A-Za-z\\s_-]*\"";
+
+        private const string REGEX_BLOCS = @"([A-Za-z\t\r _-]*)[=|<|>]\s*\{";
+
+        private const string REGEX_ASSIGN = @"([A-Za-z\t\r _-]*)[=|<|>][A-Za-z\t\r _-]*";
+
+        private const string REGEX_NUMBERS = @"\d+(\.\d*[1-9])?";
+
+        private const string REGEX_BOOLS = @"\b(yes|no|YES|NO|AND|and|OR|or|NOT|not)\b";
+
+        private const string REGEX_COMMENTS = @"#.*\n";
 
         private static readonly Lazy<CodeEditorContent> lazy =
         new Lazy<CodeEditorContent>(() => new CodeEditorContent());
 
         public static CodeEditorContent Instance => lazy.Value;
 
-        public List<string> KeyWords { get; }
-
-        public List<string> Conditions { get; }
-
-        public List<string> Assigners { get; }
-
         public Dictionary<string, string> Snippets { get; }
 
         public CodeEditorContent()
         {
-            Assigners = new List<string>();
-            Conditions = new List<string>();
-            KeyWords = new List<string>();
             Snippets = new Dictionary<string, string>();
-            LoadList(@"Common\ScripterSymbols\Assigners.xml", Assigners);
-            LoadList(@"Common\ScripterSymbols\Conditions.xml", Conditions);
-            LoadList(@"Common\ScripterSymbols\Keywords.xml", KeyWords);
         }
 
         private static void LoadList(string filename, ICollection<string> listToModify)
@@ -57,24 +69,6 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
             }
         }
 
-        public bool IsKnownKeyword(string tag)
-        {
-            return KeyWords.Exists((s) => s.ToLower().Equals(tag, 
-                StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public bool IsKnownAssigner(string tag)
-        {
-            return Assigners.Exists((s) => s.ToLower().Equals(tag, 
-                StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public bool IsKnownCondition(string tag)
-        {
-            return Conditions.Exists((s) => s.ToLower().Equals(tag, 
-                StringComparison.InvariantCultureIgnoreCase));
-        }
-
         public bool IsKnownSnippet(string tag)
         {
             return Snippets.Keys.ToList().Exists((s) => s.ToLower().Equals(tag, 
@@ -84,39 +78,63 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         public void Highlight(FormattedText text, int openingBracketPos, 
             int ClosingBracketPos, Brush DelimiterBrush)
         {
-            Regex wordsRgx = new Regex(@"[a-zA-Z_\{\}][a-zA-Z0-9_\{\}]*");
+            //The order is important so we overwrite when the color is to be overwritten 
+            // (Numbers in string for example)
+            Regex wordsRgx = new Regex(REGEX_ASSIGN);
             foreach (Match m in wordsRgx.Matches(text.Text))
             {
-                if (IsKnownKeyword(m.Value))
-                {
-                    text.SetForegroundBrush(KeyWordColor, m.Index, m.Length);
-                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-                }
-                else if (IsKnownCondition(m.Value))
-                {
-                    text.SetForegroundBrush(ConditionColor, m.Index, m.Length);
-                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-                }
-                else if(IsKnownAssigner(m.Value))
-                {
-                    text.SetForegroundBrush(AssignerColor, m.Index, m.Length);
-                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-                }
-                else if (m.Value == "{" && m.Index == openingBracketPos)
-                {
-                    text.SetForegroundBrush(DelimiterBrush, m.Index, m.Length);
-                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-                }
-                else if (m.Value == "}" && m.Index == ClosingBracketPos)
-                {
-                    text.SetForegroundBrush(DelimiterBrush, m.Index, m.Length);
-                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-                }
+                //This regex uses a matching group.
+                text.SetForegroundBrush(AssignerColor, m.Groups[1].Index, m.Groups[1].Length);
+                text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+            }
+            wordsRgx = new Regex(REGEX_BLOCS);
+            foreach (Match m in wordsRgx.Matches(text.Text))
+            {
+                //This regex uses a matching group.
+                text.SetForegroundBrush(BlockColor, m.Groups[1].Index, m.Groups[1].Length);
+                text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+            }
+            wordsRgx = new Regex(REGEX_BOOLS);
+            foreach (Match m in wordsRgx.Matches(text.Text))
+            {
+                text.SetForegroundBrush(BoolsColor, m.Index, m.Length);
+                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+            }
+            wordsRgx = new Regex(REGEX_NUMBERS);
+            foreach (Match m in wordsRgx.Matches(text.Text))
+            {
+                text.SetForegroundBrush(NumberColor, m.Index, m.Length);
+                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+            }
+            wordsRgx = new Regex(REGEX_STRINGS);
+            foreach (Match m in wordsRgx.Matches(text.Text))
+            {
+                text.SetForegroundBrush(StringColor, m.Index, m.Length);
+                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+            }
+            wordsRgx = new Regex(REGEX_COMMENTS);
+            foreach (Match m in wordsRgx.Matches(text.Text))
+            {
+                text.SetForegroundBrush(CommentsColor, m.Index, m.Length);
+                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+            }
+            if (openingBracketPos > -1)
+            {
+                text.SetForegroundBrush(DelimiterBrush, openingBracketPos, 1);
+                text.SetFontWeight(FontWeights.Normal, openingBracketPos, 1);
+                text.SetFontStyle(FontStyles.Normal, openingBracketPos, 1);
+            }
+            if (ClosingBracketPos > -1)
+            {
+                text.SetForegroundBrush(DelimiterBrush, ClosingBracketPos, 1);
+                text.SetFontWeight(FontWeights.Normal, ClosingBracketPos, 1);
+                text.SetFontStyle(FontStyles.Normal, ClosingBracketPos, 1);
             }
         }
     }

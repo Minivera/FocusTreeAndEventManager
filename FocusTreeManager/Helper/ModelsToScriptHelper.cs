@@ -179,11 +179,11 @@ namespace FocusTreeManager.Helper
                 //Check type and return the correct color array
                 switch (item.controlType)
                 {
-                    case ScripterControlsViewModel.ControlType.Assignation:
+                    case ControlType.Assignation:
                         return ASSIGNATIONS_COLORS;
-                    case ScripterControlsViewModel.ControlType.Block:
+                    case ControlType.Block:
                         return BLOCKS_COLORS;
-                    case ScripterControlsViewModel.ControlType.Condition:
+                    case ControlType.Condition:
                         return CONDITIONS_COLORS;
                     default:
                         throw new ArgumentOutOfRangeException();

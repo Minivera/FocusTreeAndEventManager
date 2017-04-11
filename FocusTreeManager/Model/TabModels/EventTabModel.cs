@@ -100,8 +100,6 @@ namespace FocusTreeManager.Model.TabModels
             }
         }
 
-        public bool isShown { get; set; }
-
         public RelayCommand AddEventCommand { get; set; }
 
         public RelayCommand DeleteElementCommand { get; private set; }
@@ -127,7 +125,7 @@ namespace FocusTreeManager.Model.TabModels
             UniqueID = container.IdentifierID;
             visbleName = container.ContainerID;
             eventNamespace = container.EventNamespace;
-            FileInfo = container.FileInfo;
+            fileInfo = container.FileInfo;
             EventList = new ObservableCollection<EventModel>();
             foreach (Event item in container.EventList)
             {
@@ -144,46 +142,45 @@ namespace FocusTreeManager.Model.TabModels
 
         private void AddEvent()
         {
+            UndoService.Current[GetUndoRoot()]
+                .BeginChangeSetBatch("AddEvent", false);
             EventModel newEvent = new EventModel();
             newEvent.setDefaults(EventNamespace);
             EventList.Add(newEvent);
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
             RaisePropertyChanged(() => EventList);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (VisibleName == null)
-            {
-                return;
-            }
-            //Always manage container renamed
-            if (msg.Notification == "ContainerRenamed")
-            {
-                RaisePropertyChanged(() => VisibleName);
-            }
-            if (!isShown)
-            {
-                //is not shown, do not manage
-                return;
-            }
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
+            //If this is a dead tab waiting to be destroyed
+            if (VisibleName == null) return;
             if (msg.Notification == "DeleteEvent")
             {
                 EventModel sender = msg.Sender as EventModel;
                 EventList.Remove(sender);
                 RaisePropertyChanged(() => EventList);
             }
+            if (msg.Target == this)
+            {
+                //Resend to the tutorial View model if this was the target
+                Messenger.Default.Send(new NotificationMessage(msg.Sender,
+                new ViewModelLocator().Tutorial, msg.Notification));
+            }
         }
 
         private void SendDeleteSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendDeleteItemSignal"));
+                new ViewModelLocator().ProjectView, "SendDeleteItemSignal"));
         }
 
         private void SendEditSignal()
         {
             Messenger.Default.Send(new NotificationMessage(this,
-                (new ViewModelLocator()).ProjectView, "SendEditItemSignal"));
+                new ViewModelLocator().ProjectView, "SendEditItemSignal"));
         }
 
         public async void CheckForChanges()
@@ -204,7 +201,7 @@ namespace FocusTreeManager.Model.TabModels
                 string newText = EventParser.ParseEventScriptForCompare(info.Filename);
                 SideBySideDiffModel model = new SideBySideDiffBuilder(
                     new Differ()).BuildDiffModel(oldText, newText);
-                (new ViewModelLocator()).CodeComparator.DiffModel = model;
+                new ViewModelLocator().CodeComparator.DiffModel = model;
                 new CompareCode().ShowDialog();
             }
         }

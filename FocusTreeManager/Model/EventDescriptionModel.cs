@@ -51,9 +51,10 @@ namespace FocusTreeManager.Model
 
         public void EditDescScript()
         {
-            ScripterViewModel ViewModel = (new ViewModelLocator()).Scripter;
-            EditScript dialog = new EditScript(InternalScript,
-                ScripterControlsViewModel.ScripterType.EventDescription);
+            ScripterViewModel ViewModel = new ViewModelLocator().Scripter;
+            ViewModel.ScriptType = ScripterType.EventDescription;
+            ViewModel.ManagedScript = internalScript;
+            EditScript dialog = new EditScript();
             dialog.ShowDialog();
             internalScript = ViewModel.ManagedScript;
         }
@@ -61,7 +62,7 @@ namespace FocusTreeManager.Model
         public void setDefaults()
         {
             internalScript = new Script();
-            internalScript.Analyse("text = namespace.count.d.desc_id");
+            internalScript.Analyse("text = namespace.count.d.desc_id\ntrigger = { }");
         }
     }
 }

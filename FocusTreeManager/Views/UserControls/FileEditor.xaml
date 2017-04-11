@@ -44,9 +44,11 @@
                            VerticalContentAlignment="Center"/>
                     <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
                     <TextBox Text="{Binding VisibleName}" Grid.Row="1" Grid.Column="1"/>
-                    <Label Content="{DynamicResource Focus_TAG}" Grid.Row="2" Grid.Column="0"/>
+                    <Label Content="{DynamicResource Focus_TAG}" Grid.Row="2" Grid.Column="0"
+                           ToolTip="{DynamicResource Focus_TAG_Tooltip}"/>
                     <TextBox Text="{Binding TAG}" Grid.Row="2" Grid.Column="1"/>
-                    <Label Content="{DynamicResource Focus_Additional_Mods}" Grid.Row="3" Grid.Column="0"/>
+                    <Label Content="{DynamicResource Focus_Additional_Mods}" Grid.Row="3" Grid.Column="0"
+                           ToolTip="{DynamicResource Focus_Additional_Mods_Tooltip}"/>
                     <TextBox Text="{Binding AdditionnalMods}" Grid.Row="3" Grid.Column="1" 
                              TextWrapping="Wrap" AcceptsReturn="True" Height="170"/>
                 </Grid>
@@ -70,7 +72,8 @@
                            VerticalContentAlignment="Center"/>
                     <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
                     <TextBox Text="{Binding VisibleName}" Grid.Row="1" Grid.Column="1"/>
-                    <Label Content="{DynamicResource Localisation_Language}" Grid.Row="2" Grid.Column="0"/>
+                    <Label Content="{DynamicResource Localisation_Language}" Grid.Row="2" 
+                           Grid.Column="0" ToolTip="{DynamicResource Localisation_Language_Tooltip}"/>
                     <TextBox Text="{Binding LanguageName}" Grid.Row="2" Grid.Column="1"/>
                 </Grid>
             </DataTemplate>
@@ -93,7 +96,8 @@
                            VerticalContentAlignment="Center"/>
                     <Label Content="{DynamicResource Files_Filename}" Grid.Row="1" Grid.Column="0"/>
                     <TextBox Text="{Binding VisibleName}" Grid.Row="1" Grid.Column="1"/>
-                    <Label Content="{DynamicResource Event_Namespace}" Grid.Row="2" Grid.Column="0"/>
+                    <Label Content="{DynamicResource Event_Namespace}" Grid.Row="2" Grid.Column="0"
+                           ToolTip="{DynamicResource Event_Namespace_Tooltip}"/>
                     <TextBox Text="{Binding EventNamespace}" Grid.Row="2" Grid.Column="1"/>
                 </Grid>
             </DataTemplate>

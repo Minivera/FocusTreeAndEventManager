@@ -1,6 +1,6 @@
-﻿using FocusTreeManager.CodeStructures.CodeExceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.CodeStructures
 {
@@ -39,8 +39,8 @@ namespace FocusTreeManager.CodeStructures
             {
                 return list;
             }
-            //Check if the list contains any delimiters
-            if (!ContainsDelimiters(tokens))
+            //Check if the list contains any delimiters or can be considered a valid script
+            if (!ContainsDelimiters(tokens) || DetectAnyErrors(tokens))
             {
                 //if not, return the list as the operand, it is a list of text
                 return tokens;
@@ -49,47 +49,78 @@ namespace FocusTreeManager.CodeStructures
             {
                 SyntaxGroup group = new SyntaxGroup();
                 //First token should be the component
-                group.Component = tokens.First();
-                tokens.Remove(tokens.First());
-                //second token should be the operator
-                if (tokens.First().text == "=" ||
-                    tokens.First().text == "<" ||
-                    tokens.First().text == ">")
+                try
                 {
-                    group.Operator = tokens.First();
-                    tokens.RemoveAt(0);
+                    group.Component = tokens.First();
+                    tokens.Remove(tokens.First());
+                    //second token should be the operator
+                    if (tokens.First().text == "=" ||
+                        tokens.First().text == "<" ||
+                        tokens.First().text == ">")
+                    {
+                        group.Operator = tokens.First();
+                        tokens.RemoveAt(0);
+                    }
+                    else
+                    {
+                        throw new SyntaxException(group.Component?.text,
+                            tokens.First().line, tokens.First().column,
+                            new OperatorExpectedException(tokens.First().text));
+                    }
+                    //Third token should be the operand
+                    switch (tokens.First().text)
+                    {
+                        case "{":
+                            tokens.RemoveAt(0);
+                            int closePos = getIndexOfClosingBracket(tokens) - 1;
+                            if (closePos < 0)
+                            {
+                                throw new SyntaxException(group.Component?.text,
+                                    tokens.First().line, tokens.First().column,
+                                    new ClosingBracketExpectedException());
+                            }
+                            group.Operand = GroupTokensByBlocks(tokens.GetRange(0,
+                                closePos), false);
+                            tokens.RemoveRange(0, closePos + 1);
+                            break;
+                        case "}":
+                            throw new SyntaxException(group.Component?.text,
+                                tokens.First().line, tokens.First().column,
+                                new OpeningBracketExpectedException(tokens.First().text));
+                        default:
+                            group.Operand = tokens.First();
+                            tokens.RemoveAt(0);
+                            break;
+                    }
                 }
-                else
+                catch (System.InvalidOperationException)
                 {
-                    throw new SyntaxException(group.Component.text, 
-                        tokens.First().line, tokens.First().column);
-                }
-                //Third token should be the operand
-                if (tokens.First().text == "{")
-                {
-                    tokens.RemoveAt(0);
-                    int closePos = getIndexOfClosingBracket(tokens) - 1;
-                    group.Operand = GroupTokensByBlocks(tokens.GetRange(0,
-                                    closePos), false);
-                    tokens.RemoveRange(0, closePos + 1);
-                }
-                else if (tokens.First().text == "}")
-                {
-                    throw new SyntaxException(group.Component.text, 
-                        tokens.First().line, tokens.First().column);
-                }
-                //Pure text
-                else
-                {
-                    group.Operand = tokens.First();
-                    tokens.RemoveAt(0);
+                    throw new SyntaxException(group.Component?.text,
+                       group.Component?.line, group.Component?.column,
+                       new IncompleteExpressionException());
                 }
                 list.Add(group);
             }
             return list;
         }
 
-        public static List<Token> Tokenize(string text)
+        private static bool DetectAnyErrors(IReadOnlyCollection<Token> tokens)
+        {
+            //Check if there is at least three tokens
+            if (tokens.Count < 3) return true;
+            //Check if there is an opening bracket
+            if (tokens.All(t => t.text != "{")) return false;
+            {
+                //Check if there is a closing bracket
+                if (getIndexOfClosingBracket(tokens.SkipWhile(t => t.text != "{").Skip(1).ToList()) < 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static List<Token> Tokenize(string text, Script sender)
         {
             List<Token> list = new List<Token>();
             //Split by new lines
@@ -109,18 +140,19 @@ namespace FocusTreeManager.CodeStructures
                         if (item.Contains(comment_char))
                         {
                             word = item.Substring(0, item.IndexOf(comment_char));
-                            //Start of a comment, continue, but end line afterwards
-                            isStartedComment = true;
                         }
                         //Check if the current word if the start of a full string between quotes
-                        if (word.Contains('"') && !word.Contains('\\'))
+                        if (!isStartedComment && word.Contains('"') && !word.Contains('\\'))
                         {
                             //If it is also the end
                             if (isFullyStringed || word.Count(f => f == '"') > 1)
                             {
+                                //Create a local word up to the index of the quote
+                                string localWord = word.Substring(0, word.LastIndexOf('"') + 1);
+                                word = word.Substring(word.LastIndexOf('"') + 1);
                                 //Create the token and skip to the next work
                                 isFullyStringed = false;
-                                fullString = fullString + word.TrimEnd();
+                                fullString = fullString + localWord.TrimEnd();
                                 Token token = new Token
                                 {
                                     text = fullString,
@@ -128,6 +160,8 @@ namespace FocusTreeManager.CodeStructures
                                     column = y
                                 };
                                 list.Add(token);
+                                //Add the remaining part of the word after the quote to the list
+                                list.AddRange(SubTokenize(word, x, y));
                                 fullString = "";
                                 continue;
                             }
@@ -138,17 +172,20 @@ namespace FocusTreeManager.CodeStructures
                         {
                             fullString += word + " ";
                         }
-                        else if (!string.IsNullOrWhiteSpace(word))
+                        else if (!string.IsNullOrWhiteSpace(word) && !isStartedComment)
                         {
                             //Sub tokenize the string, will cut by delimiters.
                             list.AddRange(SubTokenize(word, x, y));
                         }
                         y += item.Length + 1;
-                        //If we started a comment during this line, kill
-                        if (isStartedComment)
-                        {
-                            break;
-                        }
+                        //If we did not start a comment during this line, kill
+                        if (!item.Contains(comment_char) && !isStartedComment) continue;
+                        //Check if the word contains a comment char (First time hit)
+                        sender.AddWordToComment(x,
+                            item.Contains(comment_char) ? item.Substring(item.IndexOf(comment_char))
+                                : item);
+                        //Start of a comment, continue, but end line afterwards
+                        isStartedComment = true;
                     }
                     //If still fully string, but the line has ended
                     if (isFullyStringed)
@@ -182,7 +219,7 @@ namespace FocusTreeManager.CodeStructures
                 text = text.Substring(text.IndexOfAny(delimiters_array));
                 y += item.Length;
                 //Add the delimiter to the list
-                list.Add(new Token()
+                list.Add(new Token
                 {
                     text = text.Substring(0, 1).Trim(),
                     line = line,
@@ -197,7 +234,8 @@ namespace FocusTreeManager.CodeStructures
             //Otherwise, clean text
             else if(!string.IsNullOrWhiteSpace(text))
             {
-                list.Add(new Token() {
+                list.Add(new Token
+                {
                     text = text.Trim(),
                     line = line,
                     column = column
@@ -211,7 +249,7 @@ namespace FocusTreeManager.CodeStructures
         /// </summary>
         /// <param name="tokens">List of tokens to loop through</param>
         /// <returns>Position of the corresponding closing bracket, -1 if not found.</returns>
-        private static int getIndexOfClosingBracket(List<Token> tokens)
+        private static int getIndexOfClosingBracket(IReadOnlyList<Token> tokens)
         {
             int noBrackets = 1;
             int i = 0;

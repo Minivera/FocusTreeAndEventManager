@@ -149,13 +149,12 @@ namespace FocusTreeManager.Views.CodeEditor
 				UpdateTotalLineCount();
 				InvalidateBlocks(e.Changes.First().Offset);
 				InvalidateVisual();
-                //If navigator exists
+                //If navigator exists, update its visuals
 			    if (navigator == null) return;
 			    navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
 			    navigator.UpdateText(GetFormattedText(Text),
 			        new Point(2 - HorizontalOffset, VerticalOffset),
 			        scrollViewer.VerticalOffset);
-			    TextUpdated(Text);
 			};
             PreviewTextInput += (s, e) => {
                 if (e.Text.Contains("{"))
@@ -202,11 +201,16 @@ namespace FocusTreeManager.Views.CodeEditor
         {
             ManageTabs(e);
             ManageFormatting(e);
-            if (e.Key == Key.Z && 
-                (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == 
+            if (e.Key == Key.Z &&
+                (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) ==
                 (ModifierKeys.Control | ModifierKeys.Alt))
             {
                 Redo();
+            }
+            //Whatever happens, if return is pressed, update the text at the end
+            if (e.Key == Key.Return && Keyboard.Modifiers == ModifierKeys.None)
+            {
+                TextUpdated(Text);
             }
         }
 

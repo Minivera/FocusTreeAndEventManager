@@ -9,6 +9,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using FocusTreeManager.Model;
 using FocusTreeManager.Model.TabModels;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace FocusTreeManager.Views.UserControls
@@ -136,6 +137,8 @@ namespace FocusTreeManager.Views.UserControls
         {            
             //Image loading async
             StartImageDispatcher();
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().Tutorial, "FocusLoaded"));
         }
 
         private void Focus_OnMouseEnter(object sender, MouseEventArgs e)
@@ -148,11 +151,13 @@ namespace FocusTreeManager.Views.UserControls
                 ShadowDepth = 0
             };
             FocusIcon.Effect = GlowEffect;
+            Cursor = ((TextBlock)Resources["CursorGrab"]).Cursor;
         }
 
         private void Focus_OnMouseLeave(object sender, MouseEventArgs e)
         {
             FocusIcon.ClearValue(EffectProperty);
+            Cursor = null;
         }
     }
 }

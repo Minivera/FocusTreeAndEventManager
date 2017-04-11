@@ -35,8 +35,16 @@ namespace FocusTreeManager.CodeStructures
 
         internal void Analyse(List<SyntaxGroup> code)
         {
+            if (!code.Any()) return;
             foreach (SyntaxGroup group in code)
             {
+                //Check if there is an assignation or code value at the end of the code
+                Assignation last = Code.LastOrDefault() as Assignation;
+                if (last != null)
+                {
+                    //set its end line as this line's end - 1
+                    last.EndLine = group.Component.line - 1;
+                }
                 Assignation tempo = new Assignation(Level + 1);
                 tempo.Analyse(group);
                 //If tempo has a value
@@ -44,6 +52,13 @@ namespace FocusTreeManager.CodeStructures
                 {
                     Code.Add(tempo);
                 }
+            }
+            //Check if there is an assignation or code value at the end of the code
+            Assignation Verylast = Code.LastOrDefault() as Assignation;
+            if (Verylast != null)
+            {
+                //set its end line as this line's end - 1
+                Verylast.EndLine = code.Last().Component.line - 1;
             }
         }
 
@@ -56,9 +71,9 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public string Parse(int StartLevel = -1)
+        public string Parse(Dictionary<int, string> Comments = null, int StartLevel = -1)
         {
-            if(Code.Count == 0)
+            if (!Code.Any())
             {
                 return "";
             }
@@ -76,12 +91,12 @@ namespace FocusTreeManager.CodeStructures
                 if (item is Assignation)
                 {
                     //Parse each internal assignations
-                    content.Append("\n" + item.Parse(BasicLevel));
+                    content.Append("\n" + item.Parse(Comments, BasicLevel));
                 }
                 else if (item is CodeValue)
                 {
                     //Parse all value spaced by one space
-                    content.Append(" " + item.Parse(BasicLevel) + " ");
+                    content.Append(" " + item.Parse(Comments, BasicLevel) + " ");
                 }
             }
             if (Code.Last() is Assignation)
@@ -134,7 +149,8 @@ namespace FocusTreeManager.CodeStructures
             return founds;
         }
 
-        public Script GetContentAsScript(string[] except)
+        public Script GetContentAsScript(string[] except,
+            Dictionary<int, string> Comments = null)
         {
             Script newScript = new Script();
             foreach (ICodeStruct codeStruct in Code)
@@ -145,6 +161,18 @@ namespace FocusTreeManager.CodeStructures
                     newScript.Code.Add(item);
                 }
             }
+            //If no comments are given
+            if (Comments == null) return newScript;
+            Assignation firstLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).FirstOrDefault() as Assignation;
+            Assignation lastLine = newScript.Code.Where(i => i is Assignation)
+                .OrderBy(i => ((Assignation)i).Line).LastOrDefault() as Assignation;
+            //If no lines were found
+            if (firstLine == null || lastLine == null) return newScript;
+            //Try to get the comments
+            newScript.Comments = Comments.SkipWhile(c => c.Key < firstLine.Line)
+                                         .TakeWhile(c => c.Key <= lastLine.Line)
+                                         .ToDictionary(c => c.Key, c => c.Value);
             return newScript;
         }
     }

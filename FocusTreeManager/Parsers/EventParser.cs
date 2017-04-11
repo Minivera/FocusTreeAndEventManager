@@ -13,9 +13,10 @@ namespace FocusTreeManager.Parsers
 {
     public static class EventParser
     {
-        private static readonly string[] CORE_EVENT_SCRIPTS_ELEMENTS =
+        private static readonly string[] ALL_PARSED_ELEMENTS =
         {
-            "immediate", "mean_time_to_happen", "trigger"
+            "id", "title", "picture", "major", "is_triggered_only",
+            "hidden", "fire_only_once", "desc", "option"
         };
 
         public static string ParseEventForCompare(EventTabModel model)
@@ -77,7 +78,7 @@ namespace FocusTreeManager.Parsers
                     foreach (EventDescription desc in item.Descriptions)
                     {
                         text.AppendLine("\tdesc = {");
-                        text.AppendLine(desc.InternalScript.Parse(2));
+                        text.AppendLine(desc.InternalScript.Parse(null, 2));
                         text.AppendLine("\t}");
                     }
                 }
@@ -91,7 +92,7 @@ namespace FocusTreeManager.Parsers
                     {
                         text.AppendLine("\toption = {");
                         text.AppendLine("\tname = " + option.Name);
-                        text.AppendLine(option.InternalScript.Parse(2));
+                        text.AppendLine(option.InternalScript.Parse(null, 2));
                         text.AppendLine("\t}");
                     }
                 }
@@ -110,8 +111,8 @@ namespace FocusTreeManager.Parsers
             foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("news_event"))
             {
                 CodeBlock block = (CodeBlock)codeStruct;
-                //Check if the event is only a call, if it isn't, it must have a picture
-                if (block.FindValue("picture") == null)
+                //Check if the event is only a call, if it isn't, it must have a least one option
+                if (block.FindAssignation("option") == null)
                 {
                     break;
                 }
@@ -120,7 +121,8 @@ namespace FocusTreeManager.Parsers
                 {
                     newEvent.Type = Event.EventType.news_event;
                     newEvent.Id = Script.TryParse(block, "id");
-                    newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
+                    //An event can have no picture.
+                    newEvent.Picture = Script.TryParse(block, "picture", null, false)?.Replace("GFX_", "");
                     newEvent.IsMajor = block.FindValue("major") != null 
                         && YesToBool(Script.TryParse(block, "major"));
                     newEvent.IsHidden = block.FindValue("hidden") != null 
@@ -133,27 +135,20 @@ namespace FocusTreeManager.Parsers
                     {
                         newEvent.Descriptions.Add(new EventDescriptionModel
                         {
-                            InternalScript = desc.GetContentAsScript(new string[0])
+                            InternalScript = desc.GetContentAsScript(new string[0], script.Comments)
                         });
                     }
                     foreach (ICodeStruct option in block.FindAllValuesOfType<ICodeStruct>("option"))
                     {
                         newEvent.Options.Add(new EventOptionModel
                         {
-                            Name = Script.TryParse(block, "name"),
-                            InternalScript = option.GetContentAsScript(new[] { "name" })
+                            Name = Script.TryParse(option, "name"),
+                            InternalScript = option.GetContentAsScript(new[] { "name" }, script.Comments)
                         });
                     }
                     //Get all core scripting elements
-                    Script InternalEventScript = new Script();
-                    foreach (string element in CORE_EVENT_SCRIPTS_ELEMENTS)
-                    {
-                        ICodeStruct found = block.FindAssignation(element);
-                        if (found != null)
-                        {
-                            InternalEventScript.Code.Add(found);
-                        }
-                    }
+                    Script InternalEventScript = block.
+                        GetContentAsScript(ALL_PARSED_ELEMENTS.ToArray(), script.Comments);
                     newEvent.InternalScript = InternalEventScript;
                     container.EventList.Add(newEvent);
                 }
@@ -174,8 +169,8 @@ namespace FocusTreeManager.Parsers
             foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("country_event"))
             {
                 CodeBlock block = (CodeBlock)codeStruct;
-                //Check if the event is only a call, if it isn't, it must have a picture
-                if (block.FindValue("picture") == null)
+                //Check if the event is only a call, if it isn't, it must have a least one option
+                if (block.FindAssignation("option") == null)
                 {
                     break;
                 }
@@ -184,7 +179,8 @@ namespace FocusTreeManager.Parsers
                 { 
                     newEvent.Type = Event.EventType.country_event;
                     newEvent.Id = Script.TryParse(block, "id");
-                    newEvent.Picture = Script.TryParse(block, "picture").Replace("GFX_", "");
+                    //An event can have no picture.
+                    newEvent.Picture = Script.TryParse(block, "picture", null, false)?.Replace("GFX_", "");
                     newEvent.IsMajor = block.FindValue("major") != null && 
                         YesToBool(Script.TryParse(block, "major"));
                     newEvent.IsHidden = block.FindValue("hidden") != null && 
@@ -197,20 +193,13 @@ namespace FocusTreeManager.Parsers
                     {
                         newEvent.Options.Add(new EventOptionModel
                         {
-                            Name = Script.TryParse(block, "name"),
+                            Name = Script.TryParse(option, "name"),
                             InternalScript = option.GetContentAsScript(new[] { "name" })
                         });
                     }
                     //Get all core scripting elements
-                    Script InternalEventScript = new Script();
-                    foreach (string element in CORE_EVENT_SCRIPTS_ELEMENTS)
-                    {
-                        ICodeStruct found = block.FindAssignation(element);
-                        if (found != null)
-                        {
-                            InternalEventScript.Code.Add(found);
-                        }
-                    }
+                    Script InternalEventScript = block.
+                        GetContentAsScript(ALL_PARSED_ELEMENTS.ToArray(), script.Comments);
                     newEvent.InternalScript = InternalEventScript;
                     container.EventList.Add(newEvent);
                 }

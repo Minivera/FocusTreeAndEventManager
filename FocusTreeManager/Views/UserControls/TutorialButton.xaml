@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="FocusTreeManager.Views.UserControls.TutorialButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" x:Name="TutorialControl"
+             DataContext="{Binding Tutorial, Source={StaticResource Locator}}">
+    <Grid>
+        <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="InnerButton"
+                Width="30" Height="30"
+                Content="?" FontSize="18"
+                Command="{Binding StartCommand}"
+                CommandParameter="{Binding Path=LinkedElement, 
+                        ElementName=TutorialControl}"/>
+    </Grid>
+</UserControl>

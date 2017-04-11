@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace FocusTreeManager.Views.UserControls
@@ -33,15 +34,13 @@ namespace FocusTreeManager.Views.UserControls
             Resources.MergedDictionaries.Add(resourceLocalization);
         }
 
-        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            object dataContext = ((FrameworkElement)sender).DataContext;
+            if (dataContext is EventOptionModel || dataContext is EventDescriptionModel)
             {
-                EventModel model = DataContext as EventModel;
-                if (model == null) return;
-                model.EditDescScriptCommand.RaiseCanExecuteChanged();
-                model.EditOptionScriptCommand.RaiseCanExecuteChanged();
-            }), DispatcherPriority.ContextIdle, null);
+                ((FrameworkElement)sender).IsEnabled = true;
+            }
         }
     }
 }

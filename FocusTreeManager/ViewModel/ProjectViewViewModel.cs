@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using FocusTreeManager.Views;
 using FocusTreeManager.Model.TabModels;
+using MonitoredUndo;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -43,6 +44,7 @@ namespace FocusTreeManager.ViewModel
 
         private void AddElement()
         {
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddAnyFile", false);
             FileManager dialog = new FileManager(ModeType.Create);
             dialog.ShowDialog();
             ObservableObject File = (new ViewModelLocator()).FileManager.File;
@@ -77,6 +79,7 @@ namespace FocusTreeManager.ViewModel
                 project.scriptList.Add((ScriptModel)File);
                 RaisePropertyChanged(() => project.scriptList);
             }
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
         }
 
         private void DeleteElement(object item)
@@ -104,8 +107,9 @@ namespace FocusTreeManager.ViewModel
             }
         }
 
-        private static void EditElement(object obj)
+        private void EditElement(object obj)
         {
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("EditAnyFile", false);
             FileManager dialog = new FileManager(ModeType.Edit);
             if (obj is FocusGridModel)
             {
@@ -160,6 +164,7 @@ namespace FocusTreeManager.ViewModel
                 ScriptModel newItem = new ViewModelLocator().FileManager.File as ScriptModel;
                 if (newItem != null) item.VisibleName = newItem.VisibleName;
             }
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
         }
 
         private static void OpenFile(ObservableObject item)
@@ -203,6 +208,8 @@ namespace FocusTreeManager.ViewModel
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
             if (msg.Notification == "SendDeleteItemSignal")
             {
                 DeleteElement(msg.Sender);
@@ -219,6 +226,21 @@ namespace FocusTreeManager.ViewModel
                 RaisePropertyChanged(() => Project.eventList);
                 RaisePropertyChanged(() => Project.scriptList);
             }
+            if (msg.Target == this)
+            {
+                //Resend to the tutorial View model if this was the target
+                Messenger.Default.Send(new NotificationMessage(msg.Sender,
+                new ViewModelLocator().Tutorial, msg.Notification));
+            }
         }
+
+        #region Undo/Redo
+
+        public object GetUndoRoot()
+        {
+            return new ViewModelLocator().Main;
+        }
+
+        #endregion
     }
 }

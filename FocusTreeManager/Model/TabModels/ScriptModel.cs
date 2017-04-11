@@ -105,15 +105,10 @@ namespace FocusTreeManager.Model.TabModels
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (VisibleName == null)
-            {
-                return;
-            }
-            //Always manage container renamed
-            if (msg.Notification == "ContainerRenamed")
-            {
-                RaisePropertyChanged(() => VisibleName);
-            }
+            //If this is not the intended target
+            if (msg.Target != null && msg.Target != this) return;
+            //If this is a dead tab waiting to be destroyed
+            if (VisibleName == null) return;
         }
 
         private void SendDeleteSignal()

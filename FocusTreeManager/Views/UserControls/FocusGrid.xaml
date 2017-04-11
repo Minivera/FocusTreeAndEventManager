@@ -8,85 +8,92 @@
              xmlns:helper="clr-namespace:FocusTreeManager.Helper"
              xmlns:userControls="clr-namespace:FocusTreeManager.Views.UserControls"
              mc:Ignorable="d" Loaded="UserControl_Loaded"
-             x:Name="FociGrid">
+             x:Name="FociGrid" >
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style x:Key="ControlStyle" TargetType="Control">
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="Label">
-                <Setter Property="Margin" Value="-4,0,5,0"/>
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-            </Style>
-            <Style BasedOn="{StaticResource ControlStyle}" TargetType="TextBox">
-                <Setter Property="Width" Value="200"/>
-                <Setter Property="Height" Value="25"/>
-            </Style>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary x:Name="LocalizationStrings" Source="/FocusTreeManager;component/Languages/En_en.xaml"/>
+                <ResourceDictionary>
+                    <TextBlock x:Key="CursorGrabbing" Cursor="/FocusTreeManager;component/Resources/Cursors/grabbing.cur"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <AdornerDecorator x:Name="AdornerDeco" IsHitTestVisible="True" >
-        <Grid Margin="45,0,45,0" x:Name="ListGrid" 
-                Tag="{Binding RelativeSource={RelativeSource Self}}">
-            <Grid.ContextMenu>
-                <ContextMenu >
-                    <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}"
-                            Command="{Binding AddFocusCommand}"
-                            CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={
-                                RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
-                    <MenuItem x:Name="MenuShowRelative" Header="{DynamicResource Show_Relative_Pos}"
-                            Command="{Binding ShowHidePositionLinesCommand}"/>
-                </ContextMenu>
-            </Grid.ContextMenu>
-            <Grid.InputBindings>
-                <MouseBinding Gesture="LeftClick" Command="{Binding RightClickCommand}" 
-                    CommandParameter="{Binding RelativeSource=
-                                    {RelativeSource
-                                        Mode=FindAncestor,
-                                        AncestorType={x:Type Grid}}}"/>
-            </Grid.InputBindings>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseMove">
-                    <i:InvokeCommandAction Command="{Binding HoverCommand}" 
+        <Grid PreviewMouseLeftButtonDown="UIElement_OnMouseDown"
+              PreviewMouseLeftButtonUp="UIElement_OnMouseUp" x:Name="SelectionGrid"
+              PreviewMouseMove="UIElement_OnMouseMove">
+            <Grid Margin="45,0,45,0" x:Name="ListGrid" 
+                  Tag="{Binding RelativeSource={RelativeSource Self}}">
+                <Grid.ContextMenu>
+                    <ContextMenu >
+                        <MenuItem x:Name="MenuAddFocus" Header="{DynamicResource Add_Focus}"
+                                    Command="{Binding AddFocusCommand}"
+                                    CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={
+                                        RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                        <MenuItem x:Name="MenuShowRelative" Header="{DynamicResource Show_Relative_Pos}"
+                                    Command="{Binding ShowHidePositionLinesCommand}" />
+                        <MenuItem x:Name="MenuPaste" Header="{DynamicResource Command_Paste}" 
+                                  Command="{Binding PasteCommand}"
+                                  CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={
+                                        RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>  
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Grid.InputBindings>
+                    <MouseBinding Gesture="LeftClick" Command="{Binding LeftClickCommand}" 
                             CommandParameter="{Binding RelativeSource=
-                                    {RelativeSource
-                                        Mode=FindAncestor,
-                                        AncestorType={x:Type Grid}}}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ItemsControl ItemsSource="{Binding FociList}" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <v:GriddedGrid helper:GridHelpers.RowCount="{Binding RowCount}"
-                                helper:GridHelpers.ColumnCount="{Binding ColumnCount}" x:Name="CentralGrid"
-                                    Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
-                                    GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
-                            <v:GriddedGrid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                            </v:GriddedGrid.ColumnDefinitions>
-                            <v:GriddedGrid.RowDefinitions>
-                                <RowDefinition Height="75" />
-                            </v:GriddedGrid.RowDefinitions>
-                        </v:GriddedGrid>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <userControls:Focus PreviewMouseLeftButtonDown="Focus_PreviewMouseLeftButtonDown" 
-                                    PreviewMouseMove="Focus_PreviewMouseMove"
-                                    PreviewMouseLeftButtonUp="Focus_PreviewMouseLeftButtonUp"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Grid.Column" Value="{Binding DisplayX}"/>
-                        <Setter Property="Grid.Row" Value="{Binding DisplayY}"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
+                                            {RelativeSource
+                                                Mode=FindAncestor,
+                                                AncestorType={x:Type Grid}}}"/>
+                </Grid.InputBindings>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding HoverCommand}" 
+                                    CommandParameter="{Binding RelativeSource=
+                                            {RelativeSource
+                                                Mode=FindAncestor,
+                                                AncestorType={x:Type Grid}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ItemsControl ItemsSource="{Binding FociList}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <v:GriddedGrid helper:GridHelpers.RowCount="{Binding RowCount}"
+                                        helper:GridHelpers.ColumnCount="{Binding ColumnCount}" x:Name="CentralGrid"
+                                            Background="Transparent" ShowCustomGridLines="True" GridLineBrush="Gray" 
+                                            GridLineThickness="1" GridLinesVisibility="Both" AllowDrop="true">
+                                <v:GriddedGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                </v:GriddedGrid.ColumnDefinitions>
+                                <v:GriddedGrid.RowDefinitions>
+                                    <RowDefinition Height="75" />
+                                </v:GriddedGrid.RowDefinitions>
+                            </v:GriddedGrid>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <userControls:Focus PreviewMouseLeftButtonDown="Focus_PreviewMouseLeftButtonDown" 
+                                                PreviewMouseMove="Focus_PreviewMouseMove"
+                                                PreviewMouseLeftButtonUp="Focus_PreviewMouseLeftButtonUp"
+                                                Tag="{Binding RelativeSource={RelativeSource 
+                                                    AncestorType={x:Type UserControl}}}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Grid.Column" Value="{Binding DisplayX}"/>
+                            <Setter Property="Grid.Row" Value="{Binding DisplayY}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Grid>
+            <Canvas>
+                <Rectangle x:Name="selectionBox" Visibility="Collapsed"
+                           Stroke="White" StrokeThickness="1"
+                           StrokeDashArray="2,1"/>
+            </Canvas>
         </Grid>
     </AdornerDecorator>
 </UserControl>

@@ -14,13 +14,7 @@ namespace FocusTreeManager.Parsers
 {
     public static class FocusTreeParser
     {
-        private static readonly string[] CORE_FOCUS_SCRIPTS_ELEMENTS =
-        {
-            "ai_will_do", "completion_reward", "available", "bypass",
-            "cancel", "complete_tooltip"
-        };
-
-        private static readonly string[] ALL_PASED_ELEMENTS = 
+        private static readonly string[] ALL_PARSED_ELEMENTS = 
         {
             "id", "x", "y", "icon", "text", "prerequisite", "relative_position_id",
             "cost", "mutually_exclusive"
@@ -133,7 +127,7 @@ namespace FocusTreeManager.Parsers
                 {
                     text.AppendLine("\t\trelative_position_id = " + focus.RelativeTo.UniqueName);
                 }
-                text.AppendLine(focus.InternalScript.Parse(3));
+                text.AppendLine(focus.InternalScript.Parse(null, 3));
                 text.AppendLine("\t}");
             }
             text.AppendLine("}");
@@ -243,11 +237,11 @@ namespace FocusTreeManager.Parsers
             FocusGridModel container = new FocusGridModel(Script.TryParse(script, "id"));
             //Get content of Modifier block
             Assignation modifier = script.FindAssignation("modifier");
-            container.TAG = Script.TryParse(modifier, "tag", false);
+            container.TAG = Script.TryParse(modifier, "tag", null, false);
             if (container.TAG != null)
             {
                 container.AdditionnalMods = modifier.GetContentAsScript(new[] { "add", "tag" })
-                                                    .Parse(0);
+                                                    .Parse(script.Comments, 0);
             }
             //Run through all foci
             foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("focus"))
@@ -259,25 +253,15 @@ namespace FocusTreeManager.Parsers
                     FocusModel newFocus = new FocusModel
                     {
                         UniqueName = Script.TryParse(block, "id"),
-                        Text = Script.TryParse(block, "text", false),
+                        Text = Script.TryParse(block, "text", null, false),
                         Image = Script.TryParse(block, "icon").Replace("GFX_", ""),
                         X = int.Parse(Script.TryParse(block, "x")),
                         Y = int.Parse(Script.TryParse(block, "y")),
                         Cost = GetDouble(Script.TryParse(block, "cost"), 10)
                     };
                     //Get all core scripting elements
-                    Script InternalFocusScript = new Script();
-                    foreach (string element in CORE_FOCUS_SCRIPTS_ELEMENTS)
-                    {
-                        ICodeStruct found = block.FindAssignation(element);
-                        if (found != null)
-                        {
-                            InternalFocusScript.Code.Add(found);
-                        }
-                    }
-                    InternalFocusScript.Code.AddRange(block.
-                        GetContentAsScript(CORE_FOCUS_SCRIPTS_ELEMENTS.
-                            Concat(ALL_PASED_ELEMENTS).ToArray()).Code);
+                    Script InternalFocusScript = block.
+                        GetContentAsScript(ALL_PARSED_ELEMENTS.ToArray(), script.Comments);
                     newFocus.InternalScript = InternalFocusScript;
                     container.FociList.Add(newFocus);
                 }
@@ -307,7 +291,7 @@ namespace FocusTreeManager.Parsers
                     continue;
                 } 
                 //Try to find its relative to
-                string relativeToId = Script.TryParse(block, "relative_position_id", false);
+                string relativeToId = Script.TryParse(block, "relative_position_id", null, false);
                 if (!string.IsNullOrEmpty(relativeToId))
                 {
                     newFocus.CoordinatesRelativeTo = container.FociList.FirstOrDefault(f =>

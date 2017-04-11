@@ -27,9 +27,9 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
             get
             {
                 return Messages.Aggregate("", (current, item) => 
-                    current + (item.TimeStamp + "# " + 
-                    item.ErrorNumber + " " + item.Message + " at " + 
-                    item.ClassName + " on line " + item.Line + "\n"));
+                    current + item.TimeStamp + "# " + 
+                    item.ErrorNumber + " " + item.Message + " near " + 
+                    item.ClassName + " on line " + item.Line + "\n");
             }
         }
 

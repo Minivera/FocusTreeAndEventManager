@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FocusTreeManager.Model;
@@ -14,6 +13,7 @@ using Imaging.DDSReader;
 
 namespace FocusTreeManager.Helper
 {
+
     public enum ImageType
     {
         Goal,
@@ -22,40 +22,67 @@ namespace FocusTreeManager.Helper
 
     public static class ImageHelper
     {
+        private static readonly string[] ARRAY_FILE_NAME =
+        {
+            "goal_support_democracy",
+            "goal_support_fascism",
+            "goal_support_communism" ,
+            "goal_generic_occupy_states_coastal",
+            "goal_generic_occupy_start_war",
+            "goal_generic_occupy_states_ongoing_war",
+            "goal_generic_build_navy"
+        };
+
+        private static readonly string[] ARRAY_ASSOCIATED_TYPO =
+        {
+            "goal_generic_support_democracy",
+            "goal_generic_support_fascism",
+            "goal_generic_support_communism",
+            "goal_generic_occypy_states_coastal",
+            "goal_generic_occypy_start_war",
+            "goal_generic_occypy_states_ongoing_war",
+            "goal_generic_build_nay"
+        };
+
         private const string GFX_GOAL_FOLDER = @"\gfx\interface\goals\";
 
         private const string GFX_EVENT_FOLDER = @"\gfx\event_pictures";
 
         private const string GFX_EXTENTION = ".dds";
 
+        private const string GFX_ERROR_IMAGE = @"\GFX\Focus\goal_unknown.png";
+
         private static readonly string[] IMAGE_DO_NOT_LOAD = { "shine_mask", "shine_overlay"};
 
         public static ImageSource getImageFromGame(string imageName, ImageType source)
         {
             //If we couldn't find the error image, throw an IO exception
-            //TODO: Prepare an error image
-            //Try to obtain the image from the game's folder
+            ImageSource errorSource = new BitmapImage(new Uri(Directory.GetCurrentDirectory() 
+                + GFX_ERROR_IMAGE));
+            //Try to obtain the image
             try
             {
+                ImageSource value;
                 switch (source)
                 {
                     case ImageType.Goal:
-                        return AsyncImageLoader.AsyncImageLoader.Worker.
-                            Focuses.LastOrDefault(f => Path.
-                            GetFileNameWithoutExtension(f.Key) == imageName).Value;
+                        value =  AsyncImageLoader.AsyncImageLoader.Worker.
+                            Focuses.LastOrDefault(f => f.Key == imageName).Value;
+                        break;
                     case ImageType.Event:
-                        return AsyncImageLoader.AsyncImageLoader.Worker.
-                            Events.LastOrDefault(f => Path.
-                            GetFileNameWithoutExtension(f.Key) == imageName).Value;
+                        value =  AsyncImageLoader.AsyncImageLoader.Worker.
+                            Events.LastOrDefault(f => f.Key == imageName).Value;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(source), source, null);
                 }
+                //Make sure the value is set, if not, return the error image.
+                return value ?? errorSource;
             }
             catch (Exception)
             {
                 //If an error occurred, return the error image
-                //TODO: Return something
-                return null;
+                return errorSource;
             }
         }
 
@@ -75,6 +102,7 @@ namespace FocusTreeManager.Helper
                     throw new ArgumentOutOfRangeException(nameof(source), source, null);
             }
             string fullpath = Configurator.getGamePath() + rightFolder;
+            if (!Directory.Exists(fullpath)) return list;
             //For each file in the normal folder
             foreach (string filename in Directory.GetFiles(fullpath, "*" + GFX_EXTENTION, 
                                                            SearchOption.TopDirectoryOnly))
@@ -85,9 +113,14 @@ namespace FocusTreeManager.Helper
                 }
                 try
                 {
+                    string imageName = Path.GetFileNameWithoutExtension(filename);
+                    //try to replace potential broken links because of typos in the file names.
+                    imageName = Array.IndexOf(ARRAY_ASSOCIATED_TYPO, imageName) != -1
+                        ? ARRAY_FILE_NAME[Array.IndexOf(ARRAY_ASSOCIATED_TYPO, imageName)]
+                        : imageName;
                     ImageSource result = ImageSourceForBitmap(DDS.LoadImage(filename));
                     result.Freeze();
-                    list[filename] = result;
+                    list[imageName] = result;
                 }
                 catch (Exception)
                 {
@@ -132,9 +165,14 @@ namespace FocusTreeManager.Helper
                         }
                         try
                         {
+                            string imageName = Path.GetFileNameWithoutExtension(filename);
+                            //try to replace potential broken links because of typos in the file names.
+                            imageName = Array.IndexOf(ARRAY_ASSOCIATED_TYPO, imageName) != -1
+                                ? ARRAY_FILE_NAME[Array.IndexOf(ARRAY_ASSOCIATED_TYPO, imageName)]
+                                : imageName;
                             ImageSource result = ImageSourceForBitmap(DDS.LoadImage(filename));
                             result.Freeze();
-                            list[filename] = result;
+                            list[imageName] = result;
                         }
                         catch (Exception)
                         {
