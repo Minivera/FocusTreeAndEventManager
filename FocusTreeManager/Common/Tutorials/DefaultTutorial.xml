@@ -28,6 +28,8 @@ Please request messages or control names to be added in the dev thread or on git
     <step Text="Tutorial_End"/>
   </tutorial>
   <tutorial control="FociGrid">
+    <step Text="Tutorial_Focus_1"/>
+    <step Text="Tutorial_Focus_2" Highlight="FocusGridScroll"/>
     <step Text="Tutorial_End"/>
   </tutorial>
 </tutorials>

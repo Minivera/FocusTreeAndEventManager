@@ -3,7 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="First_Start">Please configure the application on the first start.</system:String>
     <system:String x:Key="Main_Title">Focus Tree And Event Manager</system:String>
-    <system:String x:Key="Chose_Image_Title">Choose the desired image</system:String>
+    <system:String x:Key="Chose_Image_Title">Choose the image</system:String>
     <system:String x:Key="Localize_Title">Create localisation</system:String>
     <system:String x:Key="Game_Path_Title">Select the game installation folder</system:String>
     <system:String x:Key="Mode_Path_Title">Select the mod folder</system:String>
@@ -219,5 +219,6 @@
     <system:String x:Key="Tutorial_Main_11">When you are ready to export your work, you can use the export button next to the undo button. It will display a new window allowing you to chose the destination for the export.</system:String>
     <system:String x:Key="Tutorial_Main_12">The project button next to the export button will display the project panel. Click on this button to continue.</system:String>
     <system:String x:Key="Tutorial_Main_13">The project panel allows you to create a new empty project, load an existing project, edit the current project or save the current project. Close this panel using the arrow button to continue.</system:String>
-    
+    <system:String x:Key="Tutorial_Focus_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+
 </ResourceDictionary>

@@ -3,7 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="First_Start">Veuillez configurer l'application au premier démarrage.</system:String>
     <system:String x:Key="Main_Title">Gestionnaire de Focus Tree et Event</system:String>
-    <system:String x:Key="Chose_Image_Title">Choisir l'image voulue</system:String>
+    <system:String x:Key="Chose_Image_Title">Choisir l'image</system:String>
     <system:String x:Key="Localize_Title">Créer la localisation</system:String>
     <system:String x:Key="Game_Path_Title">Sélectionner le dossier du jeu</system:String>
     <system:String x:Key="Mode_Path_Title">Sélectionner le dossier du mod</system:String>

@@ -40,7 +40,7 @@ namespace FocusTreeManager.ViewModel
             OpenFileCommand = new RelayCommand<ObservableObject>(OpenFile);
             DeleteElementMenuCommand = new RelayCommand(DeleteFile, CanExecuteOnFile);
             EditElementMenuCommand = new RelayCommand(EditFile, CanExecuteOnFile);
-            EditElementMenuCommand = new RelayCommand(CopyFile, CanExecuteOnFile);
+            CopyElementMenuCommand = new RelayCommand(CopyFile, CanExecuteOnFile);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
