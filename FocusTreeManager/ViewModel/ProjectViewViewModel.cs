@@ -167,6 +167,41 @@ namespace FocusTreeManager.ViewModel
             UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
         }
 
+        private void CopyElement(object obj)
+        {
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("CopyAnyFile", false);
+            FileManager dialog = new FileManager(ModeType.Edit);
+            if (obj is FocusGridModel)
+            {
+                FocusGridModel item = new FocusGridModel((FocusGridModel) obj);
+                item.VisibleName += "_copy";
+                Project.fociList.Add(item);
+                RaisePropertyChanged(() => Project.fociList);
+            }
+            else if (obj is LocalisationModel)
+            {
+                LocalisationModel item = new LocalisationModel((LocalisationModel)obj);
+                item.VisibleName += "_copy";
+                Project.localisationList.Add(item);
+                RaisePropertyChanged(() => Project.localisationList);
+            }
+            else if (obj is EventTabModel)
+            {
+                EventTabModel item = new EventTabModel((EventTabModel)obj);
+                item.VisibleName += "_copy";
+                Project.eventList.Add(item);
+                RaisePropertyChanged(() => Project.eventList);
+            }
+            else if (obj is ScriptModel)
+            {
+                ScriptModel item = new ScriptModel((ScriptModel)obj);
+                item.VisibleName += "_copy";
+                Project.scriptList.Add(item);
+                RaisePropertyChanged(() => Project.scriptList);
+            }
+            UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
+        }
+
         private static void OpenFile(ObservableObject item)
         {
             if (item is FocusGridModel)
@@ -217,6 +252,10 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "SendEditItemSignal")
             {
                 EditElement(msg.Sender);
+            }
+            if (msg.Notification == "SendCopyItemSignal")
+            {
+                CopyElement(msg.Sender);
             }
             if (msg.Notification == "RefreshProjectViewer")
             {

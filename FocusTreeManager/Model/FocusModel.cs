@@ -335,8 +335,24 @@ namespace FocusTreeManager.Model
             SetupCommonComponents();
         }
 
+        public FocusModel(FocusModel focus)
+        {
+            Script newScript = new Script();
+            newScript.Analyse(focus.InternalScript.Parse());
+            image = focus.Image;
+            uniquename = focus.UniqueName;
+            text = focus.Text;
+            x = focus.X;
+            y = focus.Y;
+            cost = focus.Cost;
+            internalScript = newScript;
+            SetupCommonComponents();
+        }
+
         public FocusModel Copy(int XChange = 0, int YChange = 0)
         {
+            Script newScript = new Script();
+            newScript.Analyse(InternalScript.Parse());
             return new FocusModel
             {
                 Image = Image,
@@ -345,7 +361,7 @@ namespace FocusTreeManager.Model
                 X = X + XChange,
                 Y = Y + YChange,
                 Cost = Cost,
-                InternalScript = InternalScript
+                InternalScript = newScript
             };
         }
 
@@ -389,6 +405,38 @@ namespace FocusTreeManager.Model
             }
             //Mutually exclusives
             foreach (MutuallyExclusiveSet set in focus.MutualyExclusive)
+            {
+                //Create the set with both foci
+                MutualyExclusive.Add(new MutuallyExclusiveSetModel(
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus1.UniqueName),
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus2.UniqueName)));
+            }
+        }
+
+        public void RepairSets(FocusModel focus, List<FocusModel> fociList)
+        {
+            //Relative ids
+            if (focus.CoordinatesRelativeTo != null)
+            {
+                CoordinatesRelativeTo = fociList.FirstOrDefault(f => f.UniqueName
+                                            == focus.CoordinatesRelativeTo.UniqueName);
+            }
+            //Prerequisites
+            foreach (PrerequisitesSetModel set in focus.Prerequisite)
+            {
+                //Add the linked focus
+                PrerequisitesSetModel prerequiste = new PrerequisitesSetModel(
+                    fociList.FirstOrDefault(f => f.UniqueName == set.Focus.UniqueName));
+                //Run through all the parents and add them
+                foreach (FocusModel parent in set.FociList)
+                {
+                    prerequiste.FociList.Add(
+                        fociList.FirstOrDefault(f => f.UniqueName == parent.UniqueName));
+                }
+                Prerequisite.Add(prerequiste);
+            }
+            //Mutually exclusives
+            foreach (MutuallyExclusiveSetModel set in focus.MutualyExclusive)
             {
                 //Create the set with both foci
                 MutualyExclusive.Add(new MutuallyExclusiveSetModel(

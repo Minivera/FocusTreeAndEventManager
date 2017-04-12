@@ -926,3 +926,229 @@ System.Reflection.TargetInvocationException: L'accesseur de propriété 'Tutoria
    --- Fin de la trace de la pile d'exception interne ---
    à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
    à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parame
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> FocusTreeManager.CodeStructures.CodeExceptions.SyntaxException: Syntax error near } on line 14 at character 5
+An operator (=, < or >) was expected, bypass was given.
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 66
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 33
+   à FocusTreeManager.Model.FocusModel..ctor(FocusModel focus) dans G:\Travail\Git\HoiProject\FocusTreeManager\Model\FocusModel.cs:ligne 341
+   à FocusTreeManager.Model.TabModels.FocusGridModel..ctor(FocusGridModel model) dans G:\Travail\Git\HoiProject\FocusTreeManager\Model\TabModels\FocusGridModel.cs:ligne 236
+   à FocusTreeManager.ViewModel.ProjectViewViewModel.CopyElement(Object obj) dans G:\Travail\Gi
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> FocusTreeManager.CodeStructures.CodeExceptions.SyntaxException: Syntax error near } on line 14 at character 5
+An operator (=, < or >) was expected, bypass was given.
+   à FocusTreeManager.CodeStructures.Tokenizer.GroupTokensByBlocks(List`1 tokens, Boolean first) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Tokenizer.cs:ligne 66
+   à FocusTreeManager.CodeStructures.Script.Analyse(String code, Int32 line) dans G:\Travail\Git\HoiProject\FocusTreeManager\CodeStructures\Script.cs:ligne 33
+   à FocusTreeManager.Model.FocusModel..ctor(FocusModel focus) dans G:\Travail\Git\HoiProject\FocusTreeManager\Model\FocusModel.cs:ligne 341
+   à FocusTreeManager.Model.TabModels.FocusGridModel..ctor(FocusGridModel model) dans G:\Travail\Git\HoiProject\FocusTreeManager\Model\TabModels\FocusGridModel.cs:ligne 236
+   à FocusTreeManager.ViewModel.ProjectViewViewModel.CopyElement(Object obj) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\ProjectViewViewModel.cs:ligne 176
+   à FocusTreeManager.ViewModel.ProjectViewViewModel.NotificationMessageReceived(NotificationMessage msg) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\ProjectViewViewModel.cs:ligne 258
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakAction`1.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakActionGeneric.cs:ligne 200
+   à GalaSoft.MvvmLight.Helpers.WeakAction`1.ExecuteWithObject(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakActionGeneric.cs:ligne 232
+   à GalaSoft.MvvmLight.Messaging.Messenger.SendToList[TMessage](TMessage message, IEnumerable`1 weakActionsAndTokens, Type messageTargetType, Object token) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Messaging\Messenger.cs:ligne 486
+   à GalaSoft.MvvmLight.Messaging.Messenger.SendToTargetOrType[TMessage](TMessage message, Type messageTargetType, Object token) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Messaging\Messenger.cs:ligne 681
+   à GalaSoft.MvvmLight.Messaging.Messenger.Send[TMessage](TMessage message) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Messaging\Messenger.cs:ligne 263
+   à FocusTreeManager.Model.TabModels.FocusGridModel.SendCopySignal() dans G:\Travail\Git\HoiProject\FocusTreeM
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry&
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   à System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   à System.Windows.Baml2006.WpfKnownMemberInvoker.SetValue(Object instance, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(XamlMember member, Object obj, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   à System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   à System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.Lo
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   à System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   à System.Windows.Baml2006.WpfKnownMemberInvoker.SetValue(Object instance, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(XamlMember member, Object obj, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   à System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   à System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.Logic_AssignProvidedValue(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.WriteEndObject()
+   à System.Xaml.XamlWriter.WriteNode(XamlReader reader)
+   à System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   à System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   à System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   à System.Windows.Markup.XamlReader.LoadBaml(Stream 
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   à System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   à System.Windows.Baml2006.WpfKnownMemberInvoker.SetValue(Object instance, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(XamlMember member, Object obj, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   à System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   à System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.Logic_AssignProvidedValue(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.WriteEndObject()
+   à System.Xaml.XamlWriter.WriteNode(XamlReader reader)
+   à System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   à System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   à System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   à System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   à System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   à FocusTreeManager.Views.UserControls.TutorialButton.InitializeComponent() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml:ligne 1
+   à FocusTreeManager.Views.UserControls.TutorialButton..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml.cs:ligne 25
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à Sy
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   à System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   à System.Windows.Baml2006.WpfKnownMemberInvoker.SetValue(Object instance, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(XamlMember member, Object obj, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   à System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   à System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.Logic_AssignProvidedValue(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.WriteEndObject()
+   à System.Xaml.XamlWriter.WriteNode(XamlReader reader)
+   à System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   à System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   à System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   à System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   à System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   à FocusTreeManager.Views.UserControls.TutorialButton.InitializeComponent() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml:ligne 1
+   à FocusTreeManager.Views.UserControls.TutorialButton..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml.cs:ligne 25
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à Sy
+
+System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.Reflection.TargetInvocationException: Une exception a été levée par la cible d'un appel. ---> System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à FocusTreeManager.ViewModel.TutorialViewModel.CanStart(FrameworkElement param) dans G:\Travail\Git\HoiProject\FocusTreeManager\ViewModel\TutorialViewModel.cs:ligne 125
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   à System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   à System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   à GalaSoft.MvvmLight.Helpers.WeakFunc`2.Execute(T parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakFuncGeneric.cs:ligne 202
+   à GalaSoft.MvvmLight.Command.RelayCommand`1.CanExecute(Object parameter) dans D:\GalaSoft\mydotnet\MVVMLight\source\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommandGeneric.cs:ligne 191
+   à MS.Internal.Commands.CommandHelpers.CanExecuteCommandSource(ICommandSource commandSource)
+   à System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   à System.Windows.Controls.Primitives.ButtonBase.HookCommand(ICommand command)
+   à System.Windows.Controls.Primitives.ButtonBase.OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   à System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   à System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   à System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   à System.Windows.Baml2006.WpfKnownMemberInvoker.SetValue(Object instance, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(XamlMember member, Object obj, Object value)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   à System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   à System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.Logic_AssignProvidedValue(ObjectWriterContext ctx)
+   à System.Xaml.XamlObjectWriter.WriteEndObject()
+   à System.Xaml.XamlWriter.WriteNode(XamlReader reader)
+   à System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   à System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   à System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   à System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   à System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   à FocusTreeManager.Views.UserControls.TutorialButton.InitializeComponent() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml:ligne 1
+   à FocusTreeManager.Views.UserControls.TutorialButton..ctor() dans G:\Travail\Git\HoiProject\FocusTreeManager\Views\UserControls\TutorialButton.xaml.cs:ligne 25
+   --- Fin de la trace de la pile d'exception interne ---
+   à System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   à System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   à System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   à System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   à System.Activator.CreateInstance(Type type, Object[] args)
+   à System.Xaml.Schema.SafeReflectionInvoker.CreateInstanceCritical(Type type, Object[] arguments)
+   à System.Xaml.Schema.SafeReflectionInvoker.CreateInstance(Type type, Object[] arguments)
+   à System.Xaml.Schema.XamlTypeInvoker.CreateInstance(Object[] arguments)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.CreateInstanceWithCtor(XamlType xamlType, Object[] args)
+   à MS.Internal.Xaml.Runtime.ClrObjectRuntime.CreateInstance(XamlType xamlType, Object[] args)
+   à MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.CreateInstance(XamlType xamlType,

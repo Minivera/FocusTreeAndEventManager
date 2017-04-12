@@ -166,6 +166,7 @@
     <system:String x:Key="Command_Add">Ajouter</system:String>
     <system:String x:Key="Command_Remove">Supprimer</system:String>
     <system:String x:Key="Command_Copy">Copier</system:String>
+    <system:String x:Key="Command_Create_Copy">Créer une nouvelle copie</system:String>
     <system:String x:Key="Command_Paste">Coller</system:String>
     <system:String x:Key="Menu_Settings">Paramètres</system:String>
     <system:String x:Key="Menu_Project">Projet</system:String>

@@ -258,20 +258,63 @@ namespace FocusTreeManager.Model
             isHidden = item.IsHidden;
             isMajor = item.IsMajor;
             isTriggeredOnly = item.IsTriggeredOnly;
-            internalScript = item.InternalScript;
+            Script newScript = new Script();
+            newScript.Analyse(item.InternalScript.Parse());
+            internalScript = newScript;
             Descriptions = new ObservableCollection<EventDescriptionModel>();
             foreach (EventDescription description in item.Descriptions)
             {
-                Descriptions.Add(new EventDescriptionModel()
+                newScript = new Script();
+                newScript.Analyse(description.InternalScript.Parse());
+                Descriptions.Add(new EventDescriptionModel
                     {
-                        InternalScript = description.InternalScript
-                    });
+                        InternalScript = newScript
+                });
             }
             Descriptions.CollectionChanged += Descriptions_CollectionChanged;
             Options = new ObservableCollection<EventOptionModel>();
             foreach (EventOption option in item.Options)
             {
-                Options.Add(new EventOptionModel()
+                newScript = new Script();
+                newScript.Analyse(option.InternalScript.Parse());
+                Options.Add(new EventOptionModel
+                {
+                    Name = option.Name,
+                    InternalScript = newScript
+                });
+            }
+            Options.CollectionChanged += Options_CollectionChanged;
+            //Commands
+            EditScriptCommand = new RelayCommand(EditScript);
+            DeleteEventCommand = new RelayCommand(DeleteElement);
+            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
+            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
+            ChangeImageCommand = new RelayCommand(ChangeImage);
+        }
+
+        public EventModel(EventModel item)
+        {
+            id = item.Id;
+            type = item.Type;
+            picture = item.Picture;
+            isFiredOnce = item.IsFiredOnce;
+            isHidden = item.IsHidden;
+            isMajor = item.IsMajor;
+            isTriggeredOnly = item.IsTriggeredOnly;
+            internalScript = item.InternalScript;
+            Descriptions = new ObservableCollection<EventDescriptionModel>();
+            foreach (EventDescriptionModel description in item.Descriptions)
+            {
+                Descriptions.Add(new EventDescriptionModel
+                {
+                    InternalScript = description.InternalScript
+                });
+            }
+            Descriptions.CollectionChanged += Descriptions_CollectionChanged;
+            Options = new ObservableCollection<EventOptionModel>();
+            foreach (EventOptionModel option in item.Options)
+            {
+                Options.Add(new EventOptionModel
                 {
                     Name = option.Name,
                     InternalScript = option.InternalScript

@@ -85,22 +85,40 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand EditElementCommand { get; private set; }
 
+        public RelayCommand CopyElementCommand { get; private set; }
+
         public ScriptModel(string Filename)
         {
             visibleName = Filename;
             UniqueID = Guid.NewGuid();
+            SetupCommons();
+        }
+
+        public ScriptModel(ScriptModel model)
+        {
+            visibleName = model.VisibleName;
+            UniqueID = Guid.NewGuid();
+            Script newScript = new Script();
+            newScript.Analyse(model.InternalScript.Parse());
+            InternalScript = newScript;
+            SetupCommons();
+        }
+
+        private void SetupCommons()
+        {
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Commands
             SaveScriptCommand = new RelayCommand<FrameworkElement>(SaveScript);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
+            CopyElementCommand = new RelayCommand(SendCopySignal);
         }
 
         private void SaveScript(FrameworkElement obj)
         {
             new ViewModelLocator().Scripter.SaveScript();
-            InternalScript = (new ViewModelLocator()).Scripter.ManagedScript;
+            InternalScript = new ViewModelLocator().Scripter.ManagedScript;
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -121,6 +139,12 @@ namespace FocusTreeManager.Model.TabModels
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().ProjectView, "SendEditItemSignal"));
+        }
+
+        private void SendCopySignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().ProjectView, "SendCopyItemSignal"));
         }
 
         public async void CheckForChanges()

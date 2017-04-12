@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Threading;
 using FocusTreeManager.Adorners;
 using FocusTreeManager.Helper;
 using GalaSoft.MvvmLight;
@@ -56,7 +58,7 @@ namespace FocusTreeManager.ViewModel
             currentStep = 0;
             InTutorial = false;
             ContinueCommand = new RelayCommand(Continue);
-            StartCommand = new RelayCommand<FrameworkElement>(Start);
+            StartCommand = new RelayCommand<FrameworkElement>(Start, CanStart);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -64,16 +66,16 @@ namespace FocusTreeManager.ViewModel
         public void Continue()
         {
             //Continue the tutorial
-            if (currentStep + 1 <= Steps.Count)
+            if (currentStep + 1 < Steps.Count)
             {
                 currentStep++;
             }
             else
             {
                 InTutorial = false;
+                layer.Remove(managedAdorner);
                 managedAdorner = null;
                 managedElement = null;
-                layer.Remove(managedAdorner);
             }
             //Update adorner
             layer.Update();
@@ -82,12 +84,25 @@ namespace FocusTreeManager.ViewModel
 
         public void Start(FrameworkElement element)
         {
-            if (InTutorial) return;
+            if (InTutorial)
+            {
+                //Cancel the tutorial
+                InTutorial = false;
+                layer.Remove(managedAdorner);
+                managedAdorner = null;
+                managedElement = null;
+                //Update adorner
+                layer.Update();
+                return;
+            }
             //Check if we have a tutorial for this element
             if (!AllControls.ContainsKey(element.Name)) return;
-            InTutorial = true;
             //If yes, continue
             Steps = AllControls[element.Name];
+            //Make sure we have any steps
+            if (!Steps.Any()) return;
+            //If all passed, start the tutorial
+            InTutorial = true;
             currentStep = 0;
             //Get element's windows parent
             managedElement = element;
@@ -99,7 +114,18 @@ namespace FocusTreeManager.ViewModel
             //Create a new Adorner
             managedAdorner = new TutorialAdorner(managedElement, secondGrid);
             layer.Add(managedAdorner);
-            layer.IsHitTestVisible = true;
+            //We must dispatch the first update to make sure the arrange is ran
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                  new Action(() =>
+                  {
+                      //Update adorner
+                      layer.Update();
+                  }));
+        }
+
+        private bool CanStart(FrameworkElement param)
+        {
+            return param != null && AllControls.ContainsKey(param.Name);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

@@ -59,6 +59,8 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand EditElementCommand { get; private set; }
 
+        public RelayCommand CopyElementCommand { get; private set; }
+
         public RelayCommand ShowHidePositionLinesCommand { get; private set; }
 
         public RelayCommand CopyCommand { get; private set; }
@@ -221,6 +223,30 @@ namespace FocusTreeManager.Model.TabModels
             EditGridDefinition();
         }
 
+        public FocusGridModel(FocusGridModel model)
+        {
+            SetupCommons();
+            //Transfer data
+            UniqueID = Guid.NewGuid();
+            visibleName = model.visibleName;
+            tag = model.tag;
+            additionnalMods = model.additionnalMods;
+            foreach (FocusModel focus in model.FociList)
+            {
+                FociList.Add(new FocusModel(focus));
+            }
+            //Rerun to create sets
+            foreach (FocusModel focus in FociList)
+            {
+                focus.RepairSets(model.FociList.FirstOrDefault(f => f.UniqueName == focus.UniqueName),
+                    FociList.ToList());
+            }
+            //Create the remaining stuff
+            FociList.CollectionChanged += FociList_CollectionChanged;
+            //Min Row & column Count
+            EditGridDefinition();
+        }
+
         internal void SetupCommons()
         {
             SelectedFocuses = new List<FocusModel>();
@@ -233,6 +259,7 @@ namespace FocusTreeManager.Model.TabModels
             HoverCommand = new RelayCommand<object>(Hover);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
+            CopyElementCommand = new RelayCommand(SendCopySignal);
             ShowHidePositionLinesCommand = new RelayCommand(ShowHidePositionLines);
             CopyCommand = new RelayCommand(Copy, CanCopy);
             PasteCommand = new RelayCommand<object>(Paste, CanPaste);
@@ -274,6 +301,8 @@ namespace FocusTreeManager.Model.TabModels
             CopyCommand.RaiseCanExecuteChanged();
             PasteCommand.RaiseCanExecuteChanged();
         }
+
+        #region Copy&Paste
 
         private List<FocusModel> CopyTempMemory = new List<FocusModel>();
 
@@ -343,7 +372,7 @@ namespace FocusTreeManager.Model.TabModels
                 //Repair mutually exclusives
                 foreach (MutuallyExclusiveSetModel set in selected.MutualyExclusive)
                 {
-                    FocusModel toFind = null;
+                    FocusModel toFind;
                     FocusModel focus1;
                     FocusModel focus2;
                     if (set.Focus1.UniqueName == currentFocus.UniqueName)
@@ -395,6 +424,8 @@ namespace FocusTreeManager.Model.TabModels
         {
             return SelectedFocuses.Any();
         }
+
+        #endregion
 
         internal void updateRelatives(FocusModel RelativeTo)
         {
@@ -506,6 +537,12 @@ namespace FocusTreeManager.Model.TabModels
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().ProjectView, "SendEditItemSignal"));
+        }
+
+        private void SendCopySignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().ProjectView, "SendCopyItemSignal"));
         }
 
         private void ShowHidePositionLines()

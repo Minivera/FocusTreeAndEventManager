@@ -166,6 +166,7 @@
     <system:String x:Key="Command_Add">Add</system:String>
     <system:String x:Key="Command_Remove">Remove</system:String>
     <system:String x:Key="Command_Copy">Copy</system:String>
+    <system:String x:Key="Command_Create_Copy">Create a new copy</system:String>
     <system:String x:Key="Command_Paste">Paste</system:String>
     <system:String x:Key="Menu_Settings">Settings</system:String>
     <system:String x:Key="Menu_Project">Project</system:String>
@@ -204,6 +205,5 @@
     <system:String x:Key="Status_Make_Prerequisite">Click on another focus to make it the prerequisite of the red glowing focus. Click anywhere to cancel.</system:String>
     <system:String x:Key="Status_Make_Relative">Click on another focus to make the red glowing focus' position relative to this parent. Click anywhere to cancel.</system:String>
     <system:String x:Key="Tutorial_Continue">Click here to continue</system:String>
-    <system:String x:Key="Tutorial_Test">This is a test tutorial, it should right click in the focus grid and wait for an added focus.</system:String>
-    <system:String x:Key="Tutorial_Test2">This a second test tutorial. After having added a focus, it should close the focus editor and highligth the added focus. Click anywhere to end the tutorial.</system:String>
+    <system:String x:Key="Tutorial_End">This marks the end of this tutorial. You can revisit this tutorial at any time by clicking the ? button again.</system:String>
 </ResourceDictionary>

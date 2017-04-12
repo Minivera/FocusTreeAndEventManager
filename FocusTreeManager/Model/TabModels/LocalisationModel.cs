@@ -87,17 +87,15 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand EditElementCommand { get; private set; }
 
+        public RelayCommand CopyElementCommand { get; private set; }
+
         public LocalisationModel(string Filename)
         {
             visibleName = Filename;
             UniqueID = Guid.NewGuid();
             LocalisationMap = new ObservableCollection<LocaleModel>();
             LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
-            //Messenger
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
-            //Commands
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
-            EditElementCommand = new RelayCommand(SendEditSignal);
+            SetupCommons();
         }
 
         public LocalisationModel(LocalisationContainer container)
@@ -112,11 +110,32 @@ namespace FocusTreeManager.Model.TabModels
                 LocalisationMap.Add(new LocaleModel() { Key = content.Key, Value = content.Value});
             }
             LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
+            SetupCommons();
+        }
+
+        public LocalisationModel(LocalisationModel model)
+        {
+            UniqueID = Guid.NewGuid();
+            visibleName = model.VisibleName;
+            languageName = model.LanguageName;
+            FileInfo = model.FileInfo;
+            LocalisationMap = new ObservableCollection<LocaleModel>();
+            foreach (LocaleModel content in model.LocalisationMap)
+            {
+                LocalisationMap.Add(new LocaleModel { Key = content.Key, Value = content.Value });
+            }
+            LocalisationMap.CollectionChanged += LocalisationMap_CollectionChanged;
+            SetupCommons();
+        }
+
+        private void SetupCommons()
+        {
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
             //Commands
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
+            CopyElementCommand = new RelayCommand(SendCopySignal);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)
@@ -145,6 +164,12 @@ namespace FocusTreeManager.Model.TabModels
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().ProjectView, "SendEditItemSignal"));
+        }
+
+        private void SendCopySignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().ProjectView, "SendCopyItemSignal"));
         }
 
         public async void CheckForChanges()

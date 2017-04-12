@@ -89,7 +89,7 @@ namespace FocusTreeManager.CodeStructures
                 return content;
             }
             //Make a local copy, so we do not remove the master comments
-            Dictionary<int, string> localCopy = Comments.ToDictionary(t => t.Key, t => t.Value);
+            Dictionary<int, string> localCopy = Comments?.ToDictionary(t => t.Key, t => t.Value);
             foreach (ICodeStruct item in Code)
             {
                 try

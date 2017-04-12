@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,51 +16,36 @@ namespace FocusTreeManager.Adorners
     {
         private const double bestMargin = 20;
 
+        private const double ButtonHeightAndMargin = 60;
+
         private const double bestTextHeight = 250;
 
         private const double TopBarHeight = 30;
 
         private readonly FrameworkElement element;
 
-        private Canvas Children;
+        private readonly VisualCollection Children;
 
-        public Canvas Child
-        {
-            get { return Children; }
-            set
-            {
-                if (Children != null)
-                {
-                    RemoveVisualChild(Children);
-                }
-                Children = value;
-                if (Children != null)
-                {
-                    AddVisualChild(Children);
-                }
-            }
-        }
+        private Border border;
+
+        private Rect BorderPositionning;
 
         public TutorialAdorner(FrameworkElement el, FrameworkElement parent) : base(parent)
         {
             element = el;
             DataContext = new ViewModelLocator().Tutorial;
-            Children = new Canvas {IsHitTestVisible = true};
-            Panel.SetZIndex(Children, 10);
+            Children = new VisualCollection(this);
             IsHitTestVisible = true;
         }
 
-        protected override int VisualChildrenCount => 1;
+        protected override int VisualChildrenCount => Children.Count;
 
-        protected override Visual GetVisualChild(int index)
-        {
-            if (index != 0) throw new ArgumentOutOfRangeException();
-            return Children;
-        }
-
+        protected override Visual GetVisualChild(int index) { return Children[index]; }
+        
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
+            Children.Clear();
             TutorialViewModel context = DataContext as TutorialViewModel;
             FrameworkElement parent = UiHelper.FindVisualParent<Window>(element, null);
             if (context != null && context.InTutorial)
@@ -74,12 +60,14 @@ namespace FocusTreeManager.Adorners
                 //If the component cannot be found, keep overlay and only draw the text
                 if (component == null)
                 {
+                    drawingContext.DrawGeometry(brush, null, new RectangleGeometry(
+                            new Rect(new Point(0, TopBarHeight),
+                                     new Point(parent.Width, TopBarHeight + parent.Height))));
                     //Build text in the middle
                     BuildText(parent, context, new Rect(new Point(0, 0), 
-                              new Point(parent.ActualWidth, parent.ActualHeight)));
+                                  new Point(parent.ActualWidth, parent.ActualHeight)));
                     return;
                 }
-                Child.Children.Clear();
                 Point Position = component.TranslatePoint(new Point(0, 0), parent);
                 Rect ComponentSpace = new Rect(Position,
                             new Point(Position.X + component.ActualWidth, 
@@ -134,11 +122,11 @@ namespace FocusTreeManager.Adorners
                     //Create the Arrow
                     Canvas icon = (Canvas)Icons["appbar_arrow_right"];
                     if (icon == null) return;
-                    Canvas.SetLeft(icon, Position.X - 150 - bestMargin);
-                    Canvas.SetTop(icon, Position.Y + component.ActualHeight / 2 - 30);
-                    icon.Height = 60;
-                    icon.Width = 150;
-                    Child.Children.Add(icon);
+                    VisualBrush control = new VisualBrush(icon);
+                    drawingContext.DrawRectangle(control, null, new Rect(
+                        Position.X - 150 - bestMargin,
+                        Position.Y + component.ActualHeight / 2 - 30,
+                        150, 60));
                     //Move the space taken by the component to the left
                     ComponentSpace = new Rect(new Point(Position.X - 150 - bestMargin,
                                                         Position.Y),
@@ -163,12 +151,28 @@ namespace FocusTreeManager.Adorners
             {
                 Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
             };
-            Rect notInTheway = getNotInTheWayRectangle(ComponentSpace, parent);
-            Border border = new Border
+            TextBlock block = new TextBlock
             {
-                MaxHeight = 350,
+                Text = (string)language[context.CurrentStep.TextKey],
+                Foreground = Brushes.White,
+                FontSize = 18,
+                TextWrapping = TextWrapping.Wrap
+            };
+            FormattedText formattedText = new FormattedText(
+                (string) language[context.CurrentStep.TextKey],
+                CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch),
+                block.FontSize, Brushes.White)
+            {
+                MaxTextWidth = parent.Width / 2,
+                MaxTextHeight = bestTextHeight
+            };
+            BorderPositionning = getNotInTheWayRectangle(ComponentSpace, parent, formattedText);
+            border = new Border
+            {
+                Height = formattedText.Height + ButtonHeightAndMargin,
                 Padding = new Thickness(10),
-                MaxWidth = parent.ActualWidth / 2,
+                Width = formattedText.Width + bestMargin,
                 Background = (Brush)appStyle.Item1.Resources["WindowBackgroundBrush"],
                 BorderThickness = new Thickness(1),
                 BorderBrush = new SolidColorBrush((Color)appStyle.Item2.Resources["AccentColor"]),
@@ -178,13 +182,7 @@ namespace FocusTreeManager.Adorners
                     Orientation = Orientation.Vertical
                 }
             };
-            ((StackPanel)border.Child).Children.Add(new TextBlock
-                {
-                    Text = (string) language[context.CurrentStep.TextKey],
-                    Foreground = Brushes.White,
-                    FontSize = 18,
-                    TextWrapping = TextWrapping.Wrap
-                });
+            ((StackPanel) border.Child).Children.Add(block);
             if (string.IsNullOrEmpty(context.CurrentStep.WaitForMessage))
             {
                 ((StackPanel)border.Child).Children.Add(new Button
@@ -197,9 +195,7 @@ namespace FocusTreeManager.Adorners
                     HorizontalAlignment = HorizontalAlignment.Center
                 });
             }
-            Canvas.SetTop(border, notInTheway.Y);
-            Canvas.SetLeft(border, notInTheway.X);
-            Child.Children.Add(border);
+            Children.Add(border);
         }
 
         private FrameworkElement getComponentFromParent(DependencyObject parent,
@@ -217,36 +213,40 @@ namespace FocusTreeManager.Adorners
         }
 
         private Rect getNotInTheWayRectangle(Rect InTheWayrect,
-                                             FrameworkElement parent)
+                                             FrameworkElement parent,
+                                             FormattedText formattedText)
         {
             //Check if there is enough space on the left of the added stuff
-            if (InTheWayrect.Left - parent.Width / 2 - bestMargin >= 0)
+            if (InTheWayrect.Left - formattedText.Width - bestMargin * 2 >= 0)
             {
-                Point TopLeft = new Point(InTheWayrect.Left - bestMargin - parent.Width / 2
+                Point TopLeft = new Point(InTheWayrect.Left - bestMargin - formattedText.Width
                     , InTheWayrect.Top);
-                Point BottomRight = new Point(TopLeft.X + parent.Width / 2, 
-                    TopLeft.Y + bestTextHeight);
+                Point BottomRight = new Point(TopLeft.X + formattedText.Width + bestMargin, 
+                    TopLeft.Y + formattedText.Height + ButtonHeightAndMargin);
                 return new Rect(TopLeft, BottomRight);
             }
             //If yes, try to put it under, check if there is enough under
-            if (InTheWayrect.Bottom + bestMargin * 2 + bestTextHeight <= parent.Height)
+            if (InTheWayrect.Bottom + bestMargin * 2 + ButtonHeightAndMargin
+                + formattedText.Height <= parent.Height)
             {
                 Point TopLeft = new Point(bestMargin, InTheWayrect.Bottom + bestMargin);
-                Point BottomRight = new Point(TopLeft.X + parent.Width / 2,
-                    TopLeft.Y + bestTextHeight);
+                Point BottomRight = new Point(TopLeft.X + formattedText.Width + bestMargin,
+                    TopLeft.Y + formattedText.Height + ButtonHeightAndMargin);
                 return new Rect(TopLeft, BottomRight);
             }
             //If no space under, try above
-            if (InTheWayrect.Top - bestMargin * 2 - bestTextHeight >= 0)
+            if (InTheWayrect.Top - bestMargin * 2 - ButtonHeightAndMargin - 
+                formattedText.Height >= 0)
             {
                 Point TopLeft = new Point(bestMargin, InTheWayrect.Top - bestMargin);
-                Point BottomRight = new Point(TopLeft.X + parent.Width / 2,
-                    TopLeft.Y + bestTextHeight);
+                Point BottomRight = new Point(TopLeft.X + formattedText.Width + bestMargin,
+                    TopLeft.Y + formattedText.Height + ButtonHeightAndMargin);
                 return new Rect(TopLeft, BottomRight);
             }
             //Just put it slightly in the middle
-            return new Rect(new Point(parent.Width / 4, parent.Height / 2),
-                            new Point(parent.Width / 2, bestTextHeight));
+            return new Rect(parent.Width / 4, parent.Height / 2,
+                            formattedText.Width + bestMargin, 
+                            formattedText.Height + ButtonHeightAndMargin);
         }
 
         private void RunOnElement(TutorialViewModel context, FrameworkElement parent, 
@@ -295,10 +295,8 @@ namespace FocusTreeManager.Adorners
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            FrameworkElement parent = UiHelper.FindVisualParent<Window>(element, null);
-            double desiredWidth = parent.ActualWidth;
-            double desiredHeight = parent.ActualHeight;
-            Child.Arrange(new Rect(0, 0, desiredWidth, desiredHeight));
+            if (border == null) return finalSize;
+            border.Arrange(BorderPositionning);
             return finalSize;
         }
     }

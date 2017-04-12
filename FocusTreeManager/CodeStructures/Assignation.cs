@@ -101,7 +101,7 @@ namespace FocusTreeManager.CodeStructures
                 //Parse all comments before going further
                 foreach (KeyValuePair<int, string> comment in localCopy.TakeWhile(i => i.Key < Line))
                 {
-                    content.Append(comment.Value);
+                    content.Append(tabulations + comment.Value + "\n");
                     comments.Remove(comment.Key);
                 }
                 //Get this lines comments if any
@@ -121,7 +121,7 @@ namespace FocusTreeManager.CodeStructures
                     if (comments != null)
                     {
                         comment = comments.Where(c => c.Key > Line && c.Key < EndLine)
-                            .Aggregate(comment, (current, item) => current + item.Value + "\n");
+                            .Aggregate(comment, (current, item) => tabulations + current + item.Value);
                     }
                     //Empty block
                     content.Append(tabulations + Assignee + " " + Operator + " {\n" + 

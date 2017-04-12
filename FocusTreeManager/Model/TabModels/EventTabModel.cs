@@ -106,18 +106,15 @@ namespace FocusTreeManager.Model.TabModels
 
         public RelayCommand EditElementCommand { get; private set; }
 
+        public RelayCommand CopyElementCommand { get; private set; }
+
         public EventTabModel(string Filename)
         {
             visbleName = Filename;
             UniqueID = Guid.NewGuid();
             EventList = new ObservableCollection<EventModel>();
             EventList.CollectionChanged += EventList_CollectionChanged;
-            //Command
-            AddEventCommand = new RelayCommand(AddEvent);
-            DeleteElementCommand = new RelayCommand(SendDeleteSignal);
-            EditElementCommand = new RelayCommand(SendEditSignal);
-            //Messenger
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            SetupCommons();
         }
 
         public EventTabModel(EventContainer container)
@@ -132,10 +129,30 @@ namespace FocusTreeManager.Model.TabModels
                 EventList.Add(new EventModel(item));
             }
             EventList.CollectionChanged += EventList_CollectionChanged;
+            SetupCommons();
+        }
+
+        public EventTabModel(EventTabModel model)
+        {
+            UniqueID = Guid.NewGuid();
+            eventNamespace = model.EventNamespace;
+            fileInfo = model.FileInfo;
+            EventList = new ObservableCollection<EventModel>();
+            foreach (EventModel item in model.EventList)
+            {
+                EventList.Add(new EventModel(item));
+            }
+            EventList.CollectionChanged += EventList_CollectionChanged;
+            SetupCommons();
+        }
+
+        private void SetupCommons()
+        {
             //Command
             AddEventCommand = new RelayCommand(AddEvent);
             DeleteElementCommand = new RelayCommand(SendDeleteSignal);
             EditElementCommand = new RelayCommand(SendEditSignal);
+            CopyElementCommand = new RelayCommand(SendCopySignal);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -181,6 +198,12 @@ namespace FocusTreeManager.Model.TabModels
         {
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().ProjectView, "SendEditItemSignal"));
+        }
+
+        private void SendCopySignal()
+        {
+            Messenger.Default.Send(new NotificationMessage(this,
+                new ViewModelLocator().ProjectView, "SendCopyItemSignal"));
         }
 
         public async void CheckForChanges()
