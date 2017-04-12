@@ -235,9 +235,8 @@ application will use the text, otherwise, it will use the unique name.
 ***********************
 - The image loading system will now check a list of known typos in file names to prevent image not loading properly.
 - Fixed a crash with the images not loading properly if the game path was not valid when changing a focus icon.
-- Having a badly set game path will now lad the focus tree with the default "unknown" icon.
-- Trying to set an icon that can be found in the game folder will result in a default "unknown" icon.
-- A status bar at the bottom of the string will show helpful text when trying to do some operations.
+- Having a badly set game path will now load the focus tree with the default "unknown" icon.
+- A status bar at the bottom of the window will show helpful text when trying to do some operations.
 - Clicking anywhere in the focus grid while trying to use the mutually exclusives, prerequisites or relative to commands will cancel the operation.
 - Added tooltips to complex functionalities and to fields to explain how modding works.
 - When created, event descriptions for news event will now include the text and trigger assignations by default to help new modders.
@@ -251,10 +250,12 @@ application will use the text, otherwise, it will use the unique name.
 - Fixed a bug where the event parser would consider an event without a picture as invalid.
 - Added tutorial system. Each tutorial is defined in XML files with the steps allowing for various functionalities.
 - Tutorials are configured by a XML file, you can add as many as you like in the Common/Tutorials folder. See the default tutorial for help.
+- Added a tutorial for the main window, the focus grid, the localization list and the event list.
 - Foci costs will now default to 10 to speed up creating new focuses.
 - Fixed a random crash when adding more than one event while moving though the list.
 - Switched the control of the gird's scroll bar to the middle button to allow selection and easier mouse management.
-- A holding icon will now show up when holding a focus or dragging the grid around.
+- A holding cursor will now show up when holding a focus or dragging the grid around.
+- The focus grid can now be dragged around with the middle mouse button, changed from the left mouse button which overlapped with the multi select.
 - Holding the left mouse button will now allow you to multiselect focuses. Clicking once on a focus will select that focus for copy.
 - Moving one of the focuses in a the list of multi-selected foci will move all the foci.
 - You can now use CTRL+C and CTRL+V or the context menu to copy and paste selected foci.
@@ -263,7 +264,7 @@ application will use the text, otherwise, it will use the unique name.
 - Fixed a rare issue where an error would prevent a change batch from ending and would full up memory, slowing down the app until a crash happened.
 - Fixed an issue where some commands could be ran on hidden focus tree rather than the currently selected tab.
 - Focuses actions will now only try to run on their respective trees, improving performance.
-- Can now use CTRL+S in the script to save the change and exit.
+- Can now use CTRL+S in the script to save the changes and exit.
 - The scripter will now either display the editor or scripter, but will not allow you to change between the two. This solves many bugs and performance issues.
 - Fixed most of the initial crashes with the script editor.
 - The script editor will now use a smart select for syntax highlight rather than highlight a selection of words.
@@ -272,3 +273,6 @@ application will use the text, otherwise, it will use the unique name.
 - The script interpreter will now remember the comments and parse them back when needed.
 - The script interpreter will now give more detailed information about syntax errors.
 - Fixed a rare bug where parsing could remove some part of the scripts and cause syntax errors after a few loadings.
+- Increased the size of some icons that were stupidly small.
+- Fixed the renaming textbox's position in the file viewer.
+- The rename textbox in the file viewer will now disappear when it loses focus (You click anywhere else).

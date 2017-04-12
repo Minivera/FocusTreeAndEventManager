@@ -120,18 +120,35 @@ namespace FocusTreeManager.Adorners
                                          UriKind.Relative)
                     };
                     //Create the Arrow
-                    Canvas icon = (Canvas)Icons["appbar_arrow_right"];
+                    double ArrowPosX = Position.X - 150 - bestMargin;
+                    Canvas icon;
+                    //Check if there is space on the right
+                    if (ArrowPosX <= 0)
+                    {
+                        //If not, add it to the right
+                        icon = (Canvas)Icons["appbar_arrow_left"];
+                        ArrowPosX = Position.X + component.ActualWidth + bestMargin;
+                        ComponentSpace = new Rect(Position.X,
+                                                  Position.Y,
+                                                  ArrowPosX + 150,
+                                                  Math.Max(component.ActualHeight, 60));
+                    }
+                    else
+                    {
+                        //Otherwise, add it to the left.
+                        icon = (Canvas)Icons["appbar_arrow_right"];
+                        ComponentSpace = new Rect(ArrowPosX,
+                                                  Position.Y,
+                                                  150 + component.ActualWidth,
+                                                  Math.Max(component.ActualHeight, 60));
+                    }
                     if (icon == null) return;
                     VisualBrush control = new VisualBrush(icon);
                     drawingContext.DrawRectangle(control, null, new Rect(
-                        Position.X - 150 - bestMargin,
+                        ArrowPosX,
                         Position.Y + component.ActualHeight / 2 - 30,
                         150, 60));
                     //Move the space taken by the component to the left
-                    ComponentSpace = new Rect(new Point(Position.X - 150 - bestMargin,
-                                                        Position.Y),
-                                              new Point(Position.X + component.ActualWidth,
-                                                        Position.Y + component.ActualHeight));
                 }
                 BuildText(parent, context, ComponentSpace);
             }
@@ -201,6 +218,7 @@ namespace FocusTreeManager.Adorners
         private FrameworkElement getComponentFromParent(DependencyObject parent,
                                                         TutorialViewModel context)
         {
+            if (string.IsNullOrEmpty(context.CurrentStep.ComponentToHighlight)) return null;
             //Try to get the Type
             Type ComponentType = Type.GetType(context.CurrentStep.ComponentToHighlight);
             if (ComponentType != null)
@@ -220,12 +238,21 @@ namespace FocusTreeManager.Adorners
             if (InTheWayrect.Left - formattedText.Width - bestMargin * 2 >= 0)
             {
                 Point TopLeft = new Point(InTheWayrect.Left - bestMargin - formattedText.Width
-                    , InTheWayrect.Top);
+                    , InTheWayrect.Top + InTheWayrect.Height / 2);
                 Point BottomRight = new Point(TopLeft.X + formattedText.Width + bestMargin, 
                     TopLeft.Y + formattedText.Height + ButtonHeightAndMargin);
                 return new Rect(TopLeft, BottomRight);
             }
-            //If yes, try to put it under, check if there is enough under
+            //Otherwise, check on the right
+            if (InTheWayrect.Right + formattedText.Width + bestMargin * 2 <= parent.Width)
+            {
+                Point TopLeft = new Point(InTheWayrect.Right + bestMargin
+                    , InTheWayrect.Top + InTheWayrect.Height / 2);
+                Point BottomRight = new Point(TopLeft.X + formattedText.Width + bestMargin,
+                    TopLeft.Y + formattedText.Height + ButtonHeightAndMargin);
+                return new Rect(TopLeft, BottomRight);
+            }
+            //If not, try to put it under, check if there is enough under
             if (InTheWayrect.Bottom + bestMargin * 2 + ButtonHeightAndMargin
                 + formattedText.Height <= parent.Height)
             {

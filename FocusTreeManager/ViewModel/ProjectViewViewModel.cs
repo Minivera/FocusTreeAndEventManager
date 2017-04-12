@@ -24,6 +24,8 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand EditElementMenuCommand { get; set; }
 
+        public RelayCommand CopyElementMenuCommand { get; set; }
+
         public RelayCommand<ObservableObject> OpenFileCommand { get; private set; }
 
         public object SelectedItem { get; set; }
@@ -38,6 +40,7 @@ namespace FocusTreeManager.ViewModel
             OpenFileCommand = new RelayCommand<ObservableObject>(OpenFile);
             DeleteElementMenuCommand = new RelayCommand(DeleteFile, CanExecuteOnFile);
             EditElementMenuCommand = new RelayCommand(EditFile, CanExecuteOnFile);
+            EditElementMenuCommand = new RelayCommand(CopyFile, CanExecuteOnFile);
             //Messenger
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
@@ -234,6 +237,11 @@ namespace FocusTreeManager.ViewModel
         public void DeleteFile()
         {
             DeleteElement(SelectedItem);
+        }
+
+        public void CopyFile()
+        {
+            CopyElement(SelectedItem);
         }
 
         public bool CanExecuteOnFile()

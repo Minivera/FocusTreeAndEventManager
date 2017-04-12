@@ -50,30 +50,45 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:LocalisationModel}">
-                <vu:Localisation></vu:Localisation>
+                <Grid>
+                    <vu:Localisation x:Name="LocalizationList"></vu:Localisation>
+                    <vu:TutorialButton LinkedElement="{Binding ElementName=LocalizationList}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"/>
+                </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:EventTabModel}">
-                <vu:EventList></vu:EventList>
+                <Grid>
+                    <vu:EventList x:Name="EventList"></vu:EventList>
+                    <vu:TutorialButton LinkedElement="{Binding ElementName=EventList}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Top"/>
+                </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:ScriptModel}">
-                <Grid DataContext="{Binding}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-                    <Grid.InputBindings>
-                        <KeyBinding Modifiers="Control"
-                        Key="S"
-                        Command="{Binding SaveScriptCommand}"
-                        CommandParameter="{Binding ElementName=Scripter}"/>
-                    </Grid.InputBindings>
-                    <vu:Scripter Grid.Row="0" x:Name="Scripter"/>
-                    <StackPanel HorizontalAlignment="Right" Grid.Row="1">
-                        <Button Content="{DynamicResource Command_Save}" 
-                                Command="{Binding SaveScriptCommand}"
-                                CommandParameter="{Binding ElementName=Scripter}"
-                                Width="150" Style="{DynamicResource SquareButtonStyle}" />
-                    </StackPanel>
+                <Grid>
+                    <Grid DataContext="{Binding}" x:Name="ScriptEditor">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.InputBindings>
+                            <KeyBinding Modifiers="Control"
+                            Key="S"
+                            Command="{Binding SaveScriptCommand}"
+                            CommandParameter="{Binding ElementName=Scripter}"/>
+                        </Grid.InputBindings>
+                        <vu:Scripter Grid.Row="0" x:Name="Scripter"/>
+                        <StackPanel HorizontalAlignment="Right" Grid.Row="1">
+                            <Button Content="{DynamicResource Command_Save}" 
+                                    Command="{Binding SaveScriptCommand}"
+                                    CommandParameter="{Binding ElementName=Scripter}"
+                                    Width="150" Style="{DynamicResource SquareButtonStyle}" />
+                        </StackPanel>
+                    </Grid>
+                    <vu:TutorialButton LinkedElement="{Binding ElementName=ScriptEditor}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Top"/>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -100,7 +115,8 @@
     </Window.InputBindings>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Command="{Binding UndoCommand}">
+            <Button Command="{Binding UndoCommand}"
+                    x:Name="UndoButton">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -173,7 +189,8 @@
                 <vu:FocusEditor></vu:FocusEditor>
             </Controls:Flyout>
             <Controls:Flyout x:Name="ProjectFlyout" VerticalAlignment="Center"
-                      Width="400" IsModal="True" Position="Left" IsOpen="True" CloseButtonVisibility="Hidden">
+                      Width="400" IsModal="True" Position="Left" IsOpen="True" 
+                      CloseButtonVisibility="Hidden" ClosingFinished="ProjectFlyout_OnClosingFinished">
                 <StackPanel Orientation="Vertical" CanVerticallyScroll="True" >
                     <Button Style="{DynamicResource MetroCircleButtonStyle}" x:Name="NewButton"
                             Content="{DynamicResource appbar_page_new}" Width="100" Height="100"
@@ -200,42 +217,47 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <vu:ProjectView Grid.Column="0"/>
-        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-        <DockPanel Grid.Column="2">
-            <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
-                <StatusBar DataContext="{Binding StatusBar, Source={StaticResource Locator}}">
-                    <StatusBarItem>
-                        <TextBlock Name="StatusText" Text="{Binding Message}"/>
-                    </StatusBarItem>
-                </StatusBar>
-                <Grid HorizontalAlignment="Right" Width="70" Height="110" Margin="0,-130,15,0" x:Name="GridErrors">
-                    <vu:ErrorDawg />
+        <Grid x:Name="MainGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <vu:ProjectView Grid.Column="0" x:Name="FileViewer"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+            <DockPanel Grid.Column="2">
+                <Grid DockPanel.Dock="Bottom" Panel.ZIndex="1" >
+                    <StatusBar DataContext="{Binding StatusBar, Source={StaticResource Locator}}">
+                        <StatusBarItem>
+                            <TextBlock Name="StatusText" Text="{Binding Message}"/>
+                        </StatusBarItem>
+                    </StatusBar>
+                    <Grid HorizontalAlignment="Right" Width="70" Height="110" Margin="0,-130,15,0" x:Name="GridErrors">
+                        <vu:ErrorDawg />
+                    </Grid>
                 </Grid>
-            </Grid>
-            <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
+                <dockablz:Layout FloatingItemHeaderMemberPath="Header" FloatingItemDisplayMemberPath="Content"
                          FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}">
-                <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
+                    <dragablz:TabablzControl x:Name="CentralTabControl" ShowDefaultAddButton="False"
                         ShowDefaultCloseButton="True" ItemsSource="{Binding TabsModelList}" 
                         SelectedItem="{Binding SelectedTab}"
                         SelectionChanged="CentralTabControl_SelectionChanged" >
-                    <dragablz:TabablzControl.HeaderItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding VisibleName}"  />
-                        </DataTemplate>
-                    </dragablz:TabablzControl.HeaderItemTemplate>
-                    <TabControl.ItemTemplate>
-                        <DataTemplate >
-                            <DockPanel></DockPanel>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                </dragablz:TabablzControl>
-            </dockablz:Layout>
-        </DockPanel>
+                        <dragablz:TabablzControl.HeaderItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding VisibleName}"  />
+                            </DataTemplate>
+                        </dragablz:TabablzControl.HeaderItemTemplate>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate >
+                                <DockPanel></DockPanel>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                    </dragablz:TabablzControl>
+                </dockablz:Layout>
+            </DockPanel>
+        </Grid>
+        <vu:TutorialButton LinkedElement="{Binding ElementName=MainGrid}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Top"/>
     </Grid>
 </Controls:MetroWindow>

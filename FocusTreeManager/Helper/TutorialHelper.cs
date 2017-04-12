@@ -29,7 +29,7 @@ namespace FocusTreeManager.Helper
                     {
                         TutorialStep stepObj = new TutorialStep
                         {
-                            TextKey = step.Attribute("text")?.Value,
+                            TextKey = step.Attribute("Text")?.Value,
                             ComponentToHighlight = step.Attribute("Highlight")?.Value,
                             WaitForMessage = step.Attribute("WaitForMessage")?.Value,
                             RunThisCommand = step.Attribute("CommandToRun")?.Value,
