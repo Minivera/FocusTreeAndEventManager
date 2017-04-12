@@ -46,8 +46,8 @@
                             <Button ToolTip="{DynamicResource Editor_Cut_Desc}"
                                 x:Name="CutButton" Command="ApplicationCommands.Cut">
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="10"
-                               Height="10"
+                                    <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_scissor}" />
@@ -59,8 +59,8 @@
                             <Button ToolTip="{DynamicResource Editor_Copy_Desc}"
                                 x:Name="CopyButton" Command="ApplicationCommands.Copy">
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="10"
-                               Height="10"
+                                    <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clipboard}" />
@@ -72,8 +72,8 @@
                             <Button ToolTip="{DynamicResource Editor_Paste_Desc}"
                                 x:Name="PasteButton" Command="ApplicationCommands.Paste">
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="10"
-                               Height="10"
+                                    <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clipboard_paste}" />
@@ -113,8 +113,8 @@
                             <Button ToolTip="{DynamicResource Editor_Search_Desc}"
                                 x:Name="SearchButton" Click="SearchButton_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="10"
-                               Height="10"
+                                    <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_magnify}" />
@@ -126,8 +126,8 @@
                             <Button ToolTip="{DynamicResource Editor_Replace_Desc}"
                                 x:Name="ReplaceButton" Click="ReplaceButton_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="10"
-                               Height="10"
+                                    <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_repeat}" />

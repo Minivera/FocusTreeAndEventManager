@@ -27,4 +27,7 @@ Please request messages or control names to be added in the dev thread or on git
     <step Text="Tutorial_Main_13" Highlight="ProjectFlyout" WaitForMessage="ClosedProjectFylout"/>
     <step Text="Tutorial_End"/>
   </tutorial>
+  <tutorial control="FociGrid">
+    <step Text="Tutorial_End"/>
+  </tutorial>
 </tutorials>

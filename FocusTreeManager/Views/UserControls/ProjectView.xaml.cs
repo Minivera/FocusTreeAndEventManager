@@ -92,12 +92,22 @@ namespace FocusTreeManager.Views.UserControls
             if (textbox != null)
             {
                 textbox.Visibility = Visibility.Visible;
+                textbox.Focus();
             }
         }
 
         private void CodeTreeView_Selected(object sender, RoutedEventArgs e)
         {
             CodeTreeView.Tag = e.OriginalSource;
+        }
+
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textbox = sender as TextBox;
+            if (textbox?.Visibility == Visibility.Visible)
+            {
+                textbox.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

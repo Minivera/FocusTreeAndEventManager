@@ -24,12 +24,14 @@
                                       Command="{Binding Path=PlacementTarget.Tag.DataContext.OpenFileCommand, 
                                             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                                       CommandParameter="{Binding}" />
-                            <MenuItem Header="{DynamicResource Command_Delete}" 
-                                      Command="{Binding DeleteElementCommand}"/>
-                            <MenuItem Header="{DynamicResource Command_Edit}" 
-                                      Command="{Binding EditElementCommand}"/>
                             <MenuItem Header="{DynamicResource Command_Rename}" 
                                       Click="MenuItem_Click"/>
+                            <MenuItem Header="{DynamicResource Command_Edit}" 
+                                      Command="{Binding EditElementCommand}"/>
+                            <MenuItem Header="{DynamicResource Command_Create_Copy}" 
+                                      Command="{Binding CopyElementCommand}"/>
+                            <MenuItem Header="{DynamicResource Command_Delete}" 
+                                      Command="{Binding DeleteElementCommand}"/>
                         </ContextMenu>
                     </StackPanel.ContextMenu>
                     <StackPanel.InputBindings>
@@ -41,10 +43,11 @@
                     <Grid>
                         <TextBlock Margin="4 0 0 0" Text="{Binding VisibleName}" 
                                    VerticalAlignment="Center"/>
-                        <TextBox Margin="4 0 0 0" Width="110"
+                        <TextBox Margin="0 0 0 0"
                              VerticalAlignment="Center"
                              Text="{Binding VisibleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              KeyDown="TextBox_KeyDown" 
+                                 LostFocus="UIElement_OnLostFocus"
                              Visibility="Hidden"/>
                     </Grid>
                 </StackPanel>
@@ -57,13 +60,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="5,0,5,5">
-            <ToolBarTray>
+            <ToolBarTray Margin="25,0,0,0" x:Name="FileViewerToolbar">
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button ToolTip="{DynamicResource Add_New_File}"
                                 x:Name="AddButton" Command="{Binding AddElementCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Width="10"
-                               Height="10"
+                            <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_add}" />
@@ -76,8 +79,8 @@
                     <Button ToolTip="{DynamicResource Command_Delete}"
                             x:Name="DeleteButton" Command="{Binding DeleteElementMenuCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Width="10"
-                               Height="10"
+                            <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
@@ -88,8 +91,8 @@
                     <Button ToolTip="{DynamicResource Command_Edit}"
                             x:Name="EditButton" Command="{Binding EditElementMenuCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Width="10"
-                               Height="10"
+                            <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_edit}" />
@@ -101,11 +104,23 @@
                             x:Name="RenameButton" Click="RenameButton_Click"
                             IsEnabled="False">
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Width="10"
-                               Height="10"
+                            <Rectangle Width="15"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_interface_textbox}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTip="{DynamicResource Command_Create_Copy}"
+                            x:Name="CopyButton" Command="{Binding CopyElementMenuCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="15"
+                               Height="15"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_copy}" />
                                 </Rectangle.OpacityMask>
                             </Rectangle>
                         </StackPanel>
