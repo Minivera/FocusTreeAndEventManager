@@ -196,6 +196,7 @@ namespace FocusTreeManager.Views.UserControls
                 IsShown = true;
                 FocusGridModel model = (FocusGridModel)DataContext;
                 model.ShowHidePositionLinesCommand.Execute(this);
+                e.Handled = true;
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
@@ -215,9 +216,13 @@ namespace FocusTreeManager.Views.UserControls
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            //Always send the event to the data context
+            FocusGridModel dataContext = DataContext as FocusGridModel;
+            if (dataContext == null) return;
+            dataContext.LeftClickCommand.Execute(ListGrid);
             //Check if we are on the grid
             if (!(e.OriginalSource is GriddedGrid)) return;
-            //Mak sure we aren't dragging already
+            //Make sure we aren't dragging already
             if (IsDragging) return;
             // Capture and track the mouse.
             IsSelecting = true;

@@ -471,9 +471,11 @@ namespace FocusTreeManager.Model.TabModels
             Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
 
-        public void LeftClick(object sender)
+        public void LeftClick(object param)
         {
-            Point Position = Mouse.GetPosition((Grid)sender);
+            Grid sender = param as Grid;
+            if (sender == null) return;
+            Point Position = Mouse.GetPosition(sender);
             List<CanvasLine> clickedElements = CanvasLines.Where(line => 
                                                line.ContainsPoint(Position)).ToList();
             if (clickedElements.Any())

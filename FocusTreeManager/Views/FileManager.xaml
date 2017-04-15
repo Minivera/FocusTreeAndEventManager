@@ -24,55 +24,60 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140" x:Name="Column1"/>
-            <ColumnDefinition Width="140" x:Name="Column2"/>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <ListView x:Name="FileChoiceList"
-                  Grid.Column="0" SelectionMode="Single"
-                  SelectionChanged="FileChoiceList_SelectionChanged">
-            <ListViewItem Content="{DynamicResource Add_New_File}" />
-            <ListViewItem Content="{DynamicResource Add_Game_File}" >
+    <Grid>
+        <Grid x:Name="MainFileGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140" x:Name="Column1"/>
+                <ColumnDefinition Width="140" x:Name="Column2"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="FileChoiceList"
+                      Grid.Column="0" SelectionMode="Single"
+                      SelectionChanged="FileChoiceList_SelectionChanged">
+                <ListViewItem Content="{DynamicResource Add_New_File}" />
+                <ListViewItem Content="{DynamicResource Add_Game_File}" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding AddGameFileCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListViewItem>
+            </ListView>
+            <ListView x:Name="FileTypeList" Visibility="Hidden"
+                      Grid.Column="1" SelectionMode="Single"
+                      SelectionChanged="FileTypeList_SelectionChanged">
+                <ListViewItem Content="{DynamicResource Manage_Focus}" Tag="FocusTreeItem"/>
+                <ListViewItem Content="{DynamicResource Manage_Localisation}" Tag="LocalisationItem"/>
+                <ListViewItem Content="{DynamicResource Manage_Event}" Tag="EventItem"/>
+                <ListViewItem Content="{DynamicResource Manage_Generic}" Tag="GenericItem"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding AddGameFileCommand}"/>
+                        <i:InvokeCommandAction 
+                            CommandParameter="{Binding ElementName=FileTypeList, Path=SelectedItem}"
+                            Command="{Binding FileTypeCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </ListViewItem>
-        </ListView>
-        <ListView x:Name="FileTypeList" Visibility="Hidden"
-                  Grid.Column="1" SelectionMode="Single"
-                  SelectionChanged="FileTypeList_SelectionChanged">
-            <ListViewItem Content="{DynamicResource Manage_Focus}" Tag="FocusTreeItem"/>
-            <ListViewItem Content="{DynamicResource Manage_Localisation}" Tag="LocalisationItem"/>
-            <ListViewItem Content="{DynamicResource Manage_Event}" Tag="EventItem"/>
-            <ListViewItem Content="{DynamicResource Manage_Generic}" Tag="GenericItem"/>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction 
-                        CommandParameter="{Binding ElementName=FileTypeList, Path=SelectedItem}"
-                        Command="{Binding FileTypeCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ListView>
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition x:Name="ControlsRow" Height="30" />
-            </Grid.RowDefinitions>
-            <usrcontrl:FileEditor Grid.Row="0" x:Name="FileEditor" Visibility="Hidden"/>
-            <WrapPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button Content="{DynamicResource Command_Accept}" Command="{Binding AcceptCommand}" 
-                    IsDefault="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
-                <Button Content="{DynamicResource Command_Cancel}" Command="{Binding CancelCommand}" 
-                    IsCancel="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
-            </WrapPanel>
+            </ListView>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition x:Name="ControlsRow" Height="30" />
+                </Grid.RowDefinitions>
+                <usrcontrl:FileEditor Grid.Row="0" x:Name="FileEditor" Visibility="Hidden"/>
+                <WrapPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Content="{DynamicResource Command_Accept}" Command="{Binding AcceptCommand}" 
+                        IsDefault="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+                    <Button Content="{DynamicResource Command_Cancel}" Command="{Binding CancelCommand}" 
+                        IsCancel="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
+                </WrapPanel>
+            </Grid>
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  Width="70" Height="110" Margin="0,0,9.6,33.4" x:Name="GridErrors" Grid.Column="2">
+                <usrcontrl:ErrorDawg />
+            </Grid>
         </Grid>
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom"
-              Width="70" Height="110" Margin="0,0,9.6,33.4" x:Name="GridErrors" Grid.Column="2">
-            <usrcontrl:ErrorDawg />
-        </Grid>
+        <usrcontrl:TutorialButton LinkedElement="{Binding ElementName=MainFileGrid}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"/>
     </Grid>
 </Controls:MetroWindow>
