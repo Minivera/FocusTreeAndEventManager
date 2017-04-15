@@ -17,7 +17,7 @@
     <system:String x:Key="Add_Mutually_Focus">Make Focus mutually exclusive with...</system:String>
     <system:String x:Key="Add_Prerequisite_Focus">Add an optional prerequisites to Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Add a required prerequisites to Focus</system:String>
-    <system:String x:Key="Add_Relative_Pos">Make this focus' positionning relative to...</system:String>
+    <system:String x:Key="Add_Relative_Pos">Make this focus' positioning relative to...</system:String>
     <system:String x:Key="Show_Relative_Pos">Hide/Show the position lines</system:String>
     <system:String x:Key="Add_New_File">New file</system:String>
     <system:String x:Key="Add_Game_File">Open script file</system:String>
@@ -33,12 +33,12 @@
     <system:String x:Key="Project_Preload">Preload game content?</system:String>
     <system:String x:Key="Project_Preload_Tooltip">Preloaded game content will slow down the application's startup, but all the code will be available during scripting.</system:String>
     <system:String x:Key="Project_Mods_Folders">Mods folders to load in addition to the game's content</system:String>
-    <system:String x:Key="Project_Mods_Folders_Tooltip">All images in these folders will be added in the application. Additonnally, all code will be preloaded in addition to the game's code if the option is selected.</system:String>
+    <system:String x:Key="Project_Mods_Folders_Tooltip">All images in these folders will be added in the application. Additionally, all code will be preloaded in addition to the game's code if the option is selected.</system:String>
     <system:String x:Key="Files_Filename">Filename</system:String>
     <system:String x:Key="Focus_TAG">Country TAG</system:String>
     <system:String x:Key="Focus_TAG_Tooltip">The country's TAG can be found in the wiki.</system:String>
-    <system:String x:Key="Focus_Additional_Mods">Additionnal modifiers for country selection</system:String>
-    <system:String x:Key="Focus_Additional_Mods_Tooltip">Additionnal modifiers can be defined here to limit this focus tree. For-example, using the has_dlc condition.</system:String>
+    <system:String x:Key="Focus_Additional_Mods">Additional modifiers for country selection</system:String>
+    <system:String x:Key="Focus_Additional_Mods_Tooltip">Additional modifiers can be defined here to limit this focus tree. For-example, using the has_dlc condition.</system:String>
     <system:String x:Key="Focus_Unique_Name">Unique name</system:String>
     <system:String x:Key="Focus_Unique_Name_Tooltip">The focus' unique name, must be unique.</system:String>
     <system:String x:Key="Focus_Text">Text id for localization</system:String>
@@ -71,13 +71,13 @@
     <system:String x:Key="Event_Description">Description text</system:String>
     <system:String x:Key="Event_Description_Tooltip">The event description is defined in the localisation files under a key composed of the event id plus .d. For example, a baltic event description key would be baltic.1.d</system:String>
     <system:String x:Key="Event_Description_Options">Description Options</system:String>
-    <system:String x:Key="Event_Description_Options_Tooltip">News events have more than one possible description. While editting the script, the text assignation defines the key for the localisation files while the trigger defines which nation sees this description.</system:String>
+    <system:String x:Key="Event_Description_Options_Tooltip">News events have more than one possible description. While editing the script, the text assignation defines the key for the localisation files while the trigger defines which nation sees this description.</system:String>
     <system:String x:Key="Event_Description_Text">Localized text</system:String>
     <system:String x:Key="Event_Description_Script">Script</system:String>
     <system:String x:Key="Event_Major">Is the event a Major event?</system:String>
     <system:String x:Key="Event_Major_Tooltip">Major events are broadcasted to all nations.</system:String>
     <system:String x:Key="Event_Triggered">Is the event triggered only?</system:String>
-    <system:String x:Key="Event_Triggered_Tooltip">Events that are set to be triggered only cannot define a Mean Time To Happen, they are trigered only by another script using event = id.</system:String>
+    <system:String x:Key="Event_Triggered_Tooltip">Events that are set to be triggered only cannot define a Mean Time To Happen, they are triggered only by another script using event = id.</system:String>
     <system:String x:Key="Event_Hidden">Is the event hidden to the player?</system:String>
     <system:String x:Key="Event_Hidden_Tooltip">Hidden events are not shown to the player. It is not necessary to localise hidden events.</system:String>
     <system:String x:Key="Event_Fired_Once">Is the event only fired once?</system:String>
@@ -207,7 +207,7 @@
     <system:String x:Key="Tutorial_Continue">Click here to continue</system:String>
     <system:String x:Key="Tutorial_End">This marks the end of this tutorial. You can revisit this tutorial at any time by clicking the ? button again.</system:String>
     <system:String x:Key="Tutorial_Main_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
-    <system:String x:Key="Tutorial_Main_2">The panel to the left is the file viewer. This panel allows you to add, remove and modify files for you mod. Each file type has its own interface which is exlained in their own tutorials.</system:String>
+    <system:String x:Key="Tutorial_Main_2">The panel to the left is the file viewer. This panel allows you to add, remove and modify files for you mod. Each file type has its own interface which is explained in their own tutorials.</system:String>
     <system:String x:Key="Tutorial_Main_3">This toolbar allows you to add and modify files, hover over each button to know their exact functions. The grayed out buttons only work if a file is selected.</system:String>
     <system:String x:Key="Tutorial_Main_4">You can also use the context menu to add files. Each file has its own context menu that adds the same functionalities as the toolbar.</system:String>
     <system:String x:Key="Tutorial_Main_5">The add file button is used to create new files, it will open a new windows allowing you to create or import a file.</system:String>

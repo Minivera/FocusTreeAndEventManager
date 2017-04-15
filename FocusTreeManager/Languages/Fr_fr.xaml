@@ -18,7 +18,7 @@
     <system:String x:Key="Add_Prerequisite_Focus">Ajouter des prérequis optionnel au Focus</system:String>
     <system:String x:Key="Add_Required_Prerequisite_Focus">Ajouter un prérequis obligatoire au Focus</system:String>
     <system:String x:Key="Add_Relative_Pos">Rendre les coordonnées de ce focus relatif à...</system:String>
-    <system:String x:Key="Show_Relative_Pos">Afficher/Cacher les lignes de positonnement</system:String>
+    <system:String x:Key="Show_Relative_Pos">Afficher/Cacher les lignes de positionnement</system:String>
     <system:String x:Key="Add_New_File">Nouveau Fichier</system:String>
     <system:String x:Key="Add_Game_File">Ajouter un fichier</system:String>
     <system:String x:Key="Project_New">Créer un nouveau projet</system:String>
@@ -26,14 +26,14 @@
     <system:String x:Key="Project_Save">Sauvegarder le projet</system:String>
     <system:String x:Key="Project_Export">Export project</system:String>
     <system:String x:Key="Project_Save_As">Sauvegarder le projet sous</system:String>
-    <system:String x:Key="Project_Edit">Editer le project</system:String>
+    <system:String x:Key="Project_Edit">Éditer le project</system:String>
     <system:String x:Key="Project_Name">Nom du project</system:String>
     <system:String x:Key="Project_Select">Sélectionner ou créer un nouveau Projet</system:String>
     <system:String x:Key="Project_Default_Locale">Fichier de localisation par défaut</system:String>
     <system:String x:Key="Project_Preload">Précharger les fichiers du jeu?</system:String>
     <system:String x:Key="Project_Preload_Tooltip">Précharger le contenu du jeu va ralentir le chargement de l'application, mais tous les éléments de scripts seront disponible.</system:String>
     <system:String x:Key="Project_Mods_Folders">Dossiers de mods à charger en plus des fichiers de base</system:String>
-    <system:String x:Key="Project_Mods_Folders_Tooltip">Toutes les images dans ces dossiers seront disponibles pour l'application. Aditionnellement, les script seront aussi préchargés si cette option est sélectionnée.</system:String>
+    <system:String x:Key="Project_Mods_Folders_Tooltip">Toutes les images dans ces dossiers seront disponibles pour l'application. Additionnellement, les script seront aussi préchargés si cette option est sélectionnée.</system:String>
     <system:String x:Key="Files_Filename">Nom du fichier</system:String>
     <system:String x:Key="Focus_TAG">Tag du pays</system:String>
     <system:String x:Key="Focus_TAG_Tooltip">Le TAG du pay est disponible dans le Wiki.</system:String>
@@ -57,34 +57,34 @@
     <system:String x:Key="Focus_Cost_Tooltip">Vous pouvez changer le modificateur de coût dans les fichiers de définition (7 par défaut)</system:String>
     <system:String x:Key="Focus_Script">Script interne</system:String>
     <system:String x:Key="Event_Id">Id unique</system:String>
-    <system:String x:Key="Event_Id_Tooltip">Par défaut, l'identifiant unique est composé de l'espace de nom ainsi que de l'identifiant de l'évènement. Par-exemple, un évènement pour les pays baltes serait baltic.1</system:String>
+    <system:String x:Key="Event_Id_Tooltip">Par défaut, l'identifiant unique est composé de l'espace de nom ainsi que de l'identifiant de l’événement. Par-exemple, un événement pour les pays baltes serait baltic.1</system:String>
     <system:String x:Key="Event_Namespace">Espace de nom des événements (Doit être unique)</system:String>
-    <system:String x:Key="Event_Namespace_Tooltip">L'espace de nom est le conteneur dans lequel tout les évènements se retrouvent. Il doit être unique.</system:String>
+    <system:String x:Key="Event_Namespace_Tooltip">L'espace de nom est le conteneur dans lequel tout les événements se retrouvent. Il doit être unique.</system:String>
     <system:String x:Key="Event_Title">Titre</system:String>
-    <system:String x:Key="Event_Title_Tooltip">The titre de l'évènement est définit dans les fichiers de localisation sous une clef composée de l'identifiant unique suivi de .t. Par-exemple, un évènement des pays baltes aurait comme clef baltic.1.t</system:String>
+    <system:String x:Key="Event_Title_Tooltip">The titre de l’événement est définit dans les fichiers de localisation sous une clef composée de l'identifiant unique suivi de .t. Par-exemple, un événement des pays baltes aurait comme clef baltic.1.t</system:String>
     <system:String x:Key="Event_Type_Switch">Type d’événement</system:String>
-    <system:String x:Key="Event_Type_Switch_1">Évènement de pays</system:String>
-    <system:String x:Key="Event_Type_Switch_2">Évènement de nouvelles</system:String>
-    <system:String x:Key="Event_Type_Switch_Tooltip">IL y a deux types d'évènements, les évènement de pays et les évènements de nouvelles. Les évènements de nouvelles servent comme notifications et les évènements de pays permettent de demander un choix au joueur.</system:String>
+    <system:String x:Key="Event_Type_Switch_1">Événement de pays</system:String>
+    <system:String x:Key="Event_Type_Switch_2">Événement de nouvelles</system:String>
+    <system:String x:Key="Event_Type_Switch_Tooltip">IL y a deux types d’événements, les événement de pays et les événements de nouvelles. Les événements de nouvelles servent comme notifications et les événements de pays permettent de demander un choix au joueur.</system:String>
     <system:String x:Key="Event_Picture">Image</system:String>
     <system:String x:Key="Event_Picture_Tooltip">Toutes les images son chargés à partir du dossier du jeu sous GFX\event_pictures en format .dds.</system:String>
     <system:String x:Key="Event_Description">Description</system:String>
-    <system:String x:Key="Event_Description_Tooltip">La description de l'évènement est définit dans les fichiers de localisation sous une clef composée de l'identifiant unique suivi de .d. Par-exemple, un évènement des pays baltes aurait comme clef baltic.1.d</system:String>
+    <system:String x:Key="Event_Description_Tooltip">La description de l’événement est définit dans les fichiers de localisation sous une clef composée de l'identifiant unique suivi de .d. Par-exemple, un événement des pays baltes aurait comme clef baltic.1.d</system:String>
     <system:String x:Key="Event_Description_Options">Options de descriptions</system:String>
-    <system:String x:Key="Event_Description_Options_Tooltip">Les évènements de nouvelle ont plus d'une description possible. Lors de la modification du script, l'assignation text= permet de définir le clef de localization de cette description alors que le trigger permet de choisir quel pays aura accès à cette description.</system:String>
+    <system:String x:Key="Event_Description_Options_Tooltip">Les événements de nouvelle ont plus d'une description possible. Lors de la modification du script, l'assignation text= permet de définir le clef de localization de cette description alors que le trigger permet de choisir quel pays aura accès à cette description.</system:String>
     <system:String x:Key="Event_Description_Text">Texte localisé</system:String>
     <system:String x:Key="Event_Description_Script">Script</system:String>
     <system:String x:Key="Event_Major">L’événement est-il majeur?</system:String>
-    <system:String x:Key="Event_Major_Tooltip">Les évènements majeurs sont affichsé pour tous les pays.</system:String>
+    <system:String x:Key="Event_Major_Tooltip">Les événements majeurs sont affichés pour tous les pays.</system:String>
     <system:String x:Key="Event_Triggered">L’événement est-il uniquement exécuté?</system:String>
-    <system:String x:Key="Event_Triggered_Tooltip">Les évèneemnts qui sont identifiés comme éxécuté seulement ne peuvent définir un Mean Time To Happen, ils ne peuvent être lancé qu'en utilisant un script et la commande event = id.</system:String>
+    <system:String x:Key="Event_Triggered_Tooltip">Les événements qui sont identifiés comme exécuté seulement ne peuvent définir un Mean Time To Happen, ils ne peuvent être lancé qu'en utilisant un script et la commande event = id.</system:String>
     <system:String x:Key="Event_Hidden">L’événement est-il caché au joueur?</system:String>
-    <system:String x:Key="Event_Hidden_Tooltip">Les évènements cachés s'éxécutent silencieusement. Il n'est pas nécéssaire de localiser ces évènements comme ils ne seront pas affichés.</system:String>
+    <system:String x:Key="Event_Hidden_Tooltip">Les événements cachés s’exécutent silencieusement. Il n'est pas nécessaire de localiser ces événements comme ils ne seront pas affichés.</system:String>
     <system:String x:Key="Event_Fired_Once">L’événement est-il execute qu'une fois?</system:String>
-    <system:String x:Key="Event_Fired_Once_Tooltip">Un évènement qui est définit comme ne s'éxécutant qu'une seule fois ne pourra jamais être relancé.</system:String>
+    <system:String x:Key="Event_Fired_Once_Tooltip">Un événement qui est définit comme ne s’exécutant qu'une seule fois ne pourra jamais être relancé.</system:String>
     <system:String x:Key="Event_Script">Récompenses et triggers</system:String>
     <system:String x:Key="Event_Option">Options</system:String>
-    <system:String x:Key="Event_Option_Tooltip">Les options sont les choix que le joueur ou l'IA peut choisir pour cet évènement. Chaque option possède une clef de localisation composée de l'identifiant unique suivi de la lettre de l'option. Par exemple, la première option d'un évènement des pays baltes aurait comme clef baltic.1.a</system:String>
+    <system:String x:Key="Event_Option_Tooltip">Les options sont les choix que le joueur ou l'IA peut choisir pour cet événement. Chaque option possède une clef de localisation composée de l'identifiant unique suivi de la lettre de l'option. Par exemple, la première option d'un événement des pays baltes aurait comme clef baltic.1.a</system:String>
     <system:String x:Key="Event_Option_Name">Nom pour la localisation</system:String>
     <system:String x:Key="Event_Option_Text">Texte localisé</system:String>
     <system:String x:Key="Event_Option_Script">Script</system:String>
@@ -94,7 +94,7 @@
     <system:String x:Key="Comparator_Old_File">Vieux fichier</system:String>
     <system:String x:Key="Comparator_New_File">Nouveau fichier</system:String>
     <system:String x:Key="Localisation_Language">Langue définie dans les defines</system:String>
-    <system:String x:Key="Localisation_Language_Tooltip">Les définitions otn une liste de languages disponible pour la localisation. Tous les fichiers de localisation doivent identifier quel language ils représentent. Par-exemple, un fichier de localisation anglais aura l_english comme nom de language.</system:String>
+    <system:String x:Key="Localisation_Language_Tooltip">Les définitions ont une liste de languages disponible pour la localisation. Tous les fichiers de localisation doivent identifier quel language ils représentent. Par-exemple, un fichier de localisation anglais aura l_english comme nom de language.</system:String>
     <system:String x:Key="Localisation_Key">Clef</system:String>
     <system:String x:Key="Localisation_Value">Valeur associée</system:String>
     <system:String x:Key="Localisation_Reminder">Si vous ajoutez une nouvelle langue non-supportée, 
@@ -194,7 +194,7 @@
     <system:String x:Key="Application_Error_Transfer">Le projet n'a pas pu être transféré vers le nouveau format</system:String>
     <system:String x:Key="Application_Error_Script">Une erreur inconnue à empêchée le chargement du script.</system:String>
     <system:String x:Key="Application_Script_Fallback">Une erreur de syntaxe majeure existe dans ce fichier et empêche le chargement comme 
-        arbre de focus ou fichier d'évènements, le type génrique sera utilisé.</system:String>
+        arbre de focus ou fichier d’événements, le type générique sera utilisé.</system:String>
     <system:String x:Key="Application_Invalid_File">Le fichier n'est pas un fichier de script valide.</system:String>
     <system:String x:Key="Application_Project_Exists">Un projet au nom spécifié existe déjà, souhaitez-vous le remplacer?</system:String>
     <system:String x:Key="Application_Project_Exists_Header">Information</system:String>
@@ -204,8 +204,8 @@
     <system:String x:Key="Application_Game_Folder_Not_Set_Header">Mauvais dossier</system:String>
     <system:String x:Key="Window_File">Fichiers</system:String>
     <system:String x:Key="Window_Project">Projet</system:String>
-    <system:String x:Key="Status_Make_Exclusive">Cliquez sur un second focus pour rendre celui-ci mutuellement exclusif au focus identifié en rouge. Clickez n'importe où pour annuler.</system:String>
-    <system:String x:Key="Status_Make_Prerequisite">Cliquez sur un second focus pour le rendre prérequis au focus identifié en rouge. Clickez n'importe où pour annuler.</system:String>
-    <system:String x:Key="Status_Make_Relative">Cliquez sur un second focus pour rendre le positionnement du focus en rouge relatif à ce parent. Clickez n'importe où pour annuler.</system:String>
-    <system:String x:Key="Tutorial_Continue">Cliquez ici pour continer</system:String>
+    <system:String x:Key="Status_Make_Exclusive">Cliquez sur un second focus pour rendre celui-ci mutuellement exclusif au focus identifié en rouge. Cliquez n'importe où pour annuler.</system:String>
+    <system:String x:Key="Status_Make_Prerequisite">Cliquez sur un second focus pour le rendre prérequis au focus identifié en rouge. Cliquez n'importe où pour annuler.</system:String>
+    <system:String x:Key="Status_Make_Relative">Cliquez sur un second focus pour rendre le positionnement du focus en rouge relatif à ce parent. Cliquez n'importe où pour annuler.</system:String>
+    <system:String x:Key="Tutorial_Continue">Cliquez ici pour continuer</system:String>
 </ResourceDictionary>

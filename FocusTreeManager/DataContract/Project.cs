@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using FocusTreeManager.Model.TabModels;
+using System.Text;
 
 namespace FocusTreeManager.DataContract
 {
@@ -72,7 +73,8 @@ namespace FocusTreeManager.DataContract
             foreach (KeyValuePair<string, string> item in
                 LocalisationParser.ParseEverything(localisationList))
             {
-                using (TextWriter tw = new StreamWriter(path + item.Key + ".yml"))
+                using (Stream stream = File.OpenWrite(path + item.Key + ".yml"))
+                using (TextWriter tw = new StreamWriter(stream, new UTF8Encoding()))
                 {
                     tw.Write(item.Value);
                 }

@@ -276,3 +276,4 @@ application will use the text, otherwise, it will use the unique name.
 - Increased the size of some icons that were stupidly small.
 - Fixed the renaming textbox's position in the file viewer.
 - The rename textbox in the file viewer will now disappear when it loses focus (You click anywhere else).
+- Fixed encoding issues with the exported localisation files, will now be encoded in UTF-8 with BOM.
