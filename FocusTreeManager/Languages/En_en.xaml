@@ -204,21 +204,4 @@
     <system:String x:Key="Status_Make_Exclusive">Click on another focus to make it mutually exclusive with the red glowing focus. Click anywhere else to cancel.</system:String>
     <system:String x:Key="Status_Make_Prerequisite">Click on another focus to make it the prerequisite of the red glowing focus. Click anywhere to cancel.</system:String>
     <system:String x:Key="Status_Make_Relative">Click on another focus to make the red glowing focus' position relative to this parent. Click anywhere to cancel.</system:String>
-    <system:String x:Key="Tutorial_Continue">Click here to continue</system:String>
-    <system:String x:Key="Tutorial_End">This marks the end of this tutorial. You can revisit this tutorial at any time by clicking the ? button again.</system:String>
-    <system:String x:Key="Tutorial_Main_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
-    <system:String x:Key="Tutorial_Main_2">The panel to the left is the file viewer. This panel allows you to add, remove and modify files for you mod. Each file type has its own interface which is explained in their own tutorials.</system:String>
-    <system:String x:Key="Tutorial_Main_3">This toolbar allows you to add and modify files, hover over each button to know their exact functions. The grayed out buttons only work if a file is selected.</system:String>
-    <system:String x:Key="Tutorial_Main_4">You can also use the context menu to add files. Each file has its own context menu that adds the same functionalities as the toolbar.</system:String>
-    <system:String x:Key="Tutorial_Main_5">The add file button is used to create new files, it will open a new windows allowing you to create or import a file.</system:String>
-    <system:String x:Key="Tutorial_Main_6">When a file is selected, it can be deleted using the delete button or the context menu.</system:String>
-    <system:String x:Key="Tutorial_Main_7">The edit button will display a new windows to edit the file selected, the files are the same as when you added the file.</system:String>
-    <system:String x:Key="Tutorial_Main_8">A selected file can be renamed using the rename button. A text field will appear over the file name, allowing you to change it.</system:String>
-    <system:String x:Key="Tutorial_Main_9">When you have added a file, you can expand the file's type and double click or use the context menu to open it in the central panel.</system:String>
-    <system:String x:Key="Tutorial_Main_10">Any change can be undone or redone using the two buttons at the top of the screen, they also work on the various files.</system:String>
-    <system:String x:Key="Tutorial_Main_11">When you are ready to export your work, you can use the export button next to the undo button. It will display a new window allowing you to chose the destination for the export.</system:String>
-    <system:String x:Key="Tutorial_Main_12">The project button next to the export button will display the project panel. Click on this button to continue.</system:String>
-    <system:String x:Key="Tutorial_Main_13">The project panel allows you to create a new empty project, load an existing project, edit the current project or save the current project. Close this panel using the arrow button to continue.</system:String>
-    <system:String x:Key="Tutorial_Focus_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
-
 </ResourceDictionary>

@@ -11,6 +11,7 @@ using FocusTreeManager.Model;
 using FocusTreeManager.Model.TabModels;
 using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Views.UserControls
 {
@@ -60,11 +61,7 @@ namespace FocusTreeManager.Views.UserControls
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)

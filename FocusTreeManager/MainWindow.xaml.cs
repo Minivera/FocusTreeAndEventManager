@@ -45,22 +45,14 @@ namespace FocusTreeManager
             {
                 case "ShowAddFocus":
                     {
-                        ResourceDictionary resourceLocalization = new ResourceDictionary
-                        {
-                            Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                        };
-                        FocusFlyout.Header = resourceLocalization["Add_Focus"] as string;
+                        FocusFlyout.Header = LocalizationHelper.getValueForKey("Add_Focus");
                         new ViewModelLocator().EditFocus.SetupFlyout(msg.Sender, ModeType.Create);
                         FocusFlyout.IsOpen = true;
                         break;
                     }
                 case "ShowEditFocus":
                     {
-                        ResourceDictionary resourceLocalization = new ResourceDictionary
-                        {
-                            Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                        };
-                        FocusFlyout.Header = resourceLocalization["Edit_Focus"] as string;
+                        FocusFlyout.Header = LocalizationHelper.getValueForKey("Edit_Focus");
                         new ViewModelLocator().EditFocus.SetupFlyout(msg.Sender, ModeType.Edit);
                         FocusFlyout.IsOpen = true;
                         break;
@@ -123,17 +115,13 @@ namespace FocusTreeManager
 
         private async Task<MessageDialogResult> ShowSaveDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            string title = resourceLocalization["Exit_Confirm_Title"] as string;
-            string Message = resourceLocalization["Exit_Confirm"] as string;
+            string title = LocalizationHelper.getValueForKey("Exit_Confirm");
+            string Message = LocalizationHelper.getValueForKey("Exit_Confirm_Title");
             MetroDialogSettings settings = new MetroDialogSettings
             {
-                AffirmativeButtonText = resourceLocalization["Command_Save"] as string,
-                NegativeButtonText = resourceLocalization["Command_Cancel"] as string,
-                FirstAuxiliaryButtonText = resourceLocalization["Command_Quit"] as string
+                AffirmativeButtonText = LocalizationHelper.getValueForKey("Command_Save"),
+                NegativeButtonText = LocalizationHelper.getValueForKey("Command_Cancel"),
+                FirstAuxiliaryButtonText = LocalizationHelper.getValueForKey("Command_Quit")
             };
             return await this.ShowMessageAsync(title, Message, 
                             MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
@@ -158,22 +146,14 @@ namespace FocusTreeManager
 
         private async Task<MessageDialogResult> ShowWrongGameFolderDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            string title = resourceLocalization["Application_Game_Folder_Not_Set_Header"] as string;
-            string Message = resourceLocalization["Application_Game_Folder_Not_Set"] as string;
+            string title = LocalizationHelper.getValueForKey("Application_Game_Folder_Not_Set_Header");
+            string Message = LocalizationHelper.getValueForKey("Application_Game_Folder_Not_Set");
             return await this.ShowMessageAsync(title, Message);
         }
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void ProjectButton_Click(object sender, RoutedEventArgs e)

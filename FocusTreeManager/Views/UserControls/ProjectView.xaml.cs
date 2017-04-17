@@ -38,11 +38,7 @@ namespace FocusTreeManager.Views.UserControls
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

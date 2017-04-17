@@ -164,19 +164,15 @@ namespace FocusTreeManager.Adorners
         {
             //Write text somewhere not in the way
             Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(Application.Current);
-            ResourceDictionary language = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
             TextBlock block = new TextBlock
             {
-                Text = (string)language[context.CurrentStep.TextKey],
+                Text = LocalizationHelper.getValueForKey(context.CurrentStep.TextKey, LocalesSource.Tutorial),
                 Foreground = Brushes.White,
                 FontSize = 18,
                 TextWrapping = TextWrapping.Wrap
             };
             FormattedText formattedText = new FormattedText(
-                (string) language[context.CurrentStep.TextKey],
+                LocalizationHelper.getValueForKey(context.CurrentStep.TextKey, LocalesSource.Tutorial),
                 CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch),
                 block.FontSize, Brushes.White)
@@ -188,7 +184,7 @@ namespace FocusTreeManager.Adorners
             border = new Border
             {
                 Height = formattedText.Height + ButtonHeightAndMargin,
-                Padding = new Thickness(10),
+                Padding = new Thickness(5),
                 Width = formattedText.Width + bestMargin,
                 Background = (Brush)appStyle.Item1.Resources["WindowBackgroundBrush"],
                 BorderThickness = new Thickness(1),
@@ -204,7 +200,7 @@ namespace FocusTreeManager.Adorners
             {
                 ((StackPanel)border.Child).Children.Add(new Button
                 {
-                    Content = (string)language["Tutorial_Continue"],
+                    Content = LocalizationHelper.getValueForKey("Tutorial_Continue", LocalesSource.Tutorial),
                     Style = (Style)parent.FindResource("SquareButtonStyle"),
                     Command = context.ContinueCommand,
                     Margin = new Thickness(5),
@@ -221,13 +217,20 @@ namespace FocusTreeManager.Adorners
             if (string.IsNullOrEmpty(context.CurrentStep.ComponentToHighlight)) return null;
             //Try to get the Type
             Type ComponentType = Type.GetType(context.CurrentStep.ComponentToHighlight);
+            FrameworkElement ToSearch;
             if (ComponentType != null)
             {
-                return (FrameworkElement)UiHelper.FindChildWithType(element, ComponentType);
+                ToSearch = (FrameworkElement)UiHelper.FindChildWithType(parent, ComponentType);
             }
             //Otherwise, return with string
-            return (FrameworkElement)UiHelper.FindChildWithName(parent, 
+            ToSearch = (FrameworkElement)UiHelper.FindChildWithName(parent, 
                                         context.CurrentStep.ComponentToHighlight);
+            if (ToSearch == null)
+            {
+                throw new InvalidOperationException("An element defined to be highlighted " +
+                                                    "in a tutorial must exist.");
+            }
+            return ToSearch;
         }
 
         private Rect getNotInTheWayRectangle(Rect InTheWayrect,

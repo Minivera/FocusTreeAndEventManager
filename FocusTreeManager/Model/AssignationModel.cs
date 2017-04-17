@@ -6,6 +6,7 @@ using System;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.Windows;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Model
 {
@@ -15,11 +16,7 @@ namespace FocusTreeManager.Model
         {
             get
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary
-                {
-                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                };
-                return resourceLocalization[LocalizationKey] as string;
+                return LocalizationHelper.getValueForKey(LocalizationKey);
             }
         }
 

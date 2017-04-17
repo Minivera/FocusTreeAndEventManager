@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using FocusTreeManager.Helper;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -77,11 +78,7 @@ namespace FocusTreeManager.ViewModel
             FindCommand = new RelayCommand(SelectGameFolder);
             if (!Configurator.getFirstStart())
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary
-                {
-                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                };
-                Message = resourceLocalization["First_Start"] as string;
+                Message = LocalizationHelper.getValueForKey("First_Start");
             }
             else
             {
@@ -91,13 +88,9 @@ namespace FocusTreeManager.ViewModel
 
         public void SelectGameFolder()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
             CommonOpenFileDialog dialog = new CommonOpenFileDialog
             {
-                Title = resourceLocalization["Game_Path_Title"] as string,
+                Title = LocalizationHelper.getValueForKey("Game_Path_Title"),
                 IsFolderPicker = true,
                 InitialDirectory = "C:",
                 AddToMostRecentlyUsedList = false,

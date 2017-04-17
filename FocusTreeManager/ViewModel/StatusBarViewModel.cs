@@ -2,6 +2,7 @@
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -43,11 +44,7 @@ namespace FocusTreeManager.ViewModel
                 Message = "";
                 return;
             }
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            string Notification = resourceLocalization[msg.Notification] as string;
+            string Notification = LocalizationHelper.getValueForKey(msg.Notification);
             if (string.IsNullOrEmpty(Notification)) return;
             Message = Notification;
             if (msg.Target == this)

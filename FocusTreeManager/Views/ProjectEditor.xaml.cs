@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FocusTreeManager.Helper;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
@@ -25,23 +26,17 @@ namespace FocusTreeManager.Views
                 loadLocales();
             }
         }
-        
+
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             CommonOpenFileDialog dialog = new CommonOpenFileDialog
             {
-                Title = resourceLocalization["Project_Select"] as string,
+                Title = LocalizationHelper.getValueForKey("Project_Select"),
                 InitialDirectory = "C:",
                 AddToMostRecentlyUsedList = false,
                 AllowNonFileSystemItems = false,

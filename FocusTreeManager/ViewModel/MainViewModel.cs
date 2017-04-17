@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FocusTreeManager.Model.TabModels;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -107,14 +108,12 @@ namespace FocusTreeManager.ViewModel
         {
             if (isProjectExist)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                string Title = resourceLocalization["Exit_Confirm_Title"] as string;
-                string Message = resourceLocalization["Delete_Confirm"] as string;
+                string Title = LocalizationHelper.getValueForKey("Exit_Confirm_Title");
+                string Message = LocalizationHelper.getValueForKey("Delete_Confirm");
                 MetroDialogSettings settings = new MetroDialogSettings();
-                settings.AffirmativeButtonText = resourceLocalization["Command_Save"] as string;
-                settings.NegativeButtonText = resourceLocalization["Command_Cancel"] as string;
-                settings.FirstAuxiliaryButtonText = resourceLocalization["Command_Continue"] as string;
+                settings.AffirmativeButtonText = LocalizationHelper.getValueForKey("Command_Save");
+                settings.NegativeButtonText = LocalizationHelper.getValueForKey("Command_Cancel");
+                settings.FirstAuxiliaryButtonText = LocalizationHelper.getValueForKey("Command_Continue");
                 MessageDialogResult Result = await coordinator.ShowMessageAsync(this, Title, Message,
                                 MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, settings);
                 if (Result == MessageDialogResult.Affirmative)
@@ -160,52 +159,37 @@ namespace FocusTreeManager.ViewModel
             ProjectEditor dialog = new ProjectEditor();
             Vm.Project = new ProjectModel();
             dialog.ShowDialog();
-            if (Vm.Project != null)
+            if (Vm.Project == null) return;
+            //Check if the files already exists, if yes, show a message
+            if (File.Exists(Vm.Project.Filename))
             {
-                if (File.Exists(Vm.Project.Filename))
+                MessageDialogResult Result = await ShowProjectExistDialog();
+                if (Result != MessageDialogResult.Affirmative)
                 {
-                    MessageDialogResult Result = await ShowProjectExistDialog();
-                    if (Result == MessageDialogResult.Affirmative)
-                    {
-                        Project = Vm.Project;
-                        IsProjectExist = true;
-                        Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
-                                    "RefreshProjectViewer"));
-                        Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-                        Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
-                        RaisePropertyChanged("isProjectExist");
-                        TabsModelList = new ObservableCollection<ObservableObject>();
-                        RaisePropertyChanged("TabsModelList");
-                        UndoService.Current[this].Clear();
-                        DataHolder.Instance.SaveContract(Project);
-                    }
-                }
-                else
-                {
-                    Project = Vm.Project;
-                    IsProjectExist = true;
-                    Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
-                                "RefreshProjectViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
-                    Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
-                    RaisePropertyChanged("isProjectExist");
-                    TabsModelList = new ObservableCollection<ObservableObject>();
-                    RaisePropertyChanged("TabsModelList");
-                    UndoService.Current[this].Clear();
-                    DataHolder.Instance.SaveContract(Project);
+                    //If the user does not want the file to be overwritten
+                    return;
                 }
             }
+            Project = Vm.Project;
+            IsProjectExist = true;
+            Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
+                        "RefreshProjectViewer"));
+            Messenger.Default.Send(new NotificationMessage(this, "RefreshTabViewer"));
+            Messenger.Default.Send(new NotificationMessage(this, "HideProjectControl"));
+            RaisePropertyChanged(() => IsProjectExist);
+            TabsModelList = new ObservableCollection<ObservableObject>();
+            RaisePropertyChanged(() => TabsModelList);
+            UndoService.Current[this].Clear();
+            DataHolder.Instance.SaveContract(Project);
         }
 
         async private Task<MessageDialogResult> ShowProjectExistDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            string Title = resourceLocalization["Application_Project_Exists_Header"] as string;
-            string Message = resourceLocalization["Application_Project_Exists"] as string;
+            string Title = LocalizationHelper.getValueForKey("Application_Project_Exists_Header");
+            string Message = LocalizationHelper.getValueForKey("Application_Project_Exists");
             MetroDialogSettings settings = new MetroDialogSettings();
-            settings.AffirmativeButtonText = resourceLocalization["Command_Yes"] as string;
-            settings.NegativeButtonText = resourceLocalization["Command_No"] as string;
+            settings.AffirmativeButtonText = LocalizationHelper.getValueForKey("Command_Yes");
+            settings.NegativeButtonText = LocalizationHelper.getValueForKey("Command_No");
             return await coordinator.ShowMessageAsync(this, Title, Message,
                 MessageDialogStyle.AffirmativeAndNegative, settings);
         }
@@ -225,9 +209,7 @@ namespace FocusTreeManager.ViewModel
             try
             {
                 var dialog = new CommonOpenFileDialog();
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                dialog.Title = resourceLocalization["Project_Load"] as string;
+                dialog.Title = LocalizationHelper.getValueForKey("Project_Load");
                 dialog.InitialDirectory = "C:";
                 dialog.AddToMostRecentlyUsedList = false;
                 dialog.AllowNonFileSystemItems = false;
@@ -247,37 +229,33 @@ namespace FocusTreeManager.ViewModel
             }
             catch (Exception)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Loading"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Loading");
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
         }
 
         public void LoadProject(string path)
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
             if (Path.GetExtension(path) == ".h4prj")
             {
-                string Title = resourceLocalization["Application_Loading"] as string;
-                string Message = resourceLocalization["Application_Legacy_Loading"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Loading");
+                string Message = LocalizationHelper.getValueForKey("Application_Legacy_Loading");
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
             if (!DataHolder.LoadContract(path))
             {
-                string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Transfer"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Transfer");
                 coordinator.ShowMessageAsync(this, Title, Message);
                 return;
             }
             project = ProjectModel.createFromDataContract(DataHolder.Instance.Project);
             AsyncImageLoader.AsyncImageLoader.Worker.RefreshFromMods();
             project.Filename = path;
-            RaisePropertyChanged("isProjectExist");
+            RaisePropertyChanged(() => IsProjectExist);
             TabsModelList = new ObservableCollection<ObservableObject>();
-            RaisePropertyChanged("TabsModelList");
+            RaisePropertyChanged(() => TabsModelList);
             IsProjectExist = true;
             Messenger.Default.Send(new NotificationMessage(this, (new ViewModelLocator()).ProjectView,
                 "RefreshProjectViewer"));
@@ -297,10 +275,8 @@ namespace FocusTreeManager.ViewModel
                 }
                 catch (Exception)
                 {
-                    ResourceDictionary resourceLocalization = new ResourceDictionary();
-                    resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                    string Title = resourceLocalization["Application_Error"] as string;
-                    string Message = resourceLocalization["Application_Error_Saving"] as string;
+                    string Title = LocalizationHelper.getValueForKey("Application_Error");
+                    string Message = LocalizationHelper.getValueForKey("Application_Error_Saving");
                     coordinator.ShowMessageAsync(this, Title, Message);
                 }
             }
@@ -317,9 +293,7 @@ namespace FocusTreeManager.ViewModel
             try
             {
                 var dialog = new CommonOpenFileDialog();
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                dialog.Title = resourceLocalization["Project_Save"] as string;
+                dialog.Title = LocalizationHelper.getValueForKey("Project_Save");
                 dialog.InitialDirectory = string.IsNullOrEmpty(DataHolder.Instance.Project.filename) ? "C:" 
                     : DataHolder.Instance.Project.filename;
                 dialog.AddToMostRecentlyUsedList = false;
@@ -341,10 +315,8 @@ namespace FocusTreeManager.ViewModel
             }
             catch (Exception)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary();
-                resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-                string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Saving"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Saving");
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
         }
@@ -356,6 +328,7 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenFocusTree")
             {
                 FocusGridModel container = msg.Sender as FocusGridModel;
+                if (TabsModelList.Contains(container)) return;
                 CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
@@ -363,6 +336,7 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenLocalisation")
             {
                 LocalisationModel container = msg.Sender as LocalisationModel;
+                if (TabsModelList.Contains(container)) return;
                 CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
@@ -370,6 +344,7 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenEventList")
             {
                 EventTabModel container = msg.Sender as EventTabModel;
+                if (TabsModelList.Contains(container)) return;
                 CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
@@ -377,6 +352,7 @@ namespace FocusTreeManager.ViewModel
             if (msg.Notification == "OpenScriptList")
             {
                 ScriptModel container = msg.Sender as ScriptModel;
+                if (TabsModelList.Contains(container)) return;
                 CheckForChanges(container);
                 TabsModelList.Add(container);
                 RaisePropertyChanged("TabsModelList");
@@ -446,13 +422,11 @@ namespace FocusTreeManager.ViewModel
 
         async public Task<MessageDialogResult> ShowFileChangedDialog()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            string Title = resourceLocalization["Application_File_Changed_Header"] as string;
-            string Message = resourceLocalization["Application_File_Changed"] as string;
+            string Title = LocalizationHelper.getValueForKey("Application_File_Changed_Header");
+            string Message = LocalizationHelper.getValueForKey("Application_File_Changed");
             MetroDialogSettings settings = new MetroDialogSettings();
-            settings.AffirmativeButtonText = resourceLocalization["Command_Yes"] as string;
-            settings.NegativeButtonText = resourceLocalization["Command_No"] as string;
+            settings.AffirmativeButtonText = LocalizationHelper.getValueForKey("Command_Yes");
+            settings.NegativeButtonText = LocalizationHelper.getValueForKey("Command_No");
             return await coordinator.ShowMessageAsync(this, Title, Message, 
                 MessageDialogStyle.AffirmativeAndNegative, settings);
         }
@@ -460,9 +434,7 @@ namespace FocusTreeManager.ViewModel
         public void ExportProject()
         {
             var dialog = new CommonOpenFileDialog();
-            ResourceDictionary resourceLocalization = new ResourceDictionary();
-            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative);
-            dialog.Title = resourceLocalization["Project_Export"] as string;
+            dialog.Title = LocalizationHelper.getValueForKey("Project_Export");
             dialog.IsFolderPicker = true;
             dialog.InitialDirectory = "C:";
             dialog.AddToMostRecentlyUsedList = false;

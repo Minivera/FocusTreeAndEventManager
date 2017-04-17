@@ -22,6 +22,22 @@ using MonitoredUndo;
 
 namespace FocusTreeManager.Model.TabModels
 {
+    public enum RelationMode
+    {
+        None,
+        MutuallyExclusive,
+        Prerequisite,
+        RelativeTo,
+        Add,
+        Edit
+    }
+
+    public enum RelationModeParam
+    {
+        Required,
+        Optional
+    }
+
     public class FocusGridModel : ObservableObject, ISupportsUndo
     {
         private const int MIN_ROW_COUNT = 7;
@@ -34,6 +50,12 @@ namespace FocusTreeManager.Model.TabModels
         public List<FocusModel> SelectedFocuses;
 
         public CanvasLine selectedLine { get; set; }
+
+        public RelationMode ModeType {
+            get;
+            set; }
+
+        public RelationModeParam ModeParam { get; set; }
 
         private int rowCount;
 
@@ -249,6 +271,7 @@ namespace FocusTreeManager.Model.TabModels
 
         internal void SetupCommons()
         {
+            ModeType = RelationMode.None;
             SelectedFocuses = new List<FocusModel>();
             canvasLines = new ObservableCollection<CanvasLine>();
             FociList = new ObservableCollection<FocusModel>();
@@ -466,7 +489,7 @@ namespace FocusTreeManager.Model.TabModels
 
         public void AddFocus(object sender)
         {
-            Application.Current.Properties["Mode"] = "Add";
+            ModeType = RelationMode.Add;
             UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddFocus", false);
             Messenger.Default.Send(new NotificationMessage(sender, "ShowAddFocus"));
         }
@@ -498,15 +521,6 @@ namespace FocusTreeManager.Model.TabModels
                 UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                 CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
                 DrawOnCanvas();
-            }
-            else
-            {
-                if (ChosenFocusForLink == null) return;
-                Application.Current.Properties["Mode"] = null;
-                ChosenFocusForLink.IsSelected = false;
-                ChosenFocusForLink = null;
-                Messenger.Default.Send(new NotificationMessage(this,
-                    new ViewModelLocator().StatusBar, "Clear_message"));
             }
         }
 
@@ -569,25 +583,25 @@ namespace FocusTreeManager.Model.TabModels
             switch (msg.Notification)
             {
                 case "CloseEditFocus":
-                    switch ((string) Application.Current.Properties["Mode"])
+                    switch (ModeType)
                     {
-                        case "Add":
+                        case RelationMode.Add:
                             ManageFocusViewModel viewModel = msg.Sender as ManageFocusViewModel;
                             if (viewModel != null) addFocusToList(viewModel.Focus);
                             DrawOnCanvas();
                             break;
-                        case "Edit":
+                        case RelationMode.Edit:
                             EditGridDefinition();
                             DrawOnCanvas();
                             break;
                     }
-                    Application.Current.Properties["Mode"] = null;
+                    ModeType = RelationMode.None;
                     break;
                 case "DeleteFocus":
                     DeleteFocus(Model);
                     break;
                 case "AddFocusMutually":
-                    Application.Current.Properties["Mode"] = "Mutually";
+                    ModeType = RelationMode.MutuallyExclusive;
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
@@ -600,19 +614,23 @@ namespace FocusTreeManager.Model.TabModels
                     {
                         UndoService.Current[GetUndoRoot()]
                             .BeginChangeSetBatch("AddMutuallyExclusive", false);
-                        Application.Current.Properties["Mode"] = null;
+                        ModeType = RelationMode.None;
                         ChosenFocusForLink.IsSelected = false;
                         MutuallyExclusiveSetModel tempo = 
                             new MutuallyExclusiveSetModel(ChosenFocusForLink, Model);
                         ChosenFocusForLink.MutualyExclusive.Add(tempo);
                         Model?.MutualyExclusive.Add(tempo);
+                        ChosenFocusForLink.IsSelected = false;
+                        ChosenFocusForLink = null;
+                        Messenger.Default.Send(new NotificationMessage(this,
+                            new ViewModelLocator().StatusBar, "Clear_message"));
                         UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
                     break;
                 case "AddFocusPrerequisite":
-                    Application.Current.Properties["Mode"] = "Prerequisite";
+                    ModeType = RelationMode.Prerequisite;
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
@@ -625,18 +643,16 @@ namespace FocusTreeManager.Model.TabModels
                     {
                         UndoService.Current[GetUndoRoot()]
                             .BeginChangeSetBatch("AddPrerequisite", false);
-                        Application.Current.Properties["Mode"] = null;
-                        string Type = (string) Application.Current.Properties["ModeParam"];
-                        Application.Current.Properties["ModeParam"] = null;
+                        ModeType = RelationMode.None;
                         ChosenFocusForLink.IsSelected = false;
-                        if (Type == "Required")
+                        if (ModeParam == RelationModeParam.Required)
                         {
                             //Create new set
                             PrerequisitesSetModel set = new PrerequisitesSetModel(ChosenFocusForLink);
                             set.FociList.Add(Model);
                             ChosenFocusForLink.Prerequisite.Add(set);
                         }
-                        else
+                        else if (ModeParam == RelationModeParam.Optional)
                         {
                             //Create new set if no exist
                             if (!ChosenFocusForLink.Prerequisite.Any())
@@ -647,13 +663,17 @@ namespace FocusTreeManager.Model.TabModels
                             //Add Model to last Set
                             ChosenFocusForLink.Prerequisite.Last().FociList.Add(Model);
                         }
+                        ChosenFocusForLink.IsSelected = false;
+                        ChosenFocusForLink = null;
+                        Messenger.Default.Send(new NotificationMessage(this,
+                            new ViewModelLocator().StatusBar, "Clear_message"));
                         UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                         RaisePropertyChanged(() => FociList);
                         DrawOnCanvas();
                     }
                     break;
                 case "MakeRelativeTo":
-                    Application.Current.Properties["Mode"] = "RelativeTo";
+                    ModeType = RelationMode.RelativeTo;
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
@@ -668,16 +688,32 @@ namespace FocusTreeManager.Model.TabModels
                         {
                             UndoService.Current[GetUndoRoot()]
                                 .BeginChangeSetBatch("MakeRelativeTo", false);
-                            Application.Current.Properties["Mode"] = null;
+                            ModeType = RelationMode.None;
                             ChosenFocusForLink.IsSelected = false;
                             ChosenFocusForLink.X = ChosenFocusForLink.DisplayX - Model.DisplayX;
                             ChosenFocusForLink.Y = ChosenFocusForLink.DisplayY - Model.DisplayY;
                             ChosenFocusForLink.CoordinatesRelativeTo = Model;
+                            ChosenFocusForLink.IsSelected = false;
+                            ChosenFocusForLink = null;
+                            Messenger.Default.Send(new NotificationMessage(this,
+                                new ViewModelLocator().StatusBar, "Clear_message"));
                             UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                             RaisePropertyChanged(() => FociList);
                             DrawOnCanvas();
                         }
                     }
+                    break;
+                case "PositionChanged":
+                    if (Model != null)
+                    {
+                        foreach (FocusModel focus in FociList.Where(f => f.CoordinatesRelativeTo == Model))
+                        {
+                            focus.RaisePropertyChanged(() => focus.DisplayX);
+                            focus.RaisePropertyChanged(() => focus.DisplayY);
+                        }
+                        DrawOnCanvas();
+                    }
+                    UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
                     break;
             }
             if (msg.Target == this)

@@ -175,6 +175,7 @@
     <Compile Include="DataContract\FociGridContainer.cs" />
     <Compile Include="DataContract\Focus.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Helper\LocalizationHelper.cs" />
     <Compile Include="Helper\TutorialHelper.cs" />
     <Compile Include="Model\ISet.cs" />
     <Compile Include="DataContract\LocaleContent.cs" />
@@ -295,6 +296,10 @@
     <Compile Include="Views\UserControls\TutorialButton.xaml.cs">
       <DependentUpon>TutorialButton.xaml</DependentUpon>
     </Compile>
+    <Page Include="Languages\En_en_Tutorial.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Languages\En_en.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -566,6 +571,7 @@
   <ItemGroup>
     <Content Include="Common\Tutorials\DefaultTutorial.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

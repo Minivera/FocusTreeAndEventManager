@@ -158,11 +158,15 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
+                UndoService.Current[GetUndoRoot()]
+                    .BeginChangeSetBatch("ChangeX", false);
                 DefaultChangeFactory.Current.OnChanging(this,
                          "X", x, value, "X Changed");
                 x = value;
                 RaisePropertyChanged(() => X);
                 RaisePropertyChanged(() => DisplayX);
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().Main.SelectedTab, "PositionChanged"));
             }
         }
 
@@ -204,11 +208,15 @@ namespace FocusTreeManager.Model
                 {
                     return;
                 }
+                UndoService.Current[GetUndoRoot()]
+                    .BeginChangeSetBatch("ChangeY", false);
                 DefaultChangeFactory.Current.OnChanging(this,
                          "Y", y, value, "Y Changed");
                 y = value;
                 RaisePropertyChanged(() => Y);
                 RaisePropertyChanged(() => DisplayY);
+                Messenger.Default.Send(new NotificationMessage(this,
+                    new ViewModelLocator().Main.SelectedTab, "PositionChanged"));
             }
         }
 
@@ -455,7 +463,9 @@ namespace FocusTreeManager.Model
 
         public void Edit()
         {
-            Application.Current.Properties["Mode"] = "Edit";
+            FocusGridModel tab = new ViewModelLocator().Main.SelectedTab as FocusGridModel;
+            if (tab == null) return;
+            tab.ModeType = RelationMode.Edit;
             Messenger.Default.Send(new NotificationMessage(this, "ShowEditFocus"));
         }
 
@@ -477,7 +487,9 @@ namespace FocusTreeManager.Model
 
         public void AddPrerequisite(string Type)
         {
-            Application.Current.Properties["ModeParam"] = Type;
+            FocusGridModel tab = new ViewModelLocator().Main.SelectedTab as FocusGridModel;
+            if (tab == null) return;
+            tab.ModeParam = Type == "Required" ? RelationModeParam.Required : RelationModeParam.Optional;
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().Main.SelectedTab, "AddFocusPrerequisite"));
             Messenger.Default.Send(new NotificationMessage(this,
@@ -502,20 +514,22 @@ namespace FocusTreeManager.Model
 
         public void FinishSetCommands()
         {
-            if ((string)Application.Current.Properties["Mode"] == "Mutually")
+            FocusGridModel tab = new ViewModelLocator().Main.SelectedTab as FocusGridModel;
+            if (tab == null) return;
+            switch (tab.ModeType)
             {
-                Messenger.Default.Send(new NotificationMessage(this,
-                    new ViewModelLocator().Main.SelectedTab, "FinishAddFocusMutually"));
-            }
-            if ((string)Application.Current.Properties["Mode"] == "Prerequisite")
-            {
-                Messenger.Default.Send(new NotificationMessage(this,
-                    new ViewModelLocator().Main.SelectedTab, "FinishAddFocusPrerequisite"));
-            }
-            if ((string)Application.Current.Properties["Mode"] == "RelativeTo")
-            {
-                Messenger.Default.Send(new NotificationMessage(this,
-                    new ViewModelLocator().Main.SelectedTab, "FinishMakeRelativeTo"));
+                case RelationMode.MutuallyExclusive:
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Main.SelectedTab, "FinishAddFocusMutually"));
+                    break;
+                case RelationMode.Prerequisite:
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Main.SelectedTab, "FinishAddFocusPrerequisite"));
+                    break;
+                case RelationMode.RelativeTo:
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Main.SelectedTab, "FinishMakeRelativeTo"));
+                    break;
             }
             Messenger.Default.Send(new NotificationMessage(this,
                 new ViewModelLocator().StatusBar, "Clear_message"));

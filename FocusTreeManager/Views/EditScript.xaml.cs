@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using FocusTreeManager.ViewModel;
 using static FocusTreeManager.ViewModel.ScripterControlsViewModel;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Views
 {
@@ -29,11 +30,7 @@ namespace FocusTreeManager.Views
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
     }
 }

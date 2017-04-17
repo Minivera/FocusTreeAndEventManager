@@ -47,11 +47,11 @@ namespace FocusTreeManager.ViewModel
 
         private void AddElement()
         {
-            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddAnyFile", false);
             FileManager dialog = new FileManager(ModeType.Create);
             dialog.ShowDialog();
             ObservableObject File = (new ViewModelLocator()).FileManager.File;
             if (File == null) return;
+            UndoService.Current[GetUndoRoot()].BeginChangeSetBatch("AddAnyFile", false);
             FocusGridModel file = File as FocusGridModel;
             if (file != null)
             {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FocusTreeManager.CodeStructures.CodeExceptions;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
@@ -94,11 +95,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void UserControlRendered()

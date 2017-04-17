@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using FocusTreeManager.CodeStructures;
 using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Views.UserControls
 {
@@ -27,11 +28,7 @@ namespace FocusTreeManager.Views.UserControls
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

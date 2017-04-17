@@ -71,11 +71,7 @@ namespace FocusTreeManager.Views.UserControls
 
         private void loadLocales()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
-            Resources.MergedDictionaries.Add(resourceLocalization);
+            Resources.MergedDictionaries.Add(LocalizationHelper.getLocale());
         }
 
         private Point anchorPoint;
@@ -142,41 +138,49 @@ namespace FocusTreeManager.Views.UserControls
 
         private void Focus_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            FocusGridModel model = DataContext as FocusGridModel;
+            if (model == null) return;
             Focus element = sender as Focus;
-            if (element != null && !element.IsMouseCaptured)
+            if (element != null && !element.IsMouseCaptured && model.ModeType == RelationMode.None)
             {
+                //If not holding CTRL
+                if (Keyboard.Modifiers != ModifierKeys.Control)
+                {
+                    //Clear all selected
+                    model?.ClearSelected();
+                }
                 //If it was just a click, add this focus to the selected
-                FocusGridModel model = DataContext as FocusGridModel;
-                model?.ClearSelected();
                 model?.SelectFocus(element);
                 IsDragging = false;
                 Source = null;
                 DraggedElement.Clear();
-                return;
             }
-            if (Source == null)
+            else if (model.ModeType == RelationMode.None)
             {
-                return;
+                if (Source == null)
+                {
+                    return;
+                }
+                Source.ReleaseMouseCapture();
+                foreach (Focus focus in DraggedElement)
+                {
+                    Image image = UiHelper.FindChildWithName(focus, "FocusIcon") as Image;
+                    if (image == null) return;
+                    Point basepos = image.TranslatePoint(new Point(0, 0), ListGrid);
+                    //Kill the transform 
+                    focus.RenderTransform = new TranslateTransform();
+                    //Change the position after applying the transform
+                    ((FocusGridModel)DataContext).ChangePosition(focus.DataContext, 
+                        new Point(basepos.X + 45, basepos.Y));
+                }
+                IsDragging = false;
+                transform.X = 0;
+                transform.Y = 0;
+                Source.Cursor = null;
+                Source = null;
+                DraggedElement.Clear();
+                e.Handled = true;
             }
-            Source.ReleaseMouseCapture();
-            foreach (Focus focus in DraggedElement)
-            {
-                Image image = UiHelper.FindChildWithName(focus, "FocusIcon") as Image;
-                if (image == null) return;
-                Point basepos = image.TranslatePoint(new Point(0, 0), ListGrid);
-                //Kill the transform 
-                focus.RenderTransform = new TranslateTransform();
-                //Change the position after applying the transform
-                ((FocusGridModel)DataContext).ChangePosition(focus.DataContext, 
-                    new Point(basepos.X + 45, basepos.Y));
-            }
-            IsDragging = false;
-            transform.X = 0;
-            transform.Y = 0;
-            Source.Cursor = null;
-            Source = null;
-            DraggedElement.Clear();
-            e.Handled = true;
         }
 
         private bool IsShown;

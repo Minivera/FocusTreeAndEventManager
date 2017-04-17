@@ -4,6 +4,7 @@ using FocusTreeManager.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -73,13 +74,9 @@ namespace FocusTreeManager.ViewModel
 
         public void AddModFolder()
         {
-            ResourceDictionary resourceLocalization = new ResourceDictionary
-            {
-                Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-            };
             CommonOpenFileDialog dialog = new CommonOpenFileDialog
             {
-                Title = resourceLocalization["Game_Path_Title"] as string,
+                Title = LocalizationHelper.getValueForKey("Game_Path_Title"),
                 IsFolderPicker = true,
                 InitialDirectory = Environment.GetFolderPath(Environment.
                                    SpecialFolder.MyDocuments),

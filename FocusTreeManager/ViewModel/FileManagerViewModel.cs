@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using FocusTreeManager.Model.TabModels;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -57,13 +58,9 @@ namespace FocusTreeManager.ViewModel
             File = null;
             try
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary
-                {
-                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                };
                 CommonOpenFileDialog dialog = new CommonOpenFileDialog
                 {
-                    Title = resourceLocalization["Add_Game_File"] as string,
+                    Title = LocalizationHelper.getValueForKey("Add_Game_File"),
                     InitialDirectory = Configurator.getGamePath(),
                     AddToMostRecentlyUsedList = false,
                     AllowNonFileSystemItems = false,
@@ -132,11 +129,8 @@ namespace FocusTreeManager.ViewModel
                         }
                         catch (Exception)
                         {
-                            resourceLocalization.Source = new Uri(Configurator.getLanguageFile(), 
-                                UriKind.Relative);
-                            string Title = resourceLocalization["Application_Error"] as string;
-                            string Message = resourceLocalization["Application_Script_Fallback"] 
-                                as string;
+                            string Title = LocalizationHelper.getValueForKey("Application_Error");
+                            string Message = LocalizationHelper.getValueForKey("Application_Script_Fallback");
                             coordinator.ShowMessageAsync(this, Title, Message);
                             //If it crashed, it is possible it was a generic file
                             File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
@@ -148,23 +142,15 @@ namespace FocusTreeManager.ViewModel
             }
             catch (SyntaxException e)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary
-                {
-                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                };
-                string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Script"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Script");
                 coordinator.ShowMessageAsync(this, Title, Message);
                 ErrorLogger.Instance.AddLogLine(e.Message);
             }
             catch (Exception)
             {
-                ResourceDictionary resourceLocalization = new ResourceDictionary
-                {
-                    Source = new Uri(Configurator.getLanguageFile(), UriKind.Relative)
-                };
-                string Title = resourceLocalization["Application_Error"] as string;
-                string Message = resourceLocalization["Application_Error_Script"] as string;
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Script");
                 coordinator.ShowMessageAsync(this, Title, Message);
             }
             Activate();
