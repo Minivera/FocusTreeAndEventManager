@@ -8,7 +8,7 @@
     <system:String x:Key="Game_Path_Title">Sélectionner le dossier du jeu</system:String>
     <system:String x:Key="Mode_Path_Title">Sélectionner le dossier du mod</system:String>
     <system:String x:Key="Load_Title">Sélectionner un projet</system:String>
-    <system:String x:Key="Scripter_Title">Scripter</system:String>
+    <system:String x:Key="Scripter_Title">Scripteur</system:String>
     <system:String x:Key="Errors_Title">Liste d'erreurs</system:String>
     <system:String x:Key="Add_Focus">Ajouter un nouveau Focus</system:String>
     <system:String x:Key="Edit_Focus">Modifier le Focus</system:String>
@@ -207,5 +207,4 @@
     <system:String x:Key="Status_Make_Exclusive">Cliquez sur un second focus pour rendre celui-ci mutuellement exclusif au focus identifié en rouge. Cliquez n'importe où pour annuler.</system:String>
     <system:String x:Key="Status_Make_Prerequisite">Cliquez sur un second focus pour le rendre prérequis au focus identifié en rouge. Cliquez n'importe où pour annuler.</system:String>
     <system:String x:Key="Status_Make_Relative">Cliquez sur un second focus pour rendre le positionnement du focus en rouge relatif à ce parent. Cliquez n'importe où pour annuler.</system:String>
-    <system:String x:Key="Tutorial_Continue">Cliquez ici pour continuer</system:String>
 </ResourceDictionary>

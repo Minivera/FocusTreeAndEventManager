@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-        mc:Ignorable="d"
-        Title="{DynamicResource Window_Project}" 
-        MinHeight="400" Width="500" 
+        xmlns:usrcontrl="clr-namespace:FocusTreeManager.Views.UserControls"
+        mc:Ignorable="d" Loaded="MetroWindow_Loaded"
+        Title="{DynamicResource Window_Project}" MinHeight="400" Width="500" 
         ResizeMode="NoResize" SizeToContent="Height"
         DataContext="{Binding ProjectEditor, Source={StaticResource Locator}}"
         WindowStartupLocation="CenterScreen"
@@ -35,7 +35,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid >
-        <Grid>
+        <Grid x:Name="ProjectMainEditor">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition x:Name="ControlsRow" Height="30" />
@@ -57,21 +57,25 @@
                     <RowDefinition x:Name="AddModsCommandsRow" Height="35" />
                 </Grid.RowDefinitions>
                 <Label Content="{DynamicResource Files_Filename}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Text="{Binding Filename}" Grid.Row="0" Grid.Column="1" GotFocus="TextBox_GotFocus"/>
+                <TextBox Text="{Binding Filename}" Grid.Row="0" Grid.Column="1" GotFocus="TextBox_GotFocus"
+                         x:Name="Filename"/>
                 <Label Content="{DynamicResource Project_Name}" Grid.Row="1" Grid.Column="0"/>
                 <TextBox Text="{Binding ProjectName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Grid.Row="1" Grid.Column="1" IsReadOnly="True"/>
+                         Grid.Row="1" Grid.Column="1" IsReadOnly="True"
+                         x:Name="ProjectName"/>
                 <Label Grid.Column="0" Grid.Row="2" Content="{DynamicResource Project_Default_Locale}" />
                 <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding localisationList}"
-                  DisplayMemberPath="VisibleName"
-                  SelectedValue="{Binding DefaultLocale}" />
+                          DisplayMemberPath="VisibleName"
+                          SelectedValue="{Binding DefaultLocale}" 
+                          x:Name="DefaultLocalization"/>
                 <Label Content="{DynamicResource Project_Mods_Folders}" Grid.Row="5" 
                        Grid.ColumnSpan="2" Grid.Column="0"/>
                 <ListBox ItemsSource="{Binding ListModFolders}" Grid.Row="6" 
                          Grid.ColumnSpan="2" Grid.Column="0" 
                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type Window}}, Path=DataContext.SelectedString}"
-                         BorderBrush="White" BorderThickness="1">
+                         BorderBrush="White" BorderThickness="1"
+                         x:Name="ListModFolders">
                 </ListBox>
                 <TextBlock Text="{DynamicResource Project_Mods_Folders_Tooltip}" Grid.Row="7" 
                        Grid.ColumnSpan="2" Grid.Column="0" TextWrapping="Wrap"/>
@@ -96,5 +100,9 @@
                     IsCancel="True" Margin="5,0,5,0" Style="{DynamicResource SquareButtonStyle}" MinWidth="150"/>
             </WrapPanel>
         </Grid>
+        <usrcontrl:TutorialButton LinkedElement="{Binding ElementName=ProjectMainEditor}"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  x:Name="TutorialButton"/>
     </Grid>
 </Controls:MetroWindow>

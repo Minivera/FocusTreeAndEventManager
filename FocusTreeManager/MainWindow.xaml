@@ -45,7 +45,7 @@
                         <vu:FocusGrid x:Name="FociGrid"></vu:FocusGrid>
                     </ScrollViewer>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=FociGrid}"
-                                       HorizontalAlignment="Left"
+                                       HorizontalAlignment="Right"
                                        VerticalAlignment="Top"/>
                 </Grid>
             </DataTemplate>
@@ -53,7 +53,7 @@
                 <Grid>
                     <vu:Localisation x:Name="LocalizationList"></vu:Localisation>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=LocalizationList}"
-                                           HorizontalAlignment="Left"
+                                           HorizontalAlignment="Right"
                                            VerticalAlignment="Top"/>
                 </Grid>
             </DataTemplate>
@@ -61,34 +61,29 @@
                 <Grid>
                     <vu:EventList x:Name="EventList"></vu:EventList>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=EventList}"
-                                               HorizontalAlignment="Left"
+                                               HorizontalAlignment="Right"
                                                VerticalAlignment="Top"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:ScriptModel}">
-                <Grid>
-                    <Grid DataContext="{Binding}" x:Name="ScriptEditor">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="50"/>
-                        </Grid.RowDefinitions>
-                        <Grid.InputBindings>
-                            <KeyBinding Modifiers="Control"
-                            Key="S"
-                            Command="{Binding SaveScriptCommand}"
-                            CommandParameter="{Binding ElementName=Scripter}"/>
-                        </Grid.InputBindings>
-                        <vu:Scripter Grid.Row="0" x:Name="Scripter"/>
-                        <StackPanel HorizontalAlignment="Right" Grid.Row="1">
-                            <Button Content="{DynamicResource Command_Save}" 
-                                    Command="{Binding SaveScriptCommand}"
-                                    CommandParameter="{Binding ElementName=Scripter}"
-                                    Width="150" Style="{DynamicResource SquareButtonStyle}" />
-                        </StackPanel>
-                    </Grid>
-                    <vu:TutorialButton LinkedElement="{Binding ElementName=ScriptEditor}"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"/>
+                <Grid DataContext="{Binding}" x:Name="ScriptEditor">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid.InputBindings>
+                        <KeyBinding Modifiers="Control"
+                        Key="S"
+                        Command="{Binding SaveScriptCommand}"
+                        CommandParameter="{Binding ElementName=Scripter}"/>
+                    </Grid.InputBindings>
+                    <vu:Scripter Grid.Row="0" x:Name="Scripter"/>
+                    <StackPanel HorizontalAlignment="Right" Grid.Row="1">
+                        <Button Content="{DynamicResource Command_Save}" 
+                                Command="{Binding SaveScriptCommand}"
+                                CommandParameter="{Binding ElementName=Scripter}"
+                                Width="150" Style="{DynamicResource SquareButtonStyle}" />
+                    </StackPanel>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

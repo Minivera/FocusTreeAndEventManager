@@ -66,4 +66,39 @@ Please request messages or control names to be added in the dev thread or on git
     <step Text="Tutorial_Focus_36" Highlight="FocusGridScroll"/>
     <step Text="Tutorial_End"/>
   </tutorial>
+  <tutorial control="LocalizationList">
+    <step Text="Tutorial_Localisation_1"/>
+    <step Text="Tutorial_Localisation_2" Highlight="LocalizationList"/>
+    <step Text="Tutorial_Localisation_3" Highlight="LocalizationList"/>
+    <step Text="Tutorial_Localisation_4" Highlight="LocalizationList"/>
+    <step Text="Tutorial_Localisation_5" Highlight="FilterKeyButton" Circle="Circle" Arrow="Arrow"/>
+    <step Text="Tutorial_Localisation_6" Highlight="LocalizationList"/>
+    <step Text="Tutorial_End"/>
+  </tutorial>
+  <tutorial control="MainFileGrid">
+    <step Text="Tutorial_File_1"/>
+    <step Text="Tutorial_File_2"/>
+    <step Text="Tutorial_File_3" Highlight="FileChoiceList" WaitForMessage="ChosenNewFile"/>
+    <step Text="Tutorial_File_4" Highlight="FileTypeList" WaitForMessage="NewFocusTreeFile"/>
+    <step Text="Tutorial_File_5" Highlight="FileEditor"/>
+    <step Text="Tutorial_File_6" Highlight="FocusTreeFilename"/>
+    <step Text="Tutorial_File_7" Highlight="FocusTreeTag"/>
+    <step Text="Tutorial_File_8" Highlight="FocusTreeAddMods"/>
+    <step Text="Tutorial_File_9" Highlight="MainFileGrid" WaitForMessage="NewLocalizationFile"/>
+    <step Text="Tutorial_File_10" Highlight="LocalizationLanguage"/>
+    <step Text="Tutorial_File_11" Highlight="MainFileGrid" WaitForMessage="NewEventFile"/>
+    <step Text="Tutorial_File_12" Highlight="EventNamespace"/>
+    <step Text="Tutorial_File_13" Highlight="MainFileGrid" WaitForMessage="NewScriptFile"/>
+    <step Text="Tutorial_File_14" Highlight="FileEditor"/>
+    <step Text="Tutorial_End"/>
+  </tutorial>
+  <tutorial control="ProjectMainEditor"> 
+    <step Text="Tutorial_Project_1"/>
+    <step Text="Tutorial_Project_2" Highlight="ProjectMainEditor"/>
+    <step Text="Tutorial_Project_3" Highlight="Filename"/>
+    <step Text="Tutorial_Project_4" Highlight="ProjectName"/>
+    <step Text="Tutorial_Project_5" Highlight="DefaultLocalization"/>
+    <step Text="Tutorial_Project_6" Highlight="ListModFolders"/>
+    <step Text="Tutorial_End"/>
+  </tutorial>
 </tutorials>

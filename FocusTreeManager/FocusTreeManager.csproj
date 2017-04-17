@@ -296,6 +296,10 @@
     <Compile Include="Views\UserControls\TutorialButton.xaml.cs">
       <DependentUpon>TutorialButton.xaml</DependentUpon>
     </Compile>
+    <Page Include="Languages\Fr_fr_Tutorial.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Languages\En_en_Tutorial.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

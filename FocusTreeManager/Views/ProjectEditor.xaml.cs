@@ -1,4 +1,5 @@
 ﻿using FocusTreeManager.Helper;
+using FocusTreeManager.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -61,6 +62,12 @@ namespace FocusTreeManager.Views
                 bindingExpression?.UpdateSource();
             }
             Activate();
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Check Tutorial
+            new ViewModelLocator().Tutorial.StartCommand.RaiseCanExecuteChanged();
         }
     }
 }

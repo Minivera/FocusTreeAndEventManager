@@ -7,9 +7,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-        mc:Ignorable="d"
-        Title="{DynamicResource Window_File}" 
-        MinHeight="400" Width="800" 
+        mc:Ignorable="d" Loaded="MetroWindow_Loaded"
+        Title="{DynamicResource Window_File}" MinHeight="400" Width="800" 
         ResizeMode="NoResize" SizeToContent="Height"
         DataContext="{Binding FileManager, Source={StaticResource Locator}}"
         WindowStartupLocation="CenterScreen"
@@ -77,7 +76,8 @@
             </Grid>
         </Grid>
         <usrcontrl:TutorialButton LinkedElement="{Binding ElementName=MainFileGrid}"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top"/>
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  x:Name="TutorialButton"/>
     </Grid>
 </Controls:MetroWindow>

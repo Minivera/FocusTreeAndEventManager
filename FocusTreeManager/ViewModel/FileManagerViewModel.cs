@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FocusTreeManager.Model.TabModels;
 using FocusTreeManager.Helper;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace FocusTreeManager.ViewModel
 {
@@ -168,15 +169,23 @@ namespace FocusTreeManager.ViewModel
             {
                 case "FocusTreeItem":
                     File = new FocusGridModel("New file");
+                    Messenger.Default.Send(new NotificationMessage(this, 
+                        new ViewModelLocator().Tutorial, "NewFocusTreeFile"));
                     break;
                 case "LocalisationItem":
                     File = new LocalisationModel("New file");
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Tutorial, "NewLocalizationFile"));
                     break;
                 case "EventItem":
                     File = new EventTabModel("New file");
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Tutorial, "NewEventFile"));
                     break;
                 case "GenericItem":
                     File = new ScriptModel("New file");
+                    Messenger.Default.Send(new NotificationMessage(this,
+                        new ViewModelLocator().Tutorial, "NewScriptFile"));
                     break;
             }
         }
