@@ -307,7 +307,22 @@ namespace FocusTreeManager.Model
                 Set(() => IsSelected, ref isSelected, value);
             }
         }
-        
+
+        private bool isWaiting;
+
+        public bool IsWaiting
+        {
+            get
+            {
+                return isWaiting;
+            }
+            set
+            {
+                //Don't care about undo here
+                Set(() => IsWaiting, ref isWaiting, value);
+            }
+        }
+
         public ObservableCollection<PrerequisitesSetModel> Prerequisite { get; set; }
         
         public ObservableCollection<MutuallyExclusiveSetModel> MutualyExclusive { get; set; }
@@ -364,10 +379,10 @@ namespace FocusTreeManager.Model
             return new FocusModel
             {
                 Image = Image,
-                UniqueName = UniqueName + "_Copy",
+                UniqueName = UniqueName,
                 Text = Text,
-                X = X + XChange,
-                Y = Y + YChange,
+                X = CoordinatesRelativeTo != null? X : X + XChange,
+                Y = CoordinatesRelativeTo != null ? Y : Y + YChange,
                 Cost = Cost,
                 InternalScript = newScript
             };

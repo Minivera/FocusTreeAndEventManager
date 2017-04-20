@@ -46,23 +46,26 @@
                     </ScrollViewer>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=FociGrid}"
                                        HorizontalAlignment="Right"
-                                       VerticalAlignment="Top"/>
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,15,0"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:LocalisationModel}">
                 <Grid>
                     <vu:Localisation x:Name="LocalizationList"></vu:Localisation>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=LocalizationList}"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top"/>
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,15,0"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:EventTabModel}">
                 <Grid>
                     <vu:EventList x:Name="EventList"></vu:EventList>
                     <vu:TutorialButton LinkedElement="{Binding ElementName=EventList}"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Top"/>
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,15,0"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type tabModels:ScriptModel}">

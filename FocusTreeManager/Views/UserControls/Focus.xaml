@@ -16,33 +16,50 @@
                     <TextBlock x:Key="CursorGrab" Cursor="/FocusTreeManager;component/Resources/Cursors/grab.cur"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <ContextMenu Tag="{Binding PlacementTarget.Tag, 
+		                             RelativeSource={RelativeSource Self}}"
+                         x:Key="ContextMenuUnSelected">
+                <MenuItem x:Name="MenuEditFocus" Header="{DynamicResource Edit_Focus}" 
+                            Command="{Binding EditFocusCommand}"/>
+                <MenuItem x:Name="MenuRenameFocus" Header="{DynamicResource Rename_Focus}"
+                            Click="MenuRenameFocus_Click"/>
+                <MenuItem x:Name="MenuDeleteFocus" Header="{DynamicResource Delete_Focus}" 
+                            Command="{Binding DeleteFocusCommand}"/>
+                <Separator />
+                <MenuItem x:Name="MenuMutuallyFocus" Header="{DynamicResource Add_Mutually_Focus}" 
+                            Command="{Binding MutuallyFocusCommand}"/>
+                <MenuItem x:Name="MenuPrerequisitesFocus" Header="{DynamicResource Add_Prerequisite_Focus}" 
+                            Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
+                <MenuItem x:Name="MenuRequiredPrerequisitesFocus" Header="{DynamicResource Add_Required_Prerequisite_Focus}" 
+                            Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
+                <MenuItem x:Name="MenuMakeRelativeTo" Header="{DynamicResource Add_Relative_Pos}" 
+                            Command="{Binding MakeRelativeToCommand}"/>
+            </ContextMenu>
+            <ContextMenu Tag="{Binding PlacementTarget.Tag, 
+		                             RelativeSource={RelativeSource Self}}"
+                         x:Key="ContextMenuSelected">
+                <MenuItem x:Name="MenuDeleteSelectedFocus" Header="{DynamicResource Delete_Focus}" 
+                            Command="{Binding DeleteFocusCommand}"/>
+                <MenuItem x:Name="MenuCopy" Header="{DynamicResource Command_Copy}" 
+                            Command="{Binding Path=PlacementTarget.Tag.DataContext.CopyCommand, 
+                                   RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+            </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
-    <UserControl.ContextMenu>
-        <ContextMenu Tag="{Binding PlacementTarget.Tag, 
-		                             RelativeSource={RelativeSource Self}}">
-            <MenuItem x:Name="MenuEditFocus" Header="{DynamicResource Edit_Focus}" 
-                      Command="{Binding EditFocusCommand}"/>
-            <MenuItem x:Name="MenuRenameFocus" Header="{DynamicResource Rename_Focus}"
-                      Click="MenuRenameFocus_Click"/>
-            <MenuItem x:Name="MenuDeleteFocus" Header="{DynamicResource Delete_Focus}" 
-                      Command="{Binding DeleteFocusCommand}"/>
-            <Separator />
-            <MenuItem x:Name="MenuMutuallyFocus" Header="{DynamicResource Add_Mutually_Focus}" 
-                      Command="{Binding MutuallyFocusCommand}"/>
-            <MenuItem x:Name="MenuPrerequisitesFocus" Header="{DynamicResource Add_Prerequisite_Focus}" 
-                      Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Optional"/>
-            <MenuItem x:Name="MenuRequiredPrerequisitesFocus" Header="{DynamicResource Add_Required_Prerequisite_Focus}" 
-                      Command="{Binding PrerequisiteFocusCommand}" CommandParameter="Required"/>
-            <MenuItem x:Name="MenuMakeRelativeTo" Header="{DynamicResource Add_Relative_Pos}" 
-                      Command="{Binding MakeRelativeToCommand}"/>
-            <Separator />
-            <MenuItem x:Name="MenuCopy" Header="{DynamicResource Command_Copy}" 
-                      Command="{Binding Path=PlacementTarget.Tag.DataContext.CopyCommand, 
-                                   RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
-        </ContextMenu>
-    </UserControl.ContextMenu>
-    <Grid Width="89" Height="80">
+    <UserControl.Style>
+        <Style TargetType="{x:Type UserControl}">
+            <Setter Property="ContextMenu"
+                     Value="{StaticResource ContextMenuUnSelected}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}"
+                             Value="True">
+                    <Setter Property="ContextMenu"
+                            Value="{StaticResource ContextMenuSelected}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <Grid Width="89" Height="80" x:Name="FocusGrid">
         <Grid.Style>
             <Style TargetType="{x:Type Grid}">
                 <Style.Triggers>
@@ -50,7 +67,7 @@
                         <Setter Property="Effect">
                             <Setter.Value>
                                 <DropShadowEffect ShadowDepth="0" 
-                                                  Color="Red" Opacity="1" BlurRadius="20"/>
+                                                  Color="DodgerBlue" Opacity="1" BlurRadius="20"/>
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>

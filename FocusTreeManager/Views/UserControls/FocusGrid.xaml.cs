@@ -82,6 +82,9 @@ namespace FocusTreeManager.Views.UserControls
 
         private void Focus_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            FocusGridModel model = DataContext as FocusGridModel;
+            if (model == null) return;
+            if (e.ClickCount > 1 || model.ModeType != RelationMode.None) return;
             DraggedElement.Clear();
             Focus element = sender as Focus;
             if (element == null) return;
@@ -141,21 +144,24 @@ namespace FocusTreeManager.Views.UserControls
             FocusGridModel model = DataContext as FocusGridModel;
             if (model == null) return;
             Focus element = sender as Focus;
-            if (element != null && !element.IsMouseCaptured && model.ModeType == RelationMode.None)
+            //Check if the focus id not move at all and is not a double click
+            if (element != null && !element.IsMouseCaptured && model.ModeType == RelationMode.None &&
+                IsDragging)
             {
                 //If not holding CTRL
                 if (Keyboard.Modifiers != ModifierKeys.Control)
                 {
                     //Clear all selected
-                    model?.ClearSelected();
+                    model.ClearSelected();
                 }
                 //If it was just a click, add this focus to the selected
-                model?.SelectFocus(element);
+                model.SelectFocus(element);
                 IsDragging = false;
                 Source = null;
                 DraggedElement.Clear();
             }
-            else if (model.ModeType == RelationMode.None)
+            //Otherwise, manage as a move
+            else if (model.ModeType == RelationMode.None && IsDragging)
             {
                 if (Source == null)
                 {

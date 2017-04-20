@@ -258,7 +258,9 @@ application will use the text, otherwise, it will use the unique name.
 - The focus grid can now be dragged around with the middle mouse button, changed from the left mouse button which overlapped with the multi select.
 - Holding the left mouse button will now allow you to multiselect focuses. Clicking once on a focus will select that focus for copy.
 - Moving one of the focuses in a the list of multi-selected foci will move all the foci.
+- Holding ctrl and clicking on a focus will add this focus to the currently selected foci.
 - You can now use CTRL+C and CTRL+V or the context menu to copy and paste selected foci.
+- You can now delete all the selected focus by using the context menu on any focus. Note that the context menu has changed slightly when a focus is selected.
 - You can now use right-click->make copy to create a new copy of any file in the project view.
 - Changing the position of foci will now only require one click to undo or redo.
 - Fixed a rare issue where an error would prevent a change batch from ending and would full up memory, slowing down the app until a crash happened.

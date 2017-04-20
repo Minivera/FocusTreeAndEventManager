@@ -319,7 +319,9 @@ namespace FocusTreeManager.Model.TabModels
             foreach (FocusModel selected in SelectedFocuses)
             {
                 selected.IsSelected = false;
+                selected.IsWaiting = false;
             }
+            ModeType = RelationMode.None;
             SelectedFocuses.Clear();
             CopyCommand.RaiseCanExecuteChanged();
             PasteCommand.RaiseCanExecuteChanged();
@@ -434,6 +436,11 @@ namespace FocusTreeManager.Model.TabModels
             {
                 selected.IsSelected = false;
             }
+            //Change all copied name to append _Copy
+            foreach (FocusModel currentFocus in newSelected)
+            {
+                currentFocus.UniqueName += "_Copy";
+            }
             SelectedFocuses = newSelected;
             UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
         }
@@ -519,7 +526,8 @@ namespace FocusTreeManager.Model.TabModels
                     }
                 }
                 UndoService.Current[GetUndoRoot()].EndChangeSetBatch();
-                CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.Except(clickedElements).ToList());
+                CanvasLines = new ObservableCollection<CanvasLine>(CanvasLines.
+                    Except(clickedElements).ToList());
                 DrawOnCanvas();
             }
         }
@@ -598,6 +606,18 @@ namespace FocusTreeManager.Model.TabModels
                     ModeType = RelationMode.None;
                     break;
                 case "DeleteFocus":
+                    if (Model == null) return;
+                    //Check if model is in the selected foci
+                    if (Model.IsSelected && SelectedFocuses.Contains(Model))
+                    {
+                        //Delete everyone
+                        foreach (FocusModel item in SelectedFocuses)
+                        {
+                            DeleteFocus(item);
+                        }
+                        break;
+                    }
+                    //Otherwise, kill the current focus
                     DeleteFocus(Model);
                     break;
                 case "AddFocusMutually":
@@ -605,7 +625,7 @@ namespace FocusTreeManager.Model.TabModels
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
-                        Model.IsSelected = true;
+                        Model.IsWaiting = true;
                     }
                     break;
                 case "FinishAddFocusMutually":
@@ -615,12 +635,11 @@ namespace FocusTreeManager.Model.TabModels
                         UndoService.Current[GetUndoRoot()]
                             .BeginChangeSetBatch("AddMutuallyExclusive", false);
                         ModeType = RelationMode.None;
-                        ChosenFocusForLink.IsSelected = false;
+                        ChosenFocusForLink.IsWaiting = false;
                         MutuallyExclusiveSetModel tempo = 
                             new MutuallyExclusiveSetModel(ChosenFocusForLink, Model);
                         ChosenFocusForLink.MutualyExclusive.Add(tempo);
                         Model?.MutualyExclusive.Add(tempo);
-                        ChosenFocusForLink.IsSelected = false;
                         ChosenFocusForLink = null;
                         Messenger.Default.Send(new NotificationMessage(this,
                             new ViewModelLocator().StatusBar, "Clear_message"));
@@ -634,7 +653,7 @@ namespace FocusTreeManager.Model.TabModels
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
-                        Model.IsSelected = true;
+                        Model.IsWaiting = true;
                     }
                     break;
                 case "FinishAddFocusPrerequisite":
@@ -644,7 +663,6 @@ namespace FocusTreeManager.Model.TabModels
                         UndoService.Current[GetUndoRoot()]
                             .BeginChangeSetBatch("AddPrerequisite", false);
                         ModeType = RelationMode.None;
-                        ChosenFocusForLink.IsSelected = false;
                         if (ModeParam == RelationModeParam.Required)
                         {
                             //Create new set
@@ -663,7 +681,7 @@ namespace FocusTreeManager.Model.TabModels
                             //Add Model to last Set
                             ChosenFocusForLink.Prerequisite.Last().FociList.Add(Model);
                         }
-                        ChosenFocusForLink.IsSelected = false;
+                        ChosenFocusForLink.IsWaiting = false;
                         ChosenFocusForLink = null;
                         Messenger.Default.Send(new NotificationMessage(this,
                             new ViewModelLocator().StatusBar, "Clear_message"));
@@ -677,7 +695,7 @@ namespace FocusTreeManager.Model.TabModels
                     if (Model != null)
                     {
                         ChosenFocusForLink = Model;
-                        Model.IsSelected = true;
+                        Model.IsWaiting = true;
                     }
                     break;
                 case "FinishMakeRelativeTo":
@@ -689,11 +707,10 @@ namespace FocusTreeManager.Model.TabModels
                             UndoService.Current[GetUndoRoot()]
                                 .BeginChangeSetBatch("MakeRelativeTo", false);
                             ModeType = RelationMode.None;
-                            ChosenFocusForLink.IsSelected = false;
+                            ChosenFocusForLink.IsWaiting = false;
                             ChosenFocusForLink.X = ChosenFocusForLink.DisplayX - Model.DisplayX;
                             ChosenFocusForLink.Y = ChosenFocusForLink.DisplayY - Model.DisplayY;
                             ChosenFocusForLink.CoordinatesRelativeTo = Model;
-                            ChosenFocusForLink.IsSelected = false;
                             ChosenFocusForLink = null;
                             Messenger.Default.Send(new NotificationMessage(this,
                                 new ViewModelLocator().StatusBar, "Clear_message"));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -131,7 +132,11 @@ namespace FocusTreeManager.Views.UserControls
         }
 
         private void VisualFocus_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
+            //Property change for blur effect
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            model.PropertyChanged += Focus_PropertyChanged;
             //Image loading async
             StartImageDispatcher();
             Messenger.Default.Send(new NotificationMessage(this,
@@ -140,21 +145,46 @@ namespace FocusTreeManager.Views.UserControls
 
         private void Focus_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            DropShadowEffect GlowEffect = new DropShadowEffect
+            Cursor = ((TextBlock)Resources["CursorGrab"]).Cursor;
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            if (model.IsWaiting) return;
+            FocusGrid.Effect = new DropShadowEffect
             {
                 Color = Colors.Yellow,
                 BlurRadius = 20,
                 Opacity = 1,
                 ShadowDepth = 0
             };
-            FocusIcon.Effect = GlowEffect;
-            Cursor = ((TextBlock)Resources["CursorGrab"]).Cursor;
         }
 
         private void Focus_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            FocusIcon.ClearValue(EffectProperty);
             Cursor = null;
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            if (model.IsWaiting) return;
+            FocusGrid.ClearValue(EffectProperty);
+        }
+
+        private void Focus_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            FocusModel model = DataContext as FocusModel;
+            if (model == null) return;
+            if (e.PropertyName == "IsWaiting")
+            {
+                FocusGrid.ClearValue(EffectProperty);
+                if (model.IsWaiting)
+                {
+                    FocusGrid.Effect = new DropShadowEffect
+                    {
+                        Color = Colors.OrangeRed,
+                        BlurRadius = 20,
+                        Opacity = 1,
+                        ShadowDepth = 0
+                    };
+                }
+            }
         }
     }
 }
