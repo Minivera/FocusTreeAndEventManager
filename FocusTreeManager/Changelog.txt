@@ -283,3 +283,7 @@ application will use the text, otherwise, it will use the unique name.
 - Fixed a bug where adding a new file would create a fake undo entry, causing a crash if undone.
 - Changing the X and Y value of a focus in the focus editor will now update the position of all its children if they are positioned relative to this element.
 - Lag should not allow the user to open the same file more than one time anymore.
+
+***********************
+*       Beta_3b       *
+***********************
