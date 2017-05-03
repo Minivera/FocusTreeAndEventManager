@@ -92,13 +92,21 @@ namespace FocusTreeManager.ViewModel
                         string contents = System.IO.File.ReadAllText(dialog.FileName);
                         Script script = new Script();
                         script.Analyse(contents);
+                        if (script.Logger.hasErrors())
+                        {
+                            //If any errors, show message and add to error dawg.
+                            string Title = LocalizationHelper.getValueForKey("Application_Error");
+                            string Message = LocalizationHelper.getValueForKey("Application_Error_Script");
+                            coordinator.ShowMessageAsync(this, Title, Message);
+                            new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
+                        }
                         try
                         {
                             //If a focus tree
                             if (script.FindAssignation("focus_tree") != null)
                             {
-                                File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName, 
-                                    script);
+                                File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName,
+                                    contents);
                                 ((FocusGridModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
@@ -109,8 +117,8 @@ namespace FocusTreeManager.ViewModel
                             else if (script.FindAssignation("country_event") != null ||
                                      script.FindAssignation("news_event") != null)
                             {
-                                File = Parsers.EventParser.CreateEventFromScript(dialog.FileName, 
-                                    script);
+                                File = Parsers.EventParser.CreateEventFromScript(dialog.FileName,
+                                    contents);
                                 ((EventTabModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
@@ -140,13 +148,6 @@ namespace FocusTreeManager.ViewModel
                         }
                     }
                 }
-            }
-            catch (SyntaxException e)
-            {
-                string Title = LocalizationHelper.getValueForKey("Application_Error");
-                string Message = LocalizationHelper.getValueForKey("Application_Error_Script");
-                coordinator.ShowMessageAsync(this, Title, Message);
-                ErrorLogger.Instance.AddLogLine(e.Message);
             }
             catch (Exception)
             {

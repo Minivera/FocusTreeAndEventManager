@@ -287,3 +287,12 @@ application will use the text, otherwise, it will use the unique name.
 ***********************
 *       Beta_3b       *
 ***********************
+- Errors in the script interpreter will no longer cause any crash or error logging.
+- The script interpreter will no longer stop immediately at the first error, it will try to run through the remaining code if possible.
+- Fixed an issue where imported events would sometimes end up empty.
+- Imported events will no longer import empty descriptions if a news event.
+- The script editor will now display various syntax errors with a squiggly red line under the nearest text.
+- Hovering over errors will display a message for the user.
+- Syntax highlight for string literals will now ignore escaped quotes (\")
+- The syntax interpreter will now properly identify the column index of string literals.
+- Fixed a bug where using SHIFT+TAB to remove indent in the code editor at the last line would cause a crash.

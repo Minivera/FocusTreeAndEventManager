@@ -1,5 +1,4 @@
-﻿using FocusTreeManager.CodeStructures.CodeExceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace FocusTreeManager.CodeStructures
@@ -44,7 +43,7 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
         {
             //End of structure
             return new List<ICodeStruct>();
@@ -58,9 +57,7 @@ namespace FocusTreeManager.CodeStructures
         public Script GetContentAsScript(string[] except, Dictionary<int, string> Comments = null)
         {
             //TODO: Add language support
-            RecursiveCodeException e = new RecursiveCodeException();
-            throw e.AddToRecursiveChain("Impossible to obtain content, value has not code",
-                                            Value, "-1");
+            return null;
         }
     }
 }

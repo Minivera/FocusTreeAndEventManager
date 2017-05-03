@@ -9,6 +9,7 @@ using System.Globalization;
 using FocusTreeManager.DataContract;
 using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Model.TabModels;
+using FocusTreeManager.ViewModel;
 
 namespace FocusTreeManager.Parsers
 {
@@ -30,13 +31,8 @@ namespace FocusTreeManager.Parsers
 
         public static string ParseTreeScriptForCompare(string filename)
         {
-            if (!File.Exists(filename))
-            {
-                return "";
-            }
-            Script script = new Script();
-            script.Analyse(File.ReadAllText(filename));
-            return ParseTreeForCompare(CreateTreeFromScript(filename, script));
+            return !File.Exists(filename) ? "" : 
+                ParseTreeForCompare(CreateTreeFromScript(filename, File.ReadAllText(filename)));
         }
 
         public static Dictionary<string, string> ParseAllTrees(List<FociGridContainer> Containers)
@@ -139,7 +135,7 @@ namespace FocusTreeManager.Parsers
             List<Focus> SortedList = new List<Focus>();
             List<Focus> HoldedList = new List<Focus>();
             //Add the roots, the nodes without any perequisites. Helps with performance
-            SortedList.AddRange(listFoci.Where((f) => !f.Prerequisite.Any()));
+            SortedList.AddRange(listFoci.Where(f => !f.Prerequisite.Any()));
             int MaxY = listFoci.Max(i => i.Y);
             int MaxX = listFoci.Max(i => i.X);
             //For each X in the grid
@@ -232,12 +228,19 @@ namespace FocusTreeManager.Parsers
             }
         }
 
-        public static FocusGridModel CreateTreeFromScript(string fileName, Script script)
+        public static FocusGridModel CreateTreeFromScript(string fileName, string code)
         {
-            FocusGridModel container = new FocusGridModel(Script.TryParse(script, "id"));
+            Script script = new Script();
+            script.Analyse(code);
+            if (script.Logger.hasErrors())
+            {
+                new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
+                return null;
+            }
+            FocusGridModel container = new FocusGridModel(script.TryParse(script, "id"));
             //Get content of Modifier block
             Assignation modifier = script.FindAssignation("modifier");
-            container.TAG = Script.TryParse(modifier, "tag", null, false);
+            container.TAG = script.TryParse(modifier, "tag", null, false);
             if (container.TAG != null)
             {
                 container.AdditionnalMods = modifier.GetContentAsScript(new[] { "add", "tag" })
@@ -252,31 +255,31 @@ namespace FocusTreeManager.Parsers
                     //Create the focus
                     FocusModel newFocus = new FocusModel
                     {
-                        UniqueName = Script.TryParse(block, "id"),
-                        Text = Script.TryParse(block, "text", null, false),
-                        Image = Script.TryParse(block, "icon").Replace("GFX_", ""),
-                        X = int.Parse(Script.TryParse(block, "x")),
-                        Y = int.Parse(Script.TryParse(block, "y")),
-                        Cost = GetDouble(Script.TryParse(block, "cost"), 10)
+                        UniqueName = script.TryParse(block, "id"),
+                        Text = script.TryParse(block, "text", null, false),
+                        Image = script.TryParse(block, "icon").Replace("GFX_", ""),
+                        X = int.Parse(script.TryParse(block, "x")),
+                        Y = int.Parse(script.TryParse(block, "y")),
+                        Cost = GetDouble(script.TryParse(block, "cost"), 10)
                     };
                     //Get all core scripting elements
                     Script InternalFocusScript = block.
                         GetContentAsScript(ALL_PARSED_ELEMENTS.ToArray(), script.Comments);
                     newFocus.InternalScript = InternalFocusScript;
+                    if (script.Logger.hasErrors())
+                    {
+                        new ViewModelLocator().ErrorDawg.AddError(
+                            string.Join("\n", script.Logger.getErrors()));
+                        continue;
+                    }
                     container.FociList.Add(newFocus);
-                }
-                catch (SyntaxException e)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Invalid syntax for focus "
-                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
-                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
                 }
                 catch (Exception)
                 {
                     //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Invalid syntax for focus " 
-                        + Script.TryParse(block, "id") + ", please double-check the syntax.");
+                    new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
+                    new ViewModelLocator().ErrorDawg.AddError("Invalid syntax for focus "
+                        + script.TryParse(block, "id") + ", please double-check the syntax.");
                 }
             }
             //Run through all foci again for mutually exclusives and prerequisites
@@ -291,7 +294,7 @@ namespace FocusTreeManager.Parsers
                     continue;
                 } 
                 //Try to find its relative to
-                string relativeToId = Script.TryParse(block, "relative_position_id", null, false);
+                string relativeToId = script.TryParse(block, "relative_position_id", null, false);
                 if (!string.IsNullOrEmpty(relativeToId))
                 {
                     newFocus.CoordinatesRelativeTo = container.FociList.FirstOrDefault(f =>

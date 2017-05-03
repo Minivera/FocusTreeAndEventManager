@@ -1,4 +1,7 @@
-﻿using FocusTreeManager.CodeStructures;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FocusTreeManager.CodeStructures;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,12 +17,14 @@ namespace FocusTreeManager.ViewModel
     /// </summary>
     public class ErrorDawgViewModel : ViewModelBase
     {
-        public Visibility DawgVisible => ErrorLogger.Instance.hasErrors() ? 
+        public Visibility DawgVisible => ErrorsList.Any() ? 
             Visibility.Visible : Visibility.Hidden;
 
-        public string NumOfErrors => ErrorLogger.Instance.NumberOfErrors + " Errors";
+        public string NumOfErrors => ErrorsList.Count + " Errors";
 
-        public string Errors => ErrorLogger.Instance.ErrorMessages;
+        public List<string> ErrorsList { get; set; }
+
+        public string Errors => string.Join("\n", ErrorsList);
 
         public RelayCommand ResetCommand { get; private set; }
 
@@ -28,35 +33,24 @@ namespace FocusTreeManager.ViewModel
         /// </summary>
         public ErrorDawgViewModel()
         {
+            ErrorsList = new List<string>();
             ResetCommand = new RelayCommand(ResetLog);
-            //Messenger
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
-        private void ResetLog()
+        public void AddError(string error)
         {
-            ErrorLogger.Instance.ClearLogging();
+            ErrorsList.Add(error);
             RaisePropertyChanged(() => DawgVisible);
             RaisePropertyChanged(() => NumOfErrors);
             RaisePropertyChanged(() => Errors);
         }
 
-        private void NotificationMessageReceived(NotificationMessage msg)
+        private void ResetLog()
         {
-            //If this is not the intended target
-            if (msg.Target != null && msg.Target != this) return;
-            if (msg.Notification == "ErrorAdded")
-            {
-                RaisePropertyChanged(() => DawgVisible);
-                RaisePropertyChanged(() => NumOfErrors);
-                RaisePropertyChanged(() => Errors);
-            }
-            if (msg.Target == this)
-            {
-                //Resend to the tutorial View model if this was the target
-                Messenger.Default.Send(new NotificationMessage(msg.Sender,
-                new ViewModelLocator().Tutorial, msg.Notification));
-            }
+            ErrorsList.Clear();
+            RaisePropertyChanged(() => DawgVisible);
+            RaisePropertyChanged(() => NumOfErrors);
+            RaisePropertyChanged(() => Errors);
         }
     }
 }

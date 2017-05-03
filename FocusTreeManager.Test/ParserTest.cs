@@ -22,11 +22,8 @@ namespace FocusTreeManager.Test
 
         private FocusGridModel TestScriptToTree()
         {
-            //Arrange
-            Script treeScript = new Script();
-            treeScript.Analyse(File.ReadAllText("usa.txt"));
             //Act
-            FocusGridModel model = FocusTreeParser.CreateTreeFromScript("usa.txt", treeScript);
+            FocusGridModel model = FocusTreeParser.CreateTreeFromScript("usa.txt", File.ReadAllText("usa.txt"));
             //Assert
             Assert.IsNotNull(model);
             Assert.IsTrue(model.FociList.Any());
@@ -51,20 +48,19 @@ namespace FocusTreeManager.Test
             Assert.AreEqual(fileName, "usa_focus");
             //Test if we can process the script
             tester.Analyse(filecontent);
+            Assert.IsFalse(tester.Logger.hasErrors());
             Assert.IsNotNull(tester.FindAssignation("tag"));
         }
 
         private void TestParseAllTrees()
         {
             //Arrange
-            Script script = new Script();
             Script tester = new Script();
             foreach (string file in Directory.EnumerateFiles("national_focus", "*.txt"))
             {
                 string contents = File.ReadAllText(file);
-                script.Analyse(contents);
                 //Act
-                FocusGridModel model = FocusTreeParser.CreateTreeFromScript(file, script);
+                FocusGridModel model = FocusTreeParser.CreateTreeFromScript(file, contents);
                 FociGridContainer container = new FociGridContainer(model);
                 List<FociGridContainer> list = new List<FociGridContainer> { container };
                 Dictionary<string, string> files = FocusTreeParser.ParseAllTrees(list);
@@ -76,6 +72,7 @@ namespace FocusTreeManager.Test
                 Assert.IsNotNull(fileName);
                 Assert.IsNotNull(filecontent);
                 tester.Analyse(filecontent);
+                Assert.IsFalse(tester.Logger.hasErrors());
             }
         }
 
@@ -124,8 +121,7 @@ namespace FocusTreeManager.Test
         private EventTabModel TestScriptToEvent()
         {
             //Arrange
-            Script eventScript = new Script();
-            eventScript.Analyse(File.ReadAllText("Baltic.txt"));
+            string eventScript = File.ReadAllText("Baltic.txt");
             //Act
             EventTabModel model = EventParser.CreateEventFromScript("Baltic.txt", eventScript);
             //Assert
@@ -154,14 +150,12 @@ namespace FocusTreeManager.Test
         private void TestParseAllEvents()
         {
             //Arrange
-            Script script = new Script();
             Script tester = new Script();
             foreach (string file in Directory.EnumerateFiles("events", "*.txt"))
             {
                 string contents = File.ReadAllText(file);
-                script.Analyse(contents);
                 //Act
-                EventTabModel model = EventParser.CreateEventFromScript(file, script);
+                EventTabModel model = EventParser.CreateEventFromScript(file, contents);
                 EventContainer container = new EventContainer(model);
                 List<EventContainer> list = new List<EventContainer> { container };
                 Dictionary<string, string> files = EventParser.ParseAllEvents(list);
@@ -173,6 +167,7 @@ namespace FocusTreeManager.Test
                 Assert.IsNotNull(fileName);
                 Assert.IsNotNull(filecontent);
                 tester.Analyse(filecontent);
+                Assert.IsFalse(tester.Logger.hasErrors());
             }
         }
 

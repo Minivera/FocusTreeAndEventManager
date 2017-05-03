@@ -119,21 +119,14 @@ namespace FocusTreeManager.ViewModel
         public void SaveScript()
         {
             //Make sure all syntax exceptions are ignored, we'll show them later
-            try
+            switch (Configurator.getScripterPreference())
             {
-                switch (Configurator.getScripterPreference())
-                {
-                    case "Scripter":
-                        managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
-                        break;
-                    case "Editor":
-                        ManagedScript.Analyse(editorScript);
-                        break;
-                }
-            }
-            catch (SyntaxException e)
-            {
-                //Todo : Do something with them?
+                case "Scripter":
+                    managedScript = ModelsToScriptHelper.TransformModelsToScript(CodeBlocks.ToList());
+                    break;
+                case "Editor":
+                    ManagedScript.Analyse(editorScript);
+                    break;
             }
             CodeBlocks.Clear();
             Close();

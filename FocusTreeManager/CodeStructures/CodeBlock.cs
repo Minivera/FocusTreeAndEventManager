@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.CodeStructures
 {
@@ -33,9 +34,9 @@ namespace FocusTreeManager.CodeStructures
             Code = new List<ICodeStruct>();
         }
 
-        internal void Analyse(List<SyntaxGroup> code)
+        internal RecursiveCodeLog Analyse(List<SyntaxGroup> code)
         {
-            if (!code.Any()) return;
+            if (!code.Any()) return null;
             foreach (SyntaxGroup group in code)
             {
                 //Check if there is an assignation or code value at the end of the code
@@ -46,7 +47,11 @@ namespace FocusTreeManager.CodeStructures
                     last.EndLine = group.Component.line - 1;
                 }
                 Assignation tempo = new Assignation(Level + 1);
-                tempo.Analyse(group);
+                RecursiveCodeLog log = tempo.Analyse(group);
+                if (log != null)
+                {
+                    return log;
+                }
                 //If tempo has a value
                 if (!string.IsNullOrEmpty(tempo.Assignee))
                 {
@@ -60,15 +65,17 @@ namespace FocusTreeManager.CodeStructures
                 //set its end line as this line's end - 1
                 Verylast.EndLine = code.Last().Component.line - 1;
             }
+            return null;
         }
 
-        internal void Analyse(List<Token> code)
+        internal RecursiveCodeLog Analyse(List<Token> code)
         {
             //Cut the code in parts and add them as code values
             foreach (Token group in code)
             {
                 Code.Add(new CodeValue(group.text));
             }
+            return null;
         }
 
         public string Parse(Dictionary<int, string> Comments = null, int StartLevel = -1)
@@ -139,9 +146,13 @@ namespace FocusTreeManager.CodeStructures
                 FirstOrDefault(found => found != null);
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
+            if (!Continue)
+            {
+                return founds;
+            }
             foreach (ICodeStruct item in Code)
             {
                 founds.AddRange(item.FindAllValuesOfType<T>(TagToFind));

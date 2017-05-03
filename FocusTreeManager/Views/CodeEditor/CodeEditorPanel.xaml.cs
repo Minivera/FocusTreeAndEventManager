@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FocusTreeManager.CodeStructures;
 using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Helper;
 
@@ -119,19 +120,12 @@ namespace FocusTreeManager.Views.CodeEditor
             ReplacePanel.LinkedEditor = Editor;
         }
 
-        private void UserControlTextUpdated(string Text)
+        private ScriptErrorLogger UserControlTextUpdated(string Text)
         {
-            //Make sure no syntax exception goes beyond this point
-            try
-            {
-                //Setup the Code Viewer
-                Viewer.SetupViewer(Editor.Text);
-                Viewer.LinkedEditor = Editor;
-            }
-            catch (SyntaxException e)
-            {
-                //TODO: Manage the syntax exceptions
-            }
+            //Setup the Code Viewer
+            ScriptErrorLogger log = Viewer.SetupViewer(Editor.Text);
+            Viewer.LinkedEditor = Editor;
+            return log;
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)

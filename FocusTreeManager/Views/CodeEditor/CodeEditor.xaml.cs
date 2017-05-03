@@ -12,11 +12,15 @@ using FocusTreeManager.Helper;
 using FocusTreeManager.CodeStructures.CodeEditor;
 using System.Text;
 using System.Text.RegularExpressions;
+using FocusTreeManager.CodeStructures;
+using FocusTreeManager.CodeStructures.CodeExceptions;
 
 namespace FocusTreeManager.Views.CodeEditor
 {
 	public partial class CodeEditor : TextBox
     {
+        #region DependencyProperties
+
         public static readonly DependencyProperty FoundBrushProperty =
         DependencyProperty.Register("FoundTextBrush", typeof(Brush), typeof(CodeEditor),
         new UIPropertyMetadata(Brushes.LightGoldenrodYellow));
@@ -57,6 +61,8 @@ namespace FocusTreeManager.Views.CodeEditor
             set { SetValue(TabSizeProperty, value); }
         }
 
+        #endregion
+
         public double LineHeight
         {
 			get
@@ -90,7 +96,7 @@ namespace FocusTreeManager.Views.CodeEditor
 
         public RenderedDelegate RenderMethod { get; set; }
 
-        public delegate void TextUpdateDelegate(string NewText);
+        public delegate ScriptErrorLogger TextUpdateDelegate(string NewText);
 
         public TextUpdateDelegate TextUpdated { get; set; }
 
@@ -118,14 +124,24 @@ namespace FocusTreeManager.Views.CodeEditor
 
         private Regex FoundText;
 
+        private readonly CodeEditorContent HiglightContent;
+
+        private List<SyntaxError> Errors;
+
         public CodeEditor()
         {
 			InitializeComponent();
-			MaxLineCountInBlock = 100;
+            HiglightContent = new CodeEditorContent();
+            Errors = new List<SyntaxError>();
+            MaxLineCountInBlock = 100;
 			LineHeight = FontSize * 1.3;
             TabSize = 4;
 			totalLineCount = 1;
 			blocks = new List<InnerTextBlock>();
+            ToolTip = new ToolTip
+            {
+                IsOpen = false
+            };
 			Loaded += (s, e) => {
                 ApplyTemplate();
                 Text = Text.Replace("\t", new string(' ', TabSize));
@@ -150,7 +166,7 @@ namespace FocusTreeManager.Views.CodeEditor
 				InvalidateBlocks(e.Changes.First().Offset);
 				InvalidateVisual();
                 //If navigator exists, update its visuals
-			    if (navigator == null) return;
+                if (navigator == null) return;
 			    navigator.LinkedScrollViewerHeight = scrollViewer.ViewportHeight;
 			    navigator.UpdateText(GetFormattedText(Text),
 			        new Point(2 - HorizontalOffset, VerticalOffset),
@@ -169,6 +185,38 @@ namespace FocusTreeManager.Views.CodeEditor
             PreviewKeyDown += CodeEditor_OnPreviewKeyDown;
             SelectionChanged += CodeEditor_SelectionChanged;
             PreviewMouseDoubleClick += CodeEditor_MouseDoubleClick;
+            MouseMove += (s, e) =>
+            {
+                ToolTip localtool = ToolTip as ToolTip;
+                if (localtool == null) return;
+                Point mousePos = Mouse.GetPosition(renderCanvas);
+                InnerTextBlock block = blocks.FirstOrDefault(b =>
+                    new Rect(b.Position, new Size(b.FormattedText.Width,
+                        b.FormattedText.Height)).Contains(mousePos));
+                if (block == null)
+                {
+                    localtool.IsOpen = false;
+                    return;
+                }
+                SyntaxError error = Errors.FirstOrDefault(ev =>
+                {
+                    int Line = ev.Line ?? -1;
+                    int Column = ev.Column ?? -1;
+                    int TagPos = CodeHelper.getStartCharOfPos(Text, Line, Column);
+                    return TagPos >= block.CharStartIndex && TagPos <= block.CharEndIndex;
+                });
+                if (error == null)
+                {
+                    localtool.IsOpen = false;
+                }
+                else
+                {
+                    localtool.IsOpen = true;
+                    localtool.HorizontalOffset = e.GetPosition(this).X;
+                    localtool.VerticalOffset = e.GetPosition(this).Y;
+                    localtool.Content = error.InnerMessage;
+                }
+            };
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -210,7 +258,16 @@ namespace FocusTreeManager.Views.CodeEditor
             //Whatever happens, if return is pressed, update the text at the end
             if (e.Key == Key.Return && Keyboard.Modifiers == ModifierKeys.None)
             {
-                TextUpdated(Text);
+                ScriptErrorLogger log = TextUpdated(Text);
+                if (log != null)
+                {
+                    Errors = log.Errors;
+                }
+                else
+                {
+                    Errors.Clear();
+                }
+                InvalidateBlocks(0);
             }
         }
 
@@ -403,8 +460,9 @@ namespace FocusTreeManager.Views.CodeEditor
                         return;
                     }
                     //Get the whole line
-                    string subtext = Text.Substring(Start, Text.Substring(Start).IndexOf("\n", 
-                        StringComparison.Ordinal));
+                    int LastBreakPos = Text.Substring(Start).IndexOf("\n",
+                        StringComparison.Ordinal);
+                    string subtext = Text.Substring(Start, LastBreakPos >= 0 ? LastBreakPos : Text.Length - Start);
                     //Remove the line from the builder
                     builder.Remove(Start, subtext.Length);
                     //Add it again without the tab
@@ -527,7 +585,8 @@ namespace FocusTreeManager.Views.CodeEditor
                 return;
             }
 			// While something is visible after last block
-			while (!blocks.Last().IsLast && blocks.Last().Position.Y + blockHeight - VerticalOffset < ActualHeight)
+			while (!blocks.Last().IsLast && blocks.Last().Position.Y + blockHeight - 
+                VerticalOffset < ActualHeight)
             {
 				int firstLineIndex = blocks.Last().LineEndIndex + 1;
 				int lastLineIndex = firstLineIndex + maxLineCountInBlock - 1;
@@ -708,8 +767,9 @@ namespace FocusTreeManager.Views.CodeEditor
         {
 			currentBlock.FormattedText = GetFormattedText(currentBlock.RawText);
             Dispatcher.Invoke(() => {
-                CodeEditorContent.Instance.Highlight(currentBlock.FormattedText, 
+                HiglightContent.Highlight(currentBlock.FormattedText, 
                     openBracketPos, closeBracketPos, BracketBrush);
+                HiglightContent.HighlightErrors(currentBlock.FormattedText, Errors, blocks);
                 currentBlock.Code = -1;
             });
         }

@@ -21,18 +21,29 @@ namespace FocusTreeManager.CodeStructures
         [DataMember(Name = "comments", Order = 1)]
         public Dictionary<int, string> Comments { get; set; }
 
+        public ScriptErrorLogger Logger { get; }
+
         public Script()
         {
             Code = new List<ICodeStruct>();
             Comments = new Dictionary<int, string>();
+            Logger = new ScriptErrorLogger();
         }
 
         public void Analyse(string code, int line = -1)
         {
             Code.Clear();
-            List<SyntaxGroup> list = 
-                Tokenizer.GroupTokensByBlocks(Tokenizer.Tokenize(code, this)) 
+            Tokenizer tokenizer = new Tokenizer();
+            List<SyntaxGroup> list =
+                tokenizer.GroupTokensByBlocks(tokenizer.Tokenize(code, this)) 
                 as List<SyntaxGroup>;
+            //Check if there are errors.
+            if (tokenizer.Logger.hasErrors())
+            {
+                //Set this logger as the tokenizer logger
+                Logger.Errors = tokenizer.Logger.Errors;
+                return;
+            }
             //Return if list is null
             if (list == null || !list.Any()) return;
             foreach (SyntaxGroup group in list)
@@ -47,19 +58,19 @@ namespace FocusTreeManager.CodeStructures
                         last.EndLine = group.Component.line - 1;
                     }
                     Assignation tempo = new Assignation(1);
-                    tempo.Analyse(group);
+                    RecursiveCodeLog log = tempo.Analyse(group);
+                    if (log != null)
+                    {
+                        Logger.Errors.Add(new SyntaxError(log.Message));
+                        //We don't want to add broken code if possible
+                        continue;
+                    }
                     Code.Add(tempo);
-                }
-                catch (RecursiveCodeException e)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Error during script Loading");
-                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
                 }
                 catch (Exception)
                 {
                     //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
+                    Logger.Errors.Add(new SyntaxError("Unknown error in script"));
                 }
             }
             //Check if there is an assignation or code value at the end of the code
@@ -96,16 +107,10 @@ namespace FocusTreeManager.CodeStructures
                 {
                     content += item.Parse(localCopy, StartLevel) + "\n";
                 }
-                catch (RecursiveCodeException e)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Error during script Parsing");
-                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
-                }
                 catch (Exception)
                 {
                     //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
+                    Logger.Errors.Add(new SyntaxError("Unknown error in script"));
                 }
             }
             return content;
@@ -142,12 +147,13 @@ namespace FocusTreeManager.CodeStructures
                 FirstOrDefault(found => found != null);
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool OnlyRoot = false)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
             foreach (ICodeStruct item in Code)
             {
-                founds.AddRange(item.FindAllValuesOfType<T>(TagToFind));
+                founds.AddRange(item.FindAllValuesOfType<T>(TagToFind,
+                                                            !OnlyRoot));
             }
             return founds;
         }
@@ -189,7 +195,7 @@ namespace FocusTreeManager.CodeStructures
             }
         }
 
-        public static string TryParse(ICodeStruct block, string tag,
+        public string TryParse(ICodeStruct block, string tag,
             Dictionary<int, string> comments = null, bool isMandatory = true)
         {
             Assignation found = block.FindAssignation(tag);
@@ -201,14 +207,14 @@ namespace FocusTreeManager.CodeStructures
                 }
                 catch (Exception)
                 {
-                    throw new SyntaxException(tag, found.Line, null, 
-                        new UnparsableTagException(tag));
+                    Logger.Errors.Add(new SyntaxError(tag, found.Line, null, 
+                        new UnparsableTagException(tag)));
                 }
             }
             if (isMandatory)
             {
-                throw new SyntaxException(tag, null, null, 
-                    new MandatoryTagException(tag));
+                Logger.Errors.Add(new SyntaxError(tag, null, null, 
+                    new MandatoryTagException(tag)));
             }
             return null;
         }

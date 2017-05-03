@@ -18,11 +18,11 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
     /// Allows to build a custom stacktrace in the code analysis and
     /// parsing functions.
     /// </summary>
-    class RecursiveCodeException : Exception
+    public class RecursiveCodeLog
     {
         private readonly List<ErrorStruct> Messages = new List<ErrorStruct>();
 
-        public override string Message
+        public string Message
         {
             get
             {
@@ -33,7 +33,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
             }
         }
 
-        public RecursiveCodeException AddToRecursiveChain(string message, string className, 
+        public RecursiveCodeLog AddToRecursiveChain(string message, string className, 
             string Line)
         {
             ErrorStruct tempo = new ErrorStruct

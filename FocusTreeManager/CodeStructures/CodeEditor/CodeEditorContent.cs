@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Xml;
+using FocusTreeManager.CodeStructures.CodeExceptions;
+using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.CodeStructures.CodeEditor
 {
-    public sealed class CodeEditorContent
+    public class CodeEditorContent
     {
         private readonly Brush StringColor = (SolidColorBrush)
             new BrushConverter().ConvertFrom("#a5c25c");
@@ -26,12 +29,12 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
             new BrushConverter().ConvertFrom("#a3510d");
 
         private readonly Brush ErrorColor = (SolidColorBrush)
-            new BrushConverter().ConvertFrom("#8b0807");
+            new BrushConverter().ConvertFrom("#FF0000");
 
         private readonly Brush CommentsColor = (SolidColorBrush)
             new BrushConverter().ConvertFrom("#d2f776");
 
-        private const string REGEX_STRINGS = "\"[A-Za-z\\s_-]*\"";
+        private const string REGEX_STRINGS = "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"";
 
         private const string REGEX_BLOCS = @"([A-Za-z\t\r _-]*)[=|<|>]\s*\{";
 
@@ -42,11 +45,6 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
         private const string REGEX_BOOLS = @"\b(yes|no|YES|NO|AND|and|OR|or|NOT|not)\b";
 
         private const string REGEX_COMMENTS = @"#.*\n";
-
-        private static readonly Lazy<CodeEditorContent> lazy =
-        new Lazy<CodeEditorContent>(() => new CodeEditorContent());
-
-        public static CodeEditorContent Instance => lazy.Value;
 
         public Dictionary<string, string> Snippets { get; }
 
@@ -71,70 +69,114 @@ namespace FocusTreeManager.CodeStructures.CodeEditor
 
         public bool IsKnownSnippet(string tag)
         {
-            return Snippets.Keys.ToList().Exists((s) => s.ToLower().Equals(tag, 
+            return Snippets.Keys.ToList().Exists(s => s.ToLower().Equals(tag, 
                 StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void Highlight(FormattedText text, int openingBracketPos, 
             int ClosingBracketPos, Brush DelimiterBrush)
         {
-            //The order is important so we overwrite when the color is to be overwritten 
-            // (Numbers in string for example)
-            Regex wordsRgx = new Regex(REGEX_ASSIGN);
-            foreach (Match m in wordsRgx.Matches(text.Text))
+            try
             {
-                //This regex uses a matching group.
-                text.SetForegroundBrush(AssignerColor, m.Groups[1].Index, m.Groups[1].Length);
-                text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
-                text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                //The order is important so we overwrite when the color is to be overwritten 
+                // (Numbers in string for example)
+                Regex wordsRgx = new Regex(REGEX_ASSIGN);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    //This regex uses a matching group.
+                    text.SetForegroundBrush(AssignerColor, m.Groups[1].Index, m.Groups[1].Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                }
+                wordsRgx = new Regex(REGEX_BLOCS);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    //This regex uses a matching group.
+                    text.SetForegroundBrush(BlockColor, m.Groups[1].Index, m.Groups[1].Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                }
+                wordsRgx = new Regex(REGEX_BOOLS);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    text.SetForegroundBrush(BoolsColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                wordsRgx = new Regex(REGEX_NUMBERS);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    text.SetForegroundBrush(NumberColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                wordsRgx = new Regex(REGEX_STRINGS);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    text.SetForegroundBrush(StringColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                wordsRgx = new Regex(REGEX_COMMENTS);
+                foreach (Match m in wordsRgx.Matches(text.Text))
+                {
+                    text.SetForegroundBrush(CommentsColor, m.Index, m.Length);
+                    text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
+                    text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
+                }
+                if (openingBracketPos > -1)
+                {
+                    text.SetForegroundBrush(DelimiterBrush, openingBracketPos, 1);
+                    text.SetFontWeight(FontWeights.Normal, openingBracketPos, 1);
+                    text.SetFontStyle(FontStyles.Normal, openingBracketPos, 1);
+                }
+                if (ClosingBracketPos > -1)
+                {
+                    text.SetForegroundBrush(DelimiterBrush, ClosingBracketPos, 1);
+                    text.SetFontWeight(FontWeights.Normal, ClosingBracketPos, 1);
+                    text.SetFontStyle(FontStyles.Normal, ClosingBracketPos, 1);
+                }
             }
-            wordsRgx = new Regex(REGEX_BLOCS);
-            foreach (Match m in wordsRgx.Matches(text.Text))
+            catch (Exception)
             {
-                //This regex uses a matching group.
-                text.SetForegroundBrush(BlockColor, m.Groups[1].Index, m.Groups[1].Length);
-                text.SetFontWeight(FontWeights.Normal, m.Groups[1].Index, m.Groups[1].Length);
-                text.SetFontStyle(FontStyles.Normal, m.Groups[1].Index, m.Groups[1].Length);
+                //It is possible the highlighting may be done before the text 
+                //is actually drawn, ignore in this case
             }
-            wordsRgx = new Regex(REGEX_BOOLS);
-            foreach (Match m in wordsRgx.Matches(text.Text))
+        }
+
+        public void HighlightErrors(FormattedText text, List<SyntaxError> Errors,
+                                    List<InnerTextBlock> blocks)
+        {
+            Pen path_pen = new Pen(ErrorColor, 0.5)
             {
-                text.SetForegroundBrush(BoolsColor, m.Index, m.Length);
-                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-            }
-            wordsRgx = new Regex(REGEX_NUMBERS);
-            foreach (Match m in wordsRgx.Matches(text.Text))
+                EndLineCap = PenLineCap.Square,
+                StartLineCap = PenLineCap.Square
+            };
+            Point path_start = new Point(0, 1);
+            BezierSegment path_segment = new BezierSegment(new Point(1, 0), 
+                new Point(2, 2), new Point(3, 1), true);
+            PathFigure path_figure = new PathFigure(path_start, 
+                new PathSegment[] { path_segment }, false);
+            PathGeometry path_geometry = new PathGeometry(new[] { path_figure });
+            DrawingBrush squiggly_brush = new DrawingBrush
             {
-                text.SetForegroundBrush(NumberColor, m.Index, m.Length);
-                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-            }
-            wordsRgx = new Regex(REGEX_STRINGS);
-            foreach (Match m in wordsRgx.Matches(text.Text))
+                Viewport = new Rect(0, 0, 6, 4),
+                ViewportUnits = BrushMappingMode.Absolute,
+                TileMode = TileMode.Tile,
+                Drawing = new GeometryDrawing(null, path_pen, path_geometry)
+            };
+            TextDecoration squiggly = new TextDecoration {Pen = new Pen(squiggly_brush, 6)};
+            TextDecorationCollection collection = new TextDecorationCollection {squiggly};
+            foreach (SyntaxError error in Errors)
             {
-                text.SetForegroundBrush(StringColor, m.Index, m.Length);
-                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-            }
-            wordsRgx = new Regex(REGEX_COMMENTS);
-            foreach (Match m in wordsRgx.Matches(text.Text))
-            {
-                text.SetForegroundBrush(CommentsColor, m.Index, m.Length);
-                text.SetFontWeight(FontWeights.Normal, m.Index, m.Length);
-                text.SetFontStyle(FontStyles.Normal, m.Index, m.Length);
-            }
-            if (openingBracketPos > -1)
-            {
-                text.SetForegroundBrush(DelimiterBrush, openingBracketPos, 1);
-                text.SetFontWeight(FontWeights.Normal, openingBracketPos, 1);
-                text.SetFontStyle(FontStyles.Normal, openingBracketPos, 1);
-            }
-            if (ClosingBracketPos > -1)
-            {
-                text.SetForegroundBrush(DelimiterBrush, ClosingBracketPos, 1);
-                text.SetFontWeight(FontWeights.Normal, ClosingBracketPos, 1);
-                text.SetFontStyle(FontStyles.Normal, ClosingBracketPos, 1);
+                string tag = error.Tag ?? "";
+                int Line = error.Line ?? -1;
+                int Column = error.Column ?? -1;
+                //Check if a block with this line and column exists
+                int TagPos = CodeHelper.getStartCharOfPos(text.Text, Line, Column);
+                //If cannot find a block for this error
+                if (TagPos < 0) continue;
+                text.SetTextDecorations(collection, TagPos, TagPos + tag.Length);
             }
         }
     }

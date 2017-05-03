@@ -8,7 +8,7 @@ namespace FocusTreeManager.CodeStructures
         CodeValue FindValue(string TagToFind);
         ICodeStruct Extract(string TagToFind);
         Assignation FindAssignation(string TagToFind);
-        List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind);
+        List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool OnlyRoot = false);
         Script GetContentAsScript(string[] except, Dictionary<int, string> comments = null);
     }
 }

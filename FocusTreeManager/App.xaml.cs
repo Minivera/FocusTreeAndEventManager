@@ -22,8 +22,6 @@ namespace FocusTreeManager
 
         private static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
         {
-            //Ignore syntax exceptions
-            if (e.Exception is SyntaxException) return;
             LoggingHelper.LogException(e.Exception);
         }
 

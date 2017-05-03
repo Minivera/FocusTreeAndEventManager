@@ -42,24 +42,7 @@ namespace FocusTreeManager.Helper
             {
                 return listModels;
             }
-            foreach (ICodeStruct code in script.Code)
-            {
-                try
-                {
-                    listModels.Add(BlockToModel(code, deleteCommand));
-                }
-                catch (RecursiveCodeException e)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Error when parsing the script to scripter controls");
-                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
-                }
-                catch (Exception)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
-                }
-            }
+            listModels.AddRange(script.Code.Select(code => BlockToModel(code, deleteCommand)));
             return listModels;
         }
 
@@ -128,10 +111,8 @@ namespace FocusTreeManager.Helper
                     }
                     return newAssignation;
                 }
-                //An error in the code, log it
-                RecursiveCodeException e = new RecursiveCodeException();
-                throw e.AddToRecursiveChain("Invalid assignation", block.Assignee, 
-                    block.Line.ToString());
+                //Error, return nothing.
+                return null;
             }
             //If the current block is a code Value (Corrsponding to block = { Value }
             if (currentBlock is CodeValue)
@@ -198,21 +179,7 @@ namespace FocusTreeManager.Helper
             Script newScript = new Script();
             foreach (AssignationModel assignation in models)
             {
-                try
-                {
-                    newScript.Code.Add(ModelToBlock(assignation));
-                }
-                catch (RecursiveCodeException e)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Error when parsing the scripter controls to a script");
-                    ErrorLogger.Instance.AddLogLine("\t" + e.Message);
-                }
-                catch (Exception)
-                {
-                    //TODO: Add language support
-                    ErrorLogger.Instance.AddLogLine("Unknown error in script");
-                }
+                newScript.Code.Add(ModelToBlock(assignation));
             }
             return newScript;
         }

@@ -29,12 +29,16 @@ namespace FocusTreeManager.Views.CodeEditor
             CodeBlocks = new ObservableCollection<CodeElement>();
         }
 
-        public void SetupViewer(string script)
+        public ScriptErrorLogger SetupViewer(string script)
         {
             List<string> AllAddedNames = new List<string>();
             CodeBlocks.Clear();
             Script newscript = new Script();
             newscript.Analyse(script);
+            if (newscript.Logger.hasErrors())
+            {
+                return newscript.Logger;
+            }
             foreach (ICodeStruct codeStruct in newscript.Code)
             {
                 Assignation item = (Assignation) codeStruct;
@@ -50,6 +54,7 @@ namespace FocusTreeManager.Views.CodeEditor
                 CodeBlocks.Add(element);
             }
             OnPropertyChanged("CodeBlocks");
+            return null;
         }
 
         private static List<CodeElement> RunInBlock(CodeBlock block, ICollection<string> AllAddedNames)

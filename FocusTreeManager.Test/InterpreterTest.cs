@@ -14,12 +14,6 @@ namespace FocusTreeManager.Test
     [TestClass]
     public class InterpreterTest
     {
-        public InterpreterTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
         private TestContext testContextInstance;
 
@@ -80,10 +74,10 @@ namespace FocusTreeManager.Test
             //Test find all focuses
             List<ICodeStruct> assigns = script.FindAllValuesOfType<CodeBlock>("focus");
             //Test try parse
-            string tag = Script.TryParse(script, "tag");
+            string tag = script.TryParse(script, "tag");
             //Assert
             Assert.IsTrue(script.Code.Any());
-            Assert.IsFalse(ErrorLogger.Instance.hasErrors());
+            Assert.IsFalse(script.Logger.hasErrors());
             Assert.IsTrue(valueString == "USA");
             Assert.IsTrue(!string.IsNullOrEmpty(assignString));
             Assert.IsTrue(extractedString.Contains("yes"));
@@ -92,16 +86,9 @@ namespace FocusTreeManager.Test
             Assert.IsTrue(assigns.Any());
             Assert.IsTrue(tag == "USA");
             //Test broken parse 
-            Assert.IsNull(Script.TryParse(script, "default", null, false));
-            try
-            {
-                Script.TryParse(script, "default");
-                Assert.Fail("Exception was to be lifted by mandatory parse");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(@"Exception was lifted by missing mandatory parse");
-            }
+            Assert.IsNull(script.TryParse(script, "default", null, false));
+            script.TryParse(script, "default");
+            Assert.IsTrue(script.Logger.hasErrors());
         }
 
         [TestMethod]
@@ -119,16 +106,8 @@ namespace FocusTreeManager.Test
                              }";
             Script script = new Script();
             //Act
-            try
-            {
-                script.Analyse(code);
-                //Assert
-                Assert.Fail("Exception was to be lifted by broken script");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            script.Analyse(code);
+            Assert.IsTrue(script.Logger.hasErrors());
         }
 
         [TestMethod]
@@ -143,7 +122,7 @@ namespace FocusTreeManager.Test
                 script.Analyse(contents);
                 //Assert
                 Assert.IsTrue(script.Code.Any());
-                Assert.IsFalse(ErrorLogger.Instance.hasErrors());
+                Assert.IsFalse(script.Logger.hasErrors());
             }
         }
     }

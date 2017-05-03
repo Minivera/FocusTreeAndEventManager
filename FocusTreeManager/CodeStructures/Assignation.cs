@@ -41,7 +41,7 @@ namespace FocusTreeManager.CodeStructures
             Level = level;
         }
 
-        internal void Analyse(SyntaxGroup code)
+        internal RecursiveCodeLog Analyse(SyntaxGroup code)
         {
             Assignee = code.Component.text;
             Operator = code.Operator.text;
@@ -53,21 +53,22 @@ namespace FocusTreeManager.CodeStructures
                 try
                 {
                     CodeBlock block = new CodeBlock(Level + 1);
-                    block.Analyse(list);
+                    RecursiveCodeLog log = block.Analyse(list);
+                    if (log != null)
+                    {
+                        log.AddToRecursiveChain("Error during analysis chain",
+                            Assignee, Line.ToString());
+                        return log;
+                    }
                     Value = block;
-                }
-                catch (RecursiveCodeException e)
-                {
-                    //TODO: Add language support
-                    throw e.AddToRecursiveChain("Error during analysis chain", 
-                        Assignee, Line.ToString());
                 }
                 catch (Exception)
                 {
                     //TODO: Add language support
-                    RecursiveCodeException e = new RecursiveCodeException();
-                    throw e.AddToRecursiveChain("Impossible to analyze associated code", 
+                    RecursiveCodeLog log = new RecursiveCodeLog();
+                    log.AddToRecursiveChain("Impossible to analyze associated code",
                         Assignee, Line.ToString());
+                    return log; 
                 }
             }
             //If we get pure text
@@ -81,6 +82,7 @@ namespace FocusTreeManager.CodeStructures
                 Value = new CodeBlock();
                 ((CodeBlock)Value).Analyse((List<Token>)code.Operand);
             }
+            return null;
         }
 
         public string Parse(Dictionary<int, string> comments = null, int StartLevel = -1)
@@ -109,41 +111,27 @@ namespace FocusTreeManager.CodeStructures
                 //Remove all added
                 comments.Remove(Line);
             }
-            try
+            // If the value is nothing but it has an operator
+            if ((Value == null || Value is CodeBlock
+                && !((CodeBlock)Value).Code.Any())
+                && Operator != null)
             {
-                // If the value is nothing but it has an operator
-                if ((Value == null || Value is CodeBlock
-                    && !((CodeBlock)Value).Code.Any())
-                    && Operator != null)
+                //Check if there are comments in there
+                string comment = "";
+                if (comments != null)
                 {
-                    //Check if there are comments in there
-                    string comment = "";
-                    if (comments != null)
-                    {
-                        comment = comments.Where(c => c.Key > Line && c.Key < EndLine)
-                            .Aggregate(comment, (current, item) => tabulations + current + item.Value);
-                    }
-                    //Empty block
-                    content.Append(tabulations + Assignee + " " + Operator + " {\n" + 
-                        comment + "\n}" + endComment);
+                    comment = comments.Where(c => c.Key > Line && c.Key < EndLine)
+                        .Aggregate(comment, (current, item) => tabulations + current + item.Value);
                 }
-                //Otherwise, print as usual
-                else if (Value != null)
-                {
-                    content.Append(tabulations + Assignee + " " + Operator + " " + 
-                        Value.Parse(comments, BasicLevel) + endComment);
-                }
+                //Empty block
+                content.Append(tabulations + Assignee + " " + Operator + " {\n" + 
+                    comment + "\n}" + endComment);
             }
-            catch (RecursiveCodeException e)
+            //Otherwise, print as usual
+            else if (Value != null)
             {
-                //TODO: Add language support
-                throw e.AddToRecursiveChain("Error during parsing chain", Assignee, Line.ToString());
-            }
-            catch (Exception)
-            {
-                //TODO: Add language support
-                RecursiveCodeException e = new RecursiveCodeException();
-                throw e.AddToRecursiveChain("Impossible to parse associated code", Assignee, Line.ToString());
+                content.Append(tabulations + Assignee + " " + Operator + " " + 
+                    Value.Parse(comments, BasicLevel) + endComment);
             }
             return content.ToString();
         }
@@ -186,7 +174,7 @@ namespace FocusTreeManager.CodeStructures
             return found;
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
             if (Value == null)
@@ -202,7 +190,7 @@ namespace FocusTreeManager.CodeStructures
                 return founds;
             }
             //If we haven't found this element as our tag, search in childs
-            if (Value is CodeBlock)
+            if (Value is CodeBlock && Continue)
             {
                 founds.AddRange(Value.FindAllValuesOfType<T>(TagToFind));
             }
@@ -226,9 +214,10 @@ namespace FocusTreeManager.CodeStructures
             else
             {
                 //TODO: Add language support
-                RecursiveCodeException e = new RecursiveCodeException();
-                throw e.AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
+                RecursiveCodeLog log = new RecursiveCodeLog();
+                log.AddToRecursiveChain("Impossible to obtain content, assigned value is not code", 
                                              Assignee, Line.ToString());
+                newScript.Logger.Errors.Add(new SyntaxError(log.Message));
             }
             //If no comments are given
             if (Comments == null) return newScript;
