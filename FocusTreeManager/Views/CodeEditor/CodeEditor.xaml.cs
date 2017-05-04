@@ -211,9 +211,9 @@ namespace FocusTreeManager.Views.CodeEditor
                 }
                 else
                 {
-                    localtool.IsOpen = true;
                     localtool.HorizontalOffset = e.GetPosition(this).X;
                     localtool.VerticalOffset = e.GetPosition(this).Y;
+                    localtool.IsOpen = true;
                     localtool.Content = error.InnerMessage;
                 }
             };

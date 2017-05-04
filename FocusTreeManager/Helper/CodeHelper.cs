@@ -125,5 +125,31 @@ namespace FocusTreeManager.Helper
             }
             return OpeningPos;
         }
+
+        public static int getStartCharOfPos(string text, int Line, int Column)
+        {
+            int LocalLine = 0;
+            int Index = 0;
+            foreach (string line in text.Split('\n'))
+            {
+                LocalLine++;
+                if (LocalLine == Line)
+                {
+                    int localColumn = 0;
+                    foreach (char c in line)
+                    {
+                        localColumn++;
+                        Index++;
+                        if (localColumn == Column)
+                        {
+                            return Index - 1;
+                        }
+                    }
+                    break;
+                }
+                Index += line.Length + 1;
+            }
+            return -1;
+        }
     }
 }

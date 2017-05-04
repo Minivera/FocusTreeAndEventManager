@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Runtime.ExceptionServices;
-using FocusTreeManager.CodeStructures.CodeExceptions;
 using FocusTreeManager.Helper;
 
 namespace FocusTreeManager
@@ -11,6 +10,13 @@ namespace FocusTreeManager
     /// </summary>
     public partial class App : Application
     {
+        //Log only if not in debug
+        #if DEBUG
+            public bool toLog = false;
+        #else
+            public bool toLog = true;
+        #endif
+
         public App()
         {
             AsyncImageLoader.AsyncImageLoader.Worker.StartTheJob();
@@ -20,13 +26,15 @@ namespace FocusTreeManager
             currentDomain.UnhandledException += HandleCrashes;
         }
 
-        private static void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
+        private void HandleFirstChance(object source, FirstChanceExceptionEventArgs e)
         {
+            if (!toLog) return;
             LoggingHelper.LogException(e.Exception);
         }
 
-        private static void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
+        private  void HandleCrashes(object sender, UnhandledExceptionEventArgs e)
         {
+            if (!toLog) return;
             LoggingHelper.LogCrash((Exception)e.ExceptionObject);
         }
     }
