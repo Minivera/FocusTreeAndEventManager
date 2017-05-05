@@ -6,6 +6,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:usrcontrl="clr-namespace:FocusTreeManager.Views.UserControls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d" Loaded="MetroWindow_Loaded"
         Title="{DynamicResource Window_Project}" MinHeight="400" Width="500" 
         ResizeMode="NoResize" SizeToContent="Height"
@@ -14,6 +16,12 @@
         Icon="/FocusTreeManager;component/GFX/Focus/goal_unknown.png" 
         GlowBrush="{DynamicResource AccentColorBrush}"
         Dialog:DialogParticipation.Register="{Binding}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <command:EventToCommand Command="{Binding WindowClosingCommand}"
+                            PassEventArgsToCommand="False" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

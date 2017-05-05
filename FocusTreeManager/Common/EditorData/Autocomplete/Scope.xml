@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<autoinfos>
+  <autoinfo name="all_allied_country" sets="Country" params="Code" description="Targets all allied countries" example="all_allied_country = { ... }" />
+  <autoinfo name="all_country" sets="Anywhere" params="Code" description="Targets all countries" example="all_country = { ... }" />
+  <autoinfo name="all_enemy_country" sets="Country" params="Code" description="Targets all enemy countries" example="all_enemy_country = { ... }" />
+  <autoinfo name="all_neighbor_country" sets="Country" params="Code" description="Targets all neighboring countries" example="all_neighbor_country = { ... }" />
+  <autoinfo name="all_neighbor_state" sets="State" params="Code" description="Targets all neighboring states" example="all_neighbor_state = { ... }" />
+  <autoinfo name="all_state" sets="Anywhere" params="Code" description="Targets all state" example="all_state = { ... }" />
+  <autoinfo name="any_allied_country" sets="Country" params="Code" description="Targets any allied country" example="any_allied_country = { ... }" />
+  <autoinfo name="any_country" sets="Anywhere" params="Code" description="Targets any country" example="any_country = { ... }" />
+  <autoinfo name="any_enemy_country" sets="Country" params="Code" description="Targets any enemy country" example="any_enemy_country = { ... }" />
+  <autoinfo name="any_neighbor_country" sets="Country" params="Code" description="Targets any neighboring country" example="any_neighbor_country = { ... }" />
+  <autoinfo name="any_neighbor_state" sets="State" params="Code" description="Targets any neighboring state" example="any_neighbor_state = { ... }" />
+  <autoinfo name="any_owned_state" sets="Country" params="Code" description="Targets any owned state" example="any_owned_state = { ... }" />
+  <autoinfo name="any_state" sets="Anywhere" params="Code" description="Targets any state" example="any_state = { ... }" />
+  <autoinfo name="capital_scope" sets="Country" params="Code" description="Targets the capital" example="capital_scope = { ... }" />
+  <autoinfo name="every_country" sets="Anywhere" params="Code" description="Targets every country" example="every_country = { ... }" />
+  <autoinfo name="every_enemy_country" sets="Country" params="Code" description="Targets every enemy country" example="every_enemy_country = { ... }" />
+  <autoinfo name="every_neighbor_country" sets="Country" params="Code" description="Targets every neighboring country" example="every_neighbor_country = { ... }" />
+  <autoinfo name="every_neighbor_state" sets="State" params="Code" description="Targets every neighboring state" example="every_neighbor_state = { ... }" />
+  <autoinfo name="every_owned_state" sets="Country" params="Code" description="Targets all owned states" example="every_owned_state = { ... }" />
+  <autoinfo name="every_owned_state" sets="Country" params="Code" description="Targets every owned state" example="every_owned_state = { ... }" />
+  <autoinfo name="every_state" sets="State" params="Code" description="Targets every state" example="every_state = { ... }" />
+  <autoinfo name="OVERLORD" sets="Country" params="TAG, Code" description="Targets the overlord of a subject" example="RAJ = { OVERLORD = { ... } }" />
+  <autoinfo name="random_country" sets="Anywhere" params="Code" description="Targets a random country" example="random_country = { ... }" />
+  <autoinfo name="random_enemy_country" sets="Country" params="Code" description="Targets a random enemy country" example="random_enemy_country = { ... }" />
+  <autoinfo name="random_neighbor_country" sets="Country" params="Code" description="Targets a random neighboring country" example="random_neighbor_country = { ... }" />
+  <autoinfo name="random_neighbor_state" sets="State" params="Code" description="Targets a random neighboring state" example="random_neighbor_state = { ... }" />
+  <autoinfo name="random_owned_controlled_state" sets="Country" params="Code" description="Targets a random owned and controlled state" example="random_owned_controlled_state = { }" />
+  <autoinfo name="random_owned_state" sets="Country" params="Code" description="Targets a random owned state" example="random_owned_state = { ... }" />
+  <autoinfo name="random_state" sets="Anywhere" params="Code" description="Targets a random state" example="random_state = { ... }" />
+  <autoinfo name="state_id" sets="Anywhere" params="State ID, Code" description="Targets a specific state" example="145 = { ... }" />
+  <autoinfo name="TAG" sets="Anywhere" params="TAG, Code" description="Targets a specific country" example="FRA = { ... }" />
+</autoinfos>

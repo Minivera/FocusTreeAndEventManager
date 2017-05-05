@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<snippets>
+  <snippet command="all_allied_country" replace="all_allied_country" />
+  <snippet command="all_country" replace="all_country" />
+  <snippet command="all_enemy_country" replace="all_enemy_country" />
+  <snippet command="all_neighbor_country" replace="all_neighbor_country" />
+  <snippet command="all_neighbor_state" replace="all_neighbor_state" />
+  <snippet command="all_state" replace="all_state" />
+  <snippet command="any_allied_country" replace="any_allied_country" />
+  <snippet command="any_country" replace="any_country" />
+  <snippet command="any_enemy_country" replace="any_enemy_country" />
+  <snippet command="any_neighbor_country" replace="any_neighbor_country" />
+  <snippet command="any_neighbor_state" replace="any_neighbor_state" />
+  <snippet command="any_owned_state" replace="any_owned_state" />
+  <snippet command="any_state" replace="any_state" />
+  <snippet command="capital_scope" replace="capital_scope" />
+  <snippet command="every_country" replace="every_country" />
+  <snippet command="every_enemy_country" replace="every_enemy_country" />
+  <snippet command="every_neighbor_country" replace="every_neighbor_country" />
+  <snippet command="every_neighbor_state" replace="every_neighbor_state" />
+  <snippet command="every_owned_state" replace="every_owned_state" />
+  <snippet command="every_owned_state" replace="every_owned_state" />
+  <snippet command="every_state" replace="every_state" />
+  <snippet command="OVERLORD" replace="|TAG| = {\nOVERLORD = {\n\n}\n}" />
+  <snippet command="random_country" replace="random_country" />
+  <snippet command="random_enemy_country" replace="random_enemy_country" />
+  <snippet command="random_neighbor_country" replace="random_neighbor_country" />
+  <snippet command="random_neighbor_state" replace="random_neighbor_state" />
+  <snippet command="random_owned_controlled_state" replace="random_owned_controlled_state" />
+  <snippet command="random_owned_state" replace="random_owned_state" />
+  <snippet command="random_state" replace="random_state" />
+  <snippet command="state_id" replace="|STATE ID|" />
+  <snippet command="TAG" replace="|TAG|" />
+</snippets>

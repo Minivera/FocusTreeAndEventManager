@@ -297,3 +297,5 @@ application will use the text, otherwise, it will use the unique name.
 - The syntax interpreter will now properly identify the column index of string literals.
 - Fixed a bug where using SHIFT+TAB to remove indent in the code editor at the last line would cause a crash.
 - The logging will now use log4net, making sure the application won't crash on smaller errors.
+- Fixed an issue where an impossible save would crash the application when creating a project.
+- Can now leave the tutorials using the escape key.

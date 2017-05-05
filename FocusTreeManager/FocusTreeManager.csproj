@@ -548,11 +548,24 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Common\ScripterSymbols\Snippets.xml">
+    <Resource Include="Common\EditorData\Autocomplete\Commands.xml" />
+    <Resource Include="Common\EditorData\Autocomplete\UniqueCommands.xml" />
+    <Resource Include="Common\EditorData\Snippets\Commands.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Common\EditorData\Snippets\TAGS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\EditorData\Autocomplete\Scope.xml" />
+    <Resource Include="Common\EditorData\Snippets\Scope.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\EditorData\Autocomplete\Conditions.xml" />
+    <Resource Include="Common\EditorData\Snippets\Conditions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Common\ScripterControls\FocusTree.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -578,6 +591,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Common\EditorData\Snippets\States.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Common\Tutorials\DefaultTutorial.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

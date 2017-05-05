@@ -180,7 +180,16 @@ namespace FocusTreeManager.ViewModel
             TabsModelList = new ObservableCollection<ObservableObject>();
             RaisePropertyChanged(() => TabsModelList);
             UndoService.Current[this].Clear();
-            DataHolder.Instance.SaveContract(Project);
+            try
+            {
+                DataHolder.Instance.SaveContract(Project);
+            }
+            catch (Exception)
+            {
+                string Title = LocalizationHelper.getValueForKey("Application_Error");
+                string Message = LocalizationHelper.getValueForKey("Application_Error_Saving");
+                coordinator.ShowMessageAsync(this, Title, Message);
+            }
         }
 
         async private Task<MessageDialogResult> ShowProjectExistDialog()

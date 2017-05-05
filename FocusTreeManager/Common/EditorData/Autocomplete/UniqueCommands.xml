@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<autoinfos>
+  <autoinfo name="limit" sets="Scope" params="Sub-Code" description="Defines the limits of a scope" example="any_neighbor_country = { limit = { has_war = yes } }" />
+  <autoinfo name="hidden_trigger" sets="" params="Sub-Code" description="Any triggers inside will not be shown as a tooltip" example="hidden_trigger = { ... }" />
+  <autoinfo name="custom_trigger_tooltip" sets="" params="Sub-Code" description="Works as a trigger with a custom tooltip" example="custom_trigger_tooltip = { tooltip = my_tooltip ...LIST OF TRIGGERS... }" />
+  <autoinfo name="custom_effect_tooltip" sets="" params="Localisation Key" description="Shows a custom tooltip" example="custom_effect_tooltip = nationalists_chosen" />
+  <autoinfo name="hidden_effect" sets="" params="Sub-Code" description="Effects not shown in the tooltip" example="hidden_effect = { USA = { country_event = USA.10 } }" />
+  <autoinfo name="if" sets="" params="Sub-Code" description="Effects that happen only if conditions defined by limit are met" example="if = { limit = { tag = GER } }" />
+  <autoinfo name="effect_tooltip" sets="" params="Sub-Code" description="Shows just the tooltip of the effects" example="effect_tooltip = { ... }" />
+  <autoinfo name="show_ideas_tooltip" sets="" params="Idea ID" description="Show what an idea does" example="show_ideas_tooltip = idea_id" />
+</autoinfos>

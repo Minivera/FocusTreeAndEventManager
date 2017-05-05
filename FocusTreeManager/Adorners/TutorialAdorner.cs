@@ -22,7 +22,7 @@ namespace FocusTreeManager.Adorners
 
         private const double TopBarHeight = 30;
 
-        private const double MinWidth = 600;
+        private const double MinTestWidth = 600;
 
         private readonly FrameworkElement element;
 
@@ -179,7 +179,7 @@ namespace FocusTreeManager.Adorners
                 new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch),
                 block.FontSize, Brushes.White)
             {
-                MaxTextWidth = Math.Min(parent.Width / 2, MinWidth),
+                MaxTextWidth = Math.Min(parent.Width / 2, MinTestWidth),
                 MaxTextHeight = bestTextHeight
             };
             BorderPositionning = getNotInTheWayRectangle(ComponentSpace, parent, formattedText);

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Threading;
 using FocusTreeManager.Adorners;
 using FocusTreeManager.Helper;
+using FocusTreeManager.Views.UserControls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -72,10 +74,7 @@ namespace FocusTreeManager.ViewModel
             }
             else
             {
-                InTutorial = false;
-                layer.Remove(managedAdorner);
-                managedAdorner = null;
-                managedElement = null;
+                Stop();
             }
             //Update adorner
             layer.Update();
@@ -86,13 +85,7 @@ namespace FocusTreeManager.ViewModel
         {
             if (InTutorial)
             {
-                //Cancel the tutorial
-                InTutorial = false;
-                layer.Remove(managedAdorner);
-                managedAdorner = null;
-                managedElement = null;
-                //Update adorner
-                layer.Update();
+                Stop();
                 return;
             }
             //Check if we have a tutorial for this element
@@ -107,6 +100,7 @@ namespace FocusTreeManager.ViewModel
             //Get element's windows parent
             managedElement = element;
             Window parent = UiHelper.FindVisualParent<Window>(managedElement, null);
+            parent.KeyDown += TutorialKeyDown;
             //Get the second grid, available just after the base adorner decorator.
             Grid secondGrid = UiHelper.FindVisualChildren<Grid>
                 (UiHelper.FindVisualChildren<AdornerDecorator>(parent).First()).First();
@@ -121,6 +115,30 @@ namespace FocusTreeManager.ViewModel
                       //Update adorner
                       layer.Update();
                   }));
+        }
+
+        private void TutorialKeyDown(object sender, KeyEventArgs e)
+        {
+            //Check if escape is pressed, if yes, stop the tutorial
+            if (e.Key == Key.Escape && e.IsDown)
+            {
+                Stop();
+                e.Handled = true;
+            }
+        }
+
+        public void Stop()
+        {
+            //Cancel the tutorial
+            InTutorial = false;
+            layer.Remove(managedAdorner);
+            Window parent = UiHelper.FindVisualParent<Window>(managedElement, null);
+            managedAdorner = null;
+            managedElement = null;
+            //Update adorner
+            layer.Update();
+            //Remove the event
+            parent.KeyDown -= TutorialKeyDown;
         }
 
         private bool CanStart(FrameworkElement param)

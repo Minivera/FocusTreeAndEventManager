@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<snippets>
+  <snippet command="set_state_name" replace="|STATE ID| = {\nset_state_name = &quot;|NAME|&quot;\n}" />
+  <snippet command="reset_state_name" replace="|STATE ID| = {\nreset_state_name = yes\n}" />
+  <snippet command="set_province_name" replace="set_province_name = {\nid = |PROVINCE ID|\nname = &quot;|NAME|&quot;\n}" />
+  <snippet command="reset_province_name" replace="reset_province_name = |PROVINCE ID|" />
+  <snippet command="add_autonomy_ratio" replace="add_autonomy_ratio = {\nvalue = |VALUE|\nlocalization = |KEY|\n}" />
+  <snippet command="swap_ideas" replace="swap_ideas = {\nremove_idea = |IDEA ID|\n add_idea = |IDEA ID|\n}" />
+  <snippet command="set_cosmetic_tag" replace="set_cosmetic_tag = |KEY|" />
+  <snippet command="damage_building" replace="damage_building = {\ntype = |TYPE|\ndamage = |NUMBER|\n}" />
+  <snippet command="create_unit" replace="create_unit = {\ndivision = &quot;name = |KEY| template = |TEMPLATE| starting_experience_factor = |NUMBER|&quot;\n}" />
+  <snippet command="set_autonomy" replace="set_autonomy = {\ntarget = |TAG|\nautonomy_state = |TYPE||\n}" />
+  <snippet command="add_to_tech_sharing_group" replace="add_to_tech_sharing_group = |GROUP|" />
+  <snippet command="remove_from_tech_sharing_group" replace="remove_from_tech_sharing_group = |GROUP|" />
+  <snippet command="add_manpower" replace="add_manpower = |NUMBER|" />
+  <snippet command="add_political_power" replace="add_political_power = |NUMBER|" />
+  <snippet command="set_capital" replace="set_capital = |PRIVINCE ID|" />
+  <snippet command="add_state_core" replace="add_state_core = |STATE ID|" />
+  <snippet command="remove_state_core" replace="remove_state_core = |STATE ID" />
+  <snippet command="change_tag_from" replace="change_tag_from = |TAG|" />
+  <snippet command="set_country_flag" replace="set_country_flag = |FLAG|" />
+  <snippet command="clr_country_flag" replace="clr_country_flag = |FLAG|" />
+  <snippet command="set_global_flag" replace="set_global_flag = |FLAG|" />
+  <snippet command="clr_global_flag" replace="clr_global_flag = |FLAG|" />
+  <snippet command="remove_building" replace="|PROVINCE ID| = {\nremove_building = {\type = arms_factory\nlevel = 5\n}\n}" />
+  <snippet command="release" replace="release = |TAG" />
+  <snippet command="country_event" replace="country_event = {\ndays = |NUMBER|\nid = |EVENT ID|\n}" />
+  <snippet command="state_event" replace="state_event = |EVENT ID|" />
+  <snippet command="random" replace="random = {\n|CHANCE| = {\n|CODE|\n}\n}" />
+  <snippet command="random_list" replace="random_list = {\n|LIST|\n}" />
+  <snippet command="white_peace" replace="white_peace = |TAG|" />
+  <snippet command="add_state_claim" replace="add_state_claim = |STATE ID|" />
+  <snippet command="remove_state_claim" replace="remove_state_claim = |STATE ID|" />
+  <snippet command="add_opinion_modifier" replace="add_opinion_modifier = {\ntarget = |TAG|\nmodifier = |MODIFIER|\n}" />
+  <snippet command="remove_opinion_modifier" replace="remove_opinion_modifier = {\ntarget = |TAG|\nmodifier = |MODIFIER|\n}" />
+  <snippet command="create_country_leader" replace="create_country_leader = {\nname = &quot;|NAME|&quot;\ndesc = &quot;|KEY|&quot;\npicture = &quot;|FILE|&quot;\nexpire = &quot;|DATE|&quot;\nideology = |IDEOLOGY|\ntraits = {\n|TRAITS|\n}\n}" />
+  <snippet command="sound_effect" replace="sound_effect = |SOUND|" />
+  <snippet command="randomize_weather" replace="randomize_weather" />
+  <snippet command="division_template" replace="division_template = {\nname = &quot;|NAME|&quot;\nregiments = {\n|REGIMENTS|\n}\n}" />
+  <snippet command="set_country_leader_ideology" replace="set_country_leader_ideology = |IDEOLOGY|" />
+  <snippet command="add_country_leader_trait" replace="add_country_leader_trait = |TRAIT|" />
+  <snippet command="remove_country_leader_trait" replace="remove_country_leader_trait = |TRAIT|" />
+  <snippet command="set_political_party" replace="set_political_party = {\nideology = |IDEOLOGY|\npopularity = |NUMBER|\n}" />
+  <snippet command="set_politics" replace="set_politics = {\nruling_party = |IDEOLOGY|\nelections_allowed = |YESNO|\n}" />
+  <snippet command="add_ideas" replace="add_ideas = |IDEA|" />
+  <snippet command="remove_ideas" replace="remove_ideas = |IDEA|" />
+  <snippet command="set_political_power" replace="set_political_power = |NUMBER|" />
+  <snippet command="set_technology" replace="set_technology = {\|TYPE| = |NUMBER|\n}" />
+  <snippet command="create_navy_leader" replace="create_navy_leader = {\nname = &quot;|NAME|&quot;\ngfx = &quot;|FILE|&quot;\ntraits = {\n|TRAITS|\n}\nskill = |NUMBER|\n}" />
+  <snippet command="remove_unit_leader_trait" replace="remove_unit_leader_trait" />
+  <snippet command="add_unit_leader_trait" replace="add_unit_leader_trait" />
+  <snippet command="set_state_owner" replace="|TAG| = {\nset_state_owner = |STATE ID|\n}" />
+  <snippet command="puppet" replace="puppet = |TAG|" />
+  <snippet command="set_state_controller" replace="|TAG| = {\nset_state_controller = |STATE ID|\n}" />
+  <snippet command="transfer_state" replace="|TAG| = {\ntransfer_state = |STATE ID|\n}" />
+  <snippet command="set_state_flag" replace="|STATE ID| = {\nset_state_flag = |FLAG|\n}" />
+  <snippet command="clr_state_flag" replace="|STATE ID| = {\nclr_state_flag = |FLAG|\n}" />
+  <snippet command="create_faction" replace="create_faction = &quot;|NAME|&quot;" />
+  <snippet command="annex_country" replace="annex_country = {\ntarget = |TAG|\n}" />
+  <snippet command="add_building_construction" replace="|STATE ID| = {\nadd_building_construction = {\ntype = |TYPE|\nprovince = |PROVINCE ID|\nlevel = |NUMBER|\ninstant_build = |YESNO|\n}\n}" />
+  <snippet command="dismantle_faction" replace="dismantle_faction = |YESNO|" />
+  <snippet command="add_to_faction" replace="add_to_faction = |TAG|" />
+  <snippet command="remove_from_faction" replace="remove_from_faction = |TAG|" />
+  <snippet command="give_guarantee" replace="give_guarantee = |TAG|" />
+  <snippet command="give_military_access" replace="give_military_access = |TAG|" />
+  <snippet command="news_event" replace="news_event = |EVENT ID|" />
+  <snippet command="declare_war_on" replace="declare_war_on = {\ntarget = |TAG|\ntype = |WARGOAL|\n}" />
+  <snippet command="add_national_unity" replace="add_national_unity = |NUMBER|" />
+  <snippet command="add_scaled_political_power" replace="add_scaled_political_power" />
+  <snippet command="hold_election" replace="hold_election = |YESNO|" />
+  <snippet command="add_popularity" replace="add_popularity = {\nideology = |IDEOLOGY|\npopularity = |NUMBER|\n}" />
+  <snippet command="remove_ideas_with_trait" replace="remove_ideas_with_trait = |IDEA|" />
+  <snippet command="start_civil_war" replace="start_civil_war = {\nideology = fascism\nsize = 0.5\n}" />
+  <snippet command="retire_country_leader" replace="retire_country_leader = |YESNO|" />
+  <snippet command="kill_country_leader" replace="kill_country_leader = |YESNO|" />
+  <snippet command="release_puppet" replace="release_puppet = |TAG|" />
+  <snippet command="create_wargoal" replace="create_wargoal = {\ntype = |WARGOAL|\ntarget = |TAG|\n}" />
+  <snippet command="add_claim_by" replace="|SCOPE| = {\nadd_claim_by = |TAG|\n}" />
+  <snippet command="remove_claim_by" replace="|SCOPE| = {\nremove_claim_by = |TAG|\n}" />
+  <snippet command="add_core_of" replace="|SCOPE| = {\nadd_core_of = |TAG|\n}" />
+  <snippet command="remove_core_of" replace="|SCOPE| = {\nremove_core_of = |TAG|\n}" />
+  <snippet command="army_experience" replace="army_experience = |NUMBER|" />
+  <snippet command="navy_experience" replace="navy_experience = |NUMBER|" />
+  <snippet command="air_experience" replace="air_experience = |NUMBER|" />
+  <snippet command="save_event_target_as" replace="save_event_target_as = |TARGET|" />
+  <snippet command="save_global_event_target_as" replace="save_global_event_target_as = |TARGET|" />
+  <snippet command="clear_global_event_target" replace="clear_global_event_target = |TARGET|" />
+  <snippet command="clear_global_event_targets" replace="clear_global_event_targets = |TARGET|" />
+  <snippet command="break" replace="break" />
+  <snippet command="unlock_national_focus" replace="unlock_national_focus = |FOCUS ID|" />
+  <snippet command="add_tech_bonus" replace="add_tech_bonus = {\nbonus = |BONUS|\nuses = |NUMBER|\ncategory = |TECH TYPE|\n}" />
+  <snippet command="set_demilitarized_zone" replace="|SCOPE| = {\nset_demilitarized_zone = |YESNO|\n}" />
+  <snippet command="add_research_slot" replace="add_research_slot = |NUMBER|" />
+  <snippet command="set_research_slots" replace="set_research_slots = |NUMBER|" />
+  <snippet command="set_border_war" replace="|STATE ID| = {\nset_border_war = |YESYNO|\n}" />
+  <snippet command="set_national_unity" replace="set_national_unity = |NUMBER|" />
+  <snippet command="set_equipment_fraction" replace="set_equipment_fraction = |NUMBER|" />
+  <snippet command="add_threat" replace="add_threat" />
+  <snippet command="send_equipment" replace="send_equipment = {\ntarget = |TAG|\ntype = |EQUIPMENT|\namount = |NUMBER|\n}" />
+  <snippet command="set_rule" replace="set_rule = {\n|RULE| = |YESNO|\n}" />
+  <snippet command="diplomatic_relation" replace="diplomatic_relation = {\ntarget = |TAG|\nrelation = |TYPE|\n}" />
+  <snippet command="add_resource" replace="add_resource = {\ntype = |RESOURCE|\namount = |NUMBER|\nstate = |STATE ID|\n}" />
+  <snippet command="remove_unit_leader" replace="remove_unit_leader = |LEADER ID|" />
+  <snippet command="add_timed_idea" replace="add_timed_idea = {\nidea = |IDEA ID|\ndays = |TIME|\n}" />
+  <snippet command="end_puppet" replace="end_puppet = |TAG|" />
+  <snippet command="load_oob" replace="load_oob = |OOB|" />
+  <snippet command="create_import" replace="create_import = {\nresource = |RESOURCE|\namount = |AMOUNT|\nexporter = |TAG|\n}" />
+  <snippet command="add_named_threat" replace="add_named_threat = {\nthreat = |NUMBER|\nname = |KEY|\n}" />
+  <snippet command="set_province_controller" replace="set_province_controller" />
+  <snippet command="set_major" replace="set_major = |YESNO|" />
+  <snippet command="create_field_marshal" replace="create_field_marshal = {\nname = &quot;|NAME|&quot;\ngfx = &quot;|FILE|&quot;\ntraits = {\n|TRAITS|\n}\nskill = |NUMBER|\n}" />
+  <snippet command="create_corps_commander" replace="create_corps_commander = {\nname = &quot;|NAME|&quot;\ngfx = &quot;|FILE|&quot;\ntraits = {\n|TRAITS|\n}\nskill = |NUMBER|\n}" />
+  <snippet command="goto_province" replace="goto_province = |PROVINCE ID|" />
+  <snippet command="goto_state" replace="goto_state = |STATE ID|" />
+  <snippet command="complete_national_focus" replace="complete_national_focus = |FOCUS ID|" />
+  <snippet command="set_party_name" replace="set_party_name = {\nideology = |IDEOLOGY|\nlong_name = |LONG NAME KEY|\nname = |SHORT NAME KEY|\n}" />
+  <snippet command="add_extra_state_shared_building_slots" replace="|SCOPE| = {\nadd_extra_state_shared_building_slots = |NUMBER|\n}" />
+  <snippet command="reverse_add_opinion_modifier" replace="reverse_add_opinion_modifier = {\ntarget = |TAG|\nmodifier = |MODIFIER|\n}" />
+  <snippet command="add_to_war" replace="add_to_war = {\ntargeted_alliance = |TAG|\nenemy = |TAG|\n}" />
+  <snippet command="create_equipment_variant" replace="create_equipment_variant = {\nname = &quot;|NAME|&quot;\ntype = |TYPE|\nupgrades = {\n|UPGRADES|\n}\n}" />
+  <snippet command="add_equipment_production" replace="add_equipment_production = {\nequipment = {\ntype = |TYPE|\ncreator = &quot;|TAG|&quot;\nversion_name = &quot;|NAME|&quot;\n}\nrequested_factories = |NUMBER|\nprogress = |PROGRESS|\namount = |AMOUNT|\n}" />
+  <snippet command="add_ace" replace="add_ace = {\nname = &quot;|NAME|&quot;\nsurname = &quot;|SURNAME|&quot;\ncallsign = &quot;|CALLSIGN|&quot;\ntype = |TYPE|\nis_female = |YESNO|\n}" />
+  <snippet command="add_equipment_to_stockpile" replace="add_equipment_to_stockpile = {\ntype = |TYPE|\namount = |NUMBER|\nproducer = |TAG|\n}" />
+  <snippet command="limit" replace="limit = {\n\n}" />
+  <snippet command="hidden_trigger" replace="hidden_trigger = {\n\n}" />
+  <snippet command="custom_trigger_tooltip" replace="custom_trigger_tooltip = {\ntooltip = |KEY|\n|TRIGGERS|\n}" />
+  <snippet command="custom_effect_tooltip" replace="custom_effect_tooltip = |KEY|" />
+  <snippet command="hidden_effect" replace="hidden_effect = {\n\n}" />
+  <snippet command="if" sets="" replace="if = {\n\n}" />
+  <snippet command="effect_tooltip" replace="effect_tooltip = {\n\n}" />
+  <snippet command="show_ideas_tooltip" replace="show_ideas_tooltip = |IDEA ID|" />
+</snippets>

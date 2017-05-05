@@ -3,7 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="Tutorial_Continue">Click here to continue</system:String>
     <system:String x:Key="Tutorial_End">This marks the end of this tutorial. You can revisit this tutorial at any time by clicking the ? button again.</system:String>
-    <system:String x:Key="Tutorial_Main_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+    <system:String x:Key="Tutorial_Main_1">Welcome to the main window tutorial, you may end the tutorial at any time by clicking the ? button again or pressing the escape key.</system:String>
     <system:String x:Key="Tutorial_Main_2">The panel to the left is the file viewer. This panel allows you to add, remove and modify files for you mod. Each file type has its own interface which is explained in their own tutorials.</system:String>
     <system:String x:Key="Tutorial_Main_3">This toolbar allows you to add and modify files, hover over each button to know their exact functions. The grayed out buttons only work if a file is selected.</system:String>
     <system:String x:Key="Tutorial_Main_4">You can also use the context menu to add files. Each file has its own context menu that adds the same functionalities as the toolbar.</system:String>
@@ -16,7 +16,7 @@
     <system:String x:Key="Tutorial_Main_11">When you are ready to export your work, you can use the export button next to the undo button. It will display a new window allowing you to chose the destination for the export.</system:String>
     <system:String x:Key="Tutorial_Main_12">The project button next to the export button will display the project panel. Click on this button to continue.</system:String>
     <system:String x:Key="Tutorial_Main_13">The project panel allows you to create a new empty project, load an existing project, edit the current project or save the current project. Close this panel using the arrow button to continue.</system:String>
-    <system:String x:Key="Tutorial_Focus_1">Welcome to the focus tree tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+    <system:String x:Key="Tutorial_Focus_1">Welcome to the focus tree tutorial, you may end the tutorial at any time by clicking the ? button again or pressing the escape key.</system:String>
     <system:String x:Key="Tutorial_Focus_2">This is the focus tree panel, there you will be able to create and edit one focus tree. The panel is divided as a grid where each cell can be filled with one focus.</system:String>
     <system:String x:Key="Tutorial_Focus_3">You can add a new focus by right-clicking anywhere on the grid. The newly added focus will be created in the cell you clicked. Please select "Add a new Focus" from the context menu to continue.</system:String>
     <system:String x:Key="Tutorial_Focus_4">This is the focus editor, this panel will show up whenever you will create or edit a focus. For now, keep the panel as is and press "Accept" to continue.</system:String>
@@ -52,13 +52,13 @@
     <system:String x:Key="Tutorial_Focus_34">All the selected foci can be moved by moving one of the selected foci. You can try it now.</system:String>
     <system:String x:Key="Tutorial_Focus_35">Selected foci can also be copied. To copy the selected foci, right-click on any of them to bring the context menu and select "Copy". You can then right-click on any empty space in the same grid to paste the copied foci.</system:String>
     <system:String x:Key="Tutorial_Focus_36">Clicking anywhere or starting a new selection box will clear the old selected foci.</system:String>
-    <system:String x:Key="Tutorial_Localisation_1">Welcome to the localization tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+    <system:String x:Key="Tutorial_Localisation_1">Welcome to the localization tutorial, you may end the tutorial at any time by clicking the ? button again or pressing the escape key..</system:String>
     <system:String x:Key="Tutorial_Localisation_2">This is the localization list, it contains all the key and text pairs for the game's localization.</system:String>
     <system:String x:Key="Tutorial_Localisation_3">All localization values are made of a pair. The first element is the key, this is the text that will be searched and replaced when the game loads. For example, if the game loads a focus with the name "FRA_FOCUS_1", it will search all available localization files for an entry with this key and print the associated value.</system:String>
     <system:String x:Key="Tutorial_Localisation_4">The localization list can be easily modified by clicking on any of the cells of the list. By double-clicking on a cell, you will be able to edit its content. Rows can be added by simply double-clicking on the empty last row and adding content.</system:String>
     <system:String x:Key="Tutorial_Localisation_5">You can filter the list by clicking on the filter button. This button will make the filter field appear and typing in this field will filter the list.</system:String>
     <system:String x:Key="Tutorial_Localisation_6">You may also click on the column's header to sort all values alphabetically in ascending order, from A to Z. Clicking on the header again will sort the value in descending order, from Z to A.</system:String>
-    <system:String x:Key="Tutorial_File_1">Welcome to the file manager tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+    <system:String x:Key="Tutorial_File_1">Welcome to the file manager tutorial, you may end the tutorial at any time by clicking the ? button again or pressing the escape key.</system:String>
     <system:String x:Key="Tutorial_File_2">The file manager allows you to add new files to the application or import scripts from the game.</system:String>
     <system:String x:Key="Tutorial_File_3">This first row allows you to chose what kind of file you want to manage, either a new empty file or import a script. Chose "New file" to continue.</system:String>
     <system:String x:Key="Tutorial_File_4">This second row allows you to chose the type of file you want to create. Chose to focus tree file type to continue.</system:String>
@@ -72,7 +72,7 @@
     <system:String x:Key="Tutorial_File_12">Event files have a namespace property. The namespace is a container where all events related to that namespace go. Event within a namespace must all have unique names, but they may have the same name as another event in another namespace.</system:String>
     <system:String x:Key="Tutorial_File_13">Once you are ready, you can hit accept and create your event file. For now, we will see other file types. Choose the generic script type to continue.</system:String>
     <system:String x:Key="Tutorial_File_14">Generic script are mostly empty. Use this type for all scripts that are not currently managed by the application.</system:String>
-    <system:String x:Key="Tutorial_Project_1">Welcome to the project manager tutorial, you may end the tutorial at any time by clicking the ? button again.</system:String>
+    <system:String x:Key="Tutorial_Project_1">Welcome to the project manager tutorial, you may end the tutorial at any time by clicking the ? button again or pressing the escape key.</system:String>
     <system:String x:Key="Tutorial_Project_2">This windows allows you to manage all the major elements of a project in the application.</system:String>
     <system:String x:Key="Tutorial_Project_3">Clicking in the filename field will prompt a file selection window, you can chose or create a new file via this prompt. If you chose a file that already exists, you will be asked to confirm, as choosing this file will overwrite the older one.</system:String>
     <system:String x:Key="Tutorial_Project_4">The project's name is the same as the file name, but without the path or extension.</system:String>

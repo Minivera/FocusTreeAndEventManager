@@ -1,0 +1,745 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<snippets>
+  <snippet command="state" replace="1" data="Corsica" />
+  <snippet command="state" replace="2" data="Latium" />
+  <snippet command="state" replace="3" data="Switzerland" />
+  <snippet command="state" replace="4" data="Lower Austria" />
+  <snippet command="state" replace="5" data="Ostpreussen" />
+  <snippet command="state" replace="6" data="Vlaanderen" />
+  <snippet command="state" replace="7" data="Holland" />
+  <snippet command="state" replace="8" data="Luxemburg" />
+  <snippet command="state" replace="9" data="Bohemia" />
+  <snippet command="state" replace="10" data="Warszawa" />
+  <snippet command="state" replace="11" data="Kaunas" />
+  <snippet command="state" replace="12" data="Vidzeme" />
+  <snippet command="state" replace="13" data="Harju" />
+  <snippet command="state" replace="14" data="Brittany" />
+  <snippet command="state" replace="15" data="Normandy" />
+  <snippet command="state" replace="16" data="Ile de France" />
+  <snippet command="state" replace="17" data="Lorraine" />
+  <snippet command="state" replace="18" data="Champagne" />
+  <snippet command="state" replace="19" data="Aquitaine" />
+  <snippet command="state" replace="20" data="Rhone" />
+  <snippet command="state" replace="21" data="Provence" />
+  <snippet command="state" replace="22" data="Languedoc" />
+  <snippet command="state" replace="23" data="Poitou" />
+  <snippet command="state" replace="24" data="Centre" />
+  <snippet command="state" replace="25" data="Limousin" />
+  <snippet command="state" replace="26" data="Auvergne" />
+  <snippet command="state" replace="27" data="Bourgogne" />
+  <snippet command="state" replace="28" data="Alsace" />
+  <snippet command="state" replace="29" data="Pas de Calais" />
+  <snippet command="state" replace="30" data="Loire" />
+  <snippet command="state" replace="31" data="Midi Pyrenees" />
+  <snippet command="state" replace="32" data="Alpes" />
+  <snippet command="state" replace="33" data="Centre-Sud" />
+  <snippet command="state" replace="34" data="Wallonie" />
+  <snippet command="state" replace="35" data="Brabant" />
+  <snippet command="state" replace="36" data="Friesland" />
+  <snippet command="state" replace="37" data="Sjaelland" />
+  <snippet command="state" replace="38" data="Norrland" />
+  <snippet command="state" replace="39" data="South Tyrol" />
+  <snippet command="state" replace="40" data="Barnaul" />
+  <snippet command="state" replace="41" data="Madrid" />
+  <snippet command="state" replace="42" data="Moselland" />
+  <snippet command="state" replace="43" data="Northern Hungary" />
+  <snippet command="state" replace="44" data="Albania" />
+  <snippet command="state" replace="45" data="Vojvodina" />
+  <snippet command="state" replace="46" data="Muntenia" />
+  <snippet command="state" replace="47" data="Thessaly" />
+  <snippet command="state" replace="48" data="Sofia" />
+  <snippet command="state" replace="49" data="Ankara" />
+  <snippet command="state" replace="50" data="Württemberg" />
+  <snippet command="state" replace="51" data="Rhineland" />
+  <snippet command="state" replace="52" data="Oberbayern" />
+  <snippet command="state" replace="53" data="Niederbayern" />
+  <snippet command="state" replace="54" data="Franken" />
+  <snippet command="state" replace="55" data="Hessen" />
+  <snippet command="state" replace="56" data="Weser-Ems" />
+  <snippet command="state" replace="57" data="Westfalen" />
+  <snippet command="state" replace="58" data="Schleswig-Holstein" />
+  <snippet command="state" replace="59" data="Hannover" />
+  <snippet command="state" replace="60" data="Thüringen" />
+  <snippet command="state" replace="61" data="Mecklenburg" />
+  <snippet command="state" replace="62" data="Pommern" />
+  <snippet command="state" replace="63" data="Hinterpommern" />
+  <snippet command="state" replace="64" data="Brandenburg" />
+  <snippet command="state" replace="65" data="Sachsen" />
+  <snippet command="state" replace="66" data="Niederschlesien" />
+  <snippet command="state" replace="67" data="Oberschlesien" />
+  <snippet command="state" replace="68" data="Ostmark" />
+  <snippet command="state" replace="69" data="Sudetenland" />
+  <snippet command="state" replace="70" data="Western Slovakia" />
+  <snippet command="state" replace="71" data="Eastern Slovakia" />
+  <snippet command="state" replace="72" data="Zaolzie" />
+  <snippet command="state" replace="73" data="Carpathian Ruthenia" />
+  <snippet command="state" replace="74" data="Eastern Sudetenland" />
+  <snippet command="state" replace="75" data="Moravia" />
+  <snippet command="state" replace="76" data="North Transylvania" />
+  <snippet command="state" replace="77" data="Dobrudja" />
+  <snippet command="state" replace="78" data="Bessarabia" />
+  <snippet command="state" replace="79" data="Moldova" />
+  <snippet command="state" replace="80" data="Bucovina" />
+  <snippet command="state" replace="81" data="Oltenia" />
+  <snippet command="state" replace="82" data="Banat" />
+  <snippet command="state" replace="83" data="Crisana" />
+  <snippet command="state" replace="84" data="Transylvania" />
+  <snippet command="state" replace="85" data="Danzig" />
+  <snippet command="state" replace="86" data="Poznan" />
+  <snippet command="state" replace="87" data="Lodz" />
+  <snippet command="state" replace="88" data="Krakow" />
+  <snippet command="state" replace="89" data="Stanislawow" />
+  <snippet command="state" replace="90" data="Kielce" />
+  <snippet command="state" replace="91" data="Lwow" />
+  <snippet command="state" replace="92" data="Lublin" />
+  <snippet command="state" replace="93" data="Wolyn" />
+  <snippet command="state" replace="94" data="Polesie" />
+  <snippet command="state" replace="95" data="Nowogrodek" />
+  <snippet command="state" replace="96" data="Wilno" />
+  <snippet command="state" replace="97" data="Bialystok" />
+  <snippet command="state" replace="98" data="Plock" />
+  <snippet command="state" replace="99" data="Jutland" />
+  <snippet command="state" replace="100" data="Iceland" />
+  <snippet command="state" replace="101" data="Greenland" />
+  <snippet command="state" replace="102" data="Slovenia" />
+  <snippet command="state" replace="103" data="Dalmatia" />
+  <snippet command="state" replace="104" data="Bosnia" />
+  <snippet command="state" replace="105" data="Montenegro" />
+  <snippet command="state" replace="106" data="Macedonia" />
+  <snippet command="state" replace="107" data="Serbia" />
+  <snippet command="state" replace="108" data="Morava" />
+  <snippet command="state" replace="109" data="Croatia" />
+  <snippet command="state" replace="110" data="Ostlandet" />
+  <snippet command="state" replace="111" data="Uusimaa" />
+  <snippet command="state" replace="112" data="Lisbon" />
+  <snippet command="state" replace="113" data="Leinster" />
+  <snippet command="state" replace="114" data="Sardinia" />
+  <snippet command="state" replace="115" data="Sicily" />
+  <snippet command="state" replace="116" data="Malta" />
+  <snippet command="state" replace="117" data="Campania" />
+  <snippet command="state" replace="118" data="Gibraltar" />
+  <snippet command="state" replace="119" data="Northern Ireland" />
+  <snippet command="state" replace="120" data="Scottish Highlands" />
+  <snippet command="state" replace="121" data="Lothian" />
+  <snippet command="state" replace="122" data="Wales" />
+  <snippet command="state" replace="123" data="Cornwall" />
+  <snippet command="state" replace="124" data="Gotland" />
+  <snippet command="state" replace="125" data="East Anglia" />
+  <snippet command="state" replace="126" data="Greater London Area" />
+  <snippet command="state" replace="127" data="Sussex" />
+  <snippet command="state" replace="128" data="West Midlands" />
+  <snippet command="state" replace="129" data="East Midlands" />
+  <snippet command="state" replace="130" data="Yorkshire" />
+  <snippet command="state" replace="131" data="Northern England" />
+  <snippet command="state" replace="132" data="Lancashire" />
+  <snippet command="state" replace="133" data="Lanark" />
+  <snippet command="state" replace="134" data="Connaught" />
+  <snippet command="state" replace="135" data="Munster" />
+  <snippet command="state" replace="136" data="Aberdeenshire" />
+  <snippet command="state" replace="137" data="Crimea" />
+  <snippet command="state" replace="138" data="Scania" />
+  <snippet command="state" replace="139" data="Småland" />
+  <snippet command="state" replace="140" data="Västergötland" />
+  <snippet command="state" replace="141" data="Svealand" />
+  <snippet command="state" replace="142" data="Vestlandet" />
+  <snippet command="state" replace="143" data="Trondelag" />
+  <snippet command="state" replace="144" data="Nord-Norge" />
+  <snippet command="state" replace="145" data="Aland" />
+  <snippet command="state" replace="146" data="Karjala" />
+  <snippet command="state" replace="147" data="Salla" />
+  <snippet command="state" replace="148" data="Lappi" />
+  <snippet command="state" replace="149" data="Pohjanmaa" />
+  <snippet command="state" replace="150" data="Savo" />
+  <snippet command="state" replace="151" data="Eastern Switzerland" />
+  <snippet command="state" replace="152" data="Upper Austria" />
+  <snippet command="state" replace="153" data="Tyrol" />
+  <snippet command="state" replace="154" data="Alföld" />
+  <snippet command="state" replace="155" data="Transdanubia" />
+  <snippet command="state" replace="156" data="Calabria" />
+  <snippet command="state" replace="157" data="Abruzzo" />
+  <snippet command="state" replace="158" data="Piedmont" />
+  <snippet command="state" replace="159" data="Lombardy" />
+  <snippet command="state" replace="160" data="Veneto" />
+  <snippet command="state" replace="161" data="Emilia Romagna" />
+  <snippet command="state" replace="162" data="Tuscany" />
+  <snippet command="state" replace="163" data="Zara" />
+  <snippet command="state" replace="164" data="Dodecanese" />
+  <snippet command="state" replace="165" data="Catalonia" />
+  <snippet command="state" replace="166" data="Aragon" />
+  <snippet command="state" replace="167" data="Valencia" />
+  <snippet command="state" replace="168" data="Murcia" />
+  <snippet command="state" replace="169" data="Andalusia" />
+  <snippet command="state" replace="170" data="Extremadura" />
+  <snippet command="state" replace="171" data="Galicia" />
+  <snippet command="state" replace="172" data="Navarre" />
+  <snippet command="state" replace="173" data="Granada" />
+  <snippet command="state" replace="174" data="Leon" />
+  <snippet command="state" replace="175" data="La Mancha" />
+  <snippet command="state" replace="176" data="Castille" />
+  <snippet command="state" replace="177" data="Balearic Islands" />
+  <snippet command="state" replace="178" data="Canary islands" />
+  <snippet command="state" replace="179" data="Beja" />
+  <snippet command="state" replace="180" data="Porto" />
+  <snippet command="state" replace="181" data="Guarda" />
+  <snippet command="state" replace="182" data="Crete" />
+  <snippet command="state" replace="183" data="Cyprus" />
+  <snippet command="state" replace="184" data="Thrace" />
+  <snippet command="state" replace="185" data="Epirus" />
+  <snippet command="state" replace="186" data="Peloponnese" />
+  <snippet command="state" replace="187" data="Aegean Islands" />
+  <snippet command="state" replace="188" data="Memel" />
+  <snippet command="state" replace="189" data="Siauliai" />
+  <snippet command="state" replace="190" data="Kurzeme" />
+  <snippet command="state" replace="191" data="Tartu" />
+  <snippet command="state" replace="192" data="Odessa" />
+  <snippet command="state" replace="193" data="Chernihiv" />
+  <snippet command="state" replace="194" data="Mozyr" />
+  <snippet command="state" replace="195" data="Leningrad" />
+  <snippet command="state" replace="196" data="Kherson" />
+  <snippet command="state" replace="197" data="Mykolaiv" />
+  <snippet command="state" replace="198" data="Vinnytsia" />
+  <snippet command="state" replace="199" data="Khmelnytskyi" />
+  <snippet command="state" replace="200" data="Zaporozhe" />
+  <snippet command="state" replace="201" data="Zhytomyr" />
+  <snippet command="state" replace="202" data="Kiev" />
+  <snippet command="state" replace="203" data="Cherkasy" />
+  <snippet command="state" replace="204" data="Bobruysk" />
+  <snippet command="state" replace="205" data="Kaluga" />
+  <snippet command="state" replace="206" data="Minsk" />
+  <snippet command="state" replace="207" data="Vitebsk" />
+  <snippet command="state" replace="208" data="Luga" />
+  <snippet command="state" replace="209" data="Pskov" />
+  <snippet command="state" replace="210" data="Nevel" />
+  <snippet command="state" replace="211" data="Burgas" />
+  <snippet command="state" replace="212" data="Plovdiv" />
+  <snippet command="state" replace="213" data="Murmansk" />
+  <snippet command="state" replace="214" data="Arkhangelsk" />
+  <snippet command="state" replace="215" data="Onega" />
+  <snippet command="state" replace="216" data="Olonets" />
+  <snippet command="state" replace="217" data="Stalingrad" />
+  <snippet command="state" replace="218" data="Rostov" />
+  <snippet command="state" replace="219" data="Moscow" />
+  <snippet command="state" replace="220" data="Kursk" />
+  <snippet command="state" replace="221" data="Kharkov" />
+  <snippet command="state" replace="222" data="Orel" />
+  <snippet command="state" replace="223" data="Tula" />
+  <snippet command="state" replace="224" data="Bryansk" />
+  <snippet command="state" replace="225" data="Sumy" />
+  <snippet command="state" replace="226" data="Dnipropetrovsk" />
+  <snippet command="state" replace="227" data="Stalino" />
+  <snippet command="state" replace="228" data="Voroshilovgrad" />
+  <snippet command="state" replace="229" data="Azerbaijan" />
+  <snippet command="state" replace="230" data="Armenia" />
+  <snippet command="state" replace="231" data="Georgia" />
+  <snippet command="state" replace="232" data="Grozny" />
+  <snippet command="state" replace="233" data="Caucasus Mountains" />
+  <snippet command="state" replace="234" data="Krasnodar" />
+  <snippet command="state" replace="235" data="Stravropol" />
+  <snippet command="state" replace="236" data="Astrakhan" />
+  <snippet command="state" replace="237" data="Elista" />
+  <snippet command="state" replace="238" data="Volgodonsk" />
+  <snippet command="state" replace="239" data="Saratov" />
+  <snippet command="state" replace="240" data="Belgorod" />
+  <snippet command="state" replace="241" data="Gomel" />
+  <snippet command="state" replace="242" data="Smolensk" />
+  <snippet command="state" replace="243" data="Roslavl" />
+  <snippet command="state" replace="244" data="Volkhov" />
+  <snippet command="state" replace="245" data="Millerovo" />
+  <snippet command="state" replace="246" data="Rzhev" />
+  <snippet command="state" replace="247" data="Kalinin" />
+  <snippet command="state" replace="248" data="Yaroslavl" />
+  <snippet command="state" replace="249" data="Kazan" />
+  <snippet command="state" replace="250" data="Ulyanovsky" />
+  <snippet command="state" replace="251" data="Kuibyshev" />
+  <snippet command="state" replace="252" data="Gorki" />
+  <snippet command="state" replace="253" data="Ivanovo" />
+  <snippet command="state" replace="254" data="Ryazan" />
+  <snippet command="state" replace="255" data="Penza" />
+  <snippet command="state" replace="256" data="Cheboksary" />
+  <snippet command="state" replace="257" data="Tambov" />
+  <snippet command="state" replace="258" data="Lipetsk" />
+  <snippet command="state" replace="259" data="Poltava" />
+  <snippet command="state" replace="260" data="Voronezh" />
+  <snippet command="state" replace="261" data="Ohio" />
+  <snippet command="state" replace="262" data="Pechora" />
+  <snippet command="state" replace="263" data="Novgorod" />
+  <snippet command="state" replace="264" data="Tikhvin" />
+  <snippet command="state" replace="265" data="Mikhaylovka" />
+  <snippet command="state" replace="266" data="Tehran" />
+  <snippet command="state" replace="267" data="Kabul" />
+  <snippet command="state" replace="268" data="French Somaliland" />
+  <snippet command="state" replace="269" data="British Somaliland" />
+  <snippet command="state" replace="270" data="Pitcairn Island" />
+  <snippet command="state" replace="271" data="Ethiopia" />
+  <snippet command="state" replace="272" data="Senegal" />
+  <snippet command="state" replace="273" data="Libyan Desert" />
+  <snippet command="state" replace="274" data="Ghana" />
+  <snippet command="state" replace="275" data="Transvaal" />
+  <snippet command="state" replace="276" data="Southern Ontario" />
+  <snippet command="state" replace="277" data="Mexico City" />
+  <snippet command="state" replace="278" data="Pampas" />
+  <snippet command="state" replace="279" data="Santiago" />
+  <snippet command="state" replace="280" data="Mato Grosso" />
+  <snippet command="state" replace="281" data="Maldives" />
+  <snippet command="state" replace="282" data="Kanto" />
+  <snippet command="state" replace="283" data="Gansu" />
+  <snippet command="state" replace="284" data="North Island" />
+  <snippet command="state" replace="285" data="New South Wales" />
+  <snippet command="state" replace="286" data="Southern Indochina" />
+  <snippet command="state" replace="287" data="Taklamakan" />
+  <snippet command="state" replace="288" data="Burma" />
+  <snippet command="state" replace="289" data="Siam" />
+  <snippet command="state" replace="290" data="Spanish Africa" />
+  <snippet command="state" replace="291" data="Baghdad" />
+  <snippet command="state" replace="292" data="Nejd" />
+  <snippet command="state" replace="293" data="Yemen" />
+  <snippet command="state" replace="294" data="Oman" />
+  <snippet command="state" replace="295" data="Leopoldville" />
+  <snippet command="state" replace="296" data="Portuguese Guinea" />
+  <snippet command="state" replace="297" data="Equatorial Guinea" />
+  <snippet command="state" replace="298" data="Liberia" />
+  <snippet command="state" replace="299" data="Falkland Islands" />
+  <snippet command="state" replace="300" data="Uruguay" />
+  <snippet command="state" replace="301" data="Paraguay" />
+  <snippet command="state" replace="302" data="La Paz" />
+  <snippet command="state" replace="303" data="Lima" />
+  <snippet command="state" replace="304" data="Panama" />
+  <snippet command="state" replace="305" data="Ecuador" />
+  <snippet command="state" replace="306" data="Cundinamarca" />
+  <snippet command="state" replace="307" data="Miranda" />
+  <snippet command="state" replace="308" data="Leeward Islands" />
+  <snippet command="state" replace="309" data="Suriname" />
+  <snippet command="state" replace="310" data="French Guiana" />
+  <snippet command="state" replace="311" data="British Mexico" />
+  <snippet command="state" replace="312" data="Honduras" />
+  <snippet command="state" replace="313" data="Guatemala" />
+  <snippet command="state" replace="314" data="El Salvador" />
+  <snippet command="state" replace="315" data="Cuba" />
+  <snippet command="state" replace="316" data="Costa Rica" />
+  <snippet command="state" replace="317" data="Nicaragua" />
+  <snippet command="state" replace="318" data="Haiti" />
+  <snippet command="state" replace="319" data="Dominican Republic" />
+  <snippet command="state" replace="320" data="French India" />
+  <snippet command="state" replace="321" data="Goa" />
+  <snippet command="state" replace="322" data="Tibet" />
+  <snippet command="state" replace="323" data="Nepal" />
+  <snippet command="state" replace="324" data="Bhutan" />
+  <snippet command="state" replace="325" data="Yunnan" />
+  <snippet command="state" replace="326" data="Hong Kong" />
+  <snippet command="state" replace="327" data="Manila" />
+  <snippet command="state" replace="328" data="Kirin" />
+  <snippet command="state" replace="329" data="Tannu Tuva" />
+  <snippet command="state" replace="330" data="Mongolia" />
+  <snippet command="state" replace="331" data="Newfoundland" />
+  <snippet command="state" replace="332" data="Labrador" />
+  <snippet command="state" replace="333" data="North Borneo" />
+  <snippet command="state" replace="334" data="Kalimantan" />
+  <snippet command="state" replace="335" data="Java" />
+  <snippet command="state" replace="336" data="Singapore" />
+  <snippet command="state" replace="337" data="Faroe Islands" />
+  <snippet command="state" replace="338" data="Gloucestershire" />
+  <snippet command="state" replace="339" data="Izmir" />
+  <snippet command="state" replace="340" data="Bursa" />
+  <snippet command="state" replace="341" data="Istanbul" />
+  <snippet command="state" replace="342" data="Antalya" />
+  <snippet command="state" replace="343" data="Afyon" />
+  <snippet command="state" replace="344" data="Adana" />
+  <snippet command="state" replace="345" data="Mersin" />
+  <snippet command="state" replace="346" data="Konya" />
+  <snippet command="state" replace="347" data="Izmit" />
+  <snippet command="state" replace="348" data="Kayseri" />
+  <snippet command="state" replace="349" data="Sivas" />
+  <snippet command="state" replace="350" data="Malatya" />
+  <snippet command="state" replace="351" data="Vologda" />
+  <snippet command="state" replace="352" data="Van" />
+  <snippet command="state" replace="353" data="Erzurum" />
+  <snippet command="state" replace="354" data="Trabzon" />
+  <snippet command="state" replace="355" data="Samsun" />
+  <snippet command="state" replace="356" data="Kastamonu" />
+  <snippet command="state" replace="357" data="New England" />
+  <snippet command="state" replace="358" data="New York" />
+  <snippet command="state" replace="359" data="New Jersey" />
+  <snippet command="state" replace="360" data="Pennsylvania" />
+  <snippet command="state" replace="361" data="Maryland" />
+  <snippet command="state" replace="362" data="Virginia" />
+  <snippet command="state" replace="363" data="North Carolina" />
+  <snippet command="state" replace="364" data="South Carolina" />
+  <snippet command="state" replace="365" data="Georgia" />
+  <snippet command="state" replace="366" data="Florida" />
+  <snippet command="state" replace="367" data="Alabama" />
+  <snippet command="state" replace="368" data="Tennessee" />
+  <snippet command="state" replace="369" data="Kentucky" />
+  <snippet command="state" replace="370" data="Mississippi" />
+  <snippet command="state" replace="371" data="Louisiana" />
+  <snippet command="state" replace="372" data="Arkansas" />
+  <snippet command="state" replace="373" data="Missouri" />
+  <snippet command="state" replace="374" data="Oklahoma" />
+  <snippet command="state" replace="375" data="Texas" />
+  <snippet command="state" replace="376" data="New Mexico" />
+  <snippet command="state" replace="377" data="Arizona" />
+  <snippet command="state" replace="378" data="California" />
+  <snippet command="state" replace="379" data="Nevada" />
+  <snippet command="state" replace="380" data="Utah" />
+  <snippet command="state" replace="381" data="Wyoming" />
+  <snippet command="state" replace="382" data="Colorado" />
+  <snippet command="state" replace="383" data="Kansas" />
+  <snippet command="state" replace="384" data="Nebraska" />
+  <snippet command="state" replace="385" data="Oregon" />
+  <snippet command="state" replace="386" data="Washington" />
+  <snippet command="state" replace="387" data="Idaho" />
+  <snippet command="state" replace="388" data="Montana" />
+  <snippet command="state" replace="389" data="North Dakota" />
+  <snippet command="state" replace="390" data="South Dakota" />
+  <snippet command="state" replace="391" data="Minnesota" />
+  <snippet command="state" replace="392" data="Iowa" />
+  <snippet command="state" replace="393" data="Michigan" />
+  <snippet command="state" replace="394" data="Wisconsin" />
+  <snippet command="state" replace="395" data="Illinois" />
+  <snippet command="state" replace="396" data="Indiana" />
+  <snippet command="state" replace="397" data="Syktyvkar" />
+  <snippet command="state" replace="398" data="Perm" />
+  <snippet command="state" replace="399" data="Izhevsk" />
+  <snippet command="state" replace="400" data="Kirov" />
+  <snippet command="state" replace="401" data="Engels" />
+  <snippet command="state" replace="402" data="Akhtubinsk" />
+  <snippet command="state" replace="403" data="Tyumen" />
+  <snippet command="state" replace="404" data="Kyzyl Orda" />
+  <snippet command="state" replace="405" data="Tashkent" />
+  <snippet command="state" replace="406" data="Gurev" />
+  <snippet command="state" replace="407" data="Uralsk" />
+  <snippet command="state" replace="408" data="Vladivostok" />
+  <snippet command="state" replace="409" data="Khabarovsk" />
+  <snippet command="state" replace="410" data="Sistan" />
+  <snippet command="state" replace="411" data="Isfahan" />
+  <snippet command="state" replace="412" data="Fars" />
+  <snippet command="state" replace="413" data="Khuzestan" />
+  <snippet command="state" replace="414" data="Kerman" />
+  <snippet command="state" replace="415" data="Herat" />
+  <snippet command="state" replace="416" data="Khorasan" />
+  <snippet command="state" replace="417" data="Hamadan" />
+  <snippet command="state" replace="418" data="Semnan" />
+  <snippet command="state" replace="419" data="Tibriz" />
+  <snippet command="state" replace="420" data="Gilan" />
+  <snippet command="state" replace="421" data="Kurdistan" />
+  <snippet command="state" replace="422" data="Ceylon" />
+  <snippet command="state" replace="423" data="Madurai" />
+  <snippet command="state" replace="424" data="Madras" />
+  <snippet command="state" replace="425" data="Mysore" />
+  <snippet command="state" replace="426" data="Orissa" />
+  <snippet command="state" replace="427" data="Hyderabad" />
+  <snippet command="state" replace="428" data="Gujarat" />
+  <snippet command="state" replace="429" data="Bombay" />
+  <snippet command="state" replace="430" data="East Bengal" />
+  <snippet command="state" replace="431" data="West Bengal" />
+  <snippet command="state" replace="432" data="Assam" />
+  <snippet command="state" replace="433" data="Rajahsthan" />
+  <snippet command="state" replace="434" data="Arunachal Pradesh" />
+  <snippet command="state" replace="435" data="Bihar" />
+  <snippet command="state" replace="436" data="Jabalpur" />
+  <snippet command="state" replace="437" data="Indore" />
+  <snippet command="state" replace="438" data="Lucknow" />
+  <snippet command="state" replace="439" data="Delhi" />
+  <snippet command="state" replace="440" data="Punjab" />
+  <snippet command="state" replace="441" data="Kashmir" />
+  <snippet command="state" replace="442" data="Peshawar" />
+  <snippet command="state" replace="443" data="Sind" />
+  <snippet command="state" replace="444" data="Baluchistan" />
+  <snippet command="state" replace="445" data="Quetta" />
+  <snippet command="state" replace="446" data="Cairo" />
+  <snippet command="state" replace="447" data="Alexandria" />
+  <snippet command="state" replace="448" data="Tripoli" />
+  <snippet command="state" replace="449" data="El Agheila" />
+  <snippet command="state" replace="450" data="Benghasi" />
+  <snippet command="state" replace="451" data="Derna" />
+  <snippet command="state" replace="452" data="Marsa Matruh" />
+  <snippet command="state" replace="453" data="Sinai" />
+  <snippet command="state" replace="454" data="Palestine" />
+  <snippet command="state" replace="455" data="Jordan" />
+  <snippet command="state" replace="456" data="Aswan" />
+  <snippet command="state" replace="457" data="Arabian Desert" />
+  <snippet command="state" replace="458" data="Tunisia" />
+  <snippet command="state" replace="459" data="Algiers" />
+  <snippet command="state" replace="460" data="Constantine" />
+  <snippet command="state" replace="461" data="Casablanca" />
+  <snippet command="state" replace="462" data="Marrakech" />
+  <snippet command="state" replace="463" data="Alaska" />
+  <snippet command="state" replace="464" data="Nova Scotia" />
+  <snippet command="state" replace="465" data="New Brunswick" />
+  <snippet command="state" replace="466" data="Quebec" />
+  <snippet command="state" replace="467" data="Manitoba" />
+  <snippet command="state" replace="468" data="Saint Lawrence" />
+  <snippet command="state" replace="469" data="Saskatchewan" />
+  <snippet command="state" replace="470" data="Alberta" />
+  <snippet command="state" replace="471" data="Northwestern Canada" />
+  <snippet command="state" replace="472" data="Northern Canada" />
+  <snippet command="state" replace="473" data="British Columbia" />
+  <snippet command="state" replace="474" data="Yucatan" />
+  <snippet command="state" replace="475" data="Chiapas" />
+  <snippet command="state" replace="476" data="Oaxaca" />
+  <snippet command="state" replace="477" data="Veracruz" />
+  <snippet command="state" replace="478" data="Jalisco" />
+  <snippet command="state" replace="479" data="Tamaulipas" />
+  <snippet command="state" replace="480" data="Coahuila" />
+  <snippet command="state" replace="481" data="Durango" />
+  <snippet command="state" replace="482" data="Chihuahua" />
+  <snippet command="state" replace="483" data="Sonora" />
+  <snippet command="state" replace="484" data="Baja California" />
+  <snippet command="state" replace="485" data="Guerrero" />
+  <snippet command="state" replace="486" data="Meta" />
+  <snippet command="state" replace="487" data="Santa Cruz" />
+  <snippet command="state" replace="488" data="Bolivar" />
+  <snippet command="state" replace="489" data="Zulia" />
+  <snippet command="state" replace="490" data="Pastaza" />
+  <snippet command="state" replace="491" data="Loreto" />
+  <snippet command="state" replace="492" data="Arequipa" />
+  <snippet command="state" replace="493" data="La Libertad" />
+  <snippet command="state" replace="494" data="Ucayali" />
+  <snippet command="state" replace="495" data="Amazonas" />
+  <snippet command="state" replace="496" data="Para" />
+  <snippet command="state" replace="497" data="Maranhao" />
+  <snippet command="state" replace="498" data="Rio Grande" />
+  <snippet command="state" replace="499" data="Bahia" />
+  <snippet command="state" replace="500" data="Rio de Janeiro" />
+  <snippet command="state" replace="501" data="Sao Paulo" />
+  <snippet command="state" replace="502" data="Rio Grande Sul" />
+  <snippet command="state" replace="503" data="Santa Catarina" />
+  <snippet command="state" replace="504" data="Iguacu" />
+  <snippet command="state" replace="505" data="Goias" />
+  <snippet command="state" replace="506" data="Antofagasta" />
+  <snippet command="state" replace="507" data="Magallanes" />
+  <snippet command="state" replace="508" data="Tucuman" />
+  <snippet command="state" replace="509" data="Chaco Austral" />
+  <snippet command="state" replace="510" data="Mesopotamia" />
+  <snippet command="state" replace="511" data="Mendoza" />
+  <snippet command="state" replace="512" data="Patagonia" />
+  <snippet command="state" replace="513" data="Tlemcen" />
+  <snippet command="state" replace="514" data="Algerian Desert" />
+  <snippet command="state" replace="515" data="Southern Sahara" />
+  <snippet command="state" replace="516" data="Northwest Siberia" />
+  <snippet command="state" replace="517" data="Victoria" />
+  <snippet command="state" replace="518" data="Tasmania" />
+  <snippet command="state" replace="519" data="South Australia" />
+  <snippet command="state" replace="520" data="Northern Territory" />
+  <snippet command="state" replace="521" data="Queensland" />
+  <snippet command="state" replace="522" data="Western Australia" />
+  <snippet command="state" replace="523" data="Papua" />
+  <snippet command="state" replace="524" data="Taiwan" />
+  <snippet command="state" replace="525" data="South Korea" />
+  <snippet command="state" replace="526" data="Okinawa" />
+  <snippet command="state" replace="527" data="North Korea" />
+  <snippet command="state" replace="528" data="Kyushu" />
+  <snippet command="state" replace="529" data="Chugoku" />
+  <snippet command="state" replace="530" data="Shikoku" />
+  <snippet command="state" replace="531" data="Kansai" />
+  <snippet command="state" replace="532" data="Tokai" />
+  <snippet command="state" replace="533" data="Tohoku" />
+  <snippet command="state" replace="534" data="Hokuriku" />
+  <snippet command="state" replace="535" data="Koshinetsu" />
+  <snippet command="state" replace="536" data="Hokkaido" />
+  <snippet command="state" replace="537" data="South Sakhalin" />
+  <snippet command="state" replace="538" data="Central Congo" />
+  <snippet command="state" replace="539" data="Gabon" />
+  <snippet command="state" replace="540" data="Angola" />
+  <snippet command="state" replace="541" data="South West Africa" />
+  <snippet command="state" replace="542" data="Bechuanaland" />
+  <snippet command="state" replace="543" data="Madagascar" />
+  <snippet command="state" replace="544" data="Mozambique" />
+  <snippet command="state" replace="545" data="Rhodesia" />
+  <snippet command="state" replace="546" data="Tanganyika" />
+  <snippet command="state" replace="547" data="Kenya" />
+  <snippet command="state" replace="548" data="Uganda" />
+  <snippet command="state" replace="549" data="Sudan" />
+  <snippet command="state" replace="550" data="Eritrea" />
+  <snippet command="state" replace="551" data="Khartoum" />
+  <snippet command="state" replace="552" data="Western Desert" />
+  <snippet command="state" replace="553" data="Lebanon" />
+  <snippet command="state" replace="554" data="Damascus" />
+  <snippet command="state" replace="555" data="Kuril Islands" />
+  <snippet command="state" replace="556" data="French West Africa" />
+  <snippet command="state" replace="557" data="Mauritania" />
+  <snippet command="state" replace="558" data="Nigeria" />
+  <snippet command="state" replace="559" data="Somaliland" />
+  <snippet command="state" replace="560" data="Nikolayevsk" />
+  <snippet command="state" replace="561" data="Amur" />
+  <snippet command="state" replace="562" data="Okhotsk" />
+  <snippet command="state" replace="563" data="Chita" />
+  <snippet command="state" replace="564" data="Ulan Ude" />
+  <snippet command="state" replace="565" data="Bodaybo" />
+  <snippet command="state" replace="566" data="Irkutsk" />
+  <snippet command="state" replace="567" data="Bratsk" />
+  <snippet command="state" replace="568" data="Krasnoyarsk" />
+  <snippet command="state" replace="569" data="Kemerovo" />
+  <snippet command="state" replace="570" data="Novosibirsk" />
+  <snippet command="state" replace="571" data="Omsk" />
+  <snippet command="state" replace="572" data="Chelyabinsk" />
+  <snippet command="state" replace="573" data="Zlatoust" />
+  <snippet command="state" replace="574" data="Yakutsk" />
+  <snippet command="state" replace="575" data="Kirensk" />
+  <snippet command="state" replace="576" data="Yeniseisk" />
+  <snippet command="state" replace="577" data="Surgut" />
+  <snippet command="state" replace="578" data="Tomsk" />
+  <snippet command="state" replace="579" data="Salekhard" />
+  <snippet command="state" replace="580" data="Tobolsk" />
+  <snippet command="state" replace="581" data="Northern Urals" />
+  <snippet command="state" replace="582" data="Magnitogorsk" />
+  <snippet command="state" replace="583" data="Kustanay" />
+  <snippet command="state" replace="584" data="Ashkhabad" />
+  <snippet command="state" replace="585" data="Urgench" />
+  <snippet command="state" replace="586" data="Alma-Ata" />
+  <snippet command="state" replace="587" data="Ust Urt" />
+  <snippet command="state" replace="588" data="Semipalatinsk" />
+  <snippet command="state" replace="589" data="Ayaguz" />
+  <snippet command="state" replace="590" data="Akmolinsk" />
+  <snippet command="state" replace="591" data="Hainan" />
+  <snippet command="state" replace="592" data="Guangzhou" />
+  <snippet command="state" replace="593" data="Guangdong" />
+  <snippet command="state" replace="594" data="Nanning" />
+  <snippet command="state" replace="595" data="Fujian" />
+  <snippet command="state" replace="596" data="Zhejiang" />
+  <snippet command="state" replace="597" data="Shandong" />
+  <snippet command="state" replace="598" data="Jiangsu" />
+  <snippet command="state" replace="599" data="Guangxi" />
+  <snippet command="state" replace="600" data="Jiangxi" />
+  <snippet command="state" replace="601" data="Xikang" />
+  <snippet command="state" replace="602" data="Hunan" />
+  <snippet command="state" replace="603" data="Guizhou" />
+  <snippet command="state" replace="604" data="Qinghai" />
+  <snippet command="state" replace="605" data="Sichuan" />
+  <snippet command="state" replace="606" data="Anhui" />
+  <snippet command="state" replace="607" data="Henan" />
+  <snippet command="state" replace="608" data="Beijing" />
+  <snippet command="state" replace="609" data="East Hebei" />
+  <snippet command="state" replace="610" data="Jehol" />
+  <snippet command="state" replace="611" data="South Chahar" />
+  <snippet command="state" replace="612" data="Chahar" />
+  <snippet command="state" replace="613" data="Shanghai" />
+  <snippet command="state" replace="614" data="Hebei" />
+  <snippet command="state" replace="615" data="Shanxi" />
+  <snippet command="state" replace="616" data="Ningxia" />
+  <snippet command="state" replace="617" data="Urumqi" />
+  <snippet command="state" replace="618" data="Dzungaria" />
+  <snippet command="state" replace="619" data="Yarkand" />
+  <snippet command="state" replace="620" data="Hubei" />
+  <snippet command="state" replace="621" data="Suiyuan" />
+  <snippet command="state" replace="622" data="Shaanxi" />
+  <snippet command="state" replace="623" data="Luzon" />
+  <snippet command="state" replace="624" data="Central islands" />
+  <snippet command="state" replace="625" data="Samar" />
+  <snippet command="state" replace="626" data="Palawan" />
+  <snippet command="state" replace="627" data="Mindanao" />
+  <snippet command="state" replace="628" data="Cebu" />
+  <snippet command="state" replace="629" data="Hawaii" />
+  <snippet command="state" replace="630" data="Johnston Atoll" />
+  <snippet command="state" replace="631" data="Midway Island" />
+  <snippet command="state" replace="632" data="Wake Island" />
+  <snippet command="state" replace="633" data="Marshall Islands" />
+  <snippet command="state" replace="634" data="Solomon Islands" />
+  <snippet command="state" replace="635" data="New Caledonia" />
+  <snippet command="state" replace="636" data="Fiji" />
+  <snippet command="state" replace="637" data="Kamchatka" />
+  <snippet command="state" replace="638" data="Guam" />
+  <snippet command="state" replace="639" data="Gilbert Islands" />
+  <snippet command="state" replace="640" data="Mandalay" />
+  <snippet command="state" replace="641" data="Tahiti" />
+  <snippet command="state" replace="642" data="Phoenix Island" />
+  <snippet command="state" replace="643" data="Ellice Islands" />
+  <snippet command="state" replace="644" data="Northeast Siberia" />
+  <snippet command="state" replace="645" data="Iwo Jima" />
+  <snippet command="state" replace="646" data="Saipan" />
+  <snippet command="state" replace="647" data="Palau" />
+  <snippet command="state" replace="648" data="Marcus Island" />
+  <snippet command="state" replace="649" data="Galapagos Islands" />
+  <snippet command="state" replace="650" data="Attu Island" />
+  <snippet command="state" replace="651" data="Ufa" />
+  <snippet command="state" replace="652" data="Orenburg" />
+  <snippet command="state" replace="653" data="Sverdlovsk" />
+  <snippet command="state" replace="654" data="Gorno-Altaysk" />
+  <snippet command="state" replace="655" data="North Sakhalin" />
+  <snippet command="state" replace="656" data="Kuwait" />
+  <snippet command="state" replace="657" data="Birobidzhan" />
+  <snippet command="state" replace="658" data="Abu Dhabi" />
+  <snippet command="state" replace="659" data="Aden" />
+  <snippet command="state" replace="660" data="Equatorial Africa" />
+  <snippet command="state" replace="661" data="Tripolitania" />
+  <snippet command="state" replace="662" data="Sirte" />
+  <snippet command="state" replace="663" data="Cyrenaica" />
+  <snippet command="state" replace="664" data="Southern Slovakia" />
+  <snippet command="state" replace="665" data="Gabes" />
+  <snippet command="state" replace="666" data="Lappland" />
+  <snippet command="state" replace="667" data="Lesser Sunda Islands" />
+  <snippet command="state" replace="668" data="The Moluccas" />
+  <snippet command="state" replace="669" data="West Papua" />
+  <snippet command="state" replace="670" data="Laos" />
+  <snippet command="state" replace="671" data="Tonkin" />
+  <snippet command="state" replace="672" data="Sumatra" />
+  <snippet command="state" replace="673" data="Sulawesi" />
+  <snippet command="state" replace="674" data="Central Australia" />
+  <snippet command="state" replace="675" data="Al Hajara" />
+  <snippet command="state" replace="676" data="Mosul" />
+  <snippet command="state" replace="677" data="Aleppo" />
+  <snippet command="state" replace="678" data="Rub al Khali" />
+  <snippet command="state" replace="679" data="Hejaz" />
+  <snippet command="state" replace="680" data="Deir-az-Zur" />
+  <snippet command="state" replace="681" data="Cape" />
+  <snippet command="state" replace="682" data="Northern Ontario" />
+  <snippet command="state" replace="683" data="Northeastern Canada" />
+  <snippet command="state" replace="684" data="Caroline Islands" />
+  <snippet command="state" replace="685" data="Panama Canal" />
+  <snippet command="state" replace="686" data="Puerto Rico" />
+  <snippet command="state" replace="687" data="British Guyana" />
+  <snippet command="state" replace="688" data="Chaco Boreal" />
+  <snippet command="state" replace="689" data="Jamaica" />
+  <snippet command="state" replace="690" data="Northern Bahamas" />
+  <snippet command="state" replace="691" data="Trinidad" />
+  <snippet command="state" replace="692" data="Windward Islands" />
+  <snippet command="state" replace="693" data="Southern Bahamas" />
+  <snippet command="state" replace="694" data="French Caribbean" />
+  <snippet command="state" replace="695" data="Curacao" />
+  <snippet command="state" replace="696" data="Bermuda" />
+  <snippet command="state" replace="697" data="Madeira" />
+  <snippet command="state" replace="698" data="Azores" />
+  <snippet command="state" replace="699" data="Rio de Oro" />
+  <snippet command="state" replace="700" data="Sierra Leone" />
+  <snippet command="state" replace="701" data="Gambia" />
+  <snippet command="state" replace="702" data="Cape Verde" />
+  <snippet command="state" replace="703" data="Ascension" />
+  <snippet command="state" replace="704" data="Saint Helena" />
+  <snippet command="state" replace="705" data="Sao Tome" />
+  <snippet command="state" replace="706" data="Reunion" />
+  <snippet command="state" replace="707" data="Mauritius" />
+  <snippet command="state" replace="708" data="Comoro Islands" />
+  <snippet command="state" replace="709" data="Seychelles" />
+  <snippet command="state" replace="710" data="Diego Garcia" />
+  <snippet command="state" replace="711" data="Christmas Island" />
+  <snippet command="state" replace="712" data="Cocos Islands" />
+  <snippet command="state" replace="713" data="Kerguelen" />
+  <snippet command="state" replace="714" data="Heilungkiang" />
+  <snippet command="state" replace="715" data="Liaoning" />
+  <snippet command="state" replace="716" data="Liaotung" />
+  <snippet command="state" replace="717" data="Sungkiang" />
+  <snippet command="state" replace="718" data="Stanleyville" />
+  <snippet command="state" replace="719" data="Natal" />
+  <snippet command="state" replace="720" data="South Georgia" />
+  <snippet command="state" replace="721" data="Portuguese Timor" />
+  <snippet command="state" replace="722" data="Petsamo" />
+  <snippet command="state" replace="723" data="South Island" />
+  <snippet command="state" replace="724" data="Northern Malay" />
+  <snippet command="state" replace="725" data="Nauru" />
+  <snippet command="state" replace="726" data="Samoa" />
+  <snippet command="state" replace="727" data="Line Islands" />
+  <snippet command="state" replace="728" data="Guangzhouwan" />
+  <snippet command="state" replace="729" data="Macau" />
+  <snippet command="state" replace="730" data="St Pierre and Miquelon" />
+  <snippet command="state" replace="731" data="Central Macedonia" />
+  <snippet command="state" replace="732" data="Pamir" />
+  <snippet command="state" replace="733" data="Andaman" />
+  <snippet command="state" replace="734" data="Nendo" />
+  <snippet command="state" replace="735" data="Savoy" />
+  <snippet command="state" replace="736" data="Istria" />
+  <snippet command="state" replace="737" data="Bismarck" />
+  <snippet command="state" replace="738" data="Aru Islands" />
+  <snippet command="state" replace="739" data="Haida Gwaii" />
+  <snippet command="state" replace="740" data="Vancouver Island" />
+  <snippet command="state" replace="741" data="Cambodia" />
+  <snippet command="state" replace="742" data="Stalinabad" />
+</snippets>

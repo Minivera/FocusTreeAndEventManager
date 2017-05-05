@@ -137,6 +137,348 @@
             </para>
             </summary>
         </member>
+        <member name="T:MahApps.Metro.Controls.ClipBorder">
+            <summary>
+            Represents a border whose contents are clipped within the bounds
+            of the border. The border may have rounded corners.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.BorderThicknessProperty">
+            <summary>
+            BorderThickness Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.BorderThickness">
+            <summary>
+            Gets or sets the BorderThickness property. This dependency property 
+            indicates the BorderThickness.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.OnValidateThickness(System.Object)">
+            <summary>
+            Checks if the given Thickness is valid or not
+            </summary>
+            <param name="value">Thickness</param>
+            <returns></returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.PaddingProperty">
+            <summary>
+            Padding Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.Padding">
+            <summary>
+            Gets or sets the Padding property. This dependency property 
+            indicates the Padding.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.CornerRadiusProperty">
+            <summary>
+            CornerRadius Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.CornerRadius">
+            <summary>
+            Gets or sets the CornerRadius property. This dependency property 
+            indicates the CornerRadius of the border.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.OnValidateCornerRadius(System.Object)">
+            <summary>
+            Checks if the given CornerRadius is valid or not
+            </summary>
+            <param name="value">CornerRadius</param>
+            <returns></returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.BorderBrushProperty">
+            <summary>
+            BorderBrush Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.BorderBrush">
+            <summary>
+            Gets or sets the BorderBrush property. This dependency property 
+            indicates the BorderBrush with which the Border is drawn.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.BackgroundProperty">
+            <summary>
+            Background Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.Background">
+            <summary>
+            Gets or sets the Background property. This dependency property 
+            indicates the Background with which the Background is drawn.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.ClipBorder.OptimizeClipRenderingProperty">
+            <summary>
+            OptimizeClipRendering Dependency Property
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.ClipBorder.OptimizeClipRendering">
+            <summary>
+            Gets or sets the OptimizeClipRendering property. This dependency property 
+            indicates whether the rendering of the clip should be optimized. When set to true,
+            In order to optimize the rendering of the clipped Child,
+            the background is rendered with the same brush as the border. Any other brush set for
+            the background will be ignored. The Child will be rendered on top of it. 
+            This is done to prevent any gaps between the border the the clipped Child (this is 
+            evidently visible if both the Border and the Child are of same color).
+            This works best when the Child does not have any level of transparency and is opaque.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Updates DesiredSize of the ClipBorder.  Called by parent UIElement.  This is the first pass of layout.
+            </summary>
+            <remarks>
+            Border determines its desired size it needs from the specified border the child: its sizing
+            properties, margin, and requested size.
+            </remarks>
+            <param name="constraint">Constraint size is an "upper limit" that the return value should not exceed.</param>
+            <returns>The Decorator's desired size.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            ClipBorder computes the position of its single child and applies its child's alignments to the child.
+            
+            </summary>
+            <param name="finalSize">The size reserved for this element by the parent</param>
+            <returns>The actual ink area of the element, typically the same as finalSize</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.OnRender(System.Windows.Media.DrawingContext)">
+            <summary>
+            Here the ClipBorder's Child, Border and Background are rendered.
+            </summary>
+            <param name="dc">Drawing Context</param>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.GenerateGeometry(System.Windows.Media.StreamGeometryContext,System.Windows.Rect,MahApps.Metro.Controls.ClipBorder.BorderInfo)">
+            <summary>
+                Generates a StreamGeometry.
+            </summary>
+            <param name="ctx">An already opened StreamGeometryContext.</param>
+            <param name="rect">Rectangle for geomentry conversion.</param>
+            <param name="borderInfo">The core points of the border which needs to be used to create
+            the geometry</param>
+            <returns>Result geometry.</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.ClipBorder.BorderInfo.#ctor(System.Windows.CornerRadius,System.Windows.Thickness,System.Windows.Thickness,System.Boolean)">
+            <summary>
+            Encapsulates the details of each of the core points of the border which is calculated
+            based on the given CornerRadius, BorderThickness, Padding and a flag to indicate whether
+            the inner or outer border is to be calculated.
+            </summary>
+            <param name="corners">CornerRadius</param>
+            <param name="borders">BorderThickness</param>
+            <param name="padding">Padding</param>
+            <param name="isOuterBorder">Flag to indicate whether outer or inner border needs 
+            to be calculated</param>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Utils">
+            <summary>
+            A few very useful extension methods
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsCloseTo(System.Double,System.Double)">
+            <summary>
+            Returns whether or not two doubles are "close". 
+            </summary>
+            <param name="value1"> The first double to compare. </param>
+            <param name="value2"> The second double to compare. </param>
+            <returns>
+            bool - the result of the AreClose comparision.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsLessThan(System.Double,System.Double)">
+            <summary>
+            Returns whether or not the first double is less than the second double.
+            </summary>
+            <param name="value1"> The first double to compare. </param>
+            <param name="value2"> The second double to compare. </param>
+            <returns>
+            bool - the result of the LessThan comparision.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsGreaterThan(System.Double,System.Double)">
+            <summary>
+            Returns whether or not the first double is greater than the second double.
+            </summary>
+            <param name="value1"> The first double to compare. </param>
+            <param name="value2"> The second double to compare. </param>
+            <returns>
+            bool - the result of the GreaterThan comparision.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsOne(System.Double)">
+            <summary>
+            Returns whether or not the double is "close" to 1.  Same as AreClose(double, 1),
+            but this is faster.
+            </summary>
+            <param name="value"> The double to compare to 1. </param>
+            <returns>
+            bool - the result of the AreClose comparision.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsZero(System.Double)">
+            <summary>
+            IsZero - Returns whether or not the double is "close" to 0.  Same as AreClose(double, 0),
+            but this is faster.
+            </summary>
+            <param name="value"> The double to compare to 0. </param>
+            <returns>
+            bool - the result of the AreClose comparision.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsCloseTo(System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Compares two points for fuzzy equality.  This function
+            helps compensate for the fact that double values can 
+            acquire error when operated upon
+            </summary>
+            <param name='point1'>The first point to compare</param>
+            <param name='point2'>The second point to compare</param>
+            <returns>Whether or not the two points are equal</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsCloseTo(System.Windows.Size,System.Windows.Size)">
+            <summary>
+            Compares two Size instances for fuzzy equality.  This function
+            helps compensate for the fact that double values can 
+            acquire error when operated upon
+            </summary>
+            <param name='size1'>The first size to compare</param>
+            <param name='size2'>The second size to compare</param>
+            <returns>Whether or not the two Size instances are equal</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsCloseTo(System.Windows.Vector,System.Windows.Vector)">
+            <summary>
+            Compares two Vector instances for fuzzy equality.  This function
+            helps compensate for the fact that double values can 
+            acquire error when operated upon
+            </summary>
+            <param name='vector1'>The first Vector to compare</param>
+            <param name='vector2'>The second Vector to compare</param>
+            <returns>Whether or not the two Vector instances are equal</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsCloseTo(System.Windows.Rect,System.Windows.Rect)">
+            <summary>
+            Compares two rectangles for fuzzy equality.  This function
+            helps compensate for the fact that double values can 
+            acquire error when operated upon
+            </summary>
+            <param name='rect1'>The first rectangle to compare</param>
+            <param name='rect2'>The second rectangle to compare</param>
+            <returns>Whether or not the two rectangles are equal</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsNaN(System.Double)">
+            <summary>
+            Faster check for NaN ( faster than double.IsNaN() )
+            IEEE 754 : If the argument is any value in the range 0x7ff0000000000001L through 0x7fffffffffffffffL 
+            or in the range 0xfff0000000000001L through 0xffffffffffffffffL, the result will be NaN.
+            </summary>
+            <param name="value">Value to check</param>
+            <returns></returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.RoundLayoutValue(System.Double,System.Double)">
+            <summary>
+            Rounds the given value based on the DPI scale
+            </summary>
+            <param name="value">Value to round</param>
+            <param name="dpiScale">DPI Scale</param>
+            <returns></returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsValid(System.Windows.Thickness,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Verifies if this Thickness contains only valid values
+            The set of validity checks is passed as parameters.
+            </summary>
+            <param name='thick'>Thickness value</param>
+            <param name='allowNegative'>allows negative values</param>
+            <param name='allowNaN'>allows Double.NaN</param>
+            <param name='allowPositiveInfinity'>allows Double.PositiveInfinity</param>
+            <param name='allowNegativeInfinity'>allows Double.NegativeInfinity</param>
+            <returns>Whether or not the thickness complies to the range specified</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.CollapseThickness(System.Windows.Thickness)">
+            <summary>
+            Method to add up the left and right size as width, as well as the top and bottom size as height
+            </summary>
+            <param name="thick">Thickness</param>
+            <returns>Size</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsZero(System.Windows.Thickness)">
+            <summary>
+            Verifies if the Thickness contains only zero values
+            </summary>
+            <param name="thick">Thickness</param>
+            <returns>Size</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsUniform(System.Windows.Thickness)">
+            <summary>
+            Verifies if all the values in Thickness are same
+            </summary>
+            <param name="thick">Thickness</param>
+            <returns>true if yes, otherwise false</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsValid(System.Windows.CornerRadius,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Verifies if this CornerRadius contains only valid values
+            The set of validity checks is passed as parameters.
+            </summary>
+            <param name='corner'>CornerRadius value</param>
+            <param name='allowNegative'>allows negative values</param>
+            <param name='allowNaN'>allows Double.NaN</param>
+            <param name='allowPositiveInfinity'>allows Double.PositiveInfinity</param>
+            <param name='allowNegativeInfinity'>allows Double.NegativeInfinity</param>
+            <returns>Whether or not the CornerRadius complies to the range specified</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsZero(System.Windows.CornerRadius)">
+            <summary>
+            Verifies if the CornerRadius contains only zero values
+            </summary>
+            <param name="corner">CornerRadius</param>
+            <returns>Size</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsUniform(System.Windows.CornerRadius)">
+            <summary>
+            Verifies if the CornerRadius contains same values
+            </summary>
+            <param name="corner">CornerRadius</param>
+            <returns>true if yes, otherwise false</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.Deflate(System.Windows.Rect,System.Windows.Thickness)">
+            <summary>
+            Deflates rectangle by given thickness
+            </summary>
+            <param name="rect">Rectangle</param>
+            <param name="thick">Thickness</param>
+            <returns>Deflated Rectangle</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.Inflate(System.Windows.Rect,System.Windows.Thickness)">
+            <summary>
+            Inflates rectangle by given thickness
+            </summary>
+            <param name="rect">Rectangle</param>
+            <param name="thick">Thickness</param>
+            <returns>Inflated Rectangle</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsOpaqueSolidColorBrush(System.Windows.Media.Brush)">
+            <summary>
+            Verifies if the given brush is a SolidColorBrush and
+            its color does not include transparency.
+            </summary>
+            <param name="brush">Brush</param>
+            <returns>true if yes, otherwise false</returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Utils.IsEqualTo(System.Windows.Media.Brush,System.Windows.Media.Brush)">
+            <summary>
+            Verifies if the given brush is the same as the otherBrush.
+            </summary>
+            <param name="brush">Brush</param>
+            <param name="otherBrush">Brush</param>
+            <returns>true if yes, otherwise false</returns>
+        </member>
         <member name="M:MahApps.Metro.Controls.CloseCommand.CanExecute(System.Object)">
             <summary>
             Defines the method that determines whether the command can execute in its current state.
@@ -197,7 +539,7 @@
             <param name="editingEventArgs">The event args of the input event that caused the cell to go into edit mode. May be null.</param> 
             <returns>The unedited value of the cell.</returns>
         </member>
-        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.SyncColumnProperty(System.Windows.DependencyObject,System.Windows.DependencyObject,System.Windows.DependencyProperty,System.Windows.DependencyProperty)">
+        <member name="M:MahApps.Metro.Controls.DataGridNumericUpDownColumn.SyncColumnProperty(System.Windows.DependencyObject,MahApps.Metro.Controls.NumericUpDown,System.Windows.DependencyProperty,System.Windows.DependencyProperty)">
             <summary>
             Synchronizes the column property. Taken from Helper code for DataGrid.
             </summary>
@@ -1090,11 +1432,6 @@
             Gets/sets a command which will be executed if the close button was clicked.
             </summary>
         </member>
-        <member name="P:MahApps.Metro.Controls.Flyout.HeaderTemplate">
-            <summary>
-            A DataTemplate for the flyout's header.
-            </summary>
-        </member>
         <member name="P:MahApps.Metro.Controls.Flyout.IsOpen">
             <summary>
             Gets/sets whether this flyout is visible.
@@ -1128,11 +1465,6 @@
         <member name="P:MahApps.Metro.Controls.Flyout.Position">
             <summary>
             Gets/sets this flyout's position in the FlyoutsControl/MetroWindow.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.Controls.Flyout.Header">
-            <summary>
-            Gets/sets the flyout's header.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.Flyout.Theme">
@@ -1260,6 +1592,11 @@
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMargin"/> dependency property.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerVisibility"/> dependency property.
+            </summary>
+        </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplateProperty">
             <summary>
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplate"/> dependency property.
@@ -1267,22 +1604,37 @@
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuTemplate">
             <summary>
-            Gets or sets the hamburger icon.
+            Gets or sets a template for the hamburger icon.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuHeaderTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuHeaderTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMenuHeaderTemplate">
+            <summary>
+            Gets or sets a template for the hamburger icon.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerWidth">
             <summary>
-            Gets or sets main button's width
+            Gets or sets main button's width.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerHeight">
             <summary>
-            Gets or sets main button's height
+            Gets or sets main button's height.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerMargin">
             <summary>
-            Gets or sets main button's margin
+            Gets or sets main button's margin.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.HamburgerVisibility">
+            <summary>
+            Gets or sets main button's visibility.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemsSourceProperty">
@@ -1315,9 +1667,19 @@
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsIndex"/> dependency property.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommandProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommand"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommandParameter"/> dependency property.
+            </summary>
+        </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemsSource">
             <summary>
-                Gets or sets an object source used to generate the content of the options.
+            Gets or sets an object source used to generate the content of the options.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemTemplate">
@@ -1340,7 +1702,7 @@
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsVisibility">
             <summary>
-            Gets or sets options' visibility.
+            Gets or sets the visibility of the options menu.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsItem">
@@ -1351,6 +1713,21 @@
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.SelectedOptionsIndex">
             <summary>
             Gets or sets the selected options menu index.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommand">
+            <summary>
+            Gets or sets a command which will be executed if an options item is clicked by the user.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.OptionsItemCommandParameter">
+            <summary>
+            Gets or sets the command parameter which will be passed by the OptionsItemCommand.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.HamburgerMenu.RaiseOptionsItemCommand">
+            <summary>
+            Executes the options item command which can be set by the user.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenu.OpenPaneLengthProperty">
@@ -1376,6 +1753,11 @@
         <member name="F:MahApps.Metro.Controls.HamburgerMenu.PaneBackgroundProperty">
             <summary>
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.PaneBackground"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.PaneForegroundProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.PaneForeground"/> dependency property.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenu.IsPaneOpenProperty">
@@ -1413,6 +1795,21 @@
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ContentTransition"/> dependency property.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ItemCommandProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ItemCommand"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.ItemCommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.ItemCommandParameter"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenu.VerticalScrollBarOnLeftSideProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenu.VerticalScrollBarOnLeftSide"/> dependency property.
+            </summary>
+        </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.OpenPaneLength">
             <summary>
             Gets or sets the width of the pane when it's fully expanded.
@@ -1425,7 +1822,7 @@
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.DisplayMode">
             <summary>
-            Gets or sets gets of sets a value that specifies how the pane and content areas are shown.
+            Gets or sets a value that specifies how the pane and content areas are shown.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.CompactPaneLength">
@@ -1436,6 +1833,11 @@
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.PaneBackground">
             <summary>
             Gets or sets the Brush to apply to the background of the Pane area of the control.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.PaneForeground">
+            <summary>
+            Gets or sets the Brush to apply to the foreground of the Pane area of the control.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenu.IsPaneOpen">
@@ -1476,9 +1878,29 @@
             Gets or sets the selected menu index.
             </summary>
         </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.ItemCommand">
+            <summary>
+            Gets or sets a command which will be executed if an item is clicked by the user.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.ItemCommandParameter">
+            <summary>
+            Gets or sets the command parameter which will be passed by the ItemCommand.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenu.VerticalScrollBarOnLeftSide">
+            <summary>
+            Gets or sets wheather the ScrollBar of the HamburgerMenu is on the left side or on the right side.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.HamburgerMenu.RaiseItemCommand">
+            <summary>
+            Executes the item command which can be set by the user.
+            </summary>
+        </member>
         <member name="T:MahApps.Metro.Controls.HamburgerMenuGlyphItem">
             <summary>
-            The HamburgerMenuItem provides a glyph based implementation for HamburgerMenu entries.
+            The HamburgerMenuGlyphItem provides a glyph based implementation for HamburgerMenu entries.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenuGlyphItem.GlyphProperty">
@@ -1488,12 +1910,27 @@
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenuGlyphItem.Glyph">
             <summary>
-            Gets or sets gets of sets a value that specifies the glyph to use from Segoe MDL2 Assets font.
+            Gets or sets a value that specifies the glyph to use from Segoe MDL2 Assets font.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.HamburgerMenuIconItem">
+            <summary>
+            The HamburgerMenuIconItem provides an icon based implementation for HamburgerMenu entries.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuIconItem.IconProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuIconItem.Icon"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuIconItem.Icon">
+            <summary>
+            Gets or sets a value that specifies an user specific object which can be used as icon.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.HamburgerMenuImageItem">
             <summary>
-            The HamburgerMenuItem provides an image based implementation for HamburgerMenu entries.
+            The HamburgerMenuImageItem provides an image based implementation for HamburgerMenu entries.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenuImageItem.ThumbnailProperty">
@@ -1503,12 +1940,12 @@
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenuImageItem.Thumbnail">
             <summary>
-            Gets or sets gets of sets a value that specifies the glyph to use from Segoe MDL2 Assets font.
+            Gets or sets a value that specifies a bitmap to display with an Image control.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.HamburgerMenuItem">
             <summary>
-            The HamburgerMenuItem provides an abstract implementation for HamburgerMenu entries.
+            The HamburgerMenuItem provides an implementation for HamburgerMenu entries.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.LabelProperty">
@@ -1526,19 +1963,70 @@
             Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.Tag"/> dependency property.
             </summary>
         </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.CommandProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.Command"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.CommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.CommandParameter"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.CommandTargetProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.CommandTarget"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.HamburgerMenuItem.IsEnabledProperty">
+            <summary>
+            Identifies the <see cref="P:MahApps.Metro.Controls.HamburgerMenuItem.IsEnabled"/> dependency property.
+            </summary>
+        </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.Label">
             <summary>
-            Gets or sets gets of sets a value that specifies label to display.
+            Gets or sets a value that specifies label to display.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.TargetPageType">
             <summary>
-            Gets or sets gets of sets a value that specifies the page to navigate to (if you use the HamburgerMenu with a Frame content)
+            Gets or sets a value that specifies the page to navigate to (if you use the HamburgerMenu with a Frame content)
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.Tag">
             <summary>
-            Gets or sets gets of sets a value that specifies an user specific value.
+            Gets or sets a value that specifies an user specific value.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.Command">
+            <summary>
+            Gets or sets a command which will be executed if an item is clicked by the user.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.CommandParameter">
+            <summary>
+            Gets or sets the command parameter which will be passed by the Command.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.CommandTarget">
+            <summary>
+            Gets or sets the element on which to raise the specified command.
+            </summary>
+            <returns>
+            Element on which to raise a command.
+            </returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.HamburgerMenuItem.IsEnabled">
+            <summary>
+            Gets or sets a value indicating whether this item is enabled in the user interface (UI). This is a dependency property.
+            </summary>
+            <returns>
+            true if the item is enabled; otherwise, false. The default value is true.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.HamburgerMenuItem.RaiseCommand">
+            <summary>
+            Executes the command which can be set by the user.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.HamburgerMenuItemCollection">
@@ -1700,6 +2188,16 @@
             Sets the value to define the DataGridCell selection behavior.
             </summary>
         </member>
+        <member name="M:MahApps.Metro.Controls.DataGridHelper.GetEnableCellEditAssist(System.Windows.DependencyObject)">
+            <summary>
+            Gets a value which indicates the preview cell editing is enabled or not.
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.DataGridHelper.SetEnableCellEditAssist(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets a value which indicates the preview cell editing is enabled or not.
+            </summary>
+        </member>
         <member name="M:MahApps.Metro.Controls.DataGridRowHelper.GetSelectionUnit(System.Windows.UIElement)">
             <summary>
             Gets the value to define the DataGridRow selection behavior.
@@ -1806,9 +2304,39 @@
             Gets/Sets the value when the slider will be changed. Possible values are if the slider is focused or if the mouse is over the slider.
             </summary>
         </member>
+        <member name="T:MahApps.Metro.Controls.UnderlinedType">
+            <summary>
+            Specifies the underline position of a TabControl.
+            </summary>
+        </member>
         <member name="F:MahApps.Metro.Controls.TabControlHelper.IsUnderlinedProperty">
             <summary>
-            Defines whether the underline below the <see cref="T:System.Windows.Controls.TabControl"/> is shown or not.
+            Defines whether the underline below the <see cref="T:System.Windows.Controls.TabItem"/> is shown or not.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.UnderlinedProperty">
+            <summary>
+            Defines whether the underline below the <see cref="T:System.Windows.Controls.TabItem"/> or <see cref="T:System.Windows.Controls.Primitives.TabPanel"/> is shown or not.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.UnderlineBrushProperty">
+            <summary>
+            Defines the underline brush below the <see cref="T:System.Windows.Controls.TabItem"/> or <see cref="T:System.Windows.Controls.Primitives.TabPanel"/>.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.UnderlineSelectedBrushProperty">
+            <summary>
+            Defines the underline brush below the <see cref="T:System.Windows.Controls.TabItem"/> or <see cref="T:System.Windows.Controls.Primitives.TabPanel"/> of an selected item.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.UnderlineMouseOverBrushProperty">
+            <summary>
+            Defines the underline brush below the <see cref="T:System.Windows.Controls.TabItem"/> or <see cref="T:System.Windows.Controls.Primitives.TabPanel"/> if the mouse is over an item.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.TabControlHelper.UnderlineMouseOverSelectedBrushProperty">
+            <summary>
+            Defines the underline brush below the <see cref="T:System.Windows.Controls.TabItem"/> or <see cref="T:System.Windows.Controls.Primitives.TabPanel"/> if the mouse is over a selected item.
             </summary>
         </member>
         <member name="F:MahApps.Metro.Controls.TabControlHelper.TransitionProperty">
@@ -1860,6 +2388,19 @@
             <item>Binding to a element of a collection without using a property of that element <c>Binding Path=Collection[0]</c> use: <c>Binding Path=Collection[0].SubProperty</c></item>
             <item>The bound property does not have a <see cref="T:System.ComponentModel.DataAnnotations.DisplayAttribute"/></item>
             </list></remarks>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetWatermarkAlignment(System.Windows.DependencyObject)">
+            <summary>
+            Gets a value that indicates the horizontal alignment of the watermark.
+            </summary>
+            <returns>
+            One of the <see cref="T:System.Windows.TextAlignment" /> values that specifies the desired alignment. The default is <see cref="F:System.Windows.TextAlignment.Left" />.
+            </returns>
+        </member>
+        <member name="M:MahApps.Metro.Controls.TextBoxHelper.SetWatermarkAlignment(System.Windows.DependencyObject,System.Windows.TextAlignment)">
+            <summary>
+            Sets a value that indicates the horizontal alignment of the watermark.
+            </summary>
         </member>
         <member name="M:MahApps.Metro.Controls.TextBoxHelper.GetHasText(System.Windows.DependencyObject)">
             <summary>
@@ -2186,6 +2727,11 @@
         <member name="P:MahApps.Metro.Controls.MetroTabItem.CloseTabCommandParameter">
             <summary>
             Gets/sets the command parameter which is passed to the close button command.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroTabItem.CloseButtonMargin">
+            <summary>
+            Gets/sets the Close Button Margin.
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.MetroThumbContentControl">
@@ -2932,6 +3478,18 @@
         <member name="P:MahApps.Metro.Controls.SplitView.PaneBackground">
             <summary>
                 Gets or sets the Brush to apply to the background of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.
+            </summary>
+            <returns>The Brush to apply to the background of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.</returns>
+        </member>
+        <member name="F:MahApps.Metro.Controls.SplitView.PaneForegroundProperty">
+            <summary>
+                Identifies the <see cref="P:MahApps.Metro.Controls.SplitView.PaneForeground" /> dependency property.
+            </summary>
+            <returns>The identifier for the <see cref="P:MahApps.Metro.Controls.SplitView.PaneForeground" /> dependency property.</returns>
+        </member>
+        <member name="P:MahApps.Metro.Controls.SplitView.PaneForeground">
+            <summary>
+                Gets or sets the Brush to apply to the foreground of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.
             </summary>
             <returns>The Brush to apply to the background of the <see cref="P:MahApps.Metro.Controls.SplitView.Pane" /> area of the control.</returns>
         </member>

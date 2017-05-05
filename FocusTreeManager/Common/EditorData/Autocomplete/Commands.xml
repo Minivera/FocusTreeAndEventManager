@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<autoinfos>
+  <autoinfo name="set_state_name" sets="State ID" params="String" description="Changes the name of a state" example="32 = { set_state_name = &quot;Funland&quot; }" />
+  <autoinfo name="reset_state_name" sets="State ID" params="yes or no" description="Resets state name to original" example="32 = { reset_state_name = yes }" />
+  <autoinfo name="set_province_name" sets="Province ID" params="String" description="Changes the name of a province" example="set_province_name = { id = 325 name = &quot;Funville&quot; }" />
+  <autoinfo name="reset_province_name" sets="" params="Province ID" description="Resets province name to original" example="reset_province_name = 325" />
+  <autoinfo name="add_autonomy_ratio" sets="Scope" params="Sub-Code (string, Localisation KEY)" description="Adds autonomy (with custom name)" example="add_autonomy_ratio = { value = 0.1 localization = LOC_STRING_HERE }" />
+  <autoinfo name="swap_ideas" sets="Scope" params="Sub-Code (Idea ID, Idea ID)" description="Swaps two ideas, showing the difference" example="swap_ideas = { remove_idea = REM_IDEA_ID add_idea = ADD_IDEA_ID }" />
+  <autoinfo name="set_cosmetic_tag" sets="Scope" params="Localisation Key" description="Sets a cosmetic TAG for a country" example="set_cosmetic_tag = SAF_SOV_communism" />
+  <autoinfo name="damage_building" sets="Scope" params="Sub-Code (Building_type, Number)" description="Damages a building in state" example="damage_building = { type = industrial_complex damage = 0.6 }" />
+  <autoinfo name="create_unit" sets="Scope" params="Sub-code in quotes" description="Creates a new unit" example="create_unit = { division = &quot;name = COOL_NAME division_template = COOL_TEMPLATE starting_experience_factor = 1.0&quot; }" />
+  <autoinfo name="set_autonomy" sets="Scope" params="Sub-Code (TAG, Autonomy type)" description="Sets the autonomy level of a target" example="set_autonomy = { target = RAJ autonomy_state = autonomy_free }" />
+  <autoinfo name="add_to_tech_sharing_group" sets="Scope" params="Group ID" description="Adds a country to a tech sharing group" example="add_to_tech_sharing_group = tizard_mission" />
+  <autoinfo name="remove_from_tech_sharing_group" sets="Scope" params="Group ID" description="Removes a country from a tech sharing group" example="remove_from_tech_sharing_group = tizard_mission" />
+  <autoinfo name="add_manpower" sets="Scope" params="Number" description="Adds manpower to a state or country" example="add_manpower = 8000" />
+  <autoinfo name="add_political_power" sets="Scope" params="Number" description="Adds political power to a country" example="add_political_power = 50" />
+  <autoinfo name="set_capital" sets="Scope" params="Province ID" description="Moves capital to specified state" example="set_capital = 345" />
+  <autoinfo name="add_state_core" sets="Scope" params="State ID" description="Adds cores on a specified state" example="add_state_core = 345" />
+  <autoinfo name="remove_state_core" sets="Scope" params="State ID" description="Removes cores from a state" example="remove_state_core = 345" />
+  <autoinfo name="change_tag_from" sets="Player" params="TAG" description="Changes player to other country" example="change_tag_from = GER" />
+  <autoinfo name="set_country_flag" sets="Scope" params="Flag ID" description="Sets a country flag" example="set_country_flag = anschluss" />
+  <autoinfo name="clr_country_flag" sets="Scope" params="Flag ID" description="Removes a country flag" example="clr_country_flag = anschluss" />
+  <autoinfo name="set_global_flag" sets="Global" params="Flag ID" description="Sets a global flag" example="set_global_flag = spanish_civil_war" />
+  <autoinfo name="clr_global_flag" sets="Global" params="Flag ID" description="Removes a global flag" example="clr_global_flag = spanish_civil_war" />
+  <autoinfo name="remove_building" sets="State or Province ID" params="Building type, Number" description="Removes a specified building from a specified state or province" example="219 = { remove_building = { type = arms_factory level = 5 } }" />
+  <autoinfo name="release" sets="Scope" params="TAG" description="Releases a specified country" example="release = CRO" />
+  <autoinfo name="country_event" sets="Scope" params="Number, Event ID" description="Fires an event" example="country_event = { days = 1 id = finland.1 }" />
+  <autoinfo name="state_event" sets="Scope" params="Event ID" description="Fires a state event" example="state_event = stateevent.1" />
+  <autoinfo name="random" sets="Scope" params="Number, Sub-code" description="Random effect with a probability" example="random = { 50 = { add_political_power = 50 } }" />
+  <autoinfo name="random_list" sets="Scope" params="List of random" description="Chooses an effect randomly from a list based on their probabilities" example="random_list = { 70 = { add_political_power = 200 } 30 = { add_political_power = -100 } }" />
+  <autoinfo name="white_peace" sets="Scope" params="TAG" description="Creates a white peace between countries" example="white_peace = ETH" />
+  <autoinfo name="add_state_claim" sets="Scope" params="State ID" description="Add claims on a state" example="add_state_claim = 363" />
+  <autoinfo name="remove_state_claim" sets="Scope" params="State ID" description="Removes claims on a state" example="remove_state_claim = 363" />
+  <autoinfo name="add_opinion_modifier" sets="Scope" params="TAG, Modifier ID" description="Adds an opinion modifier to a country" example="add_opinion_modifier = { target = ENG modifier = tizard_refused }" />
+  <autoinfo name="remove_opinion_modifier" sets="Scope" params="TAG, Modifier ID" description="Removes an opinion modifer from a country" example="remove_opinion_modifier = { target = ENG modifier = tizard_refused }" />
+  <autoinfo name="create_country_leader" sets="Scope" params="Sub-Code (String, String, Date, Ideology ID, List of Trait ID)" description="Creates a country leader (head of state)" example="create_country_leader = { name = &quot;Peter II&quot; desc = &quot;POLITICS_PETER_II_DESC&quot; picture = &quot;Portrait_Yugoslavia_Peter_II.dds&quot; expire = &quot;1965.1.1&quot; ideology = despotism traits = { } }" />
+  <autoinfo name="sound_effect" sets="Scope" params="Sound ID" description="Plays a sound effect" example="sound_effect = sound_effect_name" />
+  <autoinfo name="randomize_weather" sets="" params="" description="Randomizes weather" example="Undocumented" />
+  <autoinfo name="division_template" sets="Scope" params="Sub-Code (String, List of (Division type, Number Number))" description="Adds a division template to a country" example="division_template = { name = &quot;Cool Name&quot; regiments = { infantry = { x = 0 y = 0 } infantry = { x = 1 y = 0 } } }" />
+  <autoinfo name="set_country_leader_ideology" sets="Scope" params="Ideology ID" description="Changes the ideology of the current country leader" example="set_country_leader_ideology = despotism" />
+  <autoinfo name="add_country_leader_trait" sets="Scope" params="Trait ID" description="Add a trait to the current country leader" example="add_country_leader_trait = warmonger" />
+  <autoinfo name="remove_country_leader_trait" sets="Scope" params="Trait ID" description="Removes a trait from the current country leader" example="remove_country_leader_trait = stout_defender" />
+  <autoinfo name="set_political_party" sets="Scope" params="Ideology ID, Number" description="Sets the properties of a political party" example="set_political_party = { ideology = democratic popularity = 0.5 }" />
+  <autoinfo name="set_politics" sets="Scope" params="Ideology ID, yes or no" description="Changes the politics of a country" example="set_politics = { ruling_party = fascism elections_allowed = no }" />
+  <autoinfo name="add_ideas" sets="Scope" params="Idea ID" description="Adds idea(s) to a country" example="add_ideas = ENG_king_edward" />
+  <autoinfo name="remove_ideas" sets="Scope" params="Idea ID" description="Removes idea(s) from a country" example="remove_ideas = ENG_king_edward" />
+  <autoinfo name="set_political_power" sets="Scope" params="Number" description="Sets political power to a certain value" example="set_political_power = 100" />
+  <autoinfo name="set_technology" sets="Scope" params="Sub-Code (Technology ID = Number)" description="Set technology level of a country" example="set_technology = { suicide_craft = 1 }" />
+  <autoinfo name="create_navy_leader" sets="Scope" params="Sub-Code (String, String, List of Trait ID, Number)" description="Creates a naval leader for a country" example="create_navy_leader = { name = &quot;Boaty McBoatface&quot; gfx = &quot;GFX_BoatfacesFace&quot; traits = { } skill = 3 }" />
+  <autoinfo name="remove_unit_leader_trait" sets="" params="" description="Removes a trait from a unit leader" example="Undocumented" />
+  <autoinfo name="add_unit_leader_trait" sets="" params="" description="Add a trait to a unit leader" example="Undocumented" />
+  <autoinfo name="set_state_owner" sets="TAG" params="State ID" description="Sets the owner of a state" example="USA = { set_state_owner = 353 }" />
+  <autoinfo name="puppet" sets="Scope" params="TAG" description="Puppets the specified country" example="puppet = LIB" />
+  <autoinfo name="set_state_controller" sets="TAG" params="State ID" description="Sets the controller of a state" example="USA = { set_state_controller = 353 }" />
+  <autoinfo name="transfer_state" sets="TAG" params="State ID" description="Sets the owner and controller of a state" example="USA = { transfer_state = 353 }" />
+  <autoinfo name="set_state_flag" sets="State ID" params="Flag ID" description="Sets a state flag" example="353 = { set_state_flag = test_flag }" />
+  <autoinfo name="clr_state_flag" sets="State ID" params="Flag ID" description="Removes a state flag" example="353 = { clr_state_flag = test_flag }" />
+  <autoinfo name="create_faction" sets="Global" params="String" description="Creates a faction with a specified name" example="create_faction = &quot;french_entente_alliance&quot;" />
+  <autoinfo name="annex_country" sets="Scope" params="TAG" description="Annexes a specified country" example="annex_country = { target = EST }" />
+  <autoinfo name="add_building_construction" sets="State ID" params="Sub-Code (Building Type, Province ID, Number, Yes or no)" description="Starts a building construction within a state or a province" example="18 = { add_building_construction = { type = bunker province = 5291 level = 2 instant_build = yes } }" />
+  <autoinfo name="dismantle_faction" sets="Scope" params="Yes or no" description="Dismantles the faction led by the current country" example="dismantle_faction = yes" />
+  <autoinfo name="add_to_faction" sets="Scope" params="TAG" description="Adds a country to a faction" example="add_to_faction = ITA" />
+  <autoinfo name="remove_from_faction" sets="Scope" params="TAG" description="Removes a country from a faction" example="remove_from_faction = ITA" />
+  <autoinfo name="give_guarantee" sets="Scope" params="TAG" description="Guarantees specified country" example="give_guarantee = POL" />
+  <autoinfo name="give_military_access" sets="Scope" params="TAG" description="Specified country gives military access (bugged tooltip)" example="give_military_access = GER" />
+  <autoinfo name="news_event" sets="Global" params="Event ID" description="Triggers a news event" example="news_event = news_event.251" />
+  <autoinfo name="declare_war_on" sets="Scope" params="Sube-Code (TAG, Wargoal Type)" description="Declares war on a specified country" example="declare_war_on = { target = POL type = annex_everything }" />
+  <autoinfo name="add_national_unity" sets="Scope" params="Number" description="Adds national unity" example="add_national_unity = 0.02" />
+  <autoinfo name="add_scaled_political_power" sets="" params="" description="Adds political power scaled by the difference between ICs of receiver and another country" example="Undocumented" />
+  <autoinfo name="hold_election" sets="Scope" params="Yes or no" description="Holds elections" example="hold_election = yes" />
+  <autoinfo name="add_popularity" sets="Scope" params="Sub-Code (Ideology Type, Number)" description="Adds popularity to an ideology" example="add_popularity = { ideology = fascism popularity = 0.1 }" />
+  <autoinfo name="remove_ideas_with_trait" sets="Scope" params="Trait ID" description="Removes ideas with specific traits" example="remove_ideas_with_trait = motorized_equipment_manufacturer" />
+  <autoinfo name="start_civil_war" sets="Scope" params="Suc-Code (ideology Type, Number)" description="Starts a civil war with the given ideology" example="start_civil_war = { ideology = fascism size = 0.5 }" />
+  <autoinfo name="retire_country_leader" sets="Scope" params="Yes or no" description="Removes a country leader and replaces him with another candidate from the same party" example="retire_country_leader = yes" />
+  <autoinfo name="kill_country_leader" sets="Scope" params="Yes or no" description="Removes a country leader completely" example="kill_country_leader = yes" />
+  <autoinfo name="release_puppet" sets="Scope" params="TAG" description="Releases a specified country" example="release_puppet = LIB" />
+  <autoinfo name="create_wargoal" sets="Scope" params="Sub-Code (wargoal type, TAG)" description="Creates a wargoal" example="create_wargoal = { type = annex_everything target = EST }" />
+  <autoinfo name="add_claim_by" sets="Scope" params="TAG" description="Add state claim by a country" example="any_owned_state = { add_claim_by = SOV }" />
+  <autoinfo name="remove_claim_by" sets="Scope" params="TAG" description="Removes state claim from a country" example="any_owned_state = { remove_claim_by = SOV }" />
+  <autoinfo name="add_core_of" sets="Scope" params="TAG" description="Adds cores of a country to a state" example="any_owned_state = { add_core_of = SOV }" />
+  <autoinfo name="remove_core_of" sets="Scope" params="TAG" description="Removes cores of a country from a state" example="any_owned_state = { remove_core_of = SOV }" />
+  <autoinfo name="army_experience" sets="Scope" params="Number" description="Adds army experience" example="army_experience = 10" />
+  <autoinfo name="navy_experience" sets="Scope" params="Number" description="Adds navy experience" example="navy_experience = 10" />
+  <autoinfo name="air_experience" sets="Scope" params="Number" description="Adds air experience" example="air_experience = 10" />
+  <autoinfo name="save_event_target_as" sets="Scope" params="Target Type" description="Save an event target as something" example="save_event_target_as = war_target" />
+  <autoinfo name="save_global_event_target_as" sets="Scope" params="Target Type" description="Save a global event target as something" example="save_global_event_target_as = war_target" />
+  <autoinfo name="clear_global_event_target" sets="Scope" params="Target Type" description="Removes a global event target" example="clear_global_event_target = war_target" />
+  <autoinfo name="clear_global_event_targets" sets="Scope" params="Target Type" description="Removes all global event targets" example="clear_global_event_targets = war_target" />
+  <autoinfo name="break" sets="" params="" description="Break execution of effects" example="Undocumented" />
+  <autoinfo name="unlock_national_focus" sets="Scope" params="Focus ID" description="Unlocks a national focus for a country" example="unlock_national_focus = focus_id" />
+  <autoinfo name="add_tech_bonus" sets="Scope" params="Sub-Code (Number, Number, Technology Category)" description="Adds a limited tech bonus" example="add_tech_bonus = { bonus = 0.5 uses = 2 category = radar_tech }" />
+  <autoinfo name="set_demilitarized_zone" sets="Scope" params="Yes or no" description="Sets a state as a demilitarized zone" example="any_owned_state = { set_demilitarized_zone = yes }" />
+  <autoinfo name="add_research_slot" sets="Scope" params="Number" description="Adds set number of research slots" example="add_research_slot = 2" />
+  <autoinfo name="set_research_slots" sets="Scope" params="Number" description="Sets the number of research slots" example="set_research_slots = 4" />
+  <autoinfo name="set_border_war" sets="State ID" params="Yes or no" description="Starts a border war" example="605 = { set_border_war = yes }" />
+  <autoinfo name="set_national_unity" sets="Scope" params="Number" description="Sets the national unity of a country" example="set_national_unity = 0.80" />
+  <autoinfo name="set_equipment_fraction" sets="Scope" params="Number" description="Gives a fraction of your equipment to another country" example="set_equipment_fraction = 0.35" />
+  <autoinfo name="add_threat" sets="" params="" description="Adds country threat" example="Undocumented" />
+  <autoinfo name="send_equipment" sets="Scope" params="Sub-Code (TAG, Equipment type, Number)" description="Sends equipment to a country" example="send_equipment = { target = FIN type = infantry_equipment amount = 500 }" />
+  <autoinfo name="set_rule" sets="Scope" params="Rule" description="Sets a rule to a country" example="set_rule = { can_create_factions = yes }" />
+  <autoinfo name="diplomatic_relation" sets="Scope" params="Sub-Code (Tag, Relation Type)" description="Set up diplomatic relations between two countries" example="diplomatic_relation = { country = SOV relation = non_aggression_pact }" />
+  <autoinfo name="add_resource" sets="Scope" params="Sub-Code (Resource, Number, State ID)" description="Adds resource production to a state" example="add_resource = { type = oil amount = 8 state = 662 }" />
+  <autoinfo name="remove_unit_leader" sets="Scope" params="Leader ID" description="Removes a unit leader" example="remove_unit_leader = leader_id" />
+  <autoinfo name="add_timed_idea" sets="Scope" params="Sub-Code (Idea Type, Number)" description="Adds a time limited idea to a country" example="add_timed_idea = { idea = idea_id days = 50 }" />
+  <autoinfo name="end_puppet" sets="Scope" params="TAG" description="Ends puppetry over the specified country" example="end_puppet = CRO" />
+  <autoinfo name="load_oob" sets="Scope" params="OOB Type" description="Loads an OOB file" example="load_oob = SOV_reinforcements" />
+  <autoinfo name="create_import" sets="Scope" params="Sub-Code (Resource, Number, TAG)" description="Creates trade between countries" example="create_import = { resource = steel amount = 20 exporter = SWE }" />
+  <autoinfo name="add_named_threat" sets="Scope" params="Sub-Code (Number, Threat ID)" description="Adds country threat" example="add_named_threat = { threat = 2 name = germany.4.t }" />
+  <autoinfo name="set_province_controller" sets="" params="" description="Set controller of a province" example="Undocumented" />
+  <autoinfo name="set_major" sets="Scope" params="Yes or no" description="Makes a country a major" example="set_major = yes" />
+  <autoinfo name="create_field_marshal" sets="Scope" params="Sub-Code (String, String, List of Trait ID, Number)" description="Creates a field marshal" example="create_field_marshal = { name = &quot;Dude McCoolDude&quot; gfx = &quot;GFX_CoolDudesFace&quot; traits = { } skill = 3 }" />
+  <autoinfo name="create_corps_commander" sets="Scope" params="Sub-Code (String, String, List of Trait ID, Number)" description="Creates a corps commander" example="create_corps_commander = { name = &quot;Dude McCoolDude&quot; gfx = &quot;GFX_CoolDudesFace&quot; traits = { } skill = 3 }" />
+  <autoinfo name="goto_province" sets="Scope" params="Province ID" description="Goes to specified province" example="goto_province = 11302" />
+  <autoinfo name="goto_state" sets="Scope" params="State ID" description="Goes to specified state" example="goto_state = 150" />
+  <autoinfo name="complete_national_focus" sets="Scope" params="Focus ID" description="Completes a national focus" example="complete_national_focus = focus_id" />
+  <autoinfo name="set_party_name" sets="Scope" params="Sub-Code (Ideaology Type, Localisation Key, Localisation Key)" description="Changes a party name of a country" example="set_party_name = { ideology = democratic long_name = USA_republican_party name = USA_republican_party }" />
+  <autoinfo name="add_extra_state_shared_building_slots" sets="Scope" params="Number" description="Add extra building slots to a state" example="random_owned_state = { add_extra_state_shared_building_slots = 2 }" />
+  <autoinfo name="reverse_add_opinion_modifier" sets="Scope" params="Sub-Code (Tag, Modifier ID)" description="Add opinion modifiers to target" example="reverse_add_opinion_modifier = { target = BUL modifier = GER_treaty_of_craiova_other }" />
+  <autoinfo name="add_to_war" sets="Scope" params="Sub-Code (TAG, TAG)" description="Adds country to a war" example="add_to_war = { targeted_alliance = CHI enemy = JAP }" />
+  <autoinfo name="create_equipment_variant" sets="Scope" params="Sub-Code (String, Equipment Type, List of Upgrade)" description="Creates a new equipment variant" example="create_equipment_variant = { name = &quot;Montecuccoli Class&quot; type = light_cruiser_1 upgrades = { ship_reliability_upgrade = 3 ship_engine_upgrade = 3 ship_gun_upgrade = 3 ship_anti_air_upgrade = 3 }}" />
+  <autoinfo name="add_equipment_production" sets="Scope" params="Sub-Code (Equipment, Number, Number, Number)" description="Add equipment production" example="add_equipment_production = { equipment = { type = light_cruiser_1 creator = &quot;ITA&quot; version_name = &quot;Montecuccoli Class&quot; } requested_factories = 1 progress = 0.95 amount = 1 }" />
+  <autoinfo name="add_ace" sets="Scope" params="Sub-Code (String, String, String, Ace Type, Yes or no)" description="Adds an air ace" example="add_ace = { name = &quot;Amelia&quot; surname = &quot;Earhart&quot; callsign = &quot;Revenant&quot; type = fighter_genius is_female = yes }" />
+  <autoinfo name="add_equipment_to_stockpile" sets="Scope" params="Equipment Type, Number, TAG" description="Adds equipment to stockpile of the country in question" example="add_equipment_to_stockpile = { type = convoy_1 amount = 50 producer = TAG }" />
+</autoinfos>

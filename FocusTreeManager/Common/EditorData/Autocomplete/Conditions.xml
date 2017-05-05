@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<autoinfos>
+  <autoinfo name="num_divisions" description="Checks the number of divisions" params="Condition" sets="Country" example="num_divisions &gt; 10" />
+  <autoinfo name="has_focus_tree" description="Checks if a country has a specific focus tree" params="Condition" sets="Country" example="has_focus_tree = id" />
+  <autoinfo name="is_staging_coup" description="Checks if a country is staging a coup" params="Condition" sets="Country" example="is_staging_coup = yes" />
+  <autoinfo name="has_full_control_of_state" description="Checks if country controls every province of a state" params="Condition" sets="Country" example="GER = { has_full_control_of_state = 55 }" />
+  <autoinfo name="has_army_experience" description="Checks the amount of army xp" params="Condition" sets="Country" example="has_army_experience &gt; 5" />
+  <autoinfo name="has_air_experience" description="Checks the amount of air xp" params="Condition" sets="Country" example="has_air_experience &gt; 5" />
+  <autoinfo name="has_navy_experience" description="Checks the amount of navy xp" params="Condition" sets="Country" example="has_navy_experience &gt; 5" />
+  <autoinfo name="has_country_leader" description="Checks for a specific country leader" params="Condition" sets="Country" example="has_country_leader = { id = 17 ruling_only = yes name = &quot;Boaty McBoatface&quot; }" />
+  <autoinfo name="has_tech_bonus" description="Checks for a bonus for a single tech or a tech category" params="Condition" sets="Country" example="has_tech_bonus = { technology = early_fighter category = industry }" />
+  <autoinfo name="has_resources_amount" description="Checks the amount of resources in a state" params="Condition" sets="Country" example="has_resources_amount = { resource = chromium amount &gt; 5 state = 31 }" />
+  <autoinfo name="num_of_subjects" description="Checks the number of subjects" params="Condition" sets="Country" example="num_of_subjects &gt; 0" />
+  <autoinfo name="num_tech_sharing_groups" description="Checks the amount of tech sharing a groups a country is in" params="Condition" sets="Country" example="num_of_tech_sharing_groups &gt; 1" />
+  <autoinfo name="compare_autonomy_progress_ratio" description="Checks the autonomy progress" params="Condition" sets="Country" example="compare_autonomy_progress_ratio &gt; 0.6" />
+  <autoinfo name="ai_irrationality" description="Checks AI irrationality value" params="Condition" sets="AI" example="ai_irrationality &lt; 20" />
+  <autoinfo name="ai_liberate_desire" description="Checks how willing the AI is to liberate another country" params="Condition" sets="AI" example="Needs to be tested" />
+  <autoinfo name="always" description="Always returns specified value" params="Condition" sets="Anywhere" example="always = no" />
+  <autoinfo name="any_claim" description="Checks for claims between two countries" params="Condition" sets="Country" example="Needs to be tested" />
+  <autoinfo name="any_war_score" description="Checks for war score in any ongoing war involving the country" params="Condition" sets="Country" example="any_war_score &gt; 0.5" />
+  <autoinfo name="armor" description="Checks for the average armor level of a combatant" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="can_research" description="Checks if a country can research a technology" params="Condition" sets="Country" example="can_research = basic_medium_tank" />
+  <autoinfo name="controls_state" description="Checks if a country controls a state" params="Condition" sets="Country" example="GER = { controls_state = 332 }" />
+  <autoinfo name="country_exists" description="Checks if a specified country exists" params="Condition" sets="Anywhere" example="country_exists = YUG" />
+  <autoinfo name="date &gt;, date &lt;" description="Check for the current in-game date" params="Condition" sets="Anywhere" example="date &gt; 1937.1.1" />
+  <autoinfo name="dig_in" description="Checks for lowest dig-in level" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="distance_to" description="Checks distance between two states" params="Condition" sets="State" example="Needs to be tested" />
+  <autoinfo name="divisions_in_state" description="Checks for the amount of division in state" params="Condition" sets="State" example="divisions_in_state = { state = 605 value &gt; 0 }" />
+  <autoinfo name="exists" description="Checks if a country exists" params="Condition" sets="Anywhere" example="GER = { exists = yes }" />
+  <autoinfo name="fastest_unit" description="Checks if the fastest unit in combat has a certain speed value" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="focus_progress" description="Checks for the progress on a national focus" params="Condition" sets="Country" example="focus_progress = { focus = focus_id progress &gt; 0.5 }" />
+  <autoinfo name="free_building_slots" description="Checks for the amount of free building slots" params="Condition" sets="State" example="any_owned_state = { free_building_slots = { building = industrial_complex size &gt; 0 include_locked = yes } }" />
+  <autoinfo name="frontage_full" description="Checks for full frontage in combat" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="gives_military_access_to" description="Checks if a country is giving military access to another country" params="Condition" sets="Country" example="giver_military_access_to = GER" />
+  <autoinfo name="hardness" description="Checks lowest/highest hardness level in combat" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="has_added_tension_amount" description="Variable for how much world tension a country has caused ( 1.0 = 100% )" params="Condition" sets="Country" example="has_added_tension_amount &gt; 0.1" />
+  <autoinfo name="has_annex_war_goal" description="Checks if a country has the annex wargoal towards another country" params="Condition" sets="Country" example="has_annex_war_goal = POL" />
+  <autoinfo name="has_army_manpower" description="Variable for the amount of manpower a country has deployed in divisions" params="Condition" sets="Country" example="has_army_manpower = { size &gt; 549999 }" />
+  <autoinfo name="has_army_size" description="Checks the amount of all or certain division" params="Condition" sets="Country" example="has_army_size = { type = infantry size &gt; 75 }" />
+  <autoinfo name="has_available_idea_with_traits" description="Checks if a country has ideas with specified traits available" params="Condition" sets="Country" example="Needs to be tested" />
+  <autoinfo name="has_built" description="Checks if a country has built a certain number of specified buildings after taking a goal" params="Condition" sets="Country" example="Needs to be tested" />
+  <autoinfo name="has_capitulated" description="Checks if a country has capitulated" params="Condition" sets="Country" example="NOR = { has_capitulated = yes }" />
+  <autoinfo name="has_carrier_airwings_on_mission" description="Checks if carrier airwings are on a mission" params="Condition" sets="Country" example="has_carrier_airwings_on_mission = yes" />
+  <autoinfo name="has_civil_war" description="Checks if a country is a participant in a civil war" params="Condition" sets="Country" example="SPR = { has_civil_war = yes }" />
+  <autoinfo name="has_combat_modifier" description="Checks for a combat modifier in combat" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="has_completed_focus" description="Checks if a national focus has been completed" params="Condition" sets="Country" example="GER = { has_completed_focus = GER_anschluss }" />
+  <autoinfo name="has_country_flag" description="Checks for a country flag" params="Condition" sets="Country" example="ENG = { has_country_flag = chamberlain_resigned }" />
+  <autoinfo name="has_defensive_war" description="Checks if in a defensive war" params="Condition" sets="Country" example="CHI = { has_defensive_war = yes }" />
+  <autoinfo name="has_defensive_war_with" description="Checks for a defensive war against a country" params="Condition" sets="Country" example="CHI = { has_defensive_war_with = JAP }" />
+  <autoinfo name="has_deployed_air_force_size" description="Variable for a country's amount of deployed planes" params="Condition" sets="Country" example="ENG = { has_deployed_air_force_size &gt; 100 }" />
+  <autoinfo name="has_equipment" description="Checks for the amount of equipment" params="Condition" sets="Country" example="has_equipment = { infantry_equipment &gt; 500 }" />
+  <autoinfo name="has_flanked_opponent" description="Check if flanking an enemy" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="has_global_flag" description="Checks if a global flag is active" params="Condition" sets="Anywhere" example="has_global_flag = fall_of_france" />
+  <autoinfo name="has_government" description="Checks a country's current ideology" params="Condition" sets="Country" example="USA = { has_government = communism }" />
+  <autoinfo name="has_guaranteed" description="Checks if a country has guaranteed another country" params="Condition" sets="Country" example="FRA = { has_guaranteed = POL }" />
+  <autoinfo name="has_idea" description="Checks for a specified idea" params="Condition" sets="Country" example="has_idea = idea_id" />
+  <autoinfo name="has_idea_with_trait" description="Checks for an idea with a specified trait" params="Condition" sets="Country" example="SOV = { has_idea_with_trait = communist_revolutionary }" />
+  <autoinfo name="has_manpower" description="Checks the amount of manpower" params="Condition" sets="Country" example="has_manpower &gt; 10000" />
+  <autoinfo name="has_manpower_for_recruit_change_to" description="Checks if country has enough manpower to change recruitment laws" params="Condition" sets="Country" example="has_manpower_for_recruit_change_to = { value = 0.01 group = mobilization_laws }" />
+  <autoinfo name="has_max_planning" description="Checks for maximum planning bonus in combat" params="Condition" sets="Combat" example="has_max_planning = yes" />
+  <autoinfo name="has_military_access_to" description="Checks if a country has military access to another country" params="Condition" sets="Country" example="has_military_access_to = ITA" />
+  <autoinfo name="has_national_unity" description="Variable for the national unity of a nation" params="Condition" sets="Country" example="has_national_unity &gt; 70" />
+  <autoinfo name="has_navy_size" description="Variable for the amount of ships a nation has" params="Condition" sets="Country" example="has_navy_size = { size &gt; 10 }" />
+  <autoinfo name="has_offensive_war" description="Checks if in an offensive war" params="Condition" sets="Country" example="has_offensive_war = yes" />
+  <autoinfo name="has_offensive_war_with" description="Checks for a offensive war against a country" params="Condition" sets="Country" example="has_offensive_war_with = SOV" />
+  <autoinfo name="has_opinion" description="Checks for the current opinion towards another country" params="Condition" sets="Country" example="has_opinion = { target = SOV value &lt; -50 }" />
+  <autoinfo name="has_opinion_modifier" description="Checks for a specific opinion modifier with another country" params="Condition" sets="Country" example="SOV = { has_opinion_modifier = unprovoked_aggression }" />
+  <autoinfo name="has_political_power" description="Checks the amount of political power" params="Condition" sets="Country" example="has_political_power &gt; 100" />
+  <autoinfo name="has_reserves" description="Checks for reserves in combat" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="has_start_date" description="Checks the initial start date of the current game" params="Condition" sets="Anywhere" example="Needs to be tested" />
+  <autoinfo name="has_state_flag" description="Checks for a state flag" params="Condition" sets="State" example="713 = { has_state_flag = GER_second_ljubljana_award_GER_demand }" />
+  <autoinfo name="has_tech" description="Checks if a country has a specified tech" params="Condition" sets="Country" example="SOV = { has_tech = basic_medium_tank }" />
+  <autoinfo name="has_template_containing_unit" description="Checks if country has a template with specified units" params="Condition" sets="Country" example="FRA = { has_template_containing_unit = light_armor }" />
+  <autoinfo name="has_trait" description="Checks if a leader has a trait" params="Condition" sets="Leader" example="Needs to be tested" />
+  <autoinfo name="has_volunteers_from" description="Checks if a country has volunteer from another country" params="Condition" sets="Country" example="SPR = { has_volunteers_from = GER }" />
+  <autoinfo name="has_war" description="Checks if a country is at war" params="Condition" sets="Country" example="has_war = yes" />
+  <autoinfo name="has_war_together_with" description="Checks if two countries are on the same side in a war" params="Condition" sets="Country" example="GER = { has_war_together_with = ITA }" />
+  <autoinfo name="has_war_with" description="Checks if at war with specified country" params="Condition" sets="Country" example="GER = { has_war_with = FRA }" />
+  <autoinfo name="has_war_with_amount" description="Checks the amount of wars and current world tension" params="Condition" sets="Anywhere" example="Needs to be tested" />
+  <autoinfo name="ic_ratio" description="Compares the total industrial capacity of two countries" params="Condition" sets="Country" example="ic_ratio = { tag = ITA ratio &gt; 0.4 }" />
+  <autoinfo name="is_ai" description="Checks if a country is run by AI" params="Condition" sets="Country" example="is_ai = yes" />
+  <autoinfo name="is_amphibious_invasion" description="Checks if combat is an amphibious invasion" params="Condition" sets="Combat" example="is_amphibious_invasion = yes" />
+  <autoinfo name="is_attacker" description="Checks if attacker in combat" params="Condition" sets="Combat" example="is_attacker = yes" />
+  <autoinfo name="is_border_conflict" description="Checks if a state is in border conflict" params="Condition" sets="State" example="any_owned_state = { is_border_conflict = yes }" />
+  <autoinfo name="is_claimed_by" description="Checks if state is claimed by a country" params="Condition" sets="State" example="any_owned_state = { is_claimed_by = GER }" />
+  <autoinfo name="is_coastal" description="Checks if a state is coastal" params="Condition" sets="State" example="any_owned_state = { is_coastal = yes }" />
+  <autoinfo name="is_controlled_by" description="Checks if a state is controlled by a country" params="Condition" sets="State" example="332 = { is_controlled_by = GER }" />
+  <autoinfo name="is_core_of" description="Checks if state is a core of a country" params="Condition" sets="Country" example="any_owned_state = { is_core_of = CHI }" />
+  <autoinfo name="is_defender" description="Checks if a defender in combat" params="Condition" sets="Combat" example="is_defender = yes" />
+  <autoinfo name="is_demilitarized_zone" description="Checks if a state is demilitarized" params="Condition" sets="State" example="any_owned_state = { is_demilitarized_zone = yes }" />
+  <autoinfo name="is_faction_leader" description="Checks if a country is a leader of any faction" params="Condition" sets="Country" example="is_faction_leader = yes" />
+  <autoinfo name="is_fighting_air_units" description="Checks if fighting air units" params="Condition" sets="Country?" example="is_fighting_air_units = yes" />
+  <autoinfo name="is_fighting_in_terrain" description="Checks the terrain of combat" params="Condition" sets="Combat" example="is_fighting_in_terrain = marsh" />
+  <autoinfo name="is_guaranteed_by" description="Checks if guaranteed by a specified country" params="Condition" sets="Country" example="is_guaranteed_by = USA" />
+  <autoinfo name="is_in_faction" description="Checks if member of any faction" params="Condition" sets="Country" example="is_in_faction = yes" />
+  <autoinfo name="is_in_faction_with" description="Checks if in the same faction with a country" params="Condition" sets="Country" example="is_in_faction_with = GER" />
+  <autoinfo name="is_in_home_area" description="Checks if a state is connected to the capital" params="Condition" sets="State" example="any_owned_state = { is_in_home_area = yes }" />
+  <autoinfo name="is_ironman" description="Checks if current game is in Ironman mode" params="Condition" sets="Anywhere" example="is_ironman = yes" />
+  <autoinfo name="is_lend_leasing" description="Checks if giving lend lease to a country" params="Condition" sets="Country" example="is_lend_leasing = SPR" />
+  <autoinfo name="is_major" description="Checks if a country is a major" params="Condition" sets="Country" example="is_major = yes" />
+  <autoinfo name="is_neighbor_of" description="Checks if neighbors with a specified country" params="Condition" sets="Country" example="is_neighbor_of = GER" />
+  <autoinfo name="is_on_continent" description="Checks the continent of a state" params="Condition" sets="State" example="any_owned_state = { is_on_continent = africa }" />
+  <autoinfo name="is_owned_by" description="Checks if a state is owned by a country" params="Condition" sets="State" example="332 = { is_owned_by = GER }" />
+  <autoinfo name="is_puppet" description="Checks if a country is a puppet (puppet specified in autonomy levels)" params="Condition" sets="Country" example="is_puppet = yes" />
+  <autoinfo name="is_puppet_of" description="Checks if a county is a puppet of a specified country  (puppet specified in autonomy levels)" params="Condition" sets="Country" example="is_puppet_of = ENG" />
+  <autoinfo name="is_subject" description="Checks if a country is a subject" params="Condition" sets="Country" example="RAJ = { is_subject = yes }" />
+  <autoinfo name="is_subject_of" description="Checks if a country is a subject of a specified country" params="Condition" sets="Country" example="RAJ = { is_subject_of = ENG }" />
+  <autoinfo name="is_winning" description="Checks if winning in combat" params="Condition" sets="Combat" example="is_winning = yes" />
+  <autoinfo name="land_doctrine_level" description="Checks researched land doctrine level" params="Condition" sets="Country" example="Needs to be tested" />
+  <autoinfo name="less_combat_width_than_opponent" description="Checks for combat width in combat" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="night" description="Checks if combat is at night" params="Condition" sets="Combat" example="night = yes" />
+  <autoinfo name="num_of_available_civilian_factories" description="Checks the amount of unused civilian factories" params="Condition" sets="Country" example="num_of_available_civilian_factories &gt; 1" />
+  <autoinfo name="num_of_available_military_factories" description="Check the amount of unused military factories" params="Condition" sets="Country" example="num_of_available_military_factories &gt; 1" />
+  <autoinfo name="num_of_available_naval_factories" description="Checks the amount of unused naval dockyards" params="Condition" sets="Country" example="num_of_available_naval_factories &gt; 1" />
+  <autoinfo name="num_of_civilian_factories" description="Checks the amount of civilian factories in a country" params="Condition" sets="Country" example="num_of_civilian_factories &gt; 10" />
+  <autoinfo name="num_of_controlled_states" description="Checks the number of controlled states" params="Condition" sets="Country" example="num_of_controlled_states &gt; 10" />
+  <autoinfo name="num_of_factories" description="Checks the total amount of factories" params="Condition" sets="Country" example="num_of_factories &gt; 50" />
+  <autoinfo name="num_of_military_factories" description="Checks the amount of military factories in a country" params="Condition" sets="Country" example="num_of_military_factories &gt; 10" />
+  <autoinfo name="num_of_naval_factories" description="Checks the amount of naval dockyards in a country" params="Condition" sets="Country" example="num_of_naval_factories &gt; 10" />
+  <autoinfo name="num_of_nukes" description="Checks the amount of nukes" params="Condition" sets="Country" example="num_of_nukes &gt; 1" />
+  <autoinfo name="original_tag" description="Checks the original tag of a country (for civil wars)" params="Condition" sets="Country" example="original_tag = SPR" />
+  <autoinfo name="owns_state" description="Checks if a country owns a state" params="Condition" sets="Country" example="GER = { owns_state = 332 }" />
+  <autoinfo name="phase" description="Checks for a combat phase" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="recon_advantage" description="Checks for recon advantage in combat" params="Condition" sets="Combat" example="recon_advantage = yes" />
+  <autoinfo name="region/area" description="Checks if a state is part of a specified strategic region" params="Condition" sets="State" example="any_state = { region = 34 }" />
+  <autoinfo name="reserves" description="Checks the amount of reserves" params="Condition" sets="Country" example="Needs to be tested" />
+  <autoinfo name="ships_in_area" description="Checks the amount of ships in an area" params="Condition" sets="Area" example="Needs to be tested" />
+  <autoinfo name="ships_in_state_ports" description="Checks the number of ships in a state's provinces" params="Condition" sets="State" example="any_owned_state = { ships_in_state_ports &gt; 10 }" />
+  <autoinfo name="skill" description="Checks leaders skill level" params="Condition" sets="Leader" example="Needs to be tested" />
+  <autoinfo name="skill_advantage" description="Compares skill levels of commanders" params="Condition" sets="Combat" example="Needs to be tested" />
+  <autoinfo name="state_population" description="Checks the states population" params="Condition" sets="State" example="any_owned_state = { state_population = 40000 }" />
+  <autoinfo name="strength_ratio" description="Checks the relation of army strengths with a country" params="Condition" sets="Country" example="strength_ratio = { tag = SOV ratio &gt; 0.8 }" />
+  <autoinfo name="surrender_progress" description="Checks the surrender progress" params="Condition" sets="Country" example="surrender_progress &gt; 0.7" />
+  <autoinfo name="tag" description="Checks the tag of the country" params="Condition" sets="Country" example="tag = FRA" />
+  <autoinfo name="temperature" description="Checks for the temperature of a combat province" params="Condition" sets="Province" example="Needs to be tested" />
+  <autoinfo name="threat" description="Checks global threat value" params="Condition" sets="Anywhere" example="threat &lt; 0.5" />
+</autoinfos>

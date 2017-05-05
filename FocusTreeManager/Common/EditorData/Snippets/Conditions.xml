@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<snippets>
+  <snippet command="num_divisions" replace="num_divisions" />
+  <snippet command="has_focus_tree" replace="has_focus_tree" />
+  <snippet command="is_staging_coup" replace="is_staging_coup" />
+  <snippet command="has_full_control_of_state" replace="|TAG| = {\nhas_full_control_of_state = |STATE ID|\n}" />
+  <snippet command="has_army_experience" replace="has_army_experience" />
+  <snippet command="has_air_experience" replace="has_air_experience" />
+  <snippet command="has_navy_experience" replace="has_navy_experience" />
+  <snippet command="has_country_leader" replace="has_country_leader" />
+  <snippet command="has_tech_bonus" replace="has_tech_bonus" />
+  <snippet command="has_resources_amount" replace="has_resources_amount" />
+  <snippet command="num_of_subjects" replace="num_of_subjects" />
+  <snippet command="num_tech_sharing_groups" replace="num_of_tech_sharing_groups" />
+  <snippet command="compare_autonomy_progress_ratio" replace="compare_autonomy_progress_ratio" />
+  <snippet command="ai_irrationality" replace="ai_irrationality" />
+  <snippet command="ai_liberate_desire" replace="ai_liberate_desire" />
+  <snippet command="always" replace="always = no" />
+  <snippet command="any_claim" replace="any_claim" />
+  <snippet command="any_war_score" replace="any_war_score" />
+  <snippet command="armor" replace="armor" />
+  <snippet command="can_research" replace="can_research " />
+  <snippet command="controls_state" replace="|TAG| = {\ncontrols_state = |STATE ID|\n}" />
+  <snippet command="country_exists" replace="country_exists" />
+  <snippet command="date &gt;, date &lt;" replace="date" />
+  <snippet command="dig_in" replace="dig_in" />
+  <snippet command="distance_to" replace="distance_to" />
+  <snippet command="divisions_in_state" replace="divisions_in_state = {\nstate = |STATE ID|\nvalue = |NUMBER|\n}" />
+  <snippet command="exists" replace="|TAG| = {\nexists = yes\n}" />
+  <snippet command="fastest_unit" replace="fastest_unit" />
+  <snippet command="focus_progress" replace="focus_progress = {\nfocus = |FOCUS ID|\nprogress = |NUMBER| }" />
+  <snippet command="free_building_slots" replace="|SCOPE| = {\nfree_building_slots = {\nbuilding = |BUILDING TYPE| size &gt; |NUMBER|\ninclude_locked = |YESNO|\n}\n}" />
+  <snippet command="frontage_full" replace="frontage_full" />
+  <snippet command="gives_military_access_to" replace="giver_military_access_to" />
+  <snippet command="hardness" replace="hardness" />
+  <snippet command="has_added_tension_amount" replace="has_added_tension_amount" />
+  <snippet command="has_annex_war_goal" replace="has_annex_war_goal" />
+  <snippet command="has_army_manpower" replace="has_army_manpower = {\nsize = |AMOUNT|\n}" />
+  <snippet command="has_army_size" replace="has_army_size = {\ntype = |UNIT TYPE|\nsize = |AMOUNT|\n}" />
+  <snippet command="has_available_idea_with_traits" replace="has_available_idea_with_traits" />
+  <snippet command="has_built" replace="has_built" />
+  <snippet command="has_capitulated" replace="|TAG| = {\nhas_capitulated = |YESNO|\n}" />
+  <snippet command="has_carrier_airwings_on_mission" replace="has_carrier_airwings_on_mission" />
+  <snippet command="has_civil_war" replace="|TAG| = {\nhas_civil_war = |YESNO|\n}" />
+  <snippet command="has_combat_modifier" replace="has_combat_modifier" />
+  <snippet command="has_completed_focus" replace="|TAG| = {\nhas_completed_focus = |FOCUS ID|\n}" />
+  <snippet command="has_country_flag" replace="has_country_flag" />
+  <snippet command="has_defensive_war" replace="has_defensive_war" />
+  <snippet command="has_defensive_war_with" replace="has_defensive_war_with" />
+  <snippet command="has_deployed_air_force_size" replace="has_deployed_air_force_size" />
+  <snippet command="has_equipment" replace="has_equipment = {\n|EQUIPMENT TYPE| = |AMOUNT|\n}" />
+  <snippet command="has_flanked_opponent" replace="has_flanked_opponent" />
+  <snippet command="has_global_flag" replace="has_global_flag" />
+  <snippet command="has_government" replace="has_government" />
+  <snippet command="has_guaranteed" replace="has_guaranteed" />
+  <snippet command="has_idea" replace="has_idea" />
+  <snippet command="has_idea_with_trait" replace="has_idea_with_trait" />
+  <snippet command="has_manpower" replace="has_manpower" />
+  <snippet command="has_manpower_for_recruit_change_to" replace="has_manpower_for_recruit_change_to = {\nvalue = |NUMBER|\ngroup = |LAW GROUP|\n}" />
+  <snippet command="has_max_planning" replace="has_max_planning" />
+  <snippet command="has_military_access_to" replace="has_military_access_to" />
+  <snippet command="has_national_unity" replace="has_national_unity" />
+  <snippet command="has_navy_size" replace="has_navy_size = {\nsize = |NUMBER|\n}" />
+  <snippet command="has_offensive_war" replace="has_offensive_war" />
+  <snippet command="has_offensive_war_with" replace="has_offensive_war_with" />
+  <snippet command="has_opinion" replace="has_opinion = {\ntarget = |TAG|\nvalue = |NUMBER| }" />
+  <snippet command="has_opinion_modifier" replace="has_opinion_modifier" />
+  <snippet command="has_political_power" replace="has_political_power" />
+  <snippet command="has_reserves" replace="has_reserves" />
+  <snippet command="has_start_date" replace="has_start_date" />
+  <snippet command="has_state_flag" replace="|STATE ID| = {\nhas_state_flag = |FLAG|\n}" />
+  <snippet command="has_tech" replace="has_tech" />
+  <snippet command="has_template_containing_unit" replace="has_template_containing_unit" />
+  <snippet command="has_trait" replace="has_trait" />
+  <snippet command="has_volunteers_from" replace="has_volunteers_from" />
+  <snippet command="has_war" replace="has_war" />
+  <snippet command="has_war_together_with" replace="has_war_together_with" />
+  <snippet command="has_war_with" replace="has_war_with = FRA" />
+  <snippet command="has_war_with_amount" replace="has_war_with_amount" />
+  <snippet command="ic_ratio" replace="ic_ratio = {\ntag = |TAG|\nratio = |NUMBER|\n}" />
+  <snippet command="is_ai" replace="is_ai" />
+  <snippet command="is_amphibious_invasion" replace="is_amphibious_invasion" />
+  <snippet command="is_attacker" replace="is_attacker" />
+  <snippet command="is_border_conflict" replace="is_border_conflict" />
+  <snippet command="is_claimed_by" replace="is_claimed_by" />
+  <snippet command="is_coastal" replace="is_coastal" />
+  <snippet command="is_controlled_by" replace="is_controlled_by" />
+  <snippet command="is_core_of" replace="is_core_of" />
+  <snippet command="is_defender" replace="is_defender" />
+  <snippet command="is_demilitarized_zone" replace="is_demilitarized_zone" />
+  <snippet command="is_faction_leader" replace="is_faction_leader" />
+  <snippet command="is_fighting_air_units" replace="is_fighting_air_units" />
+  <snippet command="is_fighting_in_terrain" replace="is_fighting_in_terrain" />
+  <snippet command="is_guaranteed_by" replace="is_guaranteed_by" />
+  <snippet command="is_in_faction" replace="is_in_faction" />
+  <snippet command="is_in_faction_with" replace="is_in_faction_with" />
+  <snippet command="is_in_home_area" replace="is_in_home_area" />
+  <snippet command="is_ironman" replace="is_ironman" />
+  <snippet command="is_lend_leasing" replace="is_lend_leasing" />
+  <snippet command="is_major" replace="is_major" />
+  <snippet command="is_neighbor_of" replace="is_neighbor_of" />
+  <snippet command="is_on_continent" replace="is_on_continent" />
+  <snippet command="is_owned_by" replace="is_owned_by " />
+  <snippet command="is_puppet" replace="is_puppet" />
+  <snippet command="is_puppet_of" replace="is_puppet_of" />
+  <snippet command="is_subject" replace="is_subject" />
+  <snippet command="is_subject_of" replace="is_subject_of" />
+  <snippet command="is_winning" replace="is_winning" />
+  <snippet command="land_doctrine_level" replace="land_doctrine_level" />
+  <snippet command="less_combat_width_than_opponent" replace="less_combat_width_than_opponent" />
+  <snippet command="night" replace="night" />
+  <snippet command="num_of_available_civilian_factories" replace="num_of_available_civilian_factories" />
+  <snippet command="num_of_available_military_factories" replace="num_of_available_military_factories" />
+  <snippet command="num_of_available_naval_factories" replace="num_of_available_naval_factories" />
+  <snippet command="num_of_civilian_factories" replace="num_of_civilian_factories" />
+  <snippet command="num_of_controlled_states" replace="num_of_controlled_states" />
+  <snippet command="num_of_factories" replace="num_of_factories" />
+  <snippet command="num_of_military_factories" replace="num_of_military_factories" />
+  <snippet command="num_of_naval_factories" replace="num_of_naval_factories" />
+  <snippet command="num_of_nukes" replace="num_of_nukes" />
+  <snippet command="original_tag" replace="original_tag" />
+  <snippet command="owns_state" replace="owns_state" />
+  <snippet command="phase" replace="phase" />
+  <snippet command="recon_advantage" replace="recon_advantage" />
+  <snippet command="region/area" replace="region" />
+  <snippet command="reserves" replace="reserves" />
+  <snippet command="ships_in_area" replace="ships_in_area" />
+  <snippet command="ships_in_state_ports" replace="ships_in_state_ports" />
+  <snippet command="skill" replace="skill" />
+  <snippet command="skill_advantage" replace="skill_advantage" />
+  <snippet command="state_population" replace="state_population" />
+  <snippet command="strength_ratio" replace="strength_ratio = {\ntag = |TAG|\nratio = |Number|\n}" />
+  <snippet command="surrender_progress" replace="surrender_progress" />
+  <snippet command="tag" replace="tag" />
+  <snippet command="temperature" replace="temperature" />
+  <snippet command="threat" replace="threat" />
+</snippets>

@@ -53,23 +53,37 @@ namespace FocusTreeManager.ViewModel
 
         public RelayCommand DeleteModFolderCommand { get; set; }
 
+        public RelayCommand WindowClosingCommand { get; set; }
+
+        public bool Accepted { get; set; }      
+
         public ProjectEditorViewModel()
         {
+            Accepted = false;
             AcceptCommand = new RelayCommand(Accept);
             CancelCommand = new RelayCommand(Cancel);
             AddModFolderCommand = new RelayCommand(AddModFolder);
             DeleteModFolderCommand = new RelayCommand(DeleteModFolder, CanDeleteModFolder);
+            WindowClosingCommand = new RelayCommand(WindowClosing);
         }
 
         public void Accept()
         {
+            Accepted = true;
             Close();
         }
 
         public void Cancel()
         {
+            Accepted = false;
             Project = null;
             Close();
+        }
+
+        public void WindowClosing()
+        {
+            if (Accepted) return;
+            Project = null;
         }
 
         public void AddModFolder()
