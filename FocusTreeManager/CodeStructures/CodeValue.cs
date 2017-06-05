@@ -43,7 +43,7 @@ namespace FocusTreeManager.CodeStructures
             return null;
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             //End of structure
             return new List<ICodeStruct>();

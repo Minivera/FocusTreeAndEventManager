@@ -132,6 +132,7 @@ namespace FocusTreeManager.Parsers
         
         private static List<Focus> prepareParse(List<Focus> listFoci)
         {
+            if (!listFoci.Any()) return new List<Focus>();
             List<Focus> SortedList = new List<Focus>();
             List<Focus> HoldedList = new List<Focus>();
             //Add the roots, the nodes without any perequisites. Helps with performance

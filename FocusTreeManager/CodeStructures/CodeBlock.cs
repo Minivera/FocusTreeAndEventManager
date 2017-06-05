@@ -146,13 +146,9 @@ namespace FocusTreeManager.CodeStructures
                 FirstOrDefault(found => found != null);
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
-            if (!Continue)
-            {
-                return founds;
-            }
             foreach (ICodeStruct item in Code)
             {
                 founds.AddRange(item.FindAllValuesOfType<T>(TagToFind));

@@ -112,16 +112,18 @@ namespace FocusTreeManager.Parsers
             };
             Dictionary<CodeBlock, Event.EventType> events = 
                 new Dictionary<CodeBlock, Event.EventType>();
-            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("country_event", 
-                                                                                     true))
+            foreach (Assignation codeStruct in script
+                .FindAllAssignationsInRoot("country_event"))
             {
-                CodeBlock block = (CodeBlock)codeStruct;
+                if (!(codeStruct.Value is CodeBlock)) continue;
+                CodeBlock block = (CodeBlock)codeStruct.Value;
                 events[block] = Event.EventType.country_event;
             }
-            foreach (ICodeStruct codeStruct in script.FindAllValuesOfType<CodeBlock>("news_event", 
-                                                                                     true))
+            foreach (Assignation codeStruct in script
+                .FindAllAssignationsInRoot("news_event"))
             {
-                CodeBlock block = (CodeBlock)codeStruct;
+                if (!(codeStruct.Value is CodeBlock)) continue;
+                CodeBlock block = (CodeBlock)codeStruct.Value;
                 events[block] = Event.EventType.news_event;
             }
             foreach (KeyValuePair<CodeBlock, Event.EventType> pair in events)

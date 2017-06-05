@@ -299,3 +299,5 @@ application will use the text, otherwise, it will use the unique name.
 - The logging will now use log4net, making sure the application won't crash on smaller errors.
 - Fixed an issue where an impossible save would crash the application when creating a project.
 - Can now leave the tutorials using the escape key.
+- Fixed a crash when exporting an empty focus tree.
+- Fixed a crash when clicking "Change" on a new event option.

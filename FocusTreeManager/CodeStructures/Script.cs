@@ -147,15 +147,20 @@ namespace FocusTreeManager.CodeStructures
                 FirstOrDefault(found => found != null);
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool OnlyRoot = false)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
             foreach (ICodeStruct item in Code)
             {
-                founds.AddRange(item.FindAllValuesOfType<T>(TagToFind,
-                                                            !OnlyRoot));
+                founds.AddRange(item.FindAllValuesOfType<T>(TagToFind));
             }
             return founds;
+        }
+
+        public List<Assignation> FindAllAssignationsInRoot(string TagToFind)
+        {
+            return Code.OfType<Assignation>()
+                .Where(copy => copy.Assignee == TagToFind).ToList();
         }
 
         public Script GetContentAsScript(string[] except,

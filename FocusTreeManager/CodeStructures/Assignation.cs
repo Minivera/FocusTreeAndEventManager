@@ -174,7 +174,7 @@ namespace FocusTreeManager.CodeStructures
             return found;
         }
 
-        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind, bool Continue = false)
+        public List<ICodeStruct> FindAllValuesOfType<T>(string TagToFind)
         {
             List<ICodeStruct> founds = new List<ICodeStruct>();
             if (Value == null)
@@ -190,7 +190,7 @@ namespace FocusTreeManager.CodeStructures
                 return founds;
             }
             //If we haven't found this element as our tag, search in childs
-            if (Value is CodeBlock && Continue)
+            if (Value is CodeBlock)
             {
                 founds.AddRange(Value.FindAllValuesOfType<T>(TagToFind));
             }

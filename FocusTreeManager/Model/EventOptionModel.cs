@@ -60,6 +60,11 @@ namespace FocusTreeManager.Model
             }
         }
 
+        public EventOptionModel()
+        {
+            internalScript = new Script();
+        }
+
         public void setDefaults()
         {
             name = "namespace.count.a";
