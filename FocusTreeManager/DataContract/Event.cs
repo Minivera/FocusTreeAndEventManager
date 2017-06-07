@@ -52,6 +52,9 @@ namespace FocusTreeManager.DataContract
         [DataMember(Name = "options", Order = 9)]
         public List<EventOption> Options { get; set; }
 
+        [DataMember(Name = "note", Order = 10)]
+        public string Note { get; set; }
+
         public Event()
         {
             Descriptions = new List<EventDescription>();
@@ -68,6 +71,7 @@ namespace FocusTreeManager.DataContract
             IsMajor = model.IsMajor;
             IsTriggeredOnly = model.IsTriggeredOnly;
             InternalScript = model.InternalScript;
+            Note = model.Note;
             Descriptions = new List<EventDescription>();
             foreach (EventDescriptionModel desc in model.Descriptions)
             {

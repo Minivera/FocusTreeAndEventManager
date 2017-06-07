@@ -301,3 +301,7 @@ application will use the text, otherwise, it will use the unique name.
 - Can now leave the tutorials using the escape key.
 - Fixed a crash when exporting an empty focus tree.
 - Fixed a crash when clicking "Change" on a new event option.
+- You can now add notes to your foci, notes are written in the focus editor and can be viewed with a tooltip when hover over a focus in the grid.
+- Fixed some of the issues with the events UI.
+- Added the localizator bubble to the event UI for the Title and Description.
+- Fixed many bugs with the event UI and logic, it should work most of the time now.

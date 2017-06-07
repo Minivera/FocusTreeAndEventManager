@@ -53,7 +53,7 @@ namespace FocusTreeManager.DataContract
             FociList = new List<Focus>();
             foreach (FocusModel model in item.FociList)
             {
-                FociList.Add(new Focus()
+                FociList.Add(new Focus
                 {
                     UniqueName = model.UniqueName,
                     Text = model.Text,
@@ -61,7 +61,8 @@ namespace FocusTreeManager.DataContract
                     X = model.X,
                     Y = model.Y,
                     Cost = model.Cost,
-                    InternalScript = model.InternalScript
+                    InternalScript = model.InternalScript,
+                    Note = model.Note
                 });
             }
             //Repair sets and relative to

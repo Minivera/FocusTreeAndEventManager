@@ -9,6 +9,7 @@ using static FocusTreeManager.DataContract.Event;
 using FocusTreeManager.DataContract;
 using MonitoredUndo;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows.Media;
 using FocusTreeManager.Helper;
 using FocusTreeManager.Model.TabModels;
@@ -212,16 +213,22 @@ namespace FocusTreeManager.Model
 
         public ObservableCollection<EventOptionModel> Options { get; set; }
 
-        public bool SwitchIsChecked
+        private string note;
+
+        public string Note
         {
             get
             {
-                return Type != EventType.country_event;
+                return note;
             }
             set
             {
-                Type = value ? EventType.news_event : EventType.country_event;
-                RaisePropertyChanged(() => SwitchIsChecked);
+                if (value == note)
+                {
+                    return;
+                }
+                note = value;
+                RaisePropertyChanged(() => Note);
             }
         }
 
@@ -235,6 +242,8 @@ namespace FocusTreeManager.Model
 
         public RelayCommand ChangeImageCommand { get; private set; }
 
+        public RelayCommand<string> EditLocaleCommand { get; private set; }
+
         public EventModel()
         {
             Descriptions = new ObservableCollection<EventDescriptionModel>();
@@ -247,6 +256,7 @@ namespace FocusTreeManager.Model
             EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
             EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
             ChangeImageCommand = new RelayCommand(ChangeImage);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public EventModel(Event item)
@@ -261,6 +271,7 @@ namespace FocusTreeManager.Model
             Script newScript = new Script();
             newScript.Analyse(item.InternalScript.Parse());
             internalScript = newScript;
+            note = item.Note;
             Descriptions = new ObservableCollection<EventDescriptionModel>();
             foreach (EventDescription description in item.Descriptions)
             {
@@ -290,6 +301,7 @@ namespace FocusTreeManager.Model
             EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
             EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
             ChangeImageCommand = new RelayCommand(ChangeImage);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public EventModel(EventModel item)
@@ -302,6 +314,7 @@ namespace FocusTreeManager.Model
             isMajor = item.IsMajor;
             isTriggeredOnly = item.IsTriggeredOnly;
             internalScript = item.InternalScript;
+            note = item.Note;
             Descriptions = new ObservableCollection<EventDescriptionModel>();
             foreach (EventDescriptionModel description in item.Descriptions)
             {
@@ -363,6 +376,78 @@ namespace FocusTreeManager.Model
             new ViewModelLocator().ChangeImage.LoadImages("Events", Picture);
             view.ShowDialog();
             Picture = new ViewModelLocator().ChangeImage.FocusImage;
+        }
+
+        public void EditLocale(string param)
+        {
+            if (!CanEditLocale(param))
+            {
+                return;
+            }
+            switch (param)
+            {
+                case "Title":
+                    LocalizatorViewModel vm = new ViewModelLocator().Localizator;
+                    LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
+                    LocaleModel model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == Id + ".t");
+                    if (model != null)
+                    {
+                        vm.Locale = model;
+                    }
+                    else
+                    {
+                        vm.Locale = new LocaleModel
+                        {
+                            Key = Id + ".t",
+                            Value = Title
+                        };
+                    }
+                    vm.AddOrUpdateCommand = AddOrUpdateLocale;
+                    vm.RaisePropertyChanged(() => vm.Locale);
+                    break;
+                case "Description":
+                    vm = new ViewModelLocator().Localizator;
+                    locales = new ViewModelLocator().Main.Project.DefaultLocale;
+                    model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == Id + ".d");
+                    if (model != null)
+                    {
+                        vm.Locale = model;
+                    }
+                    else
+                    {
+                        vm.Locale = new LocaleModel
+                        {
+                            Key = Id + ".d",
+                            Value = Description
+                        };
+                    }
+                    vm.AddOrUpdateCommand = AddOrUpdateLocale;
+                    vm.RaisePropertyChanged(() => vm.Locale);
+                    break;
+            }
+        }
+
+        public bool CanEditLocale(string param)
+        {
+            LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
+            return locales != null;
+        }
+
+        public void AddOrUpdateLocale()
+        {
+            LocalizatorViewModel vm = new ViewModelLocator().Localizator;
+            LocalisationModel locales = new ViewModelLocator().Main.Project.DefaultLocale;
+            LocaleModel model = locales.LocalisationMap.FirstOrDefault(
+                        l => l.Key == vm.Locale.Key);
+            if (model == null)
+            {
+                locales.LocalisationMap.Add(vm.Locale);
+            }
+            locales.RaisePropertyChanged(() => locales.LocalisationMap);
+            RaisePropertyChanged(() => Title);
+            RaisePropertyChanged(() => Description);
         }
 
         public void setDefaults(string EventNamespace)

@@ -47,6 +47,7 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="90"/>
             <RowDefinition Height="35"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Label Content="{DynamicResource Focus_Unique_Name}" 
@@ -117,11 +118,19 @@
                 Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Height="25"
                 DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                     AncestorType={x:Type UserControl}}, Path=DataContext}"/>
+        <Label Content="{DynamicResource Focus_Note}" 
+               Grid.Column="0" Grid.Row="9"
+               ToolTip="{DynamicResource Focus_Note_Tooltip}"/>
+        <TextBox Text="{Binding Note}" Grid.Row="9" Grid.Column="1"
+                 Controls:TextBoxHelper.Watermark="{DynamicResource Focus_Note}"
+                 AcceptsReturn="True" x:Name="NoteTextBox" TextWrapping="Wrap"
+                 HorizontalScrollBarVisibility="Disabled" Height="120"
+                 VerticalScrollBarVisibility="Auto"/>
         <Button Style="{DynamicResource SquareButtonStyle}" MinWidth="150" Margin="0,5,0,0"
                 Content="{DynamicResource Command_Accept}" Command="{Binding FocusCommand}" 
                 DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                     AncestorType={x:Type UserControl}}, Path=DataContext}"
-                Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" 
+                Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" 
                 IsDefault="True"/>
         <Canvas Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="9">
             <Button Style="{DynamicResource MetroCircleButtonStyle}"

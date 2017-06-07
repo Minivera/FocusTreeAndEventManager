@@ -285,6 +285,25 @@ namespace FocusTreeManager.Model
             }
         }
 
+        private string note;
+
+        public string Note
+        {
+            get
+            {
+                return note;
+            }
+            set
+            {
+                if (value == note)
+                {
+                    return;
+                }
+                note = value;
+                RaisePropertyChanged(() => Note);
+            }
+        }
+
         public Point FocusTop { get; set; }
 
         public Point FocusBottom { get; set; }
@@ -355,6 +374,7 @@ namespace FocusTreeManager.Model
             y = focus.Y;
             cost = focus.Cost;
             internalScript = focus.InternalScript;
+            note = focus.Note;
             SetupCommonComponents();
         }
 
@@ -369,6 +389,7 @@ namespace FocusTreeManager.Model
             y = focus.Y;
             cost = focus.Cost;
             internalScript = newScript;
+            note = focus.Note;
             SetupCommonComponents();
         }
 
@@ -384,7 +405,8 @@ namespace FocusTreeManager.Model
                 X = CoordinatesRelativeTo != null? X : X + XChange,
                 Y = CoordinatesRelativeTo != null ? Y : Y + YChange,
                 Cost = Cost,
-                InternalScript = newScript
+                InternalScript = newScript,
+                Note = Note
             };
         }
 

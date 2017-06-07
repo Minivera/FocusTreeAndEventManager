@@ -83,7 +83,7 @@
                RenderOptions.ClearTypeHint="Auto"
                RenderOptions.EdgeMode="Aliased"
                RenderOptions.BitmapScalingMode="Linear"/>
-        <Image x:Name="FocusIcon" ToolTip="{Binding Description}" 
+        <Image x:Name="FocusIcon" ToolTip="{Binding Note}" 
                RenderOptions.ClearTypeHint="Auto"
                RenderOptions.EdgeMode="Aliased"
                RenderOptions.BitmapScalingMode="Linear">

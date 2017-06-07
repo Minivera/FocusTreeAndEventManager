@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization;
 using System.Collections.Generic;
-using System.Linq;
 using FocusTreeManager.CodeStructures;
 
 namespace FocusTreeManager.DataContract
@@ -41,6 +40,9 @@ namespace FocusTreeManager.DataContract
 
         [DataMember(Name = "relativeTo", Order = 9)]
         public Focus RelativeTo { get; set; }
+
+        [DataMember(Name = "note", Order = 10)]
+        public string Note { get; set; }
 
         public Focus()
         {

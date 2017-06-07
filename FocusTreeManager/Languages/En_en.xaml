@@ -56,6 +56,8 @@
     <system:String x:Key="Focus_Cost">Cost in days * 7</system:String>
     <system:String x:Key="Focus_Cost_Tooltip">You can change the cost multiplier (7 by default) in the defines.</system:String>
     <system:String x:Key="Focus_Script">Internal script</system:String>
+    <system:String x:Key="Focus_Note">Personal note</system:String>
+    <system:String x:Key="Focus_Note_Tooltip">You may write some notes for you focus here, describing its uses and effects. Notes are not exported.</system:String>
     <system:String x:Key="Event_Id">Event unique ID</system:String>
     <system:String x:Key="Event_Id_Tooltip">By default, the event id is the namespace.number. For example, an event in the baltic namespace would be baltic.1</system:String>
     <system:String x:Key="Event_Namespace">Events namespace</system:String>
@@ -70,8 +72,8 @@
     <system:String x:Key="Event_Picture_Tooltip">All images are found in the game's folder, under GFX\event_pictures in .dds format.</system:String>
     <system:String x:Key="Event_Description">Description text</system:String>
     <system:String x:Key="Event_Description_Tooltip">The event description is defined in the localisation files under a key composed of the event id plus .d. For example, a baltic event description key would be baltic.1.d</system:String>
-    <system:String x:Key="Event_Description_Options">Description Options</system:String>
-    <system:String x:Key="Event_Description_Options_Tooltip">News events have more than one possible description. While editing the script, the text assignation defines the key for the localisation files while the trigger defines which nation sees this description.</system:String>
+    <system:String x:Key="Event_Description_Options">Triggered Descriptions</system:String>
+    <system:String x:Key="Event_Description_Options_Tooltip">It is possible to overwrite the standard description for specific countries. Triggers must be scripted, fi the current country is targeted by this trigger, the basic description will be replaced by the localisation key of this description.</system:String>
     <system:String x:Key="Event_Description_Text">Localized text</system:String>
     <system:String x:Key="Event_Description_Script">Script</system:String>
     <system:String x:Key="Event_Major">Is the event a Major event?</system:String>

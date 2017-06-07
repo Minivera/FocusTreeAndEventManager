@@ -51,6 +51,10 @@
             </StackPanel>
         </Border>
         <Polygon Points="0,0 7,8, 10,0" Stroke="{DynamicResource AccentColorBrush}" 
-                 Fill="{DynamicResource AccentColorBrush}" Canvas.Left="380" Canvas.Top="31" />
+                 Fill="{DynamicResource AccentColorBrush}" Canvas.Left="380" Canvas.Top="31" 
+                 x:Name="ArrowDownPolygon"/>
+        <Polygon Points="9,8 2,0, 0,8" Stroke="{DynamicResource AccentColorBrush}" 
+                 Fill="{DynamicResource AccentColorBrush}" Canvas.Left="380" Canvas.Top="-8" 
+                 x:Name="ArrowUpPolygon" Height="8" Width="10" Visibility="Hidden"/>
     </Canvas>
 </UserControl>

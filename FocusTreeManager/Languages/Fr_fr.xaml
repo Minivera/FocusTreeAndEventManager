@@ -55,6 +55,8 @@
     <system:String x:Key="Focus_Image_Tooltip">Toutes les images son chargés à partir du dossier du jeu sous GFX\interface\goals en format .dds.</system:String>
     <system:String x:Key="Focus_Cost">Coût en jour * 7</system:String>
     <system:String x:Key="Focus_Cost_Tooltip">Vous pouvez changer le modificateur de coût dans les fichiers de définition (7 par défaut)</system:String>
+    <system:String x:Key="Focus_Note">Note personnelle</system:String>
+    <system:String x:Key="Focus_Note_Tooltip">Vous pouvez écrire une note expliquant le fonctionnement et les effets du focus. Ces notes ne seront pas exportés.</system:String>
     <system:String x:Key="Focus_Script">Script interne</system:String>
     <system:String x:Key="Event_Id">Id unique</system:String>
     <system:String x:Key="Event_Id_Tooltip">Par défaut, l'identifiant unique est composé de l'espace de nom ainsi que de l'identifiant de l’événement. Par-exemple, un événement pour les pays baltes serait baltic.1</system:String>
