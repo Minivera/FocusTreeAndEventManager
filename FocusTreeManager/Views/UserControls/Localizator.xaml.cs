@@ -8,6 +8,14 @@ using FocusTreeManager.Helper;
 
 namespace FocusTreeManager.Views.UserControls
 {
+    public enum Position
+    {
+        Left,
+        Right,
+        Top, 
+        Bottom
+    }  
+
     public partial class Localizator : UserControl
     {
         public Localizator()
@@ -40,11 +48,40 @@ namespace FocusTreeManager.Views.UserControls
             Focus();
         }
 
+        public void ShowWithoutAnim()
+        {
+            Visibility = Visibility.Visible;
+            Focus();
+        }
+
         public void Hide()
         {
             Storyboard sb = Resources["HideRight"] as Storyboard;
             sb?.Begin(this);
             Visibility = Visibility.Hidden;
+        }
+
+        public void setPosition(Position postion)
+        {
+            switch (postion)
+            {
+                    case Position.Bottom:
+                        ArrowDownPolygon.Visibility = Visibility.Visible;
+                        ArrowUpPolygon.Visibility = Visibility.Hidden;
+                        break;
+                    case Position.Left:
+                        Canvas.SetLeft(ArrowDownPolygon, 20);
+                        Canvas.SetLeft(ArrowUpPolygon, 20);
+                    break;
+                    case Position.Right:
+                        Canvas.SetLeft(ArrowDownPolygon, 380);
+                        Canvas.SetLeft(ArrowUpPolygon, 380);
+                        break;
+                    case Position.Top:
+                        ArrowDownPolygon.Visibility = Visibility.Hidden;
+                        ArrowUpPolygon.Visibility = Visibility.Visible;
+                        break;
+            }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
@@ -60,10 +97,10 @@ namespace FocusTreeManager.Views.UserControls
             {
                 case System.Windows.Input.Key.Return:
                 {
-                    Hide();
-                    e.Handled = true;
                     LocalizatorViewModel vm = DataContext as LocalizatorViewModel;
                     vm?.OkCommand.Execute(null);
+                    Hide();
+                    e.Handled = true;
                     break;
                 }
                 case System.Windows.Input.Key.Escape:
