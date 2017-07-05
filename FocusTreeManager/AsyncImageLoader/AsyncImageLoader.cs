@@ -11,6 +11,8 @@ namespace FocusTreeManager.AsyncImageLoader
 
         private readonly BackgroundWorker ModWorker;
 
+        private bool restartStarterWorker;
+
         private static readonly object myLock = new object();
 
         private static AsyncImageLoader backWorkerSingleton = new AsyncImageLoader();
@@ -22,9 +24,20 @@ namespace FocusTreeManager.AsyncImageLoader
         private AsyncImageLoader()
         {
             StarterWorker = new BackgroundWorker();
+            StarterWorker.WorkerSupportsCancellation = true;
             StarterWorker.DoWork += StarterWorker_DoWork;
+            StarterWorker.RunWorkerCompleted += StarterWorker_RunWorkerCompleted;
             ModWorker = new BackgroundWorker();
             ModWorker.DoWork += ModWorker_DoWork;
+        }
+
+        private void StarterWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+        {
+            if (restartStarterWorker)
+            {
+                restartStarterWorker = false;
+                StartTheJob();
+            }
         }
 
         private void StarterWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -35,7 +48,7 @@ namespace FocusTreeManager.AsyncImageLoader
 
         private void ModWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            foreach (KeyValuePair<string, ImageSource> images 
+            foreach (KeyValuePair<string, ImageSource> images
                 in ImageHelper.RefreshFromMods(ImageType.Goal))
             {
                 Focuses[images.Key] = images.Value;
@@ -45,6 +58,18 @@ namespace FocusTreeManager.AsyncImageLoader
             {
                 Events[images.Key] = images.Value;
             }
+        }
+
+        public void RestartStarterWorker()
+        {
+            if (!StarterWorker.IsBusy)
+            {
+                StartTheJob();
+                return;
+            }
+
+            restartStarterWorker = true;
+            StarterWorker.CancelAsync();
         }
 
         public void StartTheJob()

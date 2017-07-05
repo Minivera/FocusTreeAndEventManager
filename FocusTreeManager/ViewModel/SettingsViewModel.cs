@@ -47,6 +47,7 @@ namespace FocusTreeManager.ViewModel
             {
                 Configurator.setGamePath(value);
                 RaisePropertyChanged(() => GamePath);
+                AsyncImageLoader.AsyncImageLoader.Worker.RestartStarterWorker();
             }
         }
 
