@@ -47,6 +47,7 @@ namespace FocusTreeManager.ViewModel
             {
                 Configurator.setGamePath(value);
                 RaisePropertyChanged(() => GamePath);
+                AsyncImageLoader.AsyncImageLoader.Worker.RestartStarterWorker();
             }
         }
 
@@ -73,7 +74,7 @@ namespace FocusTreeManager.ViewModel
         public SettingsViewModel()
         {
             AvailableLanguages = Configurator.returnAllLanguages();
-            selectedLanguage = AvailableLanguages.SingleOrDefault(l => l.FileName == 
+            selectedLanguage = AvailableLanguages.SingleOrDefault(l => l.FileName ==
                 Configurator.getLanguage());
             FindCommand = new RelayCommand(SelectGameFolder);
             if (!Configurator.getFirstStart())
