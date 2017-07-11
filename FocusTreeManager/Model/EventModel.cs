@@ -240,6 +240,12 @@ namespace FocusTreeManager.Model
 
         public RelayCommand<object> EditDescScriptCommand { get; private set; }
 
+        public RelayCommand GlobalLostFocusCommand { get; private set; }
+
+        public RelayCommand OptionListGotFocusCommand { get; private set; }
+
+        public RelayCommand DescListGotFocusCommand { get; private set; }
+
         public RelayCommand ChangeImageCommand { get; private set; }
 
         public RelayCommand<string> EditLocaleCommand { get; private set; }
@@ -250,13 +256,7 @@ namespace FocusTreeManager.Model
             Descriptions.CollectionChanged += Descriptions_CollectionChanged;
             Options = new ObservableCollection<EventOptionModel>();
             Options.CollectionChanged += Options_CollectionChanged;
-            //Commands
-            EditScriptCommand = new RelayCommand(EditScript);
-            DeleteEventCommand = new RelayCommand(DeleteElement);
-            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
-            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
-            ChangeImageCommand = new RelayCommand(ChangeImage);
-            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
+            SetupCommons();
         }
 
         public EventModel(Event item)
@@ -275,33 +275,23 @@ namespace FocusTreeManager.Model
             Descriptions = new ObservableCollection<EventDescriptionModel>();
             foreach (EventDescription description in item.Descriptions)
             {
-                newScript = new Script();
-                newScript.Analyse(description.InternalScript.Parse());
                 Descriptions.Add(new EventDescriptionModel
-                    {
-                        InternalScript = newScript
+                {
+                    InternalScript = description.InternalScript?? new Script()
                 });
             }
             Descriptions.CollectionChanged += Descriptions_CollectionChanged;
             Options = new ObservableCollection<EventOptionModel>();
             foreach (EventOption option in item.Options)
             {
-                newScript = new Script();
-                newScript.Analyse(option.InternalScript.Parse());
                 Options.Add(new EventOptionModel
                 {
                     Name = option.Name,
-                    InternalScript = newScript
+                    InternalScript = option.InternalScript?? new Script()
                 });
             }
             Options.CollectionChanged += Options_CollectionChanged;
-            //Commands
-            EditScriptCommand = new RelayCommand(EditScript);
-            DeleteEventCommand = new RelayCommand(DeleteElement);
-            EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
-            EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
-            ChangeImageCommand = new RelayCommand(ChangeImage);
-            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
+            SetupCommons();
         }
 
         public EventModel(EventModel item)
@@ -334,12 +324,21 @@ namespace FocusTreeManager.Model
                 });
             }
             Options.CollectionChanged += Options_CollectionChanged;
+            SetupCommons();
+        }
+
+        private void SetupCommons()
+        {
             //Commands
             EditScriptCommand = new RelayCommand(EditScript);
             DeleteEventCommand = new RelayCommand(DeleteElement);
             EditOptionScriptCommand = new RelayCommand<object>(EditOptionScript);
             EditDescScriptCommand = new RelayCommand<object>(EditDescriptionScript);
+            GlobalLostFocusCommand = new RelayCommand(GlobalLostFocus);
+            OptionListGotFocusCommand = new RelayCommand(OptionGotFocus);
+            DescListGotFocusCommand = new RelayCommand(DescGotFocus);
             ChangeImageCommand = new RelayCommand(ChangeImage);
+            EditLocaleCommand = new RelayCommand<string>(EditLocale, CanEditLocale);
         }
 
         public void EditScript()
@@ -362,6 +361,44 @@ namespace FocusTreeManager.Model
         {
             EventDescriptionModel model = description as EventDescriptionModel;
             model?.EditDescScript();
+        }
+
+        private void GlobalLostFocus()
+        {
+            foreach (EventOptionModel model in Options.ToList())
+            {
+                if (string.IsNullOrEmpty(model.Name) && !model.InternalScript.Code.Any())
+                {
+                    Options.Remove(model);
+                }
+            }
+            foreach (EventDescriptionModel model in Descriptions.ToList())
+            {
+                if (!model.InternalScript.Code.Any())
+                {
+                    Descriptions.Remove(model);
+                }
+            }
+            RaisePropertyChanged(() => Descriptions);
+            RaisePropertyChanged(() => Options);
+        }
+
+        private void OptionGotFocus()
+        {
+            if (!Options.Any())
+            {
+                Options.Add(new EventOptionModel());
+            }
+            RaisePropertyChanged(() => Options);
+        }
+
+        private void DescGotFocus()
+        {
+            if (!Descriptions.Any())
+            {
+                    Descriptions.Add(new EventDescriptionModel());
+            }
+            RaisePropertyChanged(() => Descriptions);
         }
 
         public void DeleteElement()

@@ -11,5 +11,10 @@ namespace FocusTreeManager.DataContract
     {
         [DataMember(Name = "script", Order = 0)]
         public Script InternalScript { get; set; }
+
+        public EventDescription()
+        {
+            InternalScript = new Script();
+        }
     }
 }

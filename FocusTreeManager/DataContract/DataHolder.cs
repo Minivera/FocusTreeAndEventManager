@@ -27,12 +27,9 @@ namespace FocusTreeManager.DataContract
             {
                 return false;
             }
-            else
-            {
-                Instance.Project = returnVal;
-                Instance.Project.filename = filename;
-                return true;
-            }
+            Instance.Project = returnVal;
+            Instance.Project.filename = filename;
+            return true;
         }
     }
 }

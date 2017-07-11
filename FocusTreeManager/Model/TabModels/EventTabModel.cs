@@ -92,11 +92,10 @@ namespace FocusTreeManager.Model.TabModels
             }
             set
             {
-                if (value != selectedNode)
-                {
-                    selectedNode = value;
-                    RaisePropertyChanged(() => SelectedNode);
-                }
+                if (value == selectedNode) return;
+                selectedNode = value;
+                selectedNode.GlobalLostFocusCommand.Execute(null);
+                RaisePropertyChanged(() => SelectedNode);
             }
         }
 

@@ -309,3 +309,4 @@ application will use the text, otherwise, it will use the unique name.
 - Error dawg will now display safe and unsafe errors.
 - Errors will be more predictable and precise when parsing code from the game.
 - Fixed an issue where exported code would sometimes crash the application when imported again.
+- Fixed a loading crash when loading events made with the old event interface.

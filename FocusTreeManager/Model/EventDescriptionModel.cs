@@ -49,6 +49,11 @@ namespace FocusTreeManager.Model
             }
         }
 
+        public EventDescriptionModel()
+        {
+            InternalScript = new Script();
+        }
+
         public void EditDescScript()
         {
             ScripterViewModel ViewModel = new ViewModelLocator().Scripter;

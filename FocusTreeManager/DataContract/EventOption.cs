@@ -17,6 +17,7 @@ namespace FocusTreeManager.DataContract
 
         public EventOption()
         {
+            InternalScript = new Script();
         }
 
         public void setDefaults()

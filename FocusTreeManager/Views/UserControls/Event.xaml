@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uc="clr-namespace:FocusTreeManager.Views.UserControls"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" >
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type TextBlock}" x:Key="WrapText">
@@ -154,6 +155,11 @@
                           AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}" 
                           x:Name="GridDescriptions" HorizontalScrollBarVisibility="Disabled"
                           DockPanel.Dock="Bottom" VerticalScrollBarVisibility="Visible">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction  Command="{Binding DescListGotFocusCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Text}" IsReadOnly="True"
                                             ElementStyle="{StaticResource WrapText}"
@@ -199,7 +205,12 @@
                 <DataGrid ItemsSource="{Binding Path=Options}" DockPanel.Dock="Bottom"
                               AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
                               AlternationCount="2" AlternatingRowBackground="{DynamicResource AccentColorBrush4}"
-                              x:Name="GridOptions" HorizontalScrollBarVisibility="Disabled" >
+                              x:Name="GridOptions" HorizontalScrollBarVisibility="Disabled">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction  Command="{Binding OptionListGotFocusCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Name}" 
                                             ElementStyle="{StaticResource WrapText}"
