@@ -1706,6 +1706,10 @@ focus_tree = {
 						building = infrastructure
 						size > 0
 					}
+					free_building_slots = { # avoid wastelands
+						building = industrial_complex
+						size > 0
+					}
 				}
 				add_building_construction = {
 					type = infrastructure
@@ -1720,6 +1724,10 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
+						size > 0
+					}
+					free_building_slots = { # avoid wastelands
+						building = industrial_complex
 						size > 0
 					}
 				}
@@ -1825,6 +1833,10 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
+						size > 0
+					}
+					free_building_slots = { # avoid wastelands
+						building = industrial_complex
 						size > 0
 					}
 				}
@@ -3614,7 +3626,14 @@ focus_tree = {
 		}
 
 		available = {
-			has_autonomy_state = autonomy_dominion
+			if = {
+				limit = { NOT = { has_government = fascism } }
+				has_autonomy_state = autonomy_dominion
+			}
+			if = {
+				limit = { has_government = fascism }
+				has_autonomy_state = autonomy_satellite
+			}
 		}
 		
 		bypass = {
@@ -3637,6 +3656,9 @@ focus_tree = {
 			ENG = { remove_from_faction = ROOT }
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = AST_arthur_calwell
+			hidden_effect = {
+				news_event = { id = news.286 hours = 6}
+			}
 		}
 	}
 
@@ -3663,7 +3685,10 @@ focus_tree = {
 			NOT = {
 				has_war_with = USA
 			}
-			USA = { has_government = ROOT }
+			USA = { 
+				has_government = ROOT
+				is_puppet = no
+			 }
 			
 		}
 		
@@ -3770,7 +3795,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_rule = { can_create_factions = yes }
-			create_faction = "south_west_pacific_initiative"
+			create_faction = south_west_pacific_initiative
 			if = {
 				limit = {
 					has_completed_focus = AST_protect_the_dutch_colonies
@@ -3781,6 +3806,13 @@ focus_tree = {
 			if = {
 				limit = {
 					has_completed_focus = AST_woo_usa
+					USA = {
+						is_puppet = no
+						OR = {
+							is_in_faction = no
+							has_war = no
+						}
+					}
 				}
 				USA = {
 					country_event = { id = tfv_australia.32 } #Ask USA to join faction
@@ -3968,7 +4000,14 @@ focus_tree = {
 
 		available = {
 			compare_autonomy_progress_ratio > 0.55
-			has_autonomy_state = autonomy_dominion
+			if = {
+				limit = { not = { has_government = fascism } }
+				has_autonomy_state = autonomy_dominion
+			}
+			if = {
+				limit = { has_government = fascism } 
+				has_autonomy_state = autonomy_satellite
+			}
 		}
 		
 		bypass = {
@@ -4066,7 +4105,14 @@ focus_tree = {
 				is_subject = no
 				AND = {
 					compare_autonomy_progress_ratio > 0.75
-					has_autonomy_state = autonomy_dominion
+					if = {
+						limit = { not = { has_government = fascism } }
+						has_autonomy_state = autonomy_dominion
+					}
+					if = {
+						limit = { has_government = fascism } 
+						has_autonomy_state = autonomy_satellite
+					}
 				}
 			}
 			fascism > 0.3
@@ -4076,7 +4122,6 @@ focus_tree = {
 		}
 		
 		bypass = {
-
 		}
 
 		cancel_if_invalid = yes
@@ -4088,13 +4133,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			INS = {
-				start_civil_war = {
-					ideology = fascism
-					size = 0.5
-					states = { 334 673 669 668 738 667 }
+			if = {
+				limit = {
+					INS = { has_civil_war = no }
 				}
-
+				INS = { country_event = { id = tfv_australia.96 } }
 			}
 			add_ideas = AST_support_indonesian_uprising
 		}
@@ -4162,7 +4205,14 @@ focus_tree = {
 		}
 
 		available = {
-			has_autonomy_state = autonomy_dominion
+			if = {
+				limit = { not = { has_government = fascism } }
+				has_autonomy_state = autonomy_dominion
+			}
+			if = {
+				limit = { has_government = fascism } 
+				has_autonomy_state = autonomy_satellite
+			}
 			MAL = {
 				is_puppet_of = ENG
 			}
@@ -4210,7 +4260,14 @@ focus_tree = {
 			OR = {
 				is_subject = no
 				AND = {
-					has_autonomy_state = autonomy_dominion
+					if = {
+						limit = { not = { has_government = fascism } }
+						has_autonomy_state = autonomy_dominion
+					}
+					if = {
+						limit = { has_government = fascism } 
+						has_autonomy_state = autonomy_satellite
+					}
 					compare_autonomy_progress_ratio > 0.8
 				}
 			}
@@ -4237,7 +4294,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			ENG = { remove_from_faction = ROOT }
+			custom_effect_tooltip = AST_deal_with_japan_tt
+			if = {
+				limit = { is_in_faction_with = ENG }
+				ENG = { remove_from_faction = ROOT }
+			}
 			set_autonomy = {
 				target = AST
 				autonomy_state = autonomy_free
@@ -4276,7 +4337,14 @@ focus_tree = {
 			OR = {
 				is_subject = no
 				AND = {
-					has_autonomy_state = autonomy_dominion
+					if = {
+						limit = { not = { has_government = fascism } }
+						has_autonomy_state = autonomy_dominion
+					}
+					if = {
+						limit = { has_government = fascism } 
+						has_autonomy_state = autonomy_satellite
+					}
 					compare_autonomy_progress_ratio > 0.8
 				}
 			}
@@ -4405,7 +4473,14 @@ focus_tree = {
 
 		available = {			
 			compare_autonomy_progress_ratio > 0.55
-			has_autonomy_state = autonomy_dominion
+			if = {
+				limit = { not = { has_government = fascism } }
+				has_autonomy_state = autonomy_dominion
+			}
+			if = {
+				limit = { has_government = fascism } 
+				has_autonomy_state = autonomy_satellite
+			}
 		}
 		
 		bypass = {

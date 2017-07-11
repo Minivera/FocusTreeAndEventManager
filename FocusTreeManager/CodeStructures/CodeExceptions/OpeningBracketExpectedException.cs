@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace FocusTreeManager.CodeStructures.CodeExceptions
+﻿namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    internal class OpeningBracketExpectedException: Exception
+    internal class OpeningBracketExpectedException: PotentiallySafeException
     {
         private readonly string ReceivedText;
 

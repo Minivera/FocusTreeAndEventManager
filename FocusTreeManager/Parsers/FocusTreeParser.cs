@@ -31,8 +31,10 @@ namespace FocusTreeManager.Parsers
 
         public static string ParseTreeScriptForCompare(string filename)
         {
+            Script script = new Script();
+            script.Analyse(File.ReadAllText(filename));
             return !File.Exists(filename) ? "" : 
-                ParseTreeForCompare(CreateTreeFromScript(filename, File.ReadAllText(filename)));
+                ParseTreeForCompare(CreateTreeFromScript(filename, script));
         }
 
         public static Dictionary<string, string> ParseAllTrees(List<FociGridContainer> Containers)
@@ -229,13 +231,10 @@ namespace FocusTreeManager.Parsers
             }
         }
 
-        public static FocusGridModel CreateTreeFromScript(string fileName, string code)
+        public static FocusGridModel CreateTreeFromScript(string fileName, Script script)
         {
-            Script script = new Script();
-            script.Analyse(code);
             if (script.Logger.hasErrors())
             {
-                new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
                 return null;
             }
             FocusGridModel container = new FocusGridModel(script.TryParse(script, "id"));

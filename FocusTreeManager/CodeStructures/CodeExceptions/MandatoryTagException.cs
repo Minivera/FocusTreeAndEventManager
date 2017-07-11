@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace FocusTreeManager.CodeStructures.CodeExceptions
+﻿namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    internal class MandatoryTagException: Exception
+    internal class MandatoryTagException: PotentiallySafeException
     {
         private readonly string Tag;
 

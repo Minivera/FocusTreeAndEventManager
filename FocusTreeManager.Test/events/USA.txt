@@ -868,7 +868,7 @@ country_event = {
 			limit = {
 				ENG = {
 					is_faction_leader = yes
-					NOT = { has_war_with = ENG }
+					NOT = { has_war_with = USA }
 				}
 			}
 			ENG = { add_to_faction = USA }

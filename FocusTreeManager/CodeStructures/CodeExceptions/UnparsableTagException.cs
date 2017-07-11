@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace FocusTreeManager.CodeStructures.CodeExceptions
+﻿namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    internal class UnparsableTagException: Exception
+    internal class UnparsableTagException: PotentiallySafeException
     {
         private readonly string Tag;
 

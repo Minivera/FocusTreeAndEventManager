@@ -763,9 +763,19 @@ focus_tree = {
 		available = {
 			OR = {
 				is_subject = no
-				AND = {
-					has_autonomy_state = autonomy_dominion
-					compare_autonomy_progress_ratio > 0.65
+				if = {
+					limit = { NOT = { has_government = fascism } }
+					AND = {
+						has_autonomy_state = autonomy_dominion
+						compare_autonomy_progress_ratio > 0.65
+					}
+				}
+				if = {
+					limit = { has_government = fascism } 
+					AND = {
+						has_autonomy_state = autonomy_satellite
+						compare_autonomy_progress_ratio > 0.65
+					}
 				}
 			}
 		}
@@ -882,7 +892,14 @@ focus_tree = {
 
 		available = {
 			fascism > 0.20
-			compare_autonomy_state > autonomy_colony
+			if = {
+				limit = { not = { has_government = fascism } }
+				compare_autonomy_state > autonomy_colony
+			}
+			if = {
+				limit = { has_government = fascism  }
+				compare_autonomy_state > autonomy_reichsprotectorate
+			}
 			controls_state = 541
 		}
 		
@@ -972,9 +989,19 @@ focus_tree = {
 		available = {
 			OR = {
 				is_subject = no
-				AND = {
-					has_autonomy_state = autonomy_dominion
-					compare_autonomy_progress_ratio > 0.75
+				if = {
+					limit = { NOT = { has_government = fascism } }
+					AND = {
+						has_autonomy_state = autonomy_dominion
+						compare_autonomy_progress_ratio > 0.75
+					}
+				}
+				if = {
+					limit = { has_government = fascism } 
+					AND = {
+						has_autonomy_state = autonomy_satellite
+						compare_autonomy_progress_ratio > 0.75
+					}
 				}
 			}
 			NOT = { has_war_together_with = ENG }
@@ -1028,9 +1055,19 @@ focus_tree = {
 			controls_state = 541
 			OR = {
 				is_subject = no
-				AND = {
-					has_autonomy_state = autonomy_dominion
-					compare_autonomy_progress_ratio > 0.80
+				if = {
+					limit = { NOT = { has_government = fascism } }
+					AND = {
+						has_autonomy_state = autonomy_dominion
+						compare_autonomy_progress_ratio > 0.80
+					}
+				}
+				if = {
+					limit = { has_government = fascism } 
+					AND = {
+						has_autonomy_state = autonomy_satellite
+						compare_autonomy_progress_ratio > 0.80
+					}
 				}
 			}
 		}
@@ -1373,24 +1410,39 @@ focus_tree = {
 		y = 1
 		relative_position_id = SAF_empower_the_workers
 
-		cost = 10
+		cost = 5
 
 		ai_will_do = {
 			factor = 30
 		}
 
 		available = {
-			has_global_flag = spanish_civil_war
-			NOT = { has_global_flag = scw_over }
+			custom_trigger_tooltip = {
+				tooltip = scw_in_progress_tt
+				AND = {
+					has_global_flag = spanish_civil_war
+					NOT = { has_global_flag = scw_over }
+				}
+			}
 			OR = {
 				has_government = communism
 				communism > 0.1
 			}
 			OR = {
 				is_subject = no
-				AND = {
-					has_autonomy_state = autonomy_dominion
-					compare_autonomy_progress_ratio > 0.60
+				if = {
+					limit = { NOT = { has_government = fascism } }
+					AND = {
+						has_autonomy_state = autonomy_dominion
+						compare_autonomy_progress_ratio > 0.65
+					}
+				}
+				if = {
+					limit = { has_government = fascism } 
+					AND = {
+						has_autonomy_state = autonomy_satellite
+						compare_autonomy_progress_ratio > 0.65
+					}
 				}
 			}
 		}
@@ -1623,7 +1675,7 @@ focus_tree = {
 			set_rule = { can_create_factions = yes }
 			create_faction = SAF_faction_uotap
 			hidden_effect = {
-			news_event = { hours = 6 id = news.264 }
+				news_event = { hours = 6 id = news.264 }
 			}
 		}
 	}
@@ -1646,9 +1698,9 @@ focus_tree = {
 		}
 
 		available = {
-		OR = {
-			ANG = { exists = no }
-			MZB = { exists = no }
+			OR = {
+				ANG = { exists = no }
+				MZB = { exists = no }
 			}
 		}
 		
@@ -1666,10 +1718,10 @@ focus_tree = {
 
 		completion_reward = {
 			create_wargoal = {
-					type = take_state_focus
-					target = POR
-					generator = { 540 544 }
-					}
+				type = take_state_focus
+				target = POR
+				generator = { 540 544 }
+			}
 			
 		}
 	}
@@ -1692,7 +1744,7 @@ focus_tree = {
 		}
 
 		available = {
-		COG = { exists = no }
+			COG = { exists = no }
 		}
 		
 		bypass = {
@@ -1709,10 +1761,10 @@ focus_tree = {
 
 		completion_reward = {
 			create_wargoal = {
-					type = take_state_focus
-					target = BEL
-					generator = { 538 718 295 }
-					}
+				type = take_state_focus
+				target = BEL
+				generator = { 538 718 295 }
+			}
 			
 		}
 	}
@@ -1735,9 +1787,9 @@ focus_tree = {
 		}
 
 		available = {
-		OR = {
-			KEN = { exists = no } 
-			ZIM = { exists = no }
+			OR = {
+				KEN = { exists = no } 
+				ZIM = { exists = no }
 			}
 		}
 		
@@ -1755,10 +1807,10 @@ focus_tree = {
 
 		completion_reward = {
 			create_wargoal = {
-					type = take_state_focus
-					target = ENG
-					generator = { 546 547 548 542 545 }
-					}
+				type = take_state_focus
+				target = ENG
+				generator = { 546 547 548 542 545 }
+			}
 			
 		}
 	}
@@ -1909,7 +1961,7 @@ focus_tree = {
 			SOV = { 
 				exists = yes
 				is_puppet = no
-				}
+			}
 		}
 		
 		bypass = {
@@ -1928,8 +1980,8 @@ focus_tree = {
 			SOV = {
 				custom_effect_tooltip = needs_approval
 				country_event = { id = tfv_south_africa.40 } #tech sharing
-					}
 			}
+		}
 
 	}
 	focus = {
@@ -1947,12 +1999,12 @@ focus_tree = {
 		}
 
 		available = {
-		has_global_flag = sov_yes_pact
-		FRA = {
+			has_global_flag = sov_yes_pact
+			FRA = {
 				has_capitulated = yes
 				exists = yes #otherwise Franco-British union might screw things up
 				NOT = { has_government = communism }
-				}
+			}
 		}
 		
 		bypass = {
@@ -1968,12 +2020,12 @@ focus_tree = {
 		}
 
 		completion_reward = {
-		FRA = {
-		custom_effect_tooltip = needs_approval
-			country_event = { id = tfv_south_africa.30 hours = 12 }
+			FRA = {
+				custom_effect_tooltip = needs_approval
+					country_event = { id = tfv_south_africa.30 hours = 12 }
 			}
 			hidden_effect = {
-			news_event = { id = news.265 }
+				news_event = { id = news.265 }
 			}
 		}
 	}
@@ -2012,7 +2064,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -2023,12 +2075,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 1
+						size > 2
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 				set_state_flag = SAF_south_african_railways_Inf
@@ -2179,7 +2231,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -2190,12 +2242,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 1
+						size > 2
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 				set_state_flag = SAF_infrastructure_effort_Inf

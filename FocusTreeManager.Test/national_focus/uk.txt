@@ -2025,6 +2025,15 @@ focus_tree = {
 					hours = 6 id = news.228
 				}
 			}
+			if = {
+				limit = {
+					has_dlc = "Death or Dishonor"
+				}
+				country_event = {
+					id = DOD_yugoslavia.40
+					days = 5
+				}
+			}
 		}
 	}
 
@@ -2087,6 +2096,7 @@ focus_tree = {
 				exists = yes
 				has_war = no
 				NOT = { is_in_faction_with = ENG }
+				is_subject = no
 			}
 		} #TUR not in a faction
 		#prerequisite = { focus = uk_battleship_focus }
@@ -2099,17 +2109,50 @@ focus_tree = {
 		}	
 		completion_reward = {
 			# + relations with TUR - they become more democratic and like fascist/commies less
-			TUR = {
-						add_opinion_modifier = { target = ENG modifier = democratic_leanings_good }
-						add_ideas = democratic_influence
-						country_event = { id = generic.1 }
+			if = {
+				limit = { has_government = democratic }
+				TUR = {
+					add_opinion_modifier = { target = ENG modifier = democratic_leanings_good }
+					add_ideas = democratic_influence
+					country_event = { id = generic.1 }
+				}
+				every_other_country = {
+					limit = { 
+						NOT = { has_government = democratic }
+						num_of_factories > 30
 					}
-			every_other_country = {
-						limit = { 
-							NOT = { has_government = democratic }
-							num_of_factories > 30
-						}
-						add_opinion_modifier = { target = TUR modifier = democratic_leanings_bad }
+					add_opinion_modifier = { target = TUR modifier = democratic_leanings_bad }
+				}
+			}
+			if = {
+				limit = { has_government = communism }
+				TUR = {
+					add_opinion_modifier = { target = ENG modifier = communism_leanings_good }
+					add_ideas = communist_influence
+					country_event = { id = generic.1 }
+				}
+				every_other_country = {
+					limit = { 
+						NOT = { has_government = communism }
+						num_of_factories > 30
+					}
+					add_opinion_modifier = { target = TUR modifier = communism_leanings_bad }
+				}
+			}
+			if = {
+				limit = { has_government = fascism }
+				TUR = {
+					add_opinion_modifier = { target = ENG modifier = fascism_leanings_good }
+					add_ideas = fascist_influence
+					country_event = { id = generic.1 }
+				}
+				every_other_country = {
+					limit = { 
+						NOT = { has_government = fascism }
+						num_of_factories > 30
+					}
+					add_opinion_modifier = { target = TUR modifier = fascism_leanings_bad }
+				}
 			}
 			hidden_effect = {
 				news_event = { hours = 6 id = news.225 }

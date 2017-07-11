@@ -242,7 +242,7 @@ country_event = {
 	id = greece.3
 	title = greece.3.t
 	desc = greece.3.d
-	picture = GFX_report_event_stalin_02
+	picture = GFX_report_event_generic_sign_treaty2
 	
 	is_triggered_only = yes
 	

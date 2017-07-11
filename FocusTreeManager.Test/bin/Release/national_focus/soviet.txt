@@ -855,7 +855,7 @@ focus_tree = {
 						building = infrastructure
 						size > 2
 					}
-					state_population > 500000
+					state_population > 1000000
 				}
 				add_building_construction = {
 					type = infrastructure
@@ -870,7 +870,7 @@ focus_tree = {
 						building = infrastructure
 						size > 2
 					}
-					state_population > 500000
+					state_population > 1000000
 				}
 				add_building_construction = {
 					type = infrastructure
@@ -885,7 +885,7 @@ focus_tree = {
 						building = infrastructure
 						size > 2
 					}
-					state_population > 500000
+					state_population > 1000000
 				}
 				add_building_construction = {
 					type = infrastructure
@@ -969,6 +969,10 @@ focus_tree = {
 		cost = 30
 		ai_will_do = {
 			factor = 1
+			modifier = {
+				has_government = fascist
+				factor = 0
+			}
 
 			modifier = {
 				factor = 3
@@ -989,9 +993,24 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		completion_reward = {
-			USA = { add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } }
-			ENG = { add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } }
-			FRA = { add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } }
+			USA = { 
+				if = {
+					limit = { NOT = { has_government = fascist } }
+					add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } 
+				}
+			}
+			ENG = { 
+				if = {
+					limit = { NOT = { has_government = fascist } }
+					add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } 
+				}
+			}
+			FRA = { 
+				if = {
+					limit = { NOT = { has_government = fascist } }
+					add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_focus } 
+				}
+			}
 			every_other_country = {
 				limit = { has_government = fascism }
 				add_opinion_modifier = { target = SOV modifier = anti_fascist_diplomacy_fascists }
@@ -1416,7 +1435,7 @@ focus_tree = {
 			add_state_claim = 189
 			add_state_claim = 12
 			add_state_claim = 190
-			add_named_threat = { threat = 3 name = SOV_claims_on_baltic }
+			add_named_threat = { threat = 1 name = SOV_claims_on_baltic }
 
 			every_other_country = {
 				limit = {					
@@ -1761,8 +1780,14 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			add_state_claim = 78
-			add_state_claim = 80
+			if = {
+				limit = { 78 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
+				add_state_claim = 78
+			}
+			if = {
+				limit = { 80 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
+				add_state_claim = 80
+			}
 			add_named_threat = { threat = 1 name = SOV_claim_bessarabia }
 			random_other_country = {
 				limit = { owns_state = 78 }
@@ -1812,6 +1837,9 @@ focus_tree = {
 				NOT = { has_idea = officers_purged_9 }			
 				NOT = { has_idea = officers_purged_10 }			
 			}
+		}
+		bypass = {
+			has_war_with = GER
 		}
 		will_lead_to_war_with = GER
 		x = 10
@@ -1866,7 +1894,12 @@ focus_tree = {
 		y = 2
 		cost = 30
 		ai_will_do = {
-			factor = 0.25
+			factor = 0.5
+
+			modifier = {
+				has_government = democratic
+				factor = 0
+			}
 
 			modifier = {
 				factor = 5
@@ -1891,9 +1924,24 @@ focus_tree = {
 				limit = { has_government = fascism }
 				add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_focus }
 			}
-			USA = { add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } }
-			ENG = { add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } }
-			FRA = { add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } }
+			USA = { 
+				if = {
+					limit = { NOT = { has_government = communism } }
+					add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } 
+				}
+			}
+			ENG = {
+				if = { 
+					limit = { NOT = { has_government = communism } }
+					add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } 
+				}
+			}
+			FRA = { 
+				if = {
+					limit = { NOT = { has_government = communism } }
+					add_opinion_modifier = { target = SOV modifier = anti_capitalist_diplomacy_capitalists } 
+				}
+			}
 		}
 	}
 
@@ -2004,6 +2052,21 @@ focus_tree = {
 		cost = 10
 		ai_will_do = {
 			factor = 1
+			modifier = {
+				has_war_with = GER
+				factor = 0
+			}
+			modifier = {
+				AND = {
+					has_war_with = ENG
+					surrender_progress > 0.3
+				}
+				factor = 0
+			}
+			modifier = {
+				has_war_with = RAJ
+				factor = 5
+			}
 		}
 		will_lead_to_war_with = PER
 		will_lead_to_war_with = IRQ
@@ -2104,6 +2167,9 @@ focus_tree = {
 				NOT = { has_idea = officers_purged_9 }			
 				NOT = { has_idea = officers_purged_10 }			
 			}
+		}
+		bypass = {
+			has_war_with = ENG
 		}
 		will_lead_to_war_with = ENG
 		x = 15

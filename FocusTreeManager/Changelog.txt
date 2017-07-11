@@ -305,3 +305,7 @@ application will use the text, otherwise, it will use the unique name.
 - Fixed some of the issues with the events UI.
 - Added the localizator bubble to the event UI for the Title and Description.
 - Fixed many bugs with the event UI and logic, it should work most of the time now.
+- The script interpreter will now ignore "safe" syntax errors, like missing operators.
+- Error dawg will now display safe and unsafe errors.
+- Errors will be more predictable and precise when parsing code from the game.
+- Fixed an issue where exported code would sometimes crash the application when imported again.

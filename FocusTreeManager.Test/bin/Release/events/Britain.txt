@@ -256,7 +256,16 @@ country_event = {
 	
 	option = {
 		name = britain.9.a
-		retire_country_leader = yes
+		create_country_leader = {
+			name = "Winston Churchill"
+			desc = "POLITICS_WINSTON_CHURCHILL_DESC"
+			picture = "Portrait_Britain_Winston_Churchill.dds"
+			expire = "1965.1.1"
+			ideology = conservatism
+			traits = {
+				
+			}
+		}
 		add_national_unity = 0.1
 	}
 }
@@ -287,6 +296,16 @@ country_event = {
 	option = {
 		name = britain.10.a
 		kill_country_leader = yes
+		create_country_leader = {
+			name = "Winston Churchill"
+			desc = "POLITICS_WINSTON_CHURCHILL_DESC"
+			picture = "Portrait_Britain_Winston_Churchill.dds"
+			expire = "1965.1.1"
+			ideology = conservatism
+			traits = {
+				
+			}
+		}
 	}
 	option = {
 		name = britain.10.b
@@ -687,12 +706,10 @@ country_event = {
 				}
 			}
 			RAJ = {
-				start_civil_war = {
-					ideology = fascism
-					size = 0.5
-				}
+				country_event = { id = britain.23 }
 			}
 		}
+		
 		if = {
 			limit = {
 				RAJ = {
@@ -714,6 +731,7 @@ country_event = {
 			}
 		}
 	}
+
 }
 
 country_event = {
@@ -747,7 +765,7 @@ country_event = {
         has_government = democratic
         date > 1937.5.27
         has_start_date < 1936.01.02
-        NOT = { has_country_flag = king_stays }
+        NOT = { has_country_flag = baldwin_resigned }
     }
 
     mean_time_to_happen = {
@@ -768,4 +786,47 @@ country_event = {
             }
         set_country_flag = baldwin_resigned
       }
+}
+
+#RAJ gets to choose sides in Indian civil war
+country_event = {
+	id = britain.23
+	title = britain.23.t
+	desc = britain.23.d
+	picture = GFX_report_event_indian_soldiers
+
+	is_triggered_only = yes
+	
+	#side with government
+	option = {
+		ai_chance = {
+			factor = 100
+			modifier = {
+				has_government = fascism
+				factor = 0
+			}
+		}
+		name = britain.23.a
+		start_civil_war = {
+				ideology = fascism
+				size = 0.5
+		}
+	}
+	#side with fascists
+	option = {
+		name = britain.23.b
+		start_civil_war = {
+				ruling_party = fascism
+				ideology = neutrality
+				size = 0.5
+		}
+		random_other_country = {
+			limit = {
+				original_tag = RAJ
+				has_government = neutrality
+				is_puppet_of = ENG
+			}
+			set_cosmetic_tag = RAJ_UK
+		}
+	}
 }

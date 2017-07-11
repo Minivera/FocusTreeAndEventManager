@@ -1299,7 +1299,12 @@ news_event = {
 	
 	option = {
 		name = news.37.a
-		trigger = { NOT = { TAG = SOV } }
+		trigger = { 
+			NOT = { 
+				TAG = SOV 
+				is_in_faction_with = SOV
+			} 
+		}
 	}
 	option = {
 		name = news.37.b
@@ -5467,11 +5472,11 @@ news_event = {
 		trigger = { TAG = GER }
 	}
 	option = {
-		name = news.167.c
+		name = news.167.e
 		trigger = { TAG = ITA }
 	}
 	option = {
-		name = news.167.e
+		name = news.167.c
 		trigger = { TAG = YUG }
 	}
 }
@@ -10821,4 +10826,1932 @@ news_event = {
 	}
 	
 
+}
+
+# Australia severs ties and breaks free
+news_event = {
+	id = news.286
+	title = news.286.t
+	desc = news.286.desc
+	picture = GFX_news_event_ast_parliament_house
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.286.a
+		trigger = {
+			NOT = {
+				TAG = AST
+				TAG = ENG
+				is_in_faction_with = ENG
+			}
+		}
+	}
+	option = {
+		name = news.286.b
+		trigger = { TAG = AST }
+	}
+
+	option = {
+		name = news.286.c
+		trigger = { 
+			OR = {
+				TAG = ENG 
+				is_in_faction_with = ENG
+			}
+		}
+	}
+}
+
+# Soviet honors MR pact
+news_event = {
+	id = news.287
+	title = news.287.t
+	desc = news.287.desc
+	picture = GFX_news_event_006
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.287.a
+		trigger = {
+			NOT = {
+				TAG = GER
+				TAG = SOV
+				is_in_faction_with = GER
+				is_in_faction_with = SOV
+			}
+		}
+	}
+	option = { 
+		name = news.287.b
+		trigger = { 
+			NOT = { TAG = SOV } #fix for unholy alliance
+			OR = {
+				TAG = GER
+				is_in_faction_with = GER
+			}
+		}
+	}
+	option = {
+		name = news.287.c
+		trigger = { 
+			NOT = { TAG = GER } # fix for unholy alliance
+			OR = {
+				TAG = SOV
+				is_in_faction_with = SOV
+			}
+		}
+	}
+}
+#chinese united front forms
+news_event = {
+	id = news.288
+	title = news.288.t
+	desc = news.288.desc
+	picture = GFX_news_event_chinese_soldiers_march
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.288.a
+		trigger = {
+			TAG = CHI
+			TAG = PRC
+		}
+	}
+	option = { 
+		name = news.288.b
+		trigger = { 
+			NOT = {
+				TAG = CHI
+				TAG = PRC
+			}
+			OR = {
+				TAG = JAP
+				is_in_faction_with = JAP
+			}
+		}
+	}
+	option = {
+		name = news.288.c
+		trigger = { 
+			NOT = { 
+				TAG = PRC 
+				TAG = CHI
+				TAG = JAP
+				is_in_faction_with = JAP
+			}
+			
+		}
+	}
+}
+
+# GENERIC nation joins an Alliance
+news_event = {
+	id = news.289
+	title = news.289.t
+	picture = GFX_news_event_generic_sign_treaty3
+	desc = news.289.d
+
+	major = yes
+
+	is_triggered_only = yes
+
+	#Together we will prevail.
+	option = {
+		name = news.289.a
+		trigger = {
+			OR = {
+				has_country_flag = alliance_inviter@FROM
+				has_country_flag = alliance_applicant@FROM
+			}
+		}
+		hidden_effect = {
+			clr_country_flag = alliance_inviter@FROM
+			clr_country_flag = alliance_applicant@FROM
+		}
+	}
+
+	#They prepare for what is coming.
+	option = {
+		name = news.289.b
+		trigger = {
+			NOT = { FROM = { has_war = yes } }
+			event_target:alliance_inviter = {
+				NOT = { has_war = yes }
+			}
+			NOT = {
+				any_allied_country = {
+					has_country_flag = alliance_applicant@FROM
+				}
+			}
+			AND = {
+				NOT = { has_country_flag = alliance_inviter@FROM }
+				NOT = { has_country_flag = alliance_applicant@FROM }
+			}
+		}
+		hidden_effect = {
+			clr_country_flag = alliance_inviter@FROM
+			clr_country_flag = alliance_applicant@FROM
+		}
+	}
+
+	#It will not avail them!
+	option = {
+		name = news.289.c
+		trigger = {
+			any_enemy_country = {
+				OR = {
+					has_country_flag = alliance_inviter@FROM
+					has_country_flag = alliance_applicant@FROM
+				}
+			}
+		}
+		hidden_effect = {
+			clr_country_flag = alliance_inviter@FROM
+			clr_country_flag = alliance_applicant@FROM
+		}
+	}
+
+	#The war escalates...
+	option = {
+		name = news.289.e
+		trigger = {
+			NOT = {
+				any_allied_country = {
+					OR = {
+						has_country_flag = alliance_inviter@FROM
+						has_country_flag = alliance_applicant@FROM
+					}
+				}
+				any_enemy_country = {
+					OR = {
+						has_country_flag = alliance_inviter@FROM
+						has_country_flag = alliance_applicant@FROM
+					}
+				}
+			}
+			event_target:alliance_inviter = {
+				has_war = yes
+			}
+			AND = {
+				NOT = { has_country_flag = alliance_inviter@FROM }
+				NOT = { has_country_flag = alliance_applicant@FROM }
+			}
+		}
+		hidden_effect = {
+			clr_country_flag = alliance_inviter@FROM
+			clr_country_flag = alliance_applicant@FROM
+		}
+	}
+
+	#Our alliance grows stronger.
+	option = {
+		name = news.289.f
+		trigger = {
+			any_allied_country = {
+				OR = {
+					has_country_flag = alliance_inviter@FROM
+					has_country_flag = alliance_applicant@FROM
+				}
+			}
+			AND = {
+				NOT = { has_country_flag = alliance_inviter@FROM }
+				NOT = { has_country_flag = alliance_applicant@FROM }
+			}
+		}
+		hidden_effect = {
+			clr_country_flag = alliance_inviter@FROM
+			clr_country_flag = alliance_applicant@FROM
+		}
+	}
+}
+
+#Austria invites Habsburg Prince
+news_event = {
+	id = news.290
+	title = news.290.t
+	desc = news.290.desc
+	picture = GFX_news_event_royal_visit
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.290.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.290.b
+		trigger = { 
+			TAG = AUS
+		}
+	}
+	option = {
+		name = news.290.c
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.290.e
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Austria votes yes on referendum - no shenanigans
+news_event = {
+	id = news.291
+	title = news.291.t
+	desc = news.291.desc
+	picture = GFX_news_event_election_vote
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.291.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.291.b
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.291.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Austria votes yes on referendum - suspected shenanigans
+news_event = {
+	id = news.292
+	title = news.291.t
+	desc = news.292.desc
+	picture = GFX_news_event_generic_riot
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.292.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.292.b
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.292.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = GER
+				has_government = democratic
+			}
+		}
+	}
+	option = { 
+		name = news.292.e
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = GER
+			}
+			has_government = democratic
+		}
+	}
+}
+
+#Austria votes no on referendum - Hungary lets it slide
+news_event = {
+	id = news.293
+	title = news.293.t
+	desc = news.293.desc
+	picture = GFX_news_event_journalists_speech
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.293.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.293.b
+		trigger = { 
+			TAG = AUS
+		}
+	}
+	option = {
+		name = news.293.c
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.293.e
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Austria votes no on referendum - Hungary prepares for war!
+news_event = {
+	id = news.294
+	title = news.294.t
+	desc = news.294.desc
+	picture = GFX_news_event_military_planning
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.294.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.294.b
+		trigger = { 
+			TAG = AUS
+		}
+	}
+	option = {
+		name = news.294.c
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.294.e
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Hungary restores Austria-Hungary
+news_event = {
+	id = news.295
+	title = news.295.t
+	desc = news.295.desc
+	picture = GFX_news_event_generic_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.295.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.295.b
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.295.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = GER
+				TAG = CZE
+				TAG = ROM
+				TAG = YUG
+				TAG = POL
+				TAG = ITA
+			}
+		}
+	}
+	option = { 
+		name = news.295.e
+		trigger = { 
+			OR = {
+				TAG = CZE
+				TAG = ROM
+				TAG = YUG
+				TAG = POL
+				TAG = ITA
+			}
+		}
+	}
+}
+
+#Hungary elects a democratic king
+news_event = {
+	id = news.296
+	title = news.296.t
+	desc = news.296.desc
+	picture = GFX_news_event_royal_visit
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.290.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.296.b
+		trigger = { 
+			NOT = { TAG = HUN }
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+	}
+	option = { 
+		name = news.296.c
+		trigger = { 
+			NOT = { TAG = HUN }
+			has_government = democratic
+		}
+	}
+}
+
+#Hungary elects a fascist king
+news_event = {
+	id = news.297
+	title = news.297.t
+	desc = news.297.desc
+	picture = GFX_news_event_royal_visit
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.290.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.297.b
+		trigger = { 
+			NOT = { TAG = HUN }
+			OR = {
+				has_government = democratic
+				has_government = communism
+			}
+		}
+	}
+	option = { 
+		name = news.297.c
+		trigger = { 
+			NOT = { TAG = HUN }
+			has_government = fascism
+		}
+	}
+}
+
+#Hungary renounces the Treaty of Trianon
+news_event = {
+	id = news.298
+	title = news.298.t
+	desc = news.298.desc
+	picture = GFX_news_event_german_speech
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.298.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.298.b
+		trigger = { 
+			NOT = { TAG = HUN }
+			NOT = {	has_government = fascism }
+		}
+	}
+	option = { 
+		name = news.298.c
+		trigger = { 
+			NOT = { TAG = HUN }
+			has_government = fascism
+		}
+	}
+}
+
+#Hungary proclaims Greater Hungary
+news_event = {
+	id = news.299
+	title = news.299.t
+	desc = news.299.desc
+	picture = GFX_news_event_generic_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.299.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.299.b
+		trigger = { 
+			NOT = { TAG = HUN }
+		}
+	}
+}
+
+#Hungary demands Transylvania
+news_event = {
+	id = news.300
+	title = news.300.t
+	desc = news.300.desc
+	picture = GFX_news_event_hungary_refused
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.300.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.300.b
+		trigger = { 
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.300.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = ROM
+			}
+		}
+	}
+}
+
+#Romania folds and gives up Transylvania
+news_event = {
+	id = news.301
+	title = news.301.t
+	desc = news.301.desc
+	picture = GFX_news_event_generic_sign_treaty1
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.301.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.301.b
+		trigger = { 
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.301.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = ROM
+			}
+		}
+	}
+}
+
+#Hungary and Romania unable to find solution, war looms
+news_event = {
+	id = news.302
+	title = news.302.t
+	desc = news.302.desc
+	picture = GFX_news_event_hungarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.302.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.302.b
+		trigger = { 
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.302.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = ROM
+			}
+		}
+	}
+}
+
+#Hungary demands Southern Slovakia
+news_event = {
+	id = news.303
+	title = news.303.t
+	desc = news.303.desc
+	picture = GFX_news_event_hungary_refused
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.303.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.303.b
+		trigger = { 
+			TAG = CZE
+		}
+	}
+	option = {
+		name = news.300.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+			}
+		}
+	}
+}
+
+#Czechoslovakia folds and gives up Southern Slovakia
+news_event = {
+	id = news.304
+	title = news.304.t
+	desc = news.304.desc
+	picture = GFX_news_event_generic_sign_treaty1
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.304.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.301.b
+		trigger = { 
+			TAG = CZE
+		}
+	}
+	option = {
+		name = news.301.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+			}
+		}
+	}
+}
+
+#Hungary and Czechoslovakia unable to find solution, war looms
+news_event = {
+	id = news.305
+	title = news.305.t
+	desc = news.305.desc
+	picture = GFX_news_event_hungarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.302.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.302.b
+		trigger = { 
+			TAG = CZE
+		}
+	}
+	option = {
+		name = news.302.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+			}
+		}
+	}
+}
+
+#Hungary demands the Vojvodina
+news_event = {
+	id = news.306
+	title = news.306.t
+	desc = news.306.desc
+	picture = GFX_news_event_hungary_refused
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.306.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.306.b
+		trigger = { 
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.300.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = YUG
+			}
+		}
+	}
+}
+
+#Yugoslavia folds and gives up the Vojvodina
+news_event = {
+	id = news.307
+	title = news.307.t
+	desc = news.307.desc
+	picture = GFX_news_event_generic_sign_treaty1
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.307.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.301.b
+		trigger = { 
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.301.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = YUG
+			}
+		}
+	}
+}
+
+#Hungary and Yugoslavia unable to find solution, war looms
+news_event = {
+	id = news.308
+	title = news.308.t
+	desc = news.308.desc
+	picture = GFX_news_event_hungarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.302.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.302.b
+		trigger = { 
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.302.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = YUG
+			}
+		}
+	}
+}
+
+#Hungary claims overlordship over Slovakia
+news_event = {
+	id = news.309
+	title = news.309.t
+	desc = {
+		text = news.309.desc.a
+		trigger = { 
+			OR = {
+				NOT = { country_exists = SLO }
+				AND = {
+					country_exists = SLO
+					SLO = { is_subject = yes }
+				}
+			}
+		}
+	}
+	desc = {
+		text = news.309.desc.b
+		trigger = { 
+			country_exists = SLO
+			SLO = { is_subject = no }
+		}
+	}
+	picture = GFX_news_event_hungary_refused
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.309.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.309.b
+		trigger = { 
+			TAG = CZE
+			OR = {
+				NOT = { country_exists = SLO }
+				AND = {
+					country_exists = SLO
+					SLO = { is_subject = yes }
+				}
+			}
+		}
+	}
+	option = {
+		name = news.309.c
+		trigger = { 
+			AND = {
+				TAG = SLO
+				SLO = { is_subject = no }
+			}
+		}
+	}
+	option = {
+		name = news.300.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+				AND = {
+					TAG = SLO
+					SLO = { is_subject = yes }
+				}
+			}
+		}
+	}
+}
+
+#CZE/SLO folds and gives up Slovakia
+news_event = {
+	id = news.310
+	title = news.310.t
+	desc = {
+		text = news.310.desc.a
+		trigger = { 
+			OR = {
+				NOT = { country_exists = SLO }
+				AND = {
+					country_exists = SLO
+					SLO = { is_subject = yes }
+				}
+			}
+		}
+	}
+	desc = {
+		text = news.310.desc.b
+		trigger = { 
+			country_exists = SLO
+			SLO = { is_subject = no }
+		}
+	}
+	picture = GFX_news_event_generic_sign_treaty1
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.310.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.310.b
+		trigger = { 
+			TAG = CZE
+		}
+	}
+	option = {
+		name = news.301.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+			}
+		}
+	}
+}
+
+#Hungary and CZE/SLO unable to find solution, war looms
+news_event = {
+	id = news.311
+	title = news.311.t
+	desc = {
+		text = news.311.desc.a
+		trigger = { 
+			OR = {
+				NOT = { country_exists = SLO }
+				AND = {
+					country_exists = SLO
+					SLO = { is_subject = yes }
+				}
+			}
+		}
+	}
+	desc = {
+		text = news.311.desc.b
+		trigger = { 
+			country_exists = SLO
+			SLO = { is_subject = no }
+		}
+	}
+	picture = GFX_news_event_hungarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.302.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.311.b
+		trigger = { 
+			TAG = CZE
+		}
+	}
+	option = {
+		name = news.302.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = CZE
+			}
+		}
+	}
+}
+
+#Rome Protocols renewed
+news_event = {
+	id = news.312
+	title = news.312.t
+	desc = {
+		text = news.312.desc.a
+		trigger = { 
+			country_exists = AUS
+		}
+	}
+	desc = {
+		text = news.312.desc.b
+		trigger = { 
+			NOT = { country_exists = AUS }
+		}
+	}
+	picture = GFX_news_event_hitler_handshake
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.312.a
+		trigger = {
+			OR = {
+				TAG = HUN
+				TAG = ITA
+				TAG = AUS
+			}
+		}
+	}
+	option = {
+		name = news.312.b
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = {
+		name = news.312.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = ITA
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Pact of Rome formed
+news_event = {
+	id = news.313
+	title = news.313.t
+	desc = {
+		text = news.313.desc.a
+		trigger = { 
+			country_exists = AUS
+		}
+	}
+	desc = {
+		text = news.313.desc.b
+		trigger = { 
+			NOT = { country_exists = AUS }
+		}
+	}
+	picture = GFX_news_event_generic_sign_treaty3
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.313.a
+		trigger = {
+			OR = {
+				TAG = HUN
+				TAG = ITA
+				TAG = AUS
+			}
+		}
+	}
+	option = {
+		name = news.313.b
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = {
+		name = news.313.c
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = ITA
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Horthy Assassinated
+news_event = {
+	id = news.314
+	title = news.314.t
+	desc = news.314.desc
+	picture = GFX_news_event_generic_funeral
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.314.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.314.b
+		trigger = { 
+			has_government = communism
+			NOT = { TAG = HUN }
+		}
+	}
+	option = {
+		name = news.314.c
+		trigger = { 
+			NOT = {
+				has_government = communism
+			}
+			NOT = { TAG = HUN }
+		}
+	}
+}
+
+#Austria deniees referendum
+news_event = {
+	id = news.315
+	title = news.315.t
+	desc = news.315.desc
+	picture = GFX_news_event_hungarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.294.a
+		trigger = {
+			TAG = HUN
+		}
+	}
+	option = {
+		name = news.294.b
+		trigger = { 
+			TAG = AUS
+		}
+	}
+	option = {
+		name = news.294.c
+		trigger = { 
+			TAG = GER
+		}
+	}
+	option = { 
+		name = news.294.e
+		trigger = { 
+			NOT = {
+				TAG = HUN
+				TAG = AUS
+				TAG = GER
+			}
+		}
+	}
+}
+
+#Renew Polish-Romanian Alliance
+news_event = {
+	id = news.316
+	title = news.316.t
+	desc = news.316.desc
+	picture = GFX_news_event_romania_poland_visit
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.316.a
+		trigger = {
+			OR = {
+				TAG = ROM
+				TAG = POL
+			}
+		}
+	}
+	option = {
+		name = news.316.b
+		trigger = { 
+			OR = {
+				TAG = GER
+				TAG = SOV
+			}
+		}
+	}
+	option = { 
+		name = news.316.c
+		trigger = { 
+			NOT = {
+				TAG = ROM
+				TAG = POL
+				TAG = GER
+				TAG = SOV
+			}
+		}
+	}
+}
+
+#Cordon Sanitaire
+news_event = {
+	id = news.317
+	title = news.317.t
+	desc = news.317.desc
+	picture = GFX_news_event_generic_sign_treaty3
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.317.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.317.b
+		trigger = { 
+			OR = {
+				AND = {
+					TAG = POL
+					is_in_faction_with = ROM
+				}
+				AND = {
+					TAG = CZE
+					is_in_faction_with = ROM
+				}
+			}
+		}
+	}
+	option = {
+		name = news.317.c
+		trigger = { 
+			OR = {
+				TAG = GER
+				TAG = SOV
+			}
+		}
+	}
+	option = { 
+		name = news.317.e
+		trigger = { 
+			OR = {
+				NOT = {
+					TAG = ROM
+					TAG = POL
+					TAG = CZE
+					TAG = GER
+					TAG = SOV
+					has_government = communism
+					has_government = fascism
+				}
+				AND = { 
+					OR = {
+						TAG = POL
+						TAG = CZE
+					}
+					NOT = { has_government = communism }
+					NOT = { has_government = fascism }
+					NOT = { is_in_faction_with = ROM }
+				}
+			}
+		}
+	}
+	option = { 
+		name = news.317.f
+		trigger = { 
+			OR = {
+				AND = {
+					NOT = {
+						TAG = ROM
+						TAG = POL
+						TAG = CZE
+						TAG = GER
+						TAG = SOV
+					}
+					OR = {
+						has_government = communism
+						has_government = fascism
+					}
+				}
+				AND = { 
+					OR = {
+						TAG = POL
+						TAG = CZE
+					}
+					OR = {
+						has_government = communism
+						has_government = fascism
+					}
+					NOT = { is_in_faction_with = ROM }
+				}
+			}
+		}
+	}
+}
+
+#Bulgaria Submits to Romanian Ultimatum
+news_event = {
+	id = news.318
+	title = news.318.t
+	desc = news.318.desc
+	picture = GFX_news_event_generic_sign_treaty1
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.318.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.318.b
+		trigger = { 
+			TAG = BUL
+		}
+	}
+	option = {
+		name = news.318.c
+		trigger = { 
+			NOT = {
+				TAG = ROM
+				TAG = BUL
+			}
+		}
+	}
+}
+
+#Bulgaria Rejects Romanian Ultimatum - War might start
+news_event = {
+	id = news.319
+	title = news.319.t
+	desc = news.319.desc
+	picture = GFX_news_event_bulgarian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.319.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.319.b
+		trigger = { 
+			TAG = BUL
+		}
+	}
+	option = {
+		name = news.319.c
+		trigger = { 
+			NOT = {
+				TAG = ROM
+				TAG = BUL
+			}
+		}
+	}
+}
+
+#Divide Yugoslavia - Yugoslavia Refuses
+news_event = {
+	id = news.320
+	title = news.320.t
+	desc = news.320.desc
+	picture = GFX_news_event_romanian_soldiers
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.320.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.320.b
+		trigger = { 
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.320.c
+		trigger = { 
+			OR = {
+				AND = {
+					TAG = GER
+					ROM = {
+						has_country_flag = ROM_YUG_GER_approves
+					}
+				}
+				AND = {
+					TAG = ITA
+					ROM = {
+						has_country_flag = ROM_YUG_ITA_approves
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = news.320.e
+		trigger = { 
+			OR = {
+				NOT = {
+					TAG = ROM
+					TAG = YUG
+				}
+				AND = {
+					TAG = GER
+					ROM = {
+						NOT = { has_country_flag = ROM_YUG_GER_approves }
+					}
+				}
+				AND = {
+					TAG = ITA
+					ROM = {
+						NOT = { has_country_flag = ROM_YUG_ITA_approves }
+					}
+				}
+			}
+		}
+	}
+}
+
+#Divide Yugoslavia - Yugoslavia Accepts Under Pressure
+news_event = {
+	id = news.321
+	title = news.321.t
+	desc = news.321.desc
+	picture = GFX_news_event_yugoslavian_split
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.321.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.321.b
+		trigger = { 
+			OR = {
+				AND = {
+					TAG = GER
+					ROM = {
+						has_country_flag = ROM_YUG_GER_approves
+					}
+				}
+				AND = {
+					TAG = ITA
+					ROM = {
+						has_country_flag = ROM_YUG_ITA_approves
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = news.321.c
+		trigger = { 
+			OR = {
+				NOT = {
+					TAG = ROM
+					TAG = YUG
+					TAG = POL
+					TAG = GER
+					TAG = ITA
+				}
+				AND = {
+					TAG = GER
+					ROM = {
+						NOT = { has_country_flag = ROM_YUG_GER_approves }
+					}
+				}
+				AND = {
+					TAG = ITA
+					ROM = {
+						NOT = { has_country_flag = ROM_YUG_ITA_approves }
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = news.321.e
+		trigger = { 
+			TAG = POL
+		}
+	}
+}
+
+#King Michael's Coup
+news_event = {
+	id = news.322
+	title = news.322.t
+	desc = news.322.desc
+	picture = GFX_news_event_journalists_speech
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.322.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.322.b
+		trigger = { 
+			NOT = { TAG = ROM }
+		}
+	}
+}
+
+#King Carol II Forced to Abdicate
+news_event = {
+	id = news.323
+	title = news.323.t
+	desc = news.323.desc
+	picture = GFX_news_event_romania_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.323.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.323.b
+		trigger = { 
+			NOT = { TAG = ROM }
+		}
+	}
+}
+
+#Divide Yugoslavia - Yugoslavia Agrees Immediately
+news_event = {
+	id = news.324
+	title = news.324.t
+	desc = news.324.desc
+	picture = GFX_news_event_yugoslavian_split
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.324.a
+		trigger = {
+			TAG = ROM
+		}
+	}
+	option = {
+		name = news.324.b
+		trigger = { 
+			NOT = {
+				TAG = ROM
+				TAG = YUG
+			}
+		}
+	}
+}
+
+#Yugoslavia Claims Bulgaria
+news_event = {
+	id = news.325
+	title = news.325.t
+	desc = news.325.desc
+	picture = GFX_news_event_generic_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.325.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.325.b
+		trigger = {
+			TAG = BUL
+		}
+	}
+	option = {
+		name = news.325.c
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = BUL
+			}
+		}
+	}
+}
+
+#The Banovina of Croatia
+news_event = {
+	id = news.326
+	title = news.326.t
+	desc = news.326.desc
+	picture = GFX_news_event_banovina_croatia
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.326.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.326.b
+		trigger = {
+			TAG = CRO
+		}
+	}
+	option = {
+		name = news.326.c
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = CRO
+			}
+		}
+	}
+}
+
+#Yugoslavia Claims Macedonia
+news_event = {
+	id = news.327
+	title = news.327.t
+	desc = news.327.desc
+	picture = GFX_news_event_generic_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.327.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.327.b
+		trigger = {
+			TAG = GRE
+		}
+	}
+	option = {
+		name = news.327.c
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = GRE
+			}
+		}
+	}
+}
+
+#Yugoslavia Claims Italian Border
+news_event = {
+	id = news.328
+	title = news.328.t
+	desc = news.328.desc
+	picture = GFX_news_event_generic_parliament
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.328.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.328.b
+		trigger = {
+			TAG = ITA
+		}
+	}
+	option = {
+		name = news.328.c
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = ITA
+			}
+		}
+	}
+}
+
+#Yugoslavia Recognizes Soviet Union
+news_event = {
+	id = news.329
+	title = news.329.t
+	desc = news.329.desc
+	picture = GFX_news_event_stalin_meeting
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.329.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.329.b
+		trigger = {
+			TAG = SOV
+		}
+	}
+	option = {
+		name = news.329.c
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = SOV
+			}
+		}
+	}
+}
+
+#The Pan-Slavic Worker's Congress
+news_event = {
+	id = news.330
+	title = news.330.t
+	desc = news.330.desc
+	picture = GFX_news_event_generic_sign_treaty3
+	
+	major = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = news.330.a
+		trigger = {
+			TAG = YUG
+		}
+	}
+	option = {
+		name = news.330.b
+		trigger = {
+			TAG = SOV
+		}
+	}
+	option = {
+		name = news.330.c
+		trigger = {
+			OR = {
+				TAG = BUL
+				TAG = ALB
+			}
+		}
+	}
+	option = {
+		name = news.330.e
+		trigger = { 
+			NOT = {
+				TAG = YUG
+				TAG = SOV
+				TAG = BUL
+				TAG = ALB
+			}
+		}
+	}
 }

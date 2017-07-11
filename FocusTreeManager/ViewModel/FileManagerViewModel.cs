@@ -99,6 +99,14 @@ namespace FocusTreeManager.ViewModel
                             string Message = LocalizationHelper.getValueForKey("Application_Error_Script");
                             coordinator.ShowMessageAsync(this, Title, Message);
                             new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
+                            //If it crashed, it is possible it was a generic file
+                            File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
+                            return;
+                        }
+                        if (script.Logger.hasErrorsAndSafeErrors())
+                        {
+                            //If any safe errors, continue, but show error dawg
+                            new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
                         }
                         try
                         {
@@ -106,7 +114,7 @@ namespace FocusTreeManager.ViewModel
                             if (script.FindAssignation("focus_tree") != null)
                             {
                                 File = Parsers.FocusTreeParser.CreateTreeFromScript(dialog.FileName,
-                                    contents);
+                                    script);
                                 ((FocusGridModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
@@ -118,7 +126,7 @@ namespace FocusTreeManager.ViewModel
                                      script.FindAssignation("news_event") != null)
                             {
                                 File = Parsers.EventParser.CreateEventFromScript(dialog.FileName,
-                                    contents);
+                                    script);
                                 ((EventTabModel)File).FileInfo = new DataContract.FileInfo
                                 {
                                     Filename = dialog.FileName,
@@ -143,8 +151,6 @@ namespace FocusTreeManager.ViewModel
                             coordinator.ShowMessageAsync(this, Title, Message);
                             //If it crashed, it is possible it was a generic file
                             File = Parsers.ScriptParser.CreateScriptFromFile(dialog.FileName);
-                            ((ScriptModel)File).VisibleName =
-                                Path.GetFileNameWithoutExtension(dialog.FileName);
                         }
                     }
                 }

@@ -311,7 +311,12 @@ country_event = {
 		}
 		custom_effect_tooltip = finland.7.a_tt
 		effect_tooltip = {
-			SOV = { white_peace = FIN }
+			SOV = { 
+				white_peace = {
+					tag = FIN 
+					message = FIN_agree_peace 
+				} 
+			}
 			transfer_state = 146
 			transfer_state = 147
 			transfer_state = 722

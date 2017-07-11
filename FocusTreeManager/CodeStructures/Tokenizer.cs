@@ -63,9 +63,9 @@ namespace FocusTreeManager.CodeStructures
                     if (tokens.Count < 3)
                     {
                         //If yes, incomplete expression
-                        Logger.Errors.Add(new SyntaxError(group.Component?.text,
-                            group.Component?.line, 
-                            group.Component?.column,
+                        Logger.Errors.Add(new SyntaxError(tokens.First()?.text,
+                            tokens.First()?.line,
+                            tokens.First()?.column,
                             new IncompleteExpressionException()));
                         return null;
                     }
@@ -85,6 +85,14 @@ namespace FocusTreeManager.CodeStructures
                             group.Component?.line,
                             group.Component?.column,
                             new OperatorExpectedException(tokens.First().text)));
+                        //Load it anyway with = as the operator
+                        group.Operator = new Token
+                        {
+                            text = "=",
+                            line = group.Component.line,
+                            column = group.Component.column 
+                                     + group.Component.text.Length
+                        };
                     }
                     //Third token should be the operand
                     switch (tokens.First().text)
@@ -122,9 +130,9 @@ namespace FocusTreeManager.CodeStructures
                             if (string.IsNullOrWhiteSpace(tokens.First().text))
                             {
                                 //If yes, create and error
-                                Logger.Errors.Add(new SyntaxError(tokens.First()?.text,
-                                        tokens.First()?.line,
-                                        tokens.First()?.column,
+                                Logger.Errors.Add(new SyntaxError(group.Component?.text,
+                                        group.Component?.line,
+                                        group.Component?.column,
                                         new IncompleteExpressionException()));
                             }
                             group.Operand = tokens.First();

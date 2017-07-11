@@ -172,6 +172,34 @@ country_event = {
 		
 		ai_chance = {
 			base = 0
+			modifier = {
+				add = 20
+				OR = {
+					AND = {
+						is_in_faction_with = ENG
+						ENG = {
+							surrender_progress > 0.3
+						}
+					}
+					NZL = { is_in_faction = no }
+					has_government = fascism
+				}
+			}
+			modifier = {
+				add = 10
+				is_subject_of = ENG
+				CAN = { NOT = { is_subject_of = ENG } }
+				RAJ = { NOT = { is_subject_of = ENG } }
+			}
+			modifier = {
+				factor = 5
+				FROM = {
+					strength_ratio = {
+						tag = ROOT
+						ratio > 2
+					}
+				}
+			}
 		}
 		
 		AST = {
@@ -185,7 +213,7 @@ country_event = {
 		name = tfv_australia.20.b # Refuse Australia's demands
 		
 		ai_chance = {
-			base = 100
+			base = 50
 		}
 		
 		effect_tooltip = {
@@ -359,37 +387,6 @@ country_event = {
 }
 
 #AST_support_indonesian_uprising - End the civil war in INS and puppet fascist side if they won
-country_event = {
-	id = tfv_australia.40
-	hidden = yes
-	
-	is_triggered_only = yes
-	
-	trigger = {
-		original_tag = INS
-		NOT = { has_government = fascism }
-		#any_country = {
-		FROM = {
-			original_tag = INS
-			has_government = fascism
-			controls_state = 334
-			controls_state = 673
-			controls_state = 669
-			controls_state = 668
-			controls_state = 738
-			controls_state = 667
-			controls_state = 672
-			controls_state = 335
-		}
-	}
-		
-	immediate = {
-		AST = {
-			country_event = { id = tfv.40 }
-		}
-	}
-}
-
 country_event = {
 	id = tfv_australia.41
 	title = tfv_australia.41.t
@@ -817,6 +814,62 @@ country_event = {
 	option = {
 		name = tfv_australia.95.a
 		
+	}
+
+}
+
+# Indonesian Nationalists Alert 
+country_event = {
+	id = tfv_australia.96
+	title = tfv_australia.96.t	
+	desc = tfv_australia.96.desc
+	picture = GFX_report_event_fascist_gathering
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = tfv_australia.96.a
+		start_civil_war = {
+			ideology = fascism
+			size = 0.5
+			states = { 334 673 669 668 738 667 }
+		}
+	}
+	option = {
+		trigger = {
+			is_ai = no
+		}
+		name = tfv_australia.96.b
+		if = {
+			limit = {
+				has_government = democratic
+			}
+			start_civil_war = {
+				ruling_party = fascism
+				ideology = democratic
+				size = 0.5
+			}
+		}
+		if = {
+			limit = {
+				has_government = communism
+			}
+			start_civil_war = {
+				ruling_party = fascism
+				ideology = communism
+				size = 0.5
+			}
+		}
+		if = {
+			limit = {
+				has_government = neutrality
+			}
+			start_civil_war = {
+				ruling_party = fascism
+				ideology = neutrality
+				size = 0.5
+			}
+		}
 	}
 
 }

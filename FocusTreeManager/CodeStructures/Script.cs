@@ -37,11 +37,11 @@ namespace FocusTreeManager.CodeStructures
             List<SyntaxGroup> list =
                 tokenizer.GroupTokensByBlocks(tokenizer.Tokenize(code, this)) 
                 as List<SyntaxGroup>;
+            //Set this logger as the tokenizer logger
+            Logger.Errors = tokenizer.Logger.Errors;
             //Check if there are errors.
-            if (tokenizer.Logger.hasErrors())
+            if (Logger.hasErrors())
             {
-                //Set this logger as the tokenizer logger
-                Logger.Errors = tokenizer.Logger.Errors;
                 return;
             }
             //Return if list is null

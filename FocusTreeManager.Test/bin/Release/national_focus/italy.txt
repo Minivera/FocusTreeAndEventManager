@@ -484,7 +484,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -494,7 +494,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -504,7 +504,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -514,7 +514,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -524,7 +524,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -534,7 +534,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -544,7 +544,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -554,7 +554,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -564,7 +564,7 @@ focus_tree = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 2
+						level = 1
 						instant_build = yes
 					}
 				}
@@ -1484,37 +1484,44 @@ focus_tree = {
 		completion_reward = {
 			add_state_claim = 102
 			add_state_claim = 103
-			add_named_threat = { threat = 2 name = ITA_slovenia_dalmatia_claims_threat }
+			add_named_threat = { threat = 4 name = ITA_slovenia_dalmatia_claims_threat }
 			YUG = {
 				add_opinion_modifier = { target = ITA modifier = claimed_western_yugoslavia }
 				if = {
-					limit = { 
+					limit = {
 						ROOT = { has_government = fascism }
 						NOT = { has_government = fascism }
+						NOT = { has_idea_with_trait = fascist_demagogue }
+						fascism < 0.3
 					}
 					add_popularity = {
 						ideology = fascism
-						popularity = -0.3
+						popularity = -0.07
 					}
 				}
 				if = {
 					limit = { 
 						ROOT = { has_government = communism }
 						NOT = { has_government = communism }
+						NOT = { has_idea_with_trait = communist_revolutionary }
+						NOT = { has_completed_focus = YUG_recognize_the_soviet_union }
+						communism < 0.3
 					}
 					add_popularity = {
 						ideology = communism
-						popularity = -0.3
+						popularity = -0.07
 					}
 				}
 				if = {
 					limit = {
 						ROOT = { has_government = democratic }
 						NOT = { has_government = democratic }
+						NOT = { has_idea_with_trait = democratic_reformer }
+						democratic < 0.3
 					}
 					add_popularity = {
 						ideology = democratic
-						popularity = -0.3
+						popularity = -0.07
 					}
 				}
 			}
@@ -2094,6 +2101,8 @@ focus_tree = {
 		mutually_exclusive = { focus = ITA_greece_friend }
 		available = {
 			NOT = { is_in_faction_with = GRE }
+			NOT = { has_war_with = GRE }
+			GRE = { NOT = { is_puppet_of = ITA } }
 			country_exists = GRE
 		}
 		will_lead_to_war_with = GRE

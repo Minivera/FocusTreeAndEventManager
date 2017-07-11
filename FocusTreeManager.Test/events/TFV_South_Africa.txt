@@ -10,7 +10,7 @@ country_event = {
 	id = tfv_south_africa.1
 	title = tfv_south_africa.1.t	# Ask ENG for control over british South-East Africa strip. 
 	desc = tfv_south_africa.1.d		#
-	picture = GFX_report_event_saf_soldier					#
+	picture = GFX_report_event_saf_soldiers					#
 	
 	is_triggered_only = yes
 	
@@ -148,7 +148,7 @@ country_event = {
 	id = tfv_south_africa.4
 	title = tfv_south_africa.4.t	#
 	desc = tfv_south_africa.4.d		#
-	picture = GFX_report_event_saf_soldier					#
+	picture = GFX_report_event_saf_soldiers					#
 	
 	is_triggered_only = yes
 	
@@ -1202,13 +1202,15 @@ country_event = {
 				}
 				transfer_state = 540
 			}
-			set_politics = {
-				ruling_party = communism
-				elections_allowed = no
-			}
-			add_popularity = {
-					ideology = communism
-					popularity = 0.75
+			hidden_effect = {
+				set_politics = {
+					ruling_party = communism
+					elections_allowed = no
+				}
+				add_popularity = {
+						ideology = communism
+						popularity = 0.75
+				}
 			}
 		}
 		set_country_flag = SAF_released_ANG
@@ -1273,13 +1275,15 @@ country_event = {
 					}
 					transfer_state = 544
 				}
-				set_politics = {
-					ruling_party = communism
-					elections_allowed = no
-				}
-				add_popularity = {
-					ideology = communism
-					popularity = 0.75
+				hidden_effect = {
+					set_politics = {
+						ruling_party = communism
+						elections_allowed = no
+					}
+					add_popularity = {
+						ideology = communism
+						popularity = 0.75
+					}
 				}
 			}
 
@@ -1361,13 +1365,15 @@ country_event = {
 						transfer_state = 538
 						transfer_state = 718
 					}
-				set_politics = {
-					ruling_party = communism
-					elections_allowed = no
-				}
-				add_popularity = {
-					ideology = communism
-					popularity = 0.75
+				hidden_effect = {
+					set_politics = {
+						ruling_party = communism
+						elections_allowed = no
+					}
+					add_popularity = {
+						ideology = communism
+						popularity = 0.75
+					}
 				}	
 			}
 						
@@ -1441,13 +1447,15 @@ country_event = {
 						transfer_state = 545
 						
 					}
-				set_politics = {
-					ruling_party = communism
-					elections_allowed = no
-				}
-				add_popularity = {
-					ideology = communism
-					popularity = 0.75
+				hidden_effect = {
+					set_politics = {
+						ruling_party = communism
+						elections_allowed = no
+					}
+					add_popularity = {
+						ideology = communism
+						popularity = 0.75
+					}
 				}
 			}
 
@@ -1529,15 +1537,17 @@ country_event = {
 						transfer_state = 547
 						transfer_state = 548
 					}
-				set_politics = {
-					ruling_party = communism
-					elections_allowed = no
+				hidden_effect = {
+					set_politics = {
+						ruling_party = communism
+						elections_allowed = no
+					}
+					add_popularity = {
+						ideology = communism
+						popularity = 0.75
+					}
 				}
-				add_popularity = {
-					ideology = communism
-					popularity = 0.75
-				}
-			}
+			}			
 			set_country_flag = SAF_released_KEN
 			SAF = { add_to_faction = KEN }		
 	}

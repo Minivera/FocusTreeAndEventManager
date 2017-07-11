@@ -709,6 +709,7 @@ country_event = {
 		create_faction = chinese_united_front
 		#load_oob = "CHI_united_front"
 		set_global_flag = CHI_unite
+
 	}
 	#option = {
 	#	name = china.100.b
@@ -923,21 +924,32 @@ country_event = {
 			targeted_alliance = CHI
 			enemy = JAP
 		}
-		SHX = { country_event = china.105 }
+		if = {
+			limit = { 
+				NOT = { 
+					OR = {
+						SHX = { is_puppet_of = JAP } 
+						SHX = { is_in_faction_with = JAP}
+					}
+				} 
+			}
+			SHX = { country_event = china.105 }
+		}
 		if = {
 			limit = { NOT = { has_war_with = SOV } }
 			custom_effect_tooltip = china.104_PRC_SOV_reinforcements
 		}
 		hidden_effect = {
+			news_event = { id = news.288 hours = 6 }
 			if = {
 				limit = { 
-					NOT = { has_war_with = SOV } 
+					NOT = { has_war_with = SOV }
 					any_country = {
 						OR = {
 							tag = ROOT
 							is_in_faction_with = ROOT
 						}
-						controls_state = 621
+						has_full_control_of_state = 621
 					}
 				}
 				load_oob = "PRC_SOV_reinforcements"
@@ -1017,6 +1029,8 @@ country_event = {
 	fire_only_once = yes
 
 	trigger = {
+		is_subject = no
+		PRC = { is_subject = no }
 		tag = CHI
 		has_global_flag = CHI_unite
 		NOT = { has_war_with = JAP }		
@@ -1066,7 +1080,19 @@ country_event = {
 		name = china.108.a
 		custom_effect_tooltip = china.108_PRC_SOV_reinforcements_2
 		hidden_effect = {
-			load_oob = "PRC_SOV_reinforcements_2"
+			if = {
+				limit = { 
+					NOT = { has_war_with = SOV }
+					any_country = {
+						OR = {
+							tag = ROOT
+							is_in_faction_with = ROOT
+						}
+						has_full_control_of_state = 621
+					}
+				}
+				load_oob = "PRC_SOV_reinforcements_2"
+			}
 			set_global_flag = PRC_restart_CHI_war
 		}
 	}
@@ -1085,6 +1111,8 @@ country_event = {
 		tag = PRC
 		has_global_flag = PRC_restart_CHI_war
 		NOT = { has_war_together_with = CHI }
+		is_subject = no
+		CHI = { is_subject = no }
 	}
 
 	mean_time_to_happen = { days = 360 }
@@ -1176,6 +1204,10 @@ country_event = {
 	trigger = {
 		original_tag = CHI
 		has_government = communism
+		OR = {
+			is_subject_of = PRC
+			is_subject = no
+		}
 		PRC = {
 			exists = yes
 			has_government = communism

@@ -19,14 +19,13 @@ country_event = {
 	mean_time_to_happen = { days = 2 }
 
 	immediate = {
-		SOV = {
-			save_event_target_as = yalta_partner
-		}
+		set_province_name = { id = 3529 name="LOL_TEST" }
 	}
 	
 	option = {
 		name = test.1.a
-			country_event = { id = test.2 }
+		
+		reset_province_name = 3529
 	}
 }
 

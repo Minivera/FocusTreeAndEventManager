@@ -4,15 +4,17 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
     public class SyntaxError
     {
-        public string Message { get; set; }
+        public string Message { get; }
 
-        public int? Line { get; set; }
+        public int? Line { get; private set; }
 
-        public int? Column { get; set; }
+        public int? Column { get; private set; }
 
-        public string Tag { get; set; }
+        public string Tag { get; private set; }
 
-        public string InnerMessage { get; set; }
+        public string InnerMessage { get; private set; }
+
+        public bool isSafe { get; private set; }
 
         public SyntaxError(string message)
         {
@@ -24,7 +26,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
         }
 
         public SyntaxError(string tag, int? line = null, int? column = null, 
-                           Exception InnerException = null)
+                           PotentiallySafeException InnerException = null)
         {
             Message = "Syntax error near " + tag;
             InnerMessage = Message;
@@ -44,6 +46,7 @@ namespace FocusTreeManager.CodeStructures.CodeExceptions
             Line = line;
             Column = column;
             Tag = tag;
+            isSafe = InnerException?.isSafe ?? false;
         }
     }
 }

@@ -1,10 +1,14 @@
-﻿using System;
-
-namespace FocusTreeManager.CodeStructures.CodeExceptions
+﻿namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    internal class IncompleteExpressionException: Exception
+    internal class IncompleteExpressionException: PotentiallySafeException
     {
         public override string Message => "The expression is incomplete, " +
-                                          "an operator and a value was expected.";
+                                          "an operator and a value was expected." +
+                                          " This code block will be ignored.";
+
+        public IncompleteExpressionException()
+        {
+            isSafe = true;
+        }
     }
 }

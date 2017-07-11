@@ -16,6 +16,11 @@ namespace FocusTreeManager.CodeStructures
 
         public bool hasErrors()
         {
+            return Errors.Any(e => !e.isSafe);
+        }
+
+        public bool hasErrorsAndSafeErrors()
+        {
             return Errors.Any();
         }
 

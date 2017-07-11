@@ -50,9 +50,9 @@ focus_tree = {
 		mutually_exclusive = { focus = northern_expansion_focus }
 		available = {
 		    is_puppet = no
-		    NOT = {
-		        is_in_faction_with = ENG
-		        is_in_faction_with = HOL
+		    OR = {
+		    	NOT = { is_in_faction_with = ENG }
+		    	NOT = { is_in_faction_with = HOL }
 		    }
 		}
 		bypass = {
@@ -61,9 +61,23 @@ focus_tree = {
 		            has_war_with = ENG
 		            has_war_with = HOL
 		        }
-		        NOT = {
-		            country_exists = ENG
-		            country_exists = HOL
+		        AND = {
+		        	NOT = { country_exists = ENG }
+		        	NOT = { country_exists = HOL }
+		        }
+		        AND = {
+		        	ENG = { 
+		        		OR = {
+		        			is_puppet_of = JAP
+		        			is_puppet_of = GER 
+		        		}
+		        	}
+		        	HOL = { 
+		        		OR = {
+		        			is_puppet_of = JAP
+		        			is_puppet_of = GER 
+		        		}
+		        	}
 		        }
 		    }
 		}
@@ -98,15 +112,35 @@ focus_tree = {
 		}
 		completion_reward = {
 			custom_effect_tooltip = southern_expansion_focus_tt
-			create_wargoal = {
-				type = take_state_focus
-				target = ENG
-				generator = { 336 333 }
+			if = {
+				limit = {
+					ENG = {
+						exists = yes
+						NOT = {
+							is_in_faction_with = JAP
+						}
+					}
+				}
+				create_wargoal = {
+					type = take_state_focus
+					target = ENG
+					generator = { 336 333 }
+				}
 			}
-			create_wargoal = {
-				type = take_state_focus
-				target = HOL
-				generator = { 334 672} 
+			if = {
+				limit = {
+					HOL = {
+						exists = yes
+						NOT = {
+							is_in_faction_with = JAP
+						}
+					}
+				}
+				create_wargoal = {
+					type = take_state_focus
+					target = HOL
+					generator = { 334 672} 
+				}
 			}
 			hidden_effect = {
 				news_event = { hours = 6 id = news.208 }
@@ -175,6 +209,7 @@ focus_tree = {
 		prerequisite = { focus = southern_expansion_focus }
 		available = {
 			country_exists = USA
+			NOT = { is_in_faction_with = USA }
 		}
 		will_lead_to_war_with = USA
 		x = 0
@@ -228,8 +263,33 @@ focus_tree = {
 	focus = {
 		id = test_the_chinese_focus
 		icon = GFX_goal_generic_political_pressure
-		available = { is_puppet = no }
-		bypass = { NOT = { country_exists = CHI } }
+		available = { 
+			is_puppet = no 
+
+		}
+		bypass = { 
+			608 = {
+				NOT = {
+					is_controlled_by = CHI
+					is_controlled_by = PRC
+					is_controlled_by = SHX
+				}
+			}
+			597 = {
+				NOT = {
+					is_controlled_by = CHI
+					is_controlled_by = PRC
+					is_controlled_by = SHX
+				}
+			}
+			614 = {
+				NOT = {
+					is_controlled_by = CHI
+					is_controlled_by = PRC
+					is_controlled_by = SHX
+				}
+			}
+		}
 		x = 5
 		y = 0
 		cost = 10
@@ -242,8 +302,47 @@ focus_tree = {
 			}
 		}	
 		completion_reward = {
-			CHI = {
-				country_event = china.1
+			if = {
+				limit = {
+					CHI = { #if CHI owns one of these states, they get the event
+						OR = {
+							controls_state = 608
+							controls_state = 597
+							controls_state = 614
+						}
+					}
+				}
+				CHI = {
+					country_event = china.1
+				}
+			}
+			if = {
+				limit = {
+					PRC = { #only fires the event for PRC if they control ALL of the states (to ensure that only one of them gets it, to avoid issues when one selects to turn over the states and the other doesn't)
+						AND = {
+							controls_state = 608
+							controls_state = 597
+							controls_state = 614
+						}
+					}
+				}
+				PRC = {
+					country_event = china.1
+				}
+			}
+			if = {
+				limit = {
+					SHX = { #only fires the event for SHX if they control ALL of the states (to ensure that only one of them gets it, to avoid issues when one selects to turn over the states and the other doesn't)
+						AND = {
+							controls_state = 608
+							controls_state = 597
+							controls_state = 614
+						}
+					}
+				}
+				SHX = {
+					country_event = china.1
+				}
 			}
 			add_named_threat = { threat = 1 name = test_the_chinese_focus }
 		}
@@ -406,17 +505,25 @@ focus_tree = {
 			}
 		}
 	}
+
 	focus = {
 		id = oust_germans_focus
 		prerequisite = { focus = chinese_war_focus focus = chinese_puppet_focus}
-		bypass = { NOT = { country_exists = CHI } }
 		x = 5
 		y = 2
 		cost = 10
 		icon = GFX_goal_generic_dangerous_deal
 		ai_will_do = {
 			factor = 10
-		}	
+		}
+		
+		bypass = {
+			OR = {
+				NOT = { country_exists = CHI }
+				CHI = { is_puppet_of = ROOT }
+			}
+		}
+
 		completion_reward = {
 			GER = {
 				country_event = germany.24
@@ -430,6 +537,7 @@ focus_tree = {
 			}
 		}
 	}
+
 	focus = {
 		id = found_own_faction_focus
 		available = {
@@ -567,6 +675,14 @@ focus_tree = {
 			is_puppet = no
 			country_exists = SIA
 			NOT = { has_non_aggression_pact_with = SIA }
+			SIA = {
+				NOT = { 
+					OR = {
+						is_puppet = yes 
+						has_capitulated = yes
+					}
+				}
+			}
 		}
 		x = 6
 		y = 5
@@ -628,7 +744,11 @@ focus_tree = {
 	focus = {
 		id = jap_improved_sprit_focus
 		prerequisite = { focus = found_own_faction_focus focus = axis_leanings_focus }
-		available = { has_war = yes }
+		
+		available = { 
+			has_war = yes 
+		}
+		continue_if_invalid = yes
 		x = 1
 		y = 4
 		cost = 10
@@ -1921,40 +2041,40 @@ focus_tree = {
 			}
 		}			
 		completion_reward = {			
-			609 = {
+			534 = { # Hokuriko
 				if = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 3
+						level = 2
 						instant_build = yes
 					}
 				}
 			}
 
-			610 = {
+			535 = { #koshinetsu
 				if = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 3
+						level = 2
 						instant_build = yes
 					}
 				}
 			}
 
-			716 = {
+			609 = { #east heibei
 				if = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {
 						type = infrastructure
-						level = 3
+						level = 2
 						instant_build = yes
 					}
 				}
 			}
 			
-			527 = {
+			527 = { #
 				if = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = {

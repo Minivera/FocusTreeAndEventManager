@@ -157,6 +157,7 @@
     <Compile Include="CodeStructures\CodeEditor\CodeEditorContent.cs" />
     <Compile Include="CodeStructures\CodeEditor\InnerTextBlock.cs" />
     <Compile Include="CodeStructures\CodeExceptions\ClosingBracketExpectedException.cs" />
+    <Compile Include="CodeStructures\CodeExceptions\PotentiallySafeException.cs" />
     <Compile Include="CodeStructures\CodeExceptions\StringLiteralException.cs" />
     <Compile Include="CodeStructures\CodeExceptions\IncompleteExpressionException.cs" />
     <Compile Include="CodeStructures\CodeExceptions\MandatoryTagException.cs" />

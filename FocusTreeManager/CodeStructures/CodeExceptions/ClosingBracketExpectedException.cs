@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace FocusTreeManager.CodeStructures.CodeExceptions
+﻿namespace FocusTreeManager.CodeStructures.CodeExceptions
 {
-    internal class ClosingBracketExpectedException : Exception
+    internal class ClosingBracketExpectedException : PotentiallySafeException
     {
         public override string Message => "No associated closing bracket exists, " +
                                           "all opening bracket must be closed.";

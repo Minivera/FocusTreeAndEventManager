@@ -92,145 +92,78 @@
     <Content Include="Baltic.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\AcePilots.txt">
+    <Content Include="events\AcePilots.txt" />
+    <Content Include="events\Baltic.txt" />
+    <Content Include="events\Britain.txt" />
+    <Content Include="events\Bulgaria.txt" />
+    <Content Include="events\CapitulationEvents.txt" />
+    <Content Include="events\China.txt" />
+    <Content Include="events\DOD_Czechoslovakia.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\Baltic.txt">
+    <Content Include="events\DOD_Hungary.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\Britain.txt">
+    <Content Include="events\DOD_NewsEvents.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\Bulgaria.txt">
+    <Content Include="events\DOD_Romania.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\CapitulationEvents.txt">
+    <Content Include="events\DOD_Yugoslavia.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\China.txt">
+    <Content Include="events\ElectionEvents.txt" />
+    <Content Include="events\Finland.txt" />
+    <Content Include="events\France.txt" />
+    <Content Include="events\Generic.txt" />
+    <Content Include="events\Germany.txt" />
+    <Content Include="events\Greece.txt" />
+    <Content Include="events\Hungary.txt" />
+    <Content Include="events\Italy.txt" />
+    <Content Include="events\Japan.txt" />
+    <Content Include="events\LowCountries.txt" />
+    <Content Include="events\NewsEvents.txt" />
+    <Content Include="events\NukeEvents.txt" />
+    <Content Include="events\Poland.txt" />
+    <Content Include="events\PoliticalEvents.txt" />
+    <Content Include="events\Romania.txt" />
+    <Content Include="events\SovietUnion.txt" />
+    <Content Include="events\Spain.txt" />
+    <Content Include="events\TestEvents.txt" />
+    <Content Include="events\TFV_Australia.txt" />
+    <Content Include="events\TFV_Canada.txt" />
+    <Content Include="events\TFV_New_Zealand.txt" />
+    <Content Include="events\TFV_Raj.txt" />
+    <Content Include="events\TFV_South_Africa.txt" />
+    <Content Include="events\Turkey.txt" />
+    <Content Include="events\USA.txt" />
+    <Content Include="events\WarJustification.txt" />
+    <Content Include="events\Yugoslavia.txt" />
+    <Content Include="national_focus\australia.txt" />
+    <Content Include="national_focus\canada.txt" />
+    <Content Include="national_focus\czechoslovakia.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\ElectionEvents.txt">
+    <Content Include="national_focus\france.txt" />
+    <Content Include="national_focus\generic.txt" />
+    <Content Include="national_focus\germany.txt" />
+    <Content Include="national_focus\hungary.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\Finland.txt">
+    <Content Include="national_focus\india.txt" />
+    <Content Include="national_focus\italy.txt" />
+    <Content Include="national_focus\japan.txt" />
+    <Content Include="national_focus\new_zealand.txt" />
+    <Content Include="national_focus\poland.txt" />
+    <Content Include="national_focus\romania.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="events\France.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Generic.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Germany.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Greece.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Hungary.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Italy.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Japan.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\LowCountries.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\NewsEvents.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\NukeEvents.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Poland.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\PoliticalEvents.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Romania.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\SovietUnion.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Spain.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TestEvents.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TFV_Australia.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TFV_Canada.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TFV_New_Zealand.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TFV_Raj.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\TFV_South_Africa.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Turkey.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\USA.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\WarJustification.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="events\Yugoslavia.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\australia.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\canada.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\france.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\generic.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\germany.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\india.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\italy.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\japan.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\new_zealand.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\poland.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\south_africa.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\soviet.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\uk.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="national_focus\usa.txt">
+    <Content Include="national_focus\south_africa.txt" />
+    <Content Include="national_focus\soviet.txt" />
+    <Content Include="national_focus\uk.txt" />
+    <Content Include="national_focus\usa.txt" />
+    <Content Include="national_focus\yugoslavia.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="usa.txt">

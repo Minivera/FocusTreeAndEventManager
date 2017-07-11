@@ -36,11 +36,37 @@ country_event = {
 		hidden_effect = {
 			country_event = { days = 5 id = news.2 }
 		}
-		JAP = {
-			transfer_state = 608
-			transfer_state = 597 
-			transfer_state = 614
+		if = {
+			limit = {
+				608 = {
+					is_controlled_by = FROM
+				}
+			}
+			JAP = {
+				transfer_state = 608
+			}
 		}
+		if = {
+			limit = {
+				597 = {
+					is_controlled_by = FROM
+				}
+			}
+			JAP = {
+				transfer_state = 597
+			}
+		}
+		if = {
+			limit = {
+				614 = {
+					is_controlled_by = FROM
+				}
+			}
+			JAP = {
+				transfer_state = 614
+			}
+		}
+		
 	}
 }
 

@@ -227,6 +227,7 @@ focus_tree = {
 
 		completion_reward = {
 			add_ideas = RAJ_quit_india_movement
+			set_country_flag = RAJ_quit_india_movement
 			custom_effect_tooltip = "tfv_raj_quit_india_unrest_tt"
 			hidden_effect = {
 				country_event = { id = tfv_raj.210 days = 15 random = 20 }
@@ -305,7 +306,18 @@ focus_tree = {
 		}
 
 		available = {
-			compare_autonomy_state < autonomy_dominion
+			if = {
+				limit = {
+					NOT = { has_government = fascism }
+				}
+				compare_autonomy_state < autonomy_dominion
+			}
+			if = {
+				limit = {
+					has_government = fascism
+				}
+				compare_autonomy_state < autonomy_satellite
+			}
 			has_civil_war = no
 			NOT = { has_country_flag = RAJ_seek_help_from_germany_promised }
 			SOV_can_help_against_ENG = yes
@@ -744,7 +756,16 @@ focus_tree = {
 		}
 
 		available = {
-			compare_autonomy_state < autonomy_dominion
+			if = {
+				limit = { NOT = { has_government = fascism } }
+				compare_autonomy_state < autonomy_dominion
+			}
+			if = {
+				limit = {
+					has_government = fascism
+				}
+				compare_autonomy_state < autonomy_satellite
+			}
 			has_civil_war = no
 			NOT = { has_global_flag = RAJ_seek_help_from_soviet_promised }
 			GER = {				
@@ -815,11 +836,11 @@ focus_tree = {
 		available_if_capitulated = no
 
 		complete_tooltip = {
-			custom_effect_tooltip = RAJ_indian_national_army
+			custom_effect_tooltip = RAJ_indian_national_army_effect
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = RAJ_indian_national_army
+			custom_effect_tooltip = RAJ_indian_national_army_effect
 			if = {
 				limit = {
 					has_global_flag = RAJ_seek_help_from_germany_promised
@@ -1271,7 +1292,7 @@ focus_tree = {
 		}
 
 		available = {
-			has_tech = basic_light_cruiser
+			has_tech = early_light_cruiser
 		}
 
 		bypass = {
@@ -1304,6 +1325,10 @@ focus_tree = {
 					requested_factories = 1
 					progress = 0.95
 					amount = 1
+				}
+				else = {
+					set_technology = { basic_light_cruiser = 1 }
+					custom_effect_tooltip = RAJ_navy_funding_effect
 				}
 			}
 		}
@@ -1799,7 +1824,14 @@ focus_tree = {
 		}
 
 		available = {
-			compare_autonomy_state > autonomy_colony
+			if = {
+				limit = { NOT = { has_government = fascism } }
+				compare_autonomy_state > autonomy_colony
+			}
+			if = {
+				limit = { has_government = fascism }
+				compare_autonomy_state > autonomy_reichsprotectorate
+			}
 		}
 
 		bypass = {
@@ -2429,7 +2461,14 @@ focus_tree = {
 		}
 
 		available = {
-			compare_autonomy_state > autonomy_colony
+			if = {
+				limit = { NOT = { has_government = fascims } }
+				compare_autonomy_state > autonomy_colony
+			}
+			if = {
+				limit = { has_government = fascism }
+				compare_autonomy_state > autonomy_reichsprotectorate
+			}
 		}
 
 		bypass = {
@@ -2491,7 +2530,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -2501,7 +2540,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -2511,7 +2550,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -2523,12 +2562,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_great_indian_peninsula_railway_Inf1
@@ -2538,12 +2577,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_great_indian_peninsula_railway_Inf2
@@ -2553,12 +2592,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_great_indian_peninsula_railway_Inf3
@@ -3286,7 +3325,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -3296,7 +3335,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -3308,12 +3347,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_east_india_railways_Inf1
@@ -3323,12 +3362,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_east_india_railways_Inf2
@@ -3369,7 +3408,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -3379,7 +3418,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -3391,12 +3430,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_integrate_princely_railways_Inf1
@@ -3406,12 +3445,12 @@ focus_tree = {
 				limit = {
 					free_building_slots = {
 						building = infrastructure
-						size > 0
+						size > 1
 					}
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = RAJ_integrate_princely_railways_Inf2
@@ -3495,7 +3534,14 @@ focus_tree = {
 		}
 
 		available = {
-			compare_autonomy_state > autonomy_colony
+			if = {
+				limit = { NOT = { has_government = fascism } }
+				compare_autonomy_state > autonomy_colony
+			}
+			if = {
+				limit = { has_government = fascism }
+				compare_autonomy_state > autonomy_reichsprotectorate
+			}
 		}
 
 		bypass = {

@@ -47,7 +47,7 @@ focus_tree = {
 				limit	= {	has_state_flag = FRA_french_focus_3Inf }
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -67,7 +67,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = FRA_french_focus_3Inf
@@ -85,7 +85,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = FRA_french_focus_3Inf
@@ -103,7 +103,7 @@ focus_tree = {
 				}
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
 					instant_build = yes
 				}
 				set_state_flag = FRA_french_focus_3Inf
@@ -1447,6 +1447,14 @@ focus_tree = {
 		available = {
 			is_puppet = no
 			is_in_faction = no
+			NOT = {
+				CZE = {
+	 				AND = {
+						is_in_faction = yes
+						is_faction_leader = no
+	 				}
+	 			}
+	 		}
 		}
 	 	prerequisite = { focus = FRA_support_status_quo }
 	 	mutually_exclusive = { focus = FRA_go_with_britain }
@@ -1472,16 +1480,28 @@ focus_tree = {
 		}
 		completion_reward = {
 			add_national_unity = 0.05
-			set_rule = { can_create_factions = yes }
-			create_faction = "french_entente_alliance"
+			
+			if = {
+				limit = { 
+					has_dlc = "Death or Dishonor"
+					CZE = {
+						has_completed_focus = CZE_an_entente_of_our_own
+						is_faction_leader = yes
+					}
+				 }
+				 CZE = { country_event = generic.2 }
+			}
 			if = {
 				limit = {
 					CZE = { 
-						is_puppet = no
+						is_subject = no
 						NOT = { has_war_with = FRA }
+						is_in_faction = no
 					}
 				}
 				CZE = { country_event = france.17 }
+				set_rule = { can_create_factions = yes }
+				create_faction = "french_entente_alliance"
 				hidden_effect = {
 					news_event = { hours = 6 id = news.177 }
 				}
@@ -1601,6 +1621,7 @@ focus_tree = {
 	 				exists = no
 	 				is_puppet = yes
 	 				has_war_with = FRA
+	 				is_in_faction = yes
 	 			}
 	 		}
 	 	}
@@ -1626,6 +1647,7 @@ focus_tree = {
 	 				exists = no
 	 				is_puppet = yes
 	 				has_war_with = FRA
+	 				is_in_faction = yes
 	 			}
 	 		}
 	 	}

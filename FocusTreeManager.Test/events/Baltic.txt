@@ -407,7 +407,7 @@ country_event = {
 			ROOT = {
 				add_ai_strategy = {
 					type = alliance
-					id = "FRA"
+					id = "POL"
 					value = 200
 				}
 			}

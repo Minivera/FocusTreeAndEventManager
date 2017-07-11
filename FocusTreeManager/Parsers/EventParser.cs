@@ -27,8 +27,10 @@ namespace FocusTreeManager.Parsers
 
         public static string ParseEventScriptForCompare(string filename)
         {
+            Script script = new Script();
+            script.Analyse(File.ReadAllText(filename));
             return !File.Exists(filename) ? "" : 
-                ParseEventForCompare(CreateEventFromScript(filename, File.ReadAllText(filename)));
+                ParseEventForCompare(CreateEventFromScript(filename, script));
         }
 
         public static Dictionary<string, string> ParseAllEvents(List<EventContainer> Containers)
@@ -97,13 +99,10 @@ namespace FocusTreeManager.Parsers
             return text.ToString();
         }
 
-        public static EventTabModel CreateEventFromScript(string fileName, string Code)
+        public static EventTabModel CreateEventFromScript(string fileName, Script script)
         {
-            Script script = new Script();
-            script.Analyse(Code);
             if (script.Logger.hasErrors())
             {
-                new ViewModelLocator().ErrorDawg.AddError(script.Logger.ErrorsToString());
                 return null;
             }
             EventTabModel container = new EventTabModel(Path.GetFileNameWithoutExtension(fileName))

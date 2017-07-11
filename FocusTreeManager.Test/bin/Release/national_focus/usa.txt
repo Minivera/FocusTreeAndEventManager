@@ -783,7 +783,8 @@ focus_tree = {
 		prerequisite = { focus = USA_prepare_intervention }
 		available = {
 			GER = {
-				country_exists = GER
+				exists = yes
+				NOT = { has_government = ROOT }
 				OR = { 
 					has_offensive_war = yes 
 					has_added_tension_amount > 30
@@ -855,6 +856,7 @@ focus_tree = {
 			NOT = { 693 = { is_controlled_by = ENG } } 
 			NOT = { 689 = { is_controlled_by = ENG } } 
 			NOT = { 691 = { is_controlled_by = ENG } } 
+			ENG = { exists = no }
 		}
 
 		x = 8
@@ -870,12 +872,14 @@ focus_tree = {
 			}
 			
 			effect_tooltip = {
+				custom_effect_tooltip = USA_destroyers_for_bases_tt
 				transfer_state = 696
 				transfer_state = 331
 				transfer_state = 308
 				transfer_state = 693
 				transfer_state = 689
 				transfer_state = 691
+				
 			}
 		}
 	}

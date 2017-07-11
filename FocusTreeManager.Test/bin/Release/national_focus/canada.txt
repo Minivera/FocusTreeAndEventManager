@@ -3226,7 +3226,7 @@ focus_tree = {
 		}
 		
 		bypass = {
-
+			is_in_faction_with = GER
 		}
 
 		cancel_if_invalid = yes
@@ -3415,7 +3415,11 @@ focus_tree = {
 		}
 
 		available = {
-
+			is_subject = no
+			USA = {
+				NOT = { is_subject_of = CAN }
+			}
+			NOT = { is_in_faction_with = USA }
 		}
 		
 		bypass = {
